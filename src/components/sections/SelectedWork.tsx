@@ -33,10 +33,7 @@ const Empty = () => (
     <p className="text-body max-w-md mx-auto">
       Selected projects are being prepared for the new site.
     </p>
-    <Link
-      to="/projects"
-      className="mt-6 inline-block label-uppercase text-ink hover:text-brand"
-    >
+    <Link to="/projects" className="mt-6 inline-block label-uppercase text-ink link-underline">
       View the portfolio
     </Link>
   </div>
@@ -52,7 +49,7 @@ const SelectedWork = () => {
         <Reveal>
           <div className="flex flex-wrap items-baseline justify-between gap-4 mb-14 lg:mb-20">
             <h2 className="heading-section text-ink">Selected work</h2>
-            <Link to="/projects" className="label-uppercase text-ink hover:text-brand">
+            <Link to="/projects" className="label-uppercase text-ink link-underline">
               All projects
             </Link>
           </div>
@@ -72,13 +69,13 @@ const SelectedWork = () => {
                       <img
                         src={p.card_image_url}
                         alt={p.title}
-                        className="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-90"
+                        className="w-full h-full object-cover img-hover-scale"
                         loading="lazy"
                         decoding="async"
                       />
                     ) : null}
                   </Frame>
-                  <h3 className="heading-card text-ink text-lg mt-5 group-hover:text-brand transition-colors">
+                  <h3 className="heading-card text-ink text-lg mt-5 transition-colors duration-500 ease-out group-hover:text-brand">
                     {p.title}
                   </h3>
                   {p.location ? <p className="text-small mt-1">{p.location}</p> : null}

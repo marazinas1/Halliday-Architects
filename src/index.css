@@ -277,3 +277,42 @@
     }
   }
 }
+
+@layer utilities {
+  /* Restrained hover states — 400–600ms ease-out, no shadows or effects. */
+  .link-underline {
+    position: relative;
+    transition: color var(--motion-base, 500ms) var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.25em;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-color: hsl(var(--brand));
+    transition: transform 500ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .link-underline:hover {
+    color: hsl(var(--brand));
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+
+  .img-hover-scale {
+    transition: transform 600ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .group:hover .img-hover-scale {
+    transform: scale(1.04);
+  }
+
+  /* Architectural drawing notation numerals. */
+  .numeral {
+    @apply font-serif font-light leading-none;
+    color: hsl(var(--stone) / 0.35);
+  }
+}
