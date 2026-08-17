@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import logoDark from "@/assets/halliday-leonard-logo.png";
-import logoWhite from "@/assets/halliday-leonard-logo-white.png";
+import logo from "@/assets/halliday-logo.png";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -9,7 +8,6 @@ const NAV_LINKS = [
   { label: "Our Team", to: "/team" },
   { label: "Services", to: "/services" },
   { label: "Projects", to: "/projects" },
-  { label: "Testimonials", to: "/testimonials" },
   { label: "Contact", to: "/contact" },
 ];
 
@@ -52,13 +50,17 @@ const GlobalNav = () => {
             <Link
               to="/"
               className="flex-shrink-0 flex items-center transition-opacity hover:opacity-80"
-              aria-label="Halliday-Leonard General Contractors — Home"
+              aria-label="Halliday Architects — Home"
             >
               <img
-                src={isScrolled ? logoDark : logoWhite}
-                alt="Halliday-Leonard General Contractors"
+                src={logo}
+                alt="Halliday Architects"
                 className="h-9 md:h-11 w-auto transition-all duration-500"
-                style={{ filter: !isScrolled ? "drop-shadow(0 2px 4px rgba(0,0,0,0.35))" : "none" }}
+                style={{
+                  filter: !isScrolled
+                    ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.35))"
+                    : "none",
+                }}
               />
             </Link>
 

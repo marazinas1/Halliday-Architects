@@ -9,18 +9,18 @@ const TeamPage = () => (
   <main className="min-h-screen bg-background">
     <GlobalNav />
     <SEO
-      title="Our Team | Halliday Leonard General Contractors"
-      description="Meet the four partners behind Halliday Leonard — every project is led personally by an owner of the firm."
+      title="Our Team | Halliday Architects"
+      description="Meet the people behind Halliday Architects, an architecture practice in Ocean City, New Jersey."
       path="/team"
     />
-    <PageHero eyebrow="Our Team" title="The Partners" />
+    <PageHero eyebrow="Our Team" title="The Studio" />
 
     <section className="section-padding">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
         <Reveal>
           <p className="text-body max-w-2xl mx-auto text-center mb-16">
-            Four partners. One standard. Every project is led personally by an owner of the firm —
-            from the first sketch to the final walkthrough.
+            A small studio in Ocean City. Every project is led personally by a principal, from the
+            first sketch to construction administration.
           </p>
         </Reveal>
         <TeamGrid />

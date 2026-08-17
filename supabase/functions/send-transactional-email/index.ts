@@ -5,10 +5,10 @@ import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 import { TEMPLATES } from '../_shared/transactional-email-templates/registry.ts'
 
 // Simple direct-send inquiry notification (no queue, no suppression, no unsubscribe).
-const SITE_NAME = 'Halliday Leonard'
+const SITE_NAME = 'Halliday Architects'
 // SENDER_DOMAIN must be the verified sender subdomain for this project.
-// TODO: update at go-live once the Halliday Leonard email domain is verified.
-const SENDER_DOMAIN = 'notify.hallidayleonardllc.com'
+// TODO: update at go-live once the Halliday Architects email domain is verified.
+const SENDER_DOMAIN = 'notify.hallidayarchitects.com'
 const FROM_DOMAIN = SENDER_DOMAIN
 
 Deno.serve(async (req) => {

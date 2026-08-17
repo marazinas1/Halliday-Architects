@@ -1,19 +1,17 @@
-# Halliday-Leonard General Contractors
+# Halliday Architects
 
-> Custom home builder and general contractor in Ocean City, New Jersey.
-> Halliday-Leonard has been building custom homes, developments, and joint
-> ventures in the Ocean City, NJ area for more than 40 years. The site is a
-> portfolio of completed work — it is not a real estate listings platform and
-> does not publish prices or MLS data.
+> Architecture practice in Ocean City, New Jersey, led by Christopher Halliday
+> (RA, LEED AP) and Shannon Halliday. The site is a portfolio of the practice's
+> built work — it is not a real estate listings platform and does not publish
+> prices or MLS data.
 
 ## Pages
-- [Home](/): Overview of the firm, services, and featured projects.
-- [About](/about): Firm history and building standard.
-- [Our Team](/team): The four partners.
-- [Services](/services): Custom homes, developments, joint ventures, renovations.
-- [Projects](/projects): Portfolio of completed building projects.
-- [Testimonials](/testimonials): Client feedback.
+- [Home](/): Overview of the practice, services, and featured projects.
+- [About](/about): The practice and how it works.
+- [Our Team](/team): The people behind the practice.
+- [Services](/services): Custom homes, renovations, multi-family, sustainable design.
+- [Projects](/projects): Portfolio of completed projects.
 - [Contact](/contact): Inquiry form, phone, email, and office address.
 
 ## Contact
-700 Haven Avenue, Ocean City, NJ 08226 · 609.398.5737 · Info@HallidayLeonardInc.com
+728 West Avenue, Suite A, Ocean City, NJ 08226 · 609.957.6789 · chris@hallidayarchitects.com

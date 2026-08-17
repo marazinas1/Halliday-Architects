@@ -37,15 +37,15 @@ export const ContactForm = () => {
         name: form.name,
         email: form.email,
         phone: form.phone,
-        interest: "Custom Home Inquiry",
+        interest: "Project Inquiry",
         message: form.message || null,
-        source: "Halliday Leonard — Contact",
+        source: "Halliday Architects — Contact",
         user_agent: navigator.userAgent,
       });
       if (insertError) throw insertError;
     } catch (err) {
       console.error("Lead insert failed", err);
-      toast.error("Something went wrong. Please call 609.398.5737 or email Info@HallidayLeonardInc.com.");
+      toast.error("Something went wrong. Please call 609.957.6789 or email chris@hallidayarchitects.com.");
       setSubmitting(false);
       return;
     }
@@ -60,9 +60,9 @@ export const ContactForm = () => {
             name: form.name,
             email: form.email,
             phone: form.phone,
-            interest: "Custom Home Inquiry",
+            interest: "Project Inquiry",
             message: form.message,
-            source: "Halliday Leonard — Contact",
+            source: "Halliday Architects — Contact",
           },
         },
       });
@@ -132,29 +132,29 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
         <Reveal>
           <div>
-            <h3 className="heading-card text-charcoal mb-6">Halliday Leonard General Contractors</h3>
+            <h3 className="heading-card text-charcoal mb-6">Halliday Architects</h3>
             <div className="divider mb-8" />
             <div className="space-y-6">
               <div>
                 <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2">Address</h4>
-                <p className="text-body">700 Haven Avenue<br />Ocean City, NJ 08226</p>
+                <p className="text-body">728 West Avenue, Suite A<br />Ocean City, NJ 08226</p>
               </div>
               <div>
                 <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2">Phone</h4>
-                <a href="tel:6093985737" className="text-body hover:text-charcoal transition-colors">609.398.5737</a>
+                <a href="tel:6099576789" className="text-body hover:text-charcoal transition-colors">609.957.6789</a>
               </div>
               <div>
                 <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2">Email</h4>
-                <a href="mailto:Info@HallidayLeonardInc.com" className="text-body hover:text-charcoal transition-colors">
-                  Info@HallidayLeonardInc.com
+                <a href="mailto:chris@hallidayarchitects.com" className="text-body hover:text-charcoal transition-colors">
+                  chris@hallidayarchitects.com
                 </a>
               </div>
             </div>
 
             <div className="mt-10 aspect-[4/3] w-full overflow-hidden" style={{ borderRadius: "4px", filter: "grayscale(100%) contrast(1.1)" }}>
               <iframe
-                title="Halliday Leonard office"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3072.0!2d-74.575!3d39.2776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c0e54b1d4b0001%3A0x1!2s700+Haven+Ave%2C+Ocean+City%2C+NJ+08226!5e0!3m2!1sen!2sus!4v1700000000000"
+                title="Halliday Architects office"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3072.0!2d-74.575!3d39.2776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c0e54b1d4b0001%3A0x1!2s728+West+Ave%2C+Ocean+City%2C+NJ+08226!5e0!3m2!1sen!2sus!4v1700000000000"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

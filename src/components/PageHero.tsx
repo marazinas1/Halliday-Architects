@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import subpageHero from "@/assets/subpage-hero.jpg";
+
+/** Neutral placeholder until the client's photography arrives. */
+const PLACEHOLDER_HERO = "/placeholder.svg";
 
 /** Shared internal-page hero: parallax architectural image with dark overlay. */
 const PageHero = ({
   eyebrow,
   title,
-  image = subpageHero,
+  image = PLACEHOLDER_HERO,
 }: {
   eyebrow: string;
   title: string;
@@ -20,7 +22,7 @@ const PageHero = ({
   }, []);
 
   return (
-    <section className="relative h-[55vh] min-h-[360px] flex items-center justify-center overflow-hidden">
+    <section className="relative h-[55vh] min-h-[360px] flex items-center justify-center overflow-hidden bg-muted">
       <img
         src={image}
         alt=""
