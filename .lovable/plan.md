@@ -1,39 +1,47 @@
-# Homepage rebuild
+# Interior heroes, homepage composition, contact map
 
-The homepage becomes the page that tells a visitor who Halliday Architects are within seconds, then leads into the work. Image-first, quiet typography, generous space.
+## 1. Fix placeholder images
 
-## Structure, top to bottom
+`PageHero.tsx` and `AboutSection.tsx` are the only two places rendering `/placeholder.svg`.
 
-1. **Hero** — full-bleed neutral placeholder image, dark gradient scrim, one restrained line: "Architecture for the Jersey Shore" with a small supporting line naming what they do and where (custom homes, renovations, multi-family — Ocean City, New Jersey). No button, no marketing slogan. Scroll cue only.
-2. **Introduction** — editorial width, two to three sentences on the practice. Copy is clearly marked as placeholder in a code comment so it is obvious what still needs the client's words.
-3. **Selected work** — up to six published projects, image-led, each showing title and location, linking to its project page, plus one quiet text link through to the full projects page.
-4. **Practice statement** — a single quiet line on an ink (dark) band, giving the page rhythm.
-5. **Closing** — a short invitation to get in touch: one line plus a text link to the contact page. No form, no hard sell.
+- `PageHero`: keep height, typography and overlay exactly as they are. Replace the `<img src="/placeholder.svg">` with a flat ink block rendered in the same position. The `image` prop stays optional, so passing a real photo later is a one-line change per page.
+- `AboutSection`: replace the placeholder image with a flat sand/ink block at the same aspect ratio, same slot, same one-line swap when photography arrives.
 
-Existing sections currently on the homepage (services preview, about block, consultation CTA) are removed from this page; the Services and About pages keep their own content untouched.
+## 2. Homepage and services
 
-## Empty state
+New sections between Selected Work and the statement band:
 
-The projects table has no rows yet. Rather than filling the grid with invented placeholder projects, Selected Work renders an intentional empty state: a bordered panel at editorial width with a short line noting the portfolio is being prepared, plus a link to the projects page. The grid also has a loading skeleton (neutral sand blocks) while the query runs, so the page never flashes empty.
+- **Services preview** — the four services from `src/content/firm.ts` in a row. Each item leads with a large Newsreader light numeral (01–04) in a pale stone/line tone, noticeably larger than the title, then title and one-line description. Each links to `/services`.
+- **Studio preview** — a short line about the practice being led personally by both principals, with a link to `/team`.
 
-## Design rules applied
+Same numeral treatment replaces the divider/icon treatment on the services page cards.
 
-- All vertical spacing, container widths and gaps come from `src/lib/rhythm.ts` — no ad-hoc padding values.
-- Headings Newsreader light, body Inter; colours limited to paper, sand, ink, stone, line and brand.
-- Brand red only on link hover and small markers.
-- Motion stays as the existing fade-and-translate reveal.
+Heading alignment: use "Residential architecture in Ocean City, New Jersey" on both the homepage and About; drop "Architecture for the Jersey Shore".
 
-## Dark mode removal
+Layout changes (presentation only):
 
-The `.dark` block in `src/index.css` is deleted. It redefines `--ink` and `--stone` with inverted values, which would flip text colours on systems set to dark. The palette is light-only. Any `darkMode` toggle left in `tailwind.config.ts` is left in place but no longer has variables behind it; the `next-themes` provider is not added anywhere.
+- Left-align section headings; content sits in asymmetric columns (e.g. label column + wider content column) rather than centred blocks. Applies to homepage sections, Services, and the About/Team heading blocks touched here.
+- Stronger scale contrast: large display headings against small uppercase labels.
+- Hover states, 400–600ms ease-out: image scale on project cards, underline drawing in on text links, colour shift to brand red. Added as shared utility classes in `src/index.css` so they stay consistent.
+- Section backgrounds alternate paper / sand / ink down the page for rhythm.
+
+No shadows, gradients, rounded cards, or decorative flourishes. All spacing still from `src/lib/rhythm.ts`.
+
+## 3. Contact map
+
+Add `maplibre-gl` and render a full-width band below the contact details, replacing the current Google Maps iframe.
+
+- CARTO Positron raster tiles (no API key), muted with a light desaturation filter so it reads as context.
+- Centred on 728 West Avenue, Ocean City NJ with a single small marker in the palette (ink dot / brand red accent), zoom ~15.
+- Non-scroll-hijacking: scroll zoom off, drag pan on; attribution kept.
 
 ## Technical notes
 
-- New file `src/components/sections/SelectedWork.tsx` reading from the existing `usePublicProjects` hook (already filters `published = true` and orders by `sort_order`), sliced to six.
-- `src/pages/Index.tsx` rewritten to the five sections above; hero image stays `/placeholder.svg` until real photography arrives.
-- `PortfolioSection.tsx` and its invented placeholder projects are no longer used by the homepage. It stays in place for the projects page, which is out of scope for this task.
-- SEO title and description on the homepage stay as they are.
+- New files: `src/components/sections/ServicesPreview.tsx`, `src/components/sections/StudioPreview.tsx`, `src/components/ContactMap.tsx`, plus a small shared `ServiceNumeral` treatment reused by the services page.
+- Dependency added: `maplibre-gl` (plus its CSS import).
+- Existing Google Maps iframe in `ContactSection.tsx` is removed.
 
 ## Verification
 
-Render the homepage at desktop (1280px) and mobile (390px) widths with an empty projects table, confirm the empty state reads as intentional, check no hardcoded colour classes were introduced, and confirm no console errors.
+- Grep for `placeholder.svg` in `src` — zero rendering usages.
+- Homepage, Services, Contact checked at 1280px and 390px: numerals render at both widths, hover states behave, map loads with no console errors.
