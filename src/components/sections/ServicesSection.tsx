@@ -90,14 +90,20 @@ export const ServicesGrid = () => {
   );
 };
 
-const ServicesSection = ({ heading = "Services" }: { heading?: string }) => (
+const ServicesSection = ({
+  heading = "Services",
+  withHeading = true,
+}: {
+  heading?: string;
+  withHeading?: boolean;
+}) => (
   <section className={`${sectionPadding.base} section-sand`}>
     <div className={container.wide}>
       <Reveal>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20 mb-14 lg:mb-20">
-          <p className="label-uppercase lg:col-span-3 lg:pt-4">What We Do</p>
-          <div className="lg:col-span-9">
-            <h2 className="heading-display text-ink mb-6">{heading}</h2>
+          {withHeading && <p className="label-uppercase lg:col-span-3 lg:pt-4">What We Do</p>}
+          <div className={withHeading ? "lg:col-span-9" : "lg:col-span-9 lg:col-start-4"}>
+            {withHeading && <h2 className="heading-display text-ink mb-6">{heading}</h2>}
             {/* PLACEHOLDER COPY — awaiting the client's own words. */}
             <p className="text-body max-w-xl">
               An architecture practice in Ocean City, New Jersey, working on residential projects

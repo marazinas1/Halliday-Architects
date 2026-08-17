@@ -6,8 +6,8 @@ const AboutSection = () => (
   <section className={`${sectionPadding.base}`}>
     <div className={container.wide}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-        <Reveal>
-          <div className="lg:col-span-7">
+        <Reveal className="lg:col-span-7">
+          <div>
             {/* Flat sand block until the client's photograph arrives —
                 swap this div for an <img> when it does. */}
             <div
@@ -16,8 +16,8 @@ const AboutSection = () => (
             />
           </div>
         </Reveal>
-        <Reveal>
-          <div className="lg:col-span-5">
+        <Reveal className="lg:col-span-5">
+          <div>
             <p className="label-uppercase mb-4">About Us</p>
             <h2 className="heading-section text-ink mb-6">
               Residential architecture

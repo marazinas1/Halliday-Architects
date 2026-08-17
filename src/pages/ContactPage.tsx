@@ -13,7 +13,7 @@ const ContactPage = () => (
       description="Get in touch with Halliday Architects — architecture practice in Ocean City, New Jersey. 609.957.6789."
       path="/contact"
     />
-    <PageHero eyebrow="Get In Touch" title="Request a Consultation" />
+    <PageHero eyebrow="Get In Touch" title="Contact" />
 
     <ContactSection withHeading={false} />
 

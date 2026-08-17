@@ -17,7 +17,7 @@ const ServicesPage = () => (
     />
     <PageHero eyebrow="What We Do" title="Services" />
 
-    <ServicesSection heading="Services" />
+    <ServicesSection withHeading={false} />
 
     <section className={`${sectionPadding.base}`}>
       <div className={`${container.narrow} text-center`}>
