@@ -313,6 +313,6 @@
   /* Architectural drawing notation numerals. */
   .numeral {
     @apply font-serif font-light leading-none;
-    color: hsl(var(--line));
+    color: hsl(var(--stone) / 0.35);
   }
 }
