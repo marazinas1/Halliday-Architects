@@ -12,7 +12,13 @@ const NAV_LINKS = [
   { label: "Contact", to: "/contact" },
 ];
 
-const GlobalNav = () => {
+/**
+ * `lightHero` is set by pages whose hero is a light surface (currently the
+ * homepage, while it waits for real photography). It keeps the nav in its
+ * dark-on-light treatment so the links stay legible without an image behind
+ * them.
+ */
+const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -23,9 +29,12 @@ const GlobalNav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /** True whenever the nav sits on a light surface. */
+  const onLight = isScrolled || lightHero;
+
   const linkClass = (isActive: boolean) =>
     `text-xs tracking-[0.12em] uppercase font-medium transition-all duration-300 ${
-      isScrolled
+      onLight
         ? isActive
           ? "text-ink"
           : "text-stone hover:text-ink"
@@ -33,11 +42,11 @@ const GlobalNav = () => {
           ? "text-paper"
           : "text-paper/80 hover:text-paper"
     }`;
-  const textShadow = !isScrolled ? "0 1px 3px rgba(0,0,0,0.4)" : "none";
+  const textShadow = !onLight ? "0 1px 3px rgba(0,0,0,0.4)" : "none";
 
   return (
     <>
-      {!isScrolled && (
+      {!onLight && (
         <div className="fixed top-0 left-0 right-0 h-32 z-40 pointer-events-none bg-gradient-to-b from-black/50 via-black/25 to-transparent" />
       )}
 
@@ -58,7 +67,7 @@ const GlobalNav = () => {
                 alt="Halliday Architects"
                 className="h-9 md:h-11 w-auto transition-all duration-500"
                 style={{
-                  filter: !isScrolled
+                  filter: !onLight
                     ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.35))"
                     : "none",
                 }}
@@ -75,7 +84,7 @@ const GlobalNav = () => {
               <Link
                 to="/contact"
                 className={`text-xs py-2.5 px-6 font-medium tracking-wider uppercase transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${
-                  isScrolled
+                  onLight
                     ? "bg-ink text-paper"
                     : "bg-paper/20 backdrop-blur-sm border border-paper/40 text-paper hover:bg-paper hover:text-ink"
                 }`}
@@ -92,22 +101,22 @@ const GlobalNav = () => {
               aria-label="Toggle menu"
             >
               <div className="w-6 h-5 relative flex flex-col justify-between">
-                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-ink" : ""}`} />
-                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "opacity-0" : ""}`} />
-                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-ink" : ""}`} />
+                <span className={`w-full h-0.5 transition-all duration-300 ${onLight ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-ink" : ""}`} />
+                <span className={`w-full h-0.5 transition-all duration-300 ${onLight ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+                <span className={`w-full h-0.5 transition-all duration-300 ${onLight ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-ink" : ""}`} />
               </div>
             </button>
           </div>
 
           {/* Mobile menu */}
           <div className={`lg:hidden overflow-hidden transition-all duration-300 absolute top-full left-0 right-0 ${isMobileMenuOpen ? "max-h-[600px]" : "max-h-0"}`}>
-            <div className={`flex flex-col gap-5 px-6 pt-6 pb-8 ${isScrolled ? "bg-paper border-t border-border" : "bg-ink"}`}>
+            <div className={`flex flex-col gap-5 px-6 pt-6 pb-8 ${onLight ? "bg-paper border-t border-border" : "bg-ink"}`}>
               {NAV_LINKS.map((l) => (
                 <Link
                   key={l.to}
                   to={l.to}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-left text-sm tracking-wider uppercase transition-colors ${isScrolled ? "text-stone hover:text-ink" : "text-paper/90 hover:text-paper"}`}
+                  className={`text-left text-sm tracking-wider uppercase transition-colors ${onLight ? "text-stone hover:text-ink" : "text-paper/90 hover:text-paper"}`}
                 >
                   {l.label}
                 </Link>
@@ -116,7 +125,7 @@ const GlobalNav = () => {
                 to="/contact"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`text-xs mt-2 w-fit py-2.5 px-6 font-medium tracking-wider uppercase transition-all duration-300 ${
-                  isScrolled ? "bg-ink text-paper" : "bg-paper text-ink"
+                  onLight ? "bg-ink text-paper" : "bg-paper text-ink"
                 }`}
                 style={{ borderRadius: "4px" }}
               >

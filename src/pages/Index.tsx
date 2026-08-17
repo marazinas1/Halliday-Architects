@@ -3,125 +3,101 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import Reveal from "@/components/Reveal";
-import AboutSection from "@/components/sections/AboutSection";
-import { ServicesGrid } from "@/components/sections/ServicesSection";
-import { PortfolioGrid } from "@/components/sections/PortfolioSection";
+import SelectedWork from "@/components/sections/SelectedWork";
 import { container, sectionPadding } from "@/lib/rhythm";
 
-/** Neutral placeholder until the client's photography arrives. */
-const heroImg = "/placeholder.svg";
+/*
+ * PLACEHOLDER COPY — awaiting the client's own words.
+ * Everything written here is factually defensible (a residential architecture
+ * practice in Ocean City, New Jersey) and deliberately says less rather than
+ * claiming services we have no evidence for.
+ */
 
 const Index = () => {
   return (
     <main className="min-h-screen bg-background">
-      <GlobalNav />
+      <GlobalNav lightHero />
       <SEO
-        title="Halliday Architects | Architecture Practice in Ocean City, NJ"
-        description="Halliday Architects is an architecture practice in Ocean City, New Jersey — custom homes, renovations, multi-family, and sustainable design."
+        title="Halliday Architects | Residential Architecture in Ocean City, NJ"
+        description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
         path="/"
       />
 
-      {/* ─── Hero ─── */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-muted">
-        <img
-          src={heroImg}
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
-          fetchPriority="high"
-          decoding="async"
-          loading="eager"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in-up">
-          <p className="label-uppercase text-paper/70 mb-6">Halliday Architects</p>
-          <h1 className="heading-display text-paper mb-6">
-            Architecture for the
-            <br />
-            Jersey Shore
-          </h1>
-          <div className="w-16 h-px bg-paper/40 mx-auto mb-6" />
-          <p className="text-lg md:text-xl text-paper/80 font-light max-w-2xl mx-auto leading-relaxed">
-            Custom homes, renovations, and multi-family design — Ocean City, New Jersey.
-          </p>
-          <Link
-            to="/contact"
-            className="mt-10 inline-flex items-center gap-2 px-8 py-3 text-xs font-medium tracking-wider uppercase bg-paper/15 backdrop-blur-sm border border-paper/30 text-paper hover:bg-paper hover:text-ink transition-all duration-300 hover:-translate-y-0.5"
-            style={{ borderRadius: "4px" }}
-          >
-            Start Your Project
-          </Link>
-        </div>
-      </section>
-
-      <div className="w-full h-px bg-border" />
-
-      <AboutSection />
-
-      <div className="w-full h-px bg-border" />
-
-      {/* ─── Services preview ─── */}
-      <section className={`${sectionPadding.base} section-sand`}>
-        <div className={container.wide}>
-          <Reveal>
-            <div className="text-center mb-16">
-              <p className="label-uppercase mb-4">What We Do</p>
-              <h2 className="heading-section text-ink mb-6">Services</h2>
-              <div className="divider mx-auto mb-6" />
-              <p className="text-body max-w-2xl mx-auto">
-Custom homes, renovations and additions, multi-family and mixed use, and
-                sustainable design — led personally by a principal of the practice.
-              </p>
-            </div>
-          </Reveal>
-          <ServicesGrid />
-          <div className="text-center mt-12">
-            <Link to="/services" className="btn-outline text-xs inline-flex">
-              View All Services
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <div className="w-full h-px bg-border" />
-
-      {/* ─── Featured projects preview ─── */}
-      <section className={`${sectionPadding.base}`}>
-        <div className={container.wide}>
-          <Reveal>
-            <div className="text-center mb-16">
-              <p className="label-uppercase mb-4">Featured Work</p>
-              <h2 className="heading-section text-ink mb-6">Portfolio</h2>
-              <div className="divider mx-auto mb-6" />
-              <p className="text-body max-w-2xl mx-auto">
-                A selection of completed projects across the Ocean City, NJ area.
-              </p>
-            </div>
-          </Reveal>
-          <PortfolioGrid limit={3} />
-          <div className="text-center mt-12">
-            <Link to="/projects" className="btn-outline text-xs inline-flex">
-              View Full Portfolio
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <div className="w-full h-px bg-border" />
-
-      {/* ─── Contact CTA ─── */}
-      <section className={`${sectionPadding.base}`}>
-        <div className={`${container.narrow} text-center`}>
-          <Reveal>
-            <p className="label-uppercase mb-4">Get In Touch</p>
-            <h2 className="heading-section text-ink mb-6">Let's Design Something Lasting</h2>
-            <div className="divider mx-auto mb-8" />
-            <p className="text-body mb-10">
-              Tell us about your project and one of our principals will be in touch shortly.
+      {/*
+        Hero — flat sand block at 16:9 stands in for the photography the client
+        is sending. No scrim until a real image sits behind it.
+      */}
+      <section className="bg-sand">
+        <div className={`${container.wide} min-h-[70vh] md:min-h-[80vh] flex items-end pt-32 pb-16 md:pb-24`}>
+          <div className="max-w-3xl animate-fade-in-up">
+            <h1 className="heading-display text-ink">
+              Residential architecture
+              <br className="hidden md:block" />{" "}
+              in Ocean City, New Jersey
+            </h1>
+            <p className="text-body mt-8 max-w-xl">
+              Halliday Architects — Christopher and Shannon Halliday, RA, LEED AP.
             </p>
-            <Link to="/contact" className="btn-primary inline-flex">
-              Request a Consultation
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Introduction — placeholder, awaiting the client's own words ─── */}
+      <section className={sectionPadding.base}>
+        <div className={container.content}>
+          <Reveal>
+            <p className="font-serif font-light text-2xl md:text-3xl leading-snug text-ink">
+              Halliday Architects is a residential architecture practice based in
+              Ocean City, New Jersey.
+            </p>
+            <p className="text-body mt-8 max-w-2xl">
+              The practice is led by Christopher and Shannon Halliday, both
+              registered architects and LEED accredited professionals, working
+              with homeowners along the New Jersey shore.
+            </p>
+            <Link
+              to="/about"
+              className="mt-10 inline-block label-uppercase text-ink hover:text-brand"
+            >
+              About the practice
             </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      <div className="w-full h-px bg-border" />
+
+      <SelectedWork />
+
+      {/* ─── Practice statement — placeholder, awaiting the client's own words ─── */}
+      <section className={`${sectionPadding.loose} bg-ink`}>
+        <div className={container.content}>
+          <Reveal>
+            <p className="font-serif font-light text-3xl md:text-4xl leading-snug text-paper max-w-3xl">
+              Every project begins with the site, the light and the way a family
+              intends to live in the house.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── Closing ─── */}
+      <section className={sectionPadding.base}>
+        <div className={container.content}>
+          <Reveal>
+            <h2 className="heading-section text-ink">Get in touch</h2>
+            <p className="text-body mt-6 max-w-xl">
+              We are glad to hear about projects along the shore. Call the studio
+              or send a note and we will reply personally.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-8">
+              <Link to="/contact" className="label-uppercase text-ink hover:text-brand">
+                Contact
+              </Link>
+              <a href="tel:6099576789" className="label-uppercase text-ink hover:text-brand">
+                609.957.6789
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>
