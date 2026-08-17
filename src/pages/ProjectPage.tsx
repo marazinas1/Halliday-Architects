@@ -60,10 +60,10 @@ const ProjectPage = () => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-12 pb-16">
-          {location && <p className="label-uppercase text-white/70 mb-3">{location}</p>}
-          <h1 className="heading-display text-white">{project.title}</h1>
+          {location && <p className="label-uppercase text-paper/70 mb-3">{location}</p>}
+          <h1 className="heading-display text-paper">{project.title}</h1>
           {project.tagline && (
-            <p className="text-white/80 mt-4 max-w-2xl font-light">{project.tagline}</p>
+            <p className="text-paper/80 mt-4 max-w-2xl font-light">{project.tagline}</p>
           )}
         </div>
       </section>
