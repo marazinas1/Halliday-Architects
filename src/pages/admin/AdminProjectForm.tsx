@@ -120,17 +120,18 @@ function AdminProjectFormInner() {
       headline: (p.headline as string) ?? "",
       tagline: (p.tagline as string) ?? "",
       description: (p.description as string) ?? "",
-      location_neighborhood: (p.location_neighborhood as string) ?? "",
       location_city: (p.location_city as string) ?? "",
       location_state: (p.location_state as string) ?? "",
-      location_highlight: (p.location_highlight as string) ?? "",
-      location_heading: (p.location_heading as string) ?? "",
-      map_embed_query: (p.map_embed_query as string) ?? "",
+      project_type: (PROJECT_TYPES as readonly string[]).includes(p.project_type as string)
+        ? (p.project_type as ProjectType)
+        : "new_build",
+      year_completed: p.year_completed != null ? String(p.year_completed) : "",
+      client_brief: (p.client_brief as string) ?? "",
+      story: (p.story as string) ?? "",
       sort_order: (p.sort_order as number) ?? 0,
       published: (p.published as boolean) ?? false,
       specs: asArray<SpecItem>(p.specs),
       features: asArray<string>(p.features),
-      location_features: asArray<string>(p.location_features),
     });
     setImages(
       data.images.map((img) => ({
