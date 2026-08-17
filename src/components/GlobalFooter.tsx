@@ -18,9 +18,8 @@ const GlobalFooter = () => {
     if (location.pathname === "/") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
+      // ScrollToTop component handles scrolling to top on route change
       navigate("/");
-      // scroll to top after navigation lands on home
-      setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 0);
     }
   };
 
