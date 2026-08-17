@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 /** Neutral placeholder until the client's photography arrives. */
 const PLACEHOLDER_HERO = "/placeholder.svg";
 
@@ -13,22 +11,13 @@ const PageHero = ({
   title: string;
   image?: string;
 }) => {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <section className="relative h-[55vh] min-h-[360px] flex items-center justify-center overflow-hidden bg-muted">
       <img
         src={image}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover will-change-transform"
-        style={{ transform: `translateY(${scrollY * 0.25}px)` }}
+        className="absolute inset-0 w-full h-full object-cover"
         decoding="async"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />

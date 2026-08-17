@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
@@ -13,14 +12,6 @@ import { container, sectionPadding } from "@/lib/rhythm";
 const heroImg = "/placeholder.svg";
 
 const Index = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
@@ -36,8 +27,7 @@ const Index = () => {
           src={heroImg}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover will-change-transform"
-          style={{ transform: `translateY(${scrollY * 0.3}px)` }}
+          className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
           decoding="async"
           loading="eager"
