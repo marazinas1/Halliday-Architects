@@ -81,17 +81,6 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
                   {l.label}
                 </NavLink>
               ))}
-              <Link
-                to="/contact"
-                className={`text-xs py-2.5 px-6 font-medium tracking-wider uppercase transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${
-                  onLight
-                    ? "bg-ink text-paper"
-                    : "bg-paper/20 backdrop-blur-sm border border-paper/40 text-paper hover:bg-paper hover:text-ink"
-                }`}
-                style={{ borderRadius: "4px" }}
-              >
-                Start a Project
-              </Link>
             </div>
 
             {/* Mobile hamburger */}
@@ -121,16 +110,6 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
                   {l.label}
                 </Link>
               ))}
-              <Link
-                to="/contact"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-xs mt-2 w-fit py-2.5 px-6 font-medium tracking-wider uppercase transition-all duration-300 ${
-                  onLight ? "bg-ink text-paper" : "bg-paper text-ink"
-                }`}
-                style={{ borderRadius: "4px" }}
-              >
-                Start a Project
-              </Link>
             </div>
           </div>
         </nav>

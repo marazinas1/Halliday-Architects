@@ -108,7 +108,7 @@ export const ContactForm = () => {
         <textarea id="hl-message" rows={6} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="input-elegant resize-none" placeholder="Tell us about your project…" />
       </div>
       <button type="submit" disabled={submitting} className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed">
-        {submitting ? "Sending…" : "Request a Consultation"}
+        {submitting ? "Sending…" : "Send message"}
       </button>
     </form>
   );
@@ -121,7 +121,7 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
         <Reveal>
           <div className="text-center mb-16">
             <p className="label-uppercase mb-4">Get In Touch</p>
-            <h2 className="heading-section text-ink mb-6">Request a Consultation</h2>
+            <h2 className="heading-section text-ink mb-6">Contact</h2>
             <div className="divider mx-auto mb-6" />
             <p className="text-body max-w-2xl mx-auto">
               Tell us about your project and one of our partners will be in touch shortly.
