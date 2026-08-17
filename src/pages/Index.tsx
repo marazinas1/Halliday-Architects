@@ -4,6 +4,8 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import Reveal from "@/components/Reveal";
 import SelectedWork from "@/components/sections/SelectedWork";
+import ServicesPreview from "@/components/sections/ServicesPreview";
+import StudioPreview from "@/components/sections/StudioPreview";
 import { container, sectionPadding } from "@/lib/rhythm";
 
 /*
@@ -44,30 +46,39 @@ const Index = () => {
 
       {/* ─── Introduction — placeholder, awaiting the client's own words ─── */}
       <section className={sectionPadding.base}>
-        <div className={container.content}>
-          <Reveal>
-            <p className="font-serif font-light text-2xl md:text-3xl leading-snug text-ink">
-              Halliday Architects is a residential architecture practice based in
-              Ocean City, New Jersey.
-            </p>
-            <p className="text-body mt-8 max-w-2xl">
-              The practice is led by Christopher and Shannon Halliday, both
-              registered architects and LEED accredited professionals, working
-              with homeowners along the New Jersey shore.
-            </p>
-            <Link
-              to="/about"
-              className="mt-10 inline-block label-uppercase text-ink hover:text-brand"
-            >
-              About the practice
-            </Link>
-          </Reveal>
+        <div className={container.wide}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
+            <p className="label-uppercase lg:col-span-3 lg:pt-4">The practice</p>
+            <div className="lg:col-span-9">
+              <Reveal>
+                <p className="font-serif font-light text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-ink max-w-3xl">
+                  Halliday Architects is a residential architecture practice based in
+                  Ocean City, New Jersey.
+                </p>
+                <p className="text-body mt-10 max-w-xl">
+                  The practice is led by Christopher and Shannon Halliday, both
+                  registered architects and LEED accredited professionals, working
+                  with homeowners along the New Jersey shore.
+                </p>
+                <Link
+                  to="/about"
+                  className="mt-10 inline-block label-uppercase text-ink link-underline"
+                >
+                  About the practice
+                </Link>
+              </Reveal>
+            </div>
+          </div>
         </div>
       </section>
 
       <div className="w-full h-px bg-border" />
 
       <SelectedWork />
+
+      <ServicesPreview />
+
+      <StudioPreview />
 
       {/* ─── Practice statement — placeholder, awaiting the client's own words ─── */}
       <section className={`${sectionPadding.loose} bg-ink`}>
@@ -82,23 +93,28 @@ const Index = () => {
       </section>
 
       {/* ─── Closing ─── */}
-      <section className={sectionPadding.base}>
-        <div className={container.content}>
-          <Reveal>
-            <h2 className="heading-section text-ink">Get in touch</h2>
-            <p className="text-body mt-6 max-w-xl">
-              We are glad to hear about projects along the shore. Call the studio
-              or send a note and we will reply personally.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-8">
-              <Link to="/contact" className="label-uppercase text-ink hover:text-brand">
-                Contact
-              </Link>
-              <a href="tel:6099576789" className="label-uppercase text-ink hover:text-brand">
-                609.957.6789
-              </a>
+      <section className={`${sectionPadding.base} section-sand`}>
+        <div className={container.wide}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
+            <p className="label-uppercase lg:col-span-3 lg:pt-4">Contact</p>
+            <div className="lg:col-span-9">
+              <Reveal>
+                <h2 className="heading-display text-ink">Get in touch</h2>
+                <p className="text-body mt-8 max-w-xl">
+                  We are glad to hear about projects along the shore. Call the studio
+                  or send a note and we will reply personally.
+                </p>
+                <div className="mt-10 flex flex-wrap items-center gap-10">
+                  <Link to="/contact" className="label-uppercase text-ink link-underline">
+                    Contact
+                  </Link>
+                  <a href="tel:6099576789" className="label-uppercase text-ink link-underline">
+                    609.957.6789
+                  </a>
+                </div>
+              </Reveal>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
