@@ -3,49 +3,13 @@ import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "@/components/Reveal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { container, sectionPadding } from "@/lib/rhythm";
+import { SERVICES } from "@/content/firm";
 
-export const services = [
-  {
-    title: "Custom Homes",
-    description:
-      "Bespoke residences built on your lot — from primary residences to vacation retreats — designed and executed with four decades of craftsmanship.",
-    icon: (
-      <svg className="w-8 h-8 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9-9 9 9M5 10v10h14V10" />
-      </svg>
-    ),
-  },
-  {
-    title: "Developments",
-    description:
-      "Multi-home and multi-family developments delivered on time and on budget, with a steady hand from acquisition through final inspection.",
-    icon: (
-      <svg className="w-8 h-8 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 21V9l6-4 6 4v12M9 21V13h6v8M15 21V11l6 4v6" />
-      </svg>
-    ),
-  },
-  {
-    title: "Joint Ventures",
-    description:
-      "Trusted partnerships with landowners, investors, and architects to bring ambitious coastal projects to life — from concept through completion.",
-    icon: (
-      <svg className="w-8 h-8 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6 5.87v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2m8-12a4 4 0 11-8 0 4 4 0 018 0zm6 4a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
-  {
-    title: "Renovations",
-    description:
-      "Thoughtful renovations and additions that respect the character of your home while elevating its quality, comfort, and long-term value.",
-    icon: (
-      <svg className="w-8 h-8 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.5-9.5a2.121 2.121 0 113 3L12 18l-4 1 1-4 9.5-9.5z" />
-      </svg>
-    ),
-  },
-];
+/**
+ * Services come from src/content/firm.ts (placeholder copy awaiting the
+ * client's own words). This file only supplies presentation.
+ */
+export const services = SERVICES;
 
 const MobileCarousel = ({ children, itemCount }: { children: React.ReactNode[]; itemCount: number }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", dragFree: false });
