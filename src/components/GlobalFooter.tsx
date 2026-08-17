@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/halliday-logo.png";
 import { FIRM } from "@/content/firm";
+import { container } from "@/lib/rhythm";
 
 const FOOTER_LINKS = [
   { label: "About", to: "/about" },
@@ -25,7 +26,7 @@ const GlobalFooter = () => {
 
   return (
     <footer className="bg-charcoal text-paper py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+      <div className={container.wide}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div>
             <button

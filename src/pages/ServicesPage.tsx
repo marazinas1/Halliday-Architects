@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import ServicesSection from "@/components/sections/ServicesSection";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 const ServicesPage = () => (
   <main className="min-h-screen bg-background">
@@ -18,8 +19,8 @@ const ServicesPage = () => (
 
     <ServicesSection heading="How We Build" />
 
-    <section className="section-padding">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-3xl text-center">
+    <section className={`${sectionPadding.base}`}>
+      <div className={`${container.narrow} text-center`}>
         <Reveal>
           <h2 className="heading-section text-charcoal mb-6">Start Your Project</h2>
           <div className="divider mx-auto mb-8" />

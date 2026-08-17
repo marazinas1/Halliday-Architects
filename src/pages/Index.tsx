@@ -7,6 +7,7 @@ import Reveal from "@/components/Reveal";
 import AboutSection from "@/components/sections/AboutSection";
 import { ServicesGrid } from "@/components/sections/ServicesSection";
 import { PortfolioGrid } from "@/components/sections/PortfolioSection";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 /** Neutral placeholder until the client's photography arrives. */
 const heroImg = "/placeholder.svg";
@@ -70,8 +71,8 @@ const Index = () => {
       <div className="w-full h-px bg-border" />
 
       {/* ─── Services preview ─── */}
-      <section className="section-padding section-sand">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+      <section className={`${sectionPadding.base} section-sand`}>
+        <div className={container.wide}>
           <Reveal>
             <div className="text-center mb-16">
               <p className="label-uppercase mb-4">What We Do</p>
@@ -95,8 +96,8 @@ Custom homes, renovations and additions, multi-family and mixed use, and
       <div className="w-full h-px bg-border" />
 
       {/* ─── Featured projects preview ─── */}
-      <section className="section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+      <section className={`${sectionPadding.base}`}>
+        <div className={container.wide}>
           <Reveal>
             <div className="text-center mb-16">
               <p className="label-uppercase mb-4">Featured Work</p>
@@ -119,8 +120,8 @@ Custom homes, renovations and additions, multi-family and mixed use, and
       <div className="w-full h-px bg-border" />
 
       {/* ─── Contact CTA ─── */}
-      <section className="section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-3xl text-center">
+      <section className={`${sectionPadding.base}`}>
+        <div className={`${container.narrow} text-center`}>
           <Reveal>
             <p className="label-uppercase mb-4">Get In Touch</p>
             <h2 className="heading-section text-charcoal mb-6">Let's Design Something Lasting</h2>

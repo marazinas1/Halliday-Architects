@@ -3,6 +3,7 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import { usePublicProject } from "@/hooks/usePublicProjects";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 /**
  * Public project detail page — a simple showcase (hero, story, features,
@@ -69,8 +70,8 @@ const ProjectPage = () => {
       </section>
 
       {project.description && (
-        <section className="section-padding">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-3xl">
+        <section className={`${sectionPadding.base}`}>
+          <div className={container.narrow}>
             {project.headline && (
               <h2 className="heading-section text-charcoal mb-6">{project.headline}</h2>
             )}
@@ -80,8 +81,8 @@ const ProjectPage = () => {
       )}
 
       {features.length > 0 && (
-        <section className="section-padding section-sand">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-4xl">
+        <section className={`${sectionPadding.base} section-sand`}>
+          <div className={container.content}>
             <h2 className="heading-section text-charcoal mb-8">Features</h2>
             <ul className="grid sm:grid-cols-2 gap-3">
               {features.map((f) => (
@@ -95,8 +96,8 @@ const ProjectPage = () => {
       )}
 
       {gallery.length > 0 && (
-        <section className="section-padding">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+        <section className={`${sectionPadding.base}`}>
+          <div className={container.wide}>
             <h2 className="heading-section text-charcoal mb-8">Gallery</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {gallery.map((img) => (

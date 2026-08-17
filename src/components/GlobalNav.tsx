@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "@/assets/halliday-logo.png";
+import { container } from "@/lib/rhythm";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -45,7 +46,7 @@ const GlobalNav = () => {
           isScrolled ? "glass-nav shadow-sm" : "bg-transparent"
         }`}
       >
-        <nav className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+        <nav className={container.wide}>
           <div className="flex items-center justify-between h-16 md:h-20">
             <Link
               to="/"

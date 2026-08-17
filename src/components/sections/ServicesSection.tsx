@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "@/components/Reveal";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 export const services = [
   {
@@ -125,8 +126,8 @@ export const ServicesGrid = () => {
 };
 
 const ServicesSection = ({ heading = "Services" }: { heading?: string }) => (
-  <section className="section-padding section-sand">
-    <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+  <section className={`${sectionPadding.base} section-sand`}>
+    <div className={container.wide}>
       <Reveal>
         <div className="text-center mb-16">
           <p className="label-uppercase mb-4">What We Do</p>

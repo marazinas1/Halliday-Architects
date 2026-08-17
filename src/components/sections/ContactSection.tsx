@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Reveal from "@/components/Reveal";
 import { supabase } from "@/integrations/supabase/client";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 const formatPhone = (raw: string) => {
   const digits = raw.replace(/\D/g, "").slice(0, 10);
@@ -114,8 +115,8 @@ export const ContactForm = () => {
 };
 
 const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
-  <section className="section-padding section-sand">
-    <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+  <section className={`${sectionPadding.base} section-sand`}>
+    <div className={container.wide}>
       {withHeading && (
         <Reveal>
           <div className="text-center mb-16">
