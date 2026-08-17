@@ -3,6 +3,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import ContactSection from "@/components/sections/ContactSection";
+import ContactMap from "@/components/ContactMap";
 
 const ContactPage = () => (
   <main className="min-h-screen bg-background">
@@ -15,6 +16,9 @@ const ContactPage = () => (
     <PageHero eyebrow="Get In Touch" title="Request a Consultation" />
 
     <ContactSection withHeading={false} />
+
+    {/* Full-width map band below the contact details. */}
+    <ContactMap />
 
     <GlobalFooter />
   </main>
