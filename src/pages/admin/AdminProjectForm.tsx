@@ -48,6 +48,15 @@ type ImageRow = {
   sort_order: number;
 };
 
+const PROJECT_TYPES = ["new_build", "renovation", "interior", "addition"] as const;
+type ProjectType = (typeof PROJECT_TYPES)[number];
+const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
+  new_build: "New build",
+  renovation: "Renovation",
+  interior: "Interior",
+  addition: "Addition",
+};
+
 type FormState = {
   slug: string;
   title: string;
