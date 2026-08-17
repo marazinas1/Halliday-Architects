@@ -46,7 +46,7 @@ const Index = () => {
           </p>
           <Link
             to="/contact"
-            className="mt-10 inline-flex items-center gap-2 px-8 py-3 text-xs font-medium tracking-wider uppercase bg-paper/15 backdrop-blur-sm border border-paper/30 text-paper hover:bg-paper hover:text-charcoal transition-all duration-300 hover:-translate-y-0.5"
+            className="mt-10 inline-flex items-center gap-2 px-8 py-3 text-xs font-medium tracking-wider uppercase bg-paper/15 backdrop-blur-sm border border-paper/30 text-paper hover:bg-paper hover:text-ink transition-all duration-300 hover:-translate-y-0.5"
             style={{ borderRadius: "4px" }}
           >
             Start Your Project
@@ -66,7 +66,7 @@ const Index = () => {
           <Reveal>
             <div className="text-center mb-16">
               <p className="label-uppercase mb-4">What We Do</p>
-              <h2 className="heading-section text-charcoal mb-6">Services</h2>
+              <h2 className="heading-section text-ink mb-6">Services</h2>
               <div className="divider mx-auto mb-6" />
               <p className="text-body max-w-2xl mx-auto">
 Custom homes, renovations and additions, multi-family and mixed use, and
@@ -91,7 +91,7 @@ Custom homes, renovations and additions, multi-family and mixed use, and
           <Reveal>
             <div className="text-center mb-16">
               <p className="label-uppercase mb-4">Featured Work</p>
-              <h2 className="heading-section text-charcoal mb-6">Portfolio</h2>
+              <h2 className="heading-section text-ink mb-6">Portfolio</h2>
               <div className="divider mx-auto mb-6" />
               <p className="text-body max-w-2xl mx-auto">
                 A selection of completed projects across the Ocean City, NJ area.
@@ -114,7 +114,7 @@ Custom homes, renovations and additions, multi-family and mixed use, and
         <div className={`${container.narrow} text-center`}>
           <Reveal>
             <p className="label-uppercase mb-4">Get In Touch</p>
-            <h2 className="heading-section text-charcoal mb-6">Let's Design Something Lasting</h2>
+            <h2 className="heading-section text-ink mb-6">Let's Design Something Lasting</h2>
             <div className="divider mx-auto mb-8" />
             <p className="text-body mb-10">
               Tell us about your project and one of our principals will be in touch shortly.

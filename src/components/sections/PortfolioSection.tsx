@@ -34,7 +34,7 @@ const CardInner = ({ p }: { p: PortfolioItem }) => (
         decoding="async"
       />
     </div>
-    <h3 className="heading-card text-charcoal text-lg mb-2">{p.title}</h3>
+    <h3 className="heading-card text-ink text-lg mb-2">{p.title}</h3>
     <p className="text-body text-sm">{p.description}</p>
   </>
 );

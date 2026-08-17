@@ -25,7 +25,7 @@ const GlobalFooter = () => {
   };
 
   return (
-    <footer className="bg-charcoal text-paper py-16">
+    <footer className="bg-ink text-paper py-16">
       <div className={container.wide}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div>

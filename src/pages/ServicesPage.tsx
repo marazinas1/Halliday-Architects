@@ -22,7 +22,7 @@ const ServicesPage = () => (
     <section className={`${sectionPadding.base}`}>
       <div className={`${container.narrow} text-center`}>
         <Reveal>
-          <h2 className="heading-section text-charcoal mb-6">Start Your Project</h2>
+          <h2 className="heading-section text-ink mb-6">Start Your Project</h2>
           <div className="divider mx-auto mb-8" />
           <p className="text-body mb-10">
             Tell us about your site, your timeline, and your vision — we'll take it from there.
