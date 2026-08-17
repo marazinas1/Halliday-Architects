@@ -403,18 +403,10 @@ function AdminProjectFormInner() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">General area (no exact address)</CardTitle>
+          <CardTitle className="text-base">Location &amp; classification</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label>Area</Label>
-              <Input
-                value={form.location_neighborhood}
-                onChange={(e) => set("location_neighborhood", e.target.value)}
-                placeholder="North End"
-              />
-            </div>
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>City</Label>
               <Input
@@ -432,33 +424,54 @@ function AdminProjectFormInner() {
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Location heading</Label>
-              <Input
-                value={form.location_heading}
-                onChange={(e) => set("location_heading", e.target.value)}
-              />
+              <Label>Project type</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={form.project_type}
+                onChange={(e) => set("project_type", e.target.value as ProjectType)}
+              >
+                {PROJECT_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {PROJECT_TYPE_LABELS[t]}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="space-y-2">
-              <Label>Map embed query</Label>
+              <Label>Year completed (optional)</Label>
               <Input
-                value={form.map_embed_query}
-                onChange={(e) => set("map_embed_query", e.target.value)}
+                type="number"
+                inputMode="numeric"
+                placeholder="2024"
+                value={form.year_completed}
+                onChange={(e) => set("year_completed", e.target.value)}
               />
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Narrative</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label>Location highlight</Label>
-            <Input
-              value={form.location_highlight}
-              onChange={(e) => set("location_highlight", e.target.value)}
+            <Label>Client brief (optional)</Label>
+            <Textarea
+              rows={4}
+              placeholder="The design problem this project solved."
+              value={form.client_brief}
+              onChange={(e) => set("client_brief", e.target.value)}
             />
           </div>
           <div className="space-y-2">
-            <Label>Location features</Label>
-            <StringListEditor
-              value={form.location_features}
-              onChange={(v) => set("location_features", v)}
-              placeholder="Steps from the beach"
+            <Label>Story (optional)</Label>
+            <Textarea
+              rows={10}
+              placeholder="Long-form narrative about the project."
+              value={form.story}
+              onChange={(e) => set("story", e.target.value)}
             />
           </div>
         </CardContent>
