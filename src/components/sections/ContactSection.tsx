@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import Reveal from "@/components/Reveal";
-import ContactMap from "@/components/ContactMap";
 import { supabase } from "@/integrations/supabase/client";
 import { container, sectionPadding } from "@/lib/rhythm";
 
