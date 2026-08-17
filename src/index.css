@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary Palette - Coastal Modern */
+    --background: 0 0% 100%;
+    --background-sand: 45 20% 97%;
+    --foreground: 0 0% 10%;
+    
+    /* Text Colors */
+    --charcoal: 0 0% 10%;
+    --slate: 215 15% 35%;
+    --muted-slate: 215 10% 55%;
+    
+    /* Card & Surface */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    
+    /* Brand Colors */
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 45 20% 97%;
+    --secondary-foreground: 0 0% 10%;
+    
+    --muted: 45 15% 95%;
+    --muted-foreground: 215 10% 45%;
+    
+    --accent: 45 30% 94%;
+    --accent-foreground: 0 0% 10%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders */
+    --border: 220 10% 90%;
+    --border-subtle: 220 10% 94%;
+    --input: 220 10% 90%;
+    --ring: 0 0% 10%;
+    
+    --radius: 0.25rem;
+    
+    /* Glass Effect */
+    --glass-bg: 0 0% 100% / 0.85;
+    --glass-border: 0 0% 100% / 0.2;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.03);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.05), 0 2px 4px -2px hsl(0 0% 0% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.08), 0 4px 6px -4px hsl(0 0% 0% / 0.05);
+    --shadow-elegant: 0 25px 50px -12px hsl(0 0% 0% / 0.15);
+  }
+
+  .dark {
+    --background: 0 0% 5%;
+    --background-sand: 0 0% 8%;
+    --foreground: 0 0% 95%;
+    --charcoal: 0 0% 95%;
+    --slate: 215 10% 70%;
+    --muted-slate: 215 10% 55%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 95%;
+    --primary-foreground: 0 0% 10%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 215 10% 55%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 95%;
+    --border: 0 0% 18%;
+    --border-subtle: 0 0% 15%;
+    --input: 0 0% 18%;
+    --ring: 0 0% 80%;
+    --glass-bg: 0 0% 10% / 0.85;
+    --glass-border: 0 0% 100% / 0.1;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    @apply font-normal tracking-tight;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Navigation */
+  .glass-nav {
+    @apply backdrop-blur-xl border-b;
+    background: hsl(var(--glass-bg));
+    border-color: hsl(var(--glass-border));
+  }
+  
+  /* Elegant Button Styles */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase;
+    @apply bg-charcoal text-white rounded;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-charcoal/90 hover:shadow-md hover:-translate-y-0.5;
+    letter-spacing: 0.15em;
+    border-radius: 4px;
+  }
+  
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase;
+    @apply border border-charcoal text-charcoal bg-transparent;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-charcoal hover:text-white hover:shadow-md hover:-translate-y-0.5;
+    letter-spacing: 0.15em;
+    border-radius: 4px;
+  }
+  
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium;
+    @apply text-slate bg-transparent;
+    @apply transition-all duration-200;
+    @apply hover:text-charcoal hover:opacity-80;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+  }
+  
+  /* Section styling */
+  .section-padding {
+    @apply py-20 md:py-32;
+  }
+  
+  .section-sand {
+    background-color: hsl(var(--background-sand));
+  }
+  
+  /* Typography */
+  .heading-display {
+    @apply text-4xl md:text-5xl lg:text-6xl font-normal;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.1;
+  }
+  
+  .heading-section {
+    @apply text-3xl md:text-4xl font-normal;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.2;
+  }
+  
+  .heading-card {
+    @apply text-xl md:text-2xl font-normal;
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .text-body {
+    @apply text-base leading-relaxed;
+    color: hsl(var(--slate));
+  }
+  
+  .text-small {
+    @apply text-sm;
+    color: hsl(var(--muted-slate));
+  }
+  
+  .label-uppercase {
+    @apply text-xs font-medium uppercase tracking-widest;
+    color: hsl(var(--muted-slate));
+    letter-spacing: 0.2em;
+  }
+  
+  /* Divider */
+  .divider {
+    @apply w-16 h-px bg-border;
+  }
+  
+  /* Image overlay gradient */
+  .hero-overlay {
+    background: linear-gradient(
+      to right,
+      hsl(0 0% 0% / 0.5) 0%,
+      hsl(0 0% 0% / 0.3) 50%,
+      hsl(0 0% 0% / 0.1) 100%
+    );
+  }
+  
+  /* Form inputs */
+  .input-elegant {
+    @apply w-full px-4 py-3 text-sm;
+    @apply bg-transparent border border-border;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-charcoal focus:ring-1 focus:ring-charcoal/20;
+    @apply placeholder:text-muted-slate/60;
+    border-radius: 4px;
+  }
+  
+  /* Cards */
+  .card-elegant {
+    @apply bg-white border border-border-subtle;
+    @apply transition-all duration-300;
+    @apply hover:border-border hover:shadow-sm hover:-translate-y-0.5;
+    border-radius: 4px;
+  }
+  
+  /* Lightbox overlay */
+  .lightbox-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+    background: hsl(0 0% 0% / 0.95);
+  }
+  
+  /* Hide platform branding for white-label appearance */
+  [data-lovable-badge],
+  [class*="lovable-badge"],
+  a[href*="lovable.dev"]:not([href*="docs.lovable.dev"]),
+  div[class*="lovable"],
+  #lovable-badge,
+  .lovable-badge {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+
+  .animate-ken-burns {
+    animation: kenBurns 25s ease-in-out infinite alternate;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes kenBurns {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    100% {
+      transform: scale(1.08) translate(-1%, -1%);
+    }
+  }
+}

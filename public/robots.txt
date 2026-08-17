@@ -1,0 +1,11 @@
+# TODO: DEMO WINDOW — BLOCK ALL CRAWLERS
+# This file is intentionally restrictive while the site is on a
+# temporary preview domain. Before the public go-live on
+# hallidayleonardinc.com, replace the contents below with:
+#   User-agent: *
+#   Allow: /
+#   Disallow: /admin
+#   Sitemap: https://www.hallidayleonardinc.com/sitemap.xml
+
+User-agent: *
+Disallow: /

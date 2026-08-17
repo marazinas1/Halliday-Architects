@@ -1,0 +1,19 @@
+# Halliday-Leonard General Contractors
+
+> Custom home builder and general contractor in Ocean City, New Jersey.
+> Halliday-Leonard has been building custom homes, developments, and joint
+> ventures in the Ocean City, NJ area for more than 40 years. The site is a
+> portfolio of completed work — it is not a real estate listings platform and
+> does not publish prices or MLS data.
+
+## Pages
+- [Home](/): Overview of the firm, services, and featured projects.
+- [About](/about): Firm history and building standard.
+- [Our Team](/team): The four partners.
+- [Services](/services): Custom homes, developments, joint ventures, renovations.
+- [Projects](/projects): Portfolio of completed building projects.
+- [Testimonials](/testimonials): Client feedback.
+- [Contact](/contact): Inquiry form, phone, email, and office address.
+
+## Contact
+700 Haven Avenue, Ocean City, NJ 08226 · 609.398.5737 · Info@HallidayLeonardInc.com
