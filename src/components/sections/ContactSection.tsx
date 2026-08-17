@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import Reveal from "@/components/Reveal";
+import ContactMap from "@/components/ContactMap";
 import { supabase } from "@/integrations/supabase/client";
 import { container, sectionPadding } from "@/lib/rhythm";
 
@@ -152,18 +153,6 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
               </div>
             </div>
 
-            <div className="mt-10 aspect-[4/3] w-full overflow-hidden" style={{ borderRadius: "4px", filter: "grayscale(100%) contrast(1.1)" }}>
-              <iframe
-                title="Halliday Architects office"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3072.0!2d-74.575!3d39.2776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c0e54b1d4b0001%3A0x1!2s728+West+Ave%2C+Ocean+City%2C+NJ+08226!5e0!3m2!1sen!2sus!4v1700000000000"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
           </div>
         </Reveal>
 
