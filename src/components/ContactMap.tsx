@@ -3,7 +3,7 @@ import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 /** Studio location — 728 West Avenue, Ocean City, NJ 08226. */
-const CENTER: [number, number] = [-74.5793, 39.2712];
+const CENTER: [number, number] = [-74.5747193, 39.2813037];
 
 /**
  * Muted CARTO Positron basemap. No API key, no Google Maps.
