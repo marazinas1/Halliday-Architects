@@ -32,7 +32,7 @@ const Index = () => {
           <div className="max-w-3xl animate-fade-in-up">
             <h1 className="heading-display text-ink">
               Residential architecture
-              <br />
+              <br className="hidden md:block" />{" "}
               in Ocean City, New Jersey
             </h1>
             <p className="text-body mt-8 max-w-xl">
