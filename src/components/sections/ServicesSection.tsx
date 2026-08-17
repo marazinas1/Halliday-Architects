@@ -56,10 +56,12 @@ const MobileCarousel = ({ children, itemCount }: { children: React.ReactNode[]; 
   );
 };
 
-const ServiceCard = ({ s }: { s: (typeof services)[0] }) => (
-  <div className="card-elegant p-8 h-full text-center">
-    <h3 className="heading-card text-ink mb-4">{s.title}</h3>
-    <div className="w-8 h-px bg-ink/30 mx-auto mb-4" />
+const ServiceCard = ({ s, index }: { s: (typeof services)[0]; index: number }) => (
+  <div className="h-full border-t border-line pt-8">
+    <span className="numeral block text-5xl md:text-6xl lg:text-7xl mb-6">
+      {String(index + 1).padStart(2, "0")}
+    </span>
+    <h3 className="heading-card text-ink text-lg mb-3">{s.title}</h3>
     <p className="text-body text-sm leading-relaxed">{s.description}</p>
   </div>
 );
@@ -70,8 +72,8 @@ export const ServicesGrid = () => {
     return (
       <Reveal>
         <MobileCarousel itemCount={services.length}>
-          {services.map((s) => (
-            <ServiceCard key={s.title} s={s} />
+          {services.map((s, i) => (
+            <ServiceCard key={s.title} s={s} index={i} />
           ))}
         </MobileCarousel>
       </Reveal>
@@ -79,9 +81,9 @@ export const ServicesGrid = () => {
   }
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-      {services.map((s) => (
+      {services.map((s, i) => (
         <Reveal key={s.title}>
-          <ServiceCard s={s} />
+          <ServiceCard s={s} index={i} />
         </Reveal>
       ))}
     </div>
@@ -92,15 +94,16 @@ const ServicesSection = ({ heading = "Services" }: { heading?: string }) => (
   <section className={`${sectionPadding.base} section-sand`}>
     <div className={container.wide}>
       <Reveal>
-        <div className="text-center mb-16">
-          <p className="label-uppercase mb-4">What We Do</p>
-          <h2 className="heading-section text-ink mb-6">{heading}</h2>
-          <div className="divider mx-auto mb-6" />
-          {/* PLACEHOLDER COPY — awaiting the client's own words. */}
-          <p className="text-body max-w-2xl mx-auto">
-            An architecture practice in Ocean City, New Jersey, working on residential projects
-            along the shore.
-          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20 mb-14 lg:mb-20">
+          <p className="label-uppercase lg:col-span-3 lg:pt-4">What We Do</p>
+          <div className="lg:col-span-9">
+            <h2 className="heading-display text-ink mb-6">{heading}</h2>
+            {/* PLACEHOLDER COPY — awaiting the client's own words. */}
+            <p className="text-body max-w-xl">
+              An architecture practice in Ocean City, New Jersey, working on residential projects
+              along the shore.
+            </p>
+          </div>
         </div>
       </Reveal>
       <ServicesGrid />
