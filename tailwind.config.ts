@@ -52,9 +52,6 @@ export default {
         background: "hsl(var(--background))",
         "background-sand": "hsl(var(--background-sand))",
         foreground: "hsl(var(--foreground))",
-        charcoal: "hsl(var(--charcoal))",
-        slate: "hsl(var(--slate))",
-        "muted-slate": "hsl(var(--muted-slate))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
