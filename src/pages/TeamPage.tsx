@@ -4,6 +4,7 @@ import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import { TeamGrid } from "@/components/sections/TeamSection";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 const TeamPage = () => (
   <main className="min-h-screen bg-background">
@@ -15,8 +16,8 @@ const TeamPage = () => (
     />
     <PageHero eyebrow="Our Team" title="The Studio" />
 
-    <section className="section-padding">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+    <section className={`${sectionPadding.base}`}>
+      <div className={container.wide}>
         <Reveal>
           <p className="text-body max-w-2xl mx-auto text-center mb-16">
             A small studio in Ocean City. Every project is led personally by a principal, from the

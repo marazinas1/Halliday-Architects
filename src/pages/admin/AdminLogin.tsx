@@ -70,7 +70,7 @@ const AdminLogin = () => {
             Halliday Architects
           </p>
           <h1 className="text-3xl md:text-4xl text-charcoal">Administrator Sign In</h1>
-          <div className="mt-6 mx-auto h-px w-12 bg-charcoal/20" />
+          <div className="mt-6 mx-auto h-px w-12 bg-ink/20" />
         </div>
 
         <form
@@ -122,7 +122,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-charcoal text-white rounded hover:bg-charcoal/90 transition disabled:opacity-60"
+            className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded hover:bg-ink/90 transition disabled:opacity-60"
           >
             {loading ? "Signing In…" : "Sign In"}
           </button>

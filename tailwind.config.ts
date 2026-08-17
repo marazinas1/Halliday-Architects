@@ -14,10 +14,37 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["'Playfair Display'", "Georgia", "serif"],
+        serif: ["'Newsreader'", "Georgia", "serif"],
         sans: ["'Inter'", "system-ui", "sans-serif"],
       },
+      fontWeight: {
+        light: "300",
+        normal: "400",
+        medium: "500",
+      },
+      fontSize: {
+        /* Display and headings — Newsreader, light, tight leading */
+        display: ["clamp(2.75rem, 6vw, 4.5rem)", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        h1: ["clamp(2.25rem, 4.5vw, 3.5rem)", { lineHeight: "1.12", letterSpacing: "-0.015em" }],
+        h2: ["clamp(1.875rem, 3.2vw, 2.75rem)", { lineHeight: "1.15", letterSpacing: "-0.01em" }],
+        h3: ["clamp(1.375rem, 2vw, 1.75rem)", { lineHeight: "1.2", letterSpacing: "-0.005em" }],
+        h4: ["1.125rem", { lineHeight: "1.25" }],
+        /* Body and UI — Inter, comfortable leading */
+        "body-lg": ["1.125rem", { lineHeight: "1.7" }],
+        "body-base": ["1rem", { lineHeight: "1.65" }],
+        "body-sm": ["0.875rem", { lineHeight: "1.6" }],
+        label: ["0.75rem", { lineHeight: "1.4", letterSpacing: "0.2em" }],
+      },
       colors: {
+        /* Core palette */
+        paper: "hsl(var(--paper))",
+        sand: "hsl(var(--sand))",
+        ink: "hsl(var(--ink))",
+        stone: "hsl(var(--stone))",
+        line: "hsl(var(--line))",
+        /* Brand red — links, active states and small markers only.
+           Never for large fills, buttons or backgrounds. */
+        brand: "hsl(var(--brand))",
         border: "hsl(var(--border))",
         "border-subtle": "hsl(var(--border-subtle))",
         input: "hsl(var(--input))",
@@ -67,6 +94,14 @@ export default {
         'md': 'var(--shadow-md)',
         'lg': 'var(--shadow-lg)',
         'elegant': 'var(--shadow-elegant)',
+      },
+      transitionTimingFunction: {
+        out: "cubic-bezier(0.16, 1, 0.3, 1)",
+      },
+      transitionDuration: {
+        "400": "400ms",
+        "500": "500ms",
+        "600": "600ms",
       },
       keyframes: {
         "accordion-down": {

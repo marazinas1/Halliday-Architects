@@ -5,6 +5,7 @@ import PageHero from "@/components/PageHero";
 import AboutSection from "@/components/sections/AboutSection";
 import { TeamGrid } from "@/components/sections/TeamSection";
 import Reveal from "@/components/Reveal";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 const AboutPage = () => (
   <main className="min-h-screen bg-background">
@@ -20,8 +21,8 @@ const AboutPage = () => (
 
     <div className="w-full h-px bg-border" />
 
-    <section className="section-padding section-sand">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+    <section className={`${sectionPadding.base} section-sand`}>
+      <div className={container.wide}>
         <Reveal>
           <div className="text-center mb-16">
             <p className="label-uppercase mb-4">Our Team</p>

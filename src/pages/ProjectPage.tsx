@@ -3,6 +3,7 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import { usePublicProject } from "@/hooks/usePublicProjects";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 /**
  * Public project detail page — a simple showcase (hero, story, features,
@@ -60,17 +61,17 @@ const ProjectPage = () => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-12 pb-16">
-          {location && <p className="label-uppercase text-white/70 mb-3">{location}</p>}
-          <h1 className="heading-display text-white">{project.title}</h1>
+          {location && <p className="label-uppercase text-paper/70 mb-3">{location}</p>}
+          <h1 className="heading-display text-paper">{project.title}</h1>
           {project.tagline && (
-            <p className="text-white/80 mt-4 max-w-2xl font-light">{project.tagline}</p>
+            <p className="text-paper/80 mt-4 max-w-2xl font-light">{project.tagline}</p>
           )}
         </div>
       </section>
 
       {project.description && (
-        <section className="section-padding">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-3xl">
+        <section className={`${sectionPadding.base}`}>
+          <div className={container.narrow}>
             {project.headline && (
               <h2 className="heading-section text-charcoal mb-6">{project.headline}</h2>
             )}
@@ -80,8 +81,8 @@ const ProjectPage = () => {
       )}
 
       {features.length > 0 && (
-        <section className="section-padding section-sand">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-4xl">
+        <section className={`${sectionPadding.base} section-sand`}>
+          <div className={container.content}>
             <h2 className="heading-section text-charcoal mb-8">Features</h2>
             <ul className="grid sm:grid-cols-2 gap-3">
               {features.map((f) => (
@@ -95,8 +96,8 @@ const ProjectPage = () => {
       )}
 
       {gallery.length > 0 && (
-        <section className="section-padding">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+        <section className={`${sectionPadding.base}`}>
+          <div className={container.wide}>
             <h2 className="heading-section text-charcoal mb-8">Gallery</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {gallery.map((img) => (

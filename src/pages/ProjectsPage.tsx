@@ -4,6 +4,7 @@ import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import { PortfolioGrid } from "@/components/sections/PortfolioSection";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 /**
  * Featured Projects — one combined portfolio grid.
@@ -22,8 +23,8 @@ const ProjectsPage = () => {
       />
       <PageHero eyebrow="Featured Work" title="Portfolio" />
 
-      <section className="section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+      <section className={`${sectionPadding.base}`}>
+        <div className={container.wide}>
           <p className="text-body max-w-2xl mx-auto text-center mb-16">
             A selection of completed projects across the Ocean City, NJ area.
           </p>

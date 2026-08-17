@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 /** Neutral placeholder until the client's photography arrives. */
 const aboutImg = "/placeholder.svg";
 
 const AboutSection = () => (
-  <section className="section-padding">
-    <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
+  <section className={`${sectionPadding.base}`}>
+    <div className={container.wide}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <Reveal>
           <div className="relative overflow-hidden bg-muted" style={{ borderRadius: "4px" }}>

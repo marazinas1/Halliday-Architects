@@ -29,7 +29,7 @@ const CardInner = ({ p }: { p: PortfolioItem }) => (
       <img
         src={p.image}
         alt={p.title}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        className="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-90"
         loading="lazy"
         decoding="async"
       />
