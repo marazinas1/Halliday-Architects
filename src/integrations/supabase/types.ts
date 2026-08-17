@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      image_tags: {
+        Row: {
+          image_id: string
+          tag_id: string
+        }
+        Insert: {
+          image_id: string
+          tag_id: string
+        }
+        Update: {
+          image_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "image_tags_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "project_images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "image_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           created_at: string
@@ -88,81 +118,120 @@ export type Database = {
           },
         ]
       }
+      project_tags: {
+        Row: {
+          project_id: string
+          tag_id: string
+        }
+        Insert: {
+          project_id: string
+          tag_id: string
+        }
+        Update: {
+          project_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_tags_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
+          client_brief: string | null
           created_at: string
           description: string | null
           features: Json
           headline: string | null
           id: string
           location_city: string | null
-          location_features: Json
-          location_heading: string | null
-          location_highlight: string | null
-          location_neighborhood: string | null
           location_state: string | null
-          map_embed_query: string | null
+          project_type: string
           published: boolean
           slug: string
           sort_order: number
           specs: Json
+          story: string | null
           tagline: string | null
           title: string
           updated_at: string
-          vision_caption_eyebrow: string | null
-          vision_caption_title: string | null
-          vision_floors: Json
-          vision_headline: string | null
+          year_completed: number | null
         }
         Insert: {
+          client_brief?: string | null
           created_at?: string
           description?: string | null
           features?: Json
           headline?: string | null
           id?: string
           location_city?: string | null
-          location_features?: Json
-          location_heading?: string | null
-          location_highlight?: string | null
-          location_neighborhood?: string | null
           location_state?: string | null
-          map_embed_query?: string | null
+          project_type?: string
           published?: boolean
           slug: string
           sort_order?: number
           specs?: Json
+          story?: string | null
           tagline?: string | null
           title: string
           updated_at?: string
-          vision_caption_eyebrow?: string | null
-          vision_caption_title?: string | null
-          vision_floors?: Json
-          vision_headline?: string | null
+          year_completed?: number | null
         }
         Update: {
+          client_brief?: string | null
           created_at?: string
           description?: string | null
           features?: Json
           headline?: string | null
           id?: string
           location_city?: string | null
-          location_features?: Json
-          location_heading?: string | null
-          location_highlight?: string | null
-          location_neighborhood?: string | null
           location_state?: string | null
-          map_embed_query?: string | null
+          project_type?: string
           published?: boolean
           slug?: string
           sort_order?: number
           specs?: Json
+          story?: string | null
           tagline?: string | null
           title?: string
           updated_at?: string
-          vision_caption_eyebrow?: string | null
-          vision_caption_title?: string | null
-          vision_floors?: Json
-          vision_headline?: string | null
+          year_completed?: number | null
+        }
+        Relationships: []
+      }
+      tags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
         }
         Relationships: []
       }
