@@ -10,17 +10,17 @@ export const TeamCard = ({ m }: { m: TeamMember }) => (
       style={{ borderRadius: "4px" }}
       aria-label={`Portrait placeholder for ${m.name}`}
     >
-      <span className="font-serif text-5xl text-charcoal/30">
+      <span className="font-serif text-5xl text-ink/30">
         {m.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
       </span>
     </div>
-    <h3 className="heading-card text-charcoal text-lg mb-1">{m.name}</h3>
+    <h3 className="heading-card text-ink text-lg mb-1">{m.name}</h3>
     <p className="label-uppercase text-xs mb-3">
       {m.credentials ? `${m.role} · ${m.credentials}` : m.role}
     </p>
     {m.bio && (
       <>
-        <div className="w-8 h-px bg-charcoal/20 mx-auto mb-3" />
+        <div className="w-8 h-px bg-ink/20 mx-auto mb-3" />
         <p className="text-body text-sm leading-relaxed">{m.bio}</p>
       </>
     )}

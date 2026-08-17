@@ -92,19 +92,19 @@ export const ContactForm = () => {
       />
 
       <div>
-        <label htmlFor="hl-name" className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2 block">Name</label>
+        <label htmlFor="hl-name" className="text-xs font-sans font-medium uppercase tracking-widest text-stone mb-2 block">Name</label>
         <input id="hl-name" type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="input-elegant" placeholder="Your full name" />
       </div>
       <div>
-        <label htmlFor="hl-email" className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2 block">Email</label>
+        <label htmlFor="hl-email" className="text-xs font-sans font-medium uppercase tracking-widest text-stone mb-2 block">Email</label>
         <input id="hl-email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="input-elegant" placeholder="your@email.com" />
       </div>
       <div>
-        <label htmlFor="hl-phone" className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2 block">Phone Number</label>
+        <label htmlFor="hl-phone" className="text-xs font-sans font-medium uppercase tracking-widest text-stone mb-2 block">Phone Number</label>
         <input id="hl-phone" type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })} className="input-elegant" placeholder="(555) 000-0000" />
       </div>
       <div>
-        <label htmlFor="hl-message" className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2 block">Message</label>
+        <label htmlFor="hl-message" className="text-xs font-sans font-medium uppercase tracking-widest text-stone mb-2 block">Message</label>
         <textarea id="hl-message" rows={6} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="input-elegant resize-none" placeholder="Tell us about your project…" />
       </div>
       <button type="submit" disabled={submitting} className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed">
@@ -121,7 +121,7 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
         <Reveal>
           <div className="text-center mb-16">
             <p className="label-uppercase mb-4">Get In Touch</p>
-            <h2 className="heading-section text-charcoal mb-6">Request a Consultation</h2>
+            <h2 className="heading-section text-ink mb-6">Request a Consultation</h2>
             <div className="divider mx-auto mb-6" />
             <p className="text-body max-w-2xl mx-auto">
               Tell us about your project and one of our partners will be in touch shortly.
@@ -133,20 +133,20 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
         <Reveal>
           <div>
-            <h3 className="heading-card text-charcoal mb-6">Halliday Architects</h3>
+            <h3 className="heading-card text-ink mb-6">Halliday Architects</h3>
             <div className="divider mb-8" />
             <div className="space-y-6">
               <div>
-                <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2">Address</h4>
+                <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-stone mb-2">Address</h4>
                 <p className="text-body">728 West Avenue, Suite A<br />Ocean City, NJ 08226</p>
               </div>
               <div>
-                <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2">Phone</h4>
-                <a href="tel:6099576789" className="text-body hover:text-charcoal transition-colors">609.957.6789</a>
+                <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-stone mb-2">Phone</h4>
+                <a href="tel:6099576789" className="text-body hover:text-ink transition-colors">609.957.6789</a>
               </div>
               <div>
-                <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-muted-slate mb-2">Email</h4>
-                <a href="mailto:chris@hallidayarchitects.com" className="text-body hover:text-charcoal transition-colors">
+                <h4 className="text-xs font-sans font-medium uppercase tracking-widest text-stone mb-2">Email</h4>
+                <a href="mailto:chris@hallidayarchitects.com" className="text-body hover:text-ink transition-colors">
                   chris@hallidayarchitects.com
                 </a>
               </div>

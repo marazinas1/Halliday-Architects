@@ -26,7 +26,7 @@ const AboutPage = () => (
         <Reveal>
           <div className="text-center mb-16">
             <p className="label-uppercase mb-4">Our Team</p>
-            <h2 className="heading-section text-charcoal mb-6">The Studio</h2>
+            <h2 className="heading-section text-ink mb-6">The Studio</h2>
             <div className="divider mx-auto mb-6" />
             <p className="text-body max-w-2xl mx-auto">
               Every project is led personally by a principal of the practice.

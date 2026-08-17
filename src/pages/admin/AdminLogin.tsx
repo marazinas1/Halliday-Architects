@@ -66,10 +66,10 @@ const AdminLogin = () => {
     <main className="min-h-screen bg-background-sand flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <p className="text-xs tracking-[0.3em] uppercase text-muted-slate mb-4">
+          <p className="text-xs tracking-[0.3em] uppercase text-stone mb-4">
             Halliday Architects
           </p>
-          <h1 className="text-3xl md:text-4xl text-charcoal">Administrator Sign In</h1>
+          <h1 className="text-3xl md:text-4xl text-ink">Administrator Sign In</h1>
           <div className="mt-6 mx-auto h-px w-12 bg-ink/20" />
         </div>
 
@@ -80,7 +80,7 @@ const AdminLogin = () => {
           <div className="space-y-2">
             <label
               htmlFor="email"
-              className="block text-xs tracking-[0.2em] uppercase text-slate"
+              className="block text-xs tracking-[0.2em] uppercase text-stone"
             >
               Email
             </label>
@@ -91,14 +91,14 @@ const AdminLogin = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-input rounded text-charcoal focus:outline-none focus:ring-1 focus:ring-charcoal transition"
+              className="w-full px-4 py-3 bg-background border border-input rounded text-ink focus:outline-none focus:ring-1 focus:ring-ink transition"
             />
           </div>
 
           <div className="space-y-2">
             <label
               htmlFor="password"
-              className="block text-xs tracking-[0.2em] uppercase text-slate"
+              className="block text-xs tracking-[0.2em] uppercase text-stone"
             >
               Password
             </label>
@@ -109,7 +109,7 @@ const AdminLogin = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-input rounded text-charcoal focus:outline-none focus:ring-1 focus:ring-charcoal transition"
+              className="w-full px-4 py-3 bg-background border border-input rounded text-ink focus:outline-none focus:ring-1 focus:ring-ink transition"
             />
           </div>
 
@@ -128,7 +128,7 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <p className="mt-8 text-center text-xs tracking-[0.15em] uppercase text-muted-slate">
+        <p className="mt-8 text-center text-xs tracking-[0.15em] uppercase text-stone">
           Authorized Personnel Only
         </p>
       </div>

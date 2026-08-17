@@ -28,7 +28,7 @@ const ProjectPage = () => {
       <main className="min-h-screen bg-background">
         <GlobalNav />
         <div className="py-40 text-center">
-          <h1 className="heading-section text-charcoal mb-4">Project not found</h1>
+          <h1 className="heading-section text-ink mb-4">Project not found</h1>
           <Link to="/projects" className="btn-outline text-xs inline-flex">
             Back to projects
           </Link>
@@ -73,7 +73,7 @@ const ProjectPage = () => {
         <section className={`${sectionPadding.base}`}>
           <div className={container.narrow}>
             {project.headline && (
-              <h2 className="heading-section text-charcoal mb-6">{project.headline}</h2>
+              <h2 className="heading-section text-ink mb-6">{project.headline}</h2>
             )}
             <p className="text-body whitespace-pre-line">{project.description}</p>
           </div>
@@ -83,7 +83,7 @@ const ProjectPage = () => {
       {features.length > 0 && (
         <section className={`${sectionPadding.base} section-sand`}>
           <div className={container.content}>
-            <h2 className="heading-section text-charcoal mb-8">Features</h2>
+            <h2 className="heading-section text-ink mb-8">Features</h2>
             <ul className="grid sm:grid-cols-2 gap-3">
               {features.map((f) => (
                 <li key={f} className="text-body text-sm">
@@ -98,7 +98,7 @@ const ProjectPage = () => {
       {gallery.length > 0 && (
         <section className={`${sectionPadding.base}`}>
           <div className={container.wide}>
-            <h2 className="heading-section text-charcoal mb-8">Gallery</h2>
+            <h2 className="heading-section text-ink mb-8">Gallery</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {gallery.map((img) => (
                 <img

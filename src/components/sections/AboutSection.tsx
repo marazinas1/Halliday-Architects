@@ -24,7 +24,7 @@ const AboutSection = () => (
         <Reveal>
           <div>
             <p className="label-uppercase mb-4">About Us</p>
-            <h2 className="heading-section text-charcoal mb-6">
+            <h2 className="heading-section text-ink mb-6">
               Architecture for the
               <br />
               Jersey Shore

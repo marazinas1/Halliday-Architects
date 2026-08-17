@@ -27,8 +27,8 @@ const GlobalNav = () => {
     `text-xs tracking-[0.12em] uppercase font-medium transition-all duration-300 ${
       isScrolled
         ? isActive
-          ? "text-charcoal"
-          : "text-slate hover:text-charcoal"
+          ? "text-ink"
+          : "text-stone hover:text-ink"
         : isActive
           ? "text-paper"
           : "text-paper/80 hover:text-paper"
@@ -76,8 +76,8 @@ const GlobalNav = () => {
                 to="/contact"
                 className={`text-xs py-2.5 px-6 font-medium tracking-wider uppercase transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${
                   isScrolled
-                    ? "bg-charcoal text-paper"
-                    : "bg-paper/20 backdrop-blur-sm border border-paper/40 text-paper hover:bg-paper hover:text-charcoal"
+                    ? "bg-ink text-paper"
+                    : "bg-paper/20 backdrop-blur-sm border border-paper/40 text-paper hover:bg-paper hover:text-ink"
                 }`}
                 style={{ borderRadius: "4px" }}
               >
@@ -92,22 +92,22 @@ const GlobalNav = () => {
               aria-label="Toggle menu"
             >
               <div className="w-6 h-5 relative flex flex-col justify-between">
-                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-charcoal" : "bg-paper"} ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-charcoal" : ""}`} />
-                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-charcoal" : "bg-paper"} ${isMobileMenuOpen ? "opacity-0" : ""}`} />
-                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-charcoal" : "bg-paper"} ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-charcoal" : ""}`} />
+                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-ink" : ""}`} />
+                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+                <span className={`w-full h-0.5 transition-all duration-300 ${isScrolled ? "bg-ink" : "bg-paper"} ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-ink" : ""}`} />
               </div>
             </button>
           </div>
 
           {/* Mobile menu */}
           <div className={`lg:hidden overflow-hidden transition-all duration-300 absolute top-full left-0 right-0 ${isMobileMenuOpen ? "max-h-[600px]" : "max-h-0"}`}>
-            <div className={`flex flex-col gap-5 px-6 pt-6 pb-8 ${isScrolled ? "bg-paper border-t border-border" : "bg-charcoal"}`}>
+            <div className={`flex flex-col gap-5 px-6 pt-6 pb-8 ${isScrolled ? "bg-paper border-t border-border" : "bg-ink"}`}>
               {NAV_LINKS.map((l) => (
                 <Link
                   key={l.to}
                   to={l.to}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-left text-sm tracking-wider uppercase transition-colors ${isScrolled ? "text-slate hover:text-charcoal" : "text-paper/90 hover:text-paper"}`}
+                  className={`text-left text-sm tracking-wider uppercase transition-colors ${isScrolled ? "text-stone hover:text-ink" : "text-paper/90 hover:text-paper"}`}
                 >
                   {l.label}
                 </Link>
@@ -116,7 +116,7 @@ const GlobalNav = () => {
                 to="/contact"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`text-xs mt-2 w-fit py-2.5 px-6 font-medium tracking-wider uppercase transition-all duration-300 ${
-                  isScrolled ? "bg-charcoal text-paper" : "bg-paper text-charcoal"
+                  isScrolled ? "bg-ink text-paper" : "bg-paper text-ink"
                 }`}
                 style={{ borderRadius: "4px" }}
               >

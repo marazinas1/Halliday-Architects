@@ -21,11 +21,6 @@
     --background-sand: var(--sand);
     --foreground: var(--ink);
 
-    /* Text */
-    --charcoal: var(--ink);
-    --slate: var(--stone);
-    --muted-slate: 43 4% 45%;
-
     --card: var(--paper);
     --card-foreground: var(--ink);
 
@@ -74,12 +69,12 @@
 
 
   .dark {
-    --background: var(--ink);
+    --background: 40 6% 10%;
     --background-sand: 40 6% 14%;
-    --foreground: var(--paper);
-    --charcoal: var(--paper);
-    --slate: 40 8% 72%;
-    --muted-slate: 40 6% 58%;
+    --foreground: 40 27% 98%;
+    --ink: 40 27% 98%;
+    --stone: 40 8% 72%;
+    --line: 40 6% 20%;
     --card: 40 6% 13%;
     --card-foreground: var(--paper);
     --popover: 40 6% 13%;
@@ -197,12 +192,12 @@
   
   .text-small {
     @apply text-sm;
-    color: hsl(var(--muted-slate));
+    color: hsl(var(--stone));
   }
   
   .label-uppercase {
     @apply text-xs font-medium uppercase tracking-widest;
-    color: hsl(var(--muted-slate));
+    color: hsl(var(--stone));
     letter-spacing: 0.2em;
   }
   
