@@ -12,7 +12,7 @@ const AboutPage = () => (
     <GlobalNav />
     <SEO
       title="About | Halliday Architects"
-      description="Halliday Architects is an architecture practice in Ocean City, New Jersey, designing custom homes, renovations, and multi-family projects."
+      description="Halliday Architects is an architecture practice in Ocean City, New Jersey, working on residential architecture along the shore."
       path="/about"
     />
     <PageHero eyebrow="Our Story" title="About Halliday Architects" />

@@ -12,23 +12,24 @@ const ServicesPage = () => (
     <GlobalNav />
     <SEO
       title="Services | Halliday Architects"
-      description="Custom homes, renovations, multi-family, and sustainable design from Halliday Architects in Ocean City, NJ."
+      description="Architectural consultation, design, code analysis, and permit coordination from Halliday Architects in Ocean City, NJ."
       path="/services"
     />
     <PageHero eyebrow="What We Do" title="Services" />
 
-    <ServicesSection heading="How We Build" />
+    <ServicesSection heading="Services" />
 
     <section className={`${sectionPadding.base}`}>
       <div className={`${container.narrow} text-center`}>
         <Reveal>
-          <h2 className="heading-section text-ink mb-6">Start Your Project</h2>
+          <h2 className="heading-section text-ink mb-6">Get in touch</h2>
           <div className="divider mx-auto mb-8" />
+          {/* PLACEHOLDER COPY — awaiting the client's own words. */}
           <p className="text-body mb-10">
-            Tell us about your site, your timeline, and your vision — we'll take it from there.
+            Tell us about your site and what you have in mind, and we will reply personally.
           </p>
           <Link to="/contact" className="btn-primary inline-flex">
-            Request a Consultation
+            Contact the studio
           </Link>
         </Reveal>
       </div>

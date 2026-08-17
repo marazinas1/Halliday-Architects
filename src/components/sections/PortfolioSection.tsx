@@ -1,84 +1,71 @@
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
-
-/** Neutral placeholder until the client's photography arrives. */
-const PLACEHOLDER = "/placeholder.svg";
-
-export type PortfolioItem = {
-  title: string;
-  image: string;
-  description: string;
-  /** Present when the project is managed in the admin panel. */
-  slug?: string;
-};
-
-/** Placeholder projects shown until the client's projects are added in the admin panel. */
-export const portfolio: PortfolioItem[] = [
-  { title: "Bayfront Retreat", image: PLACEHOLDER, description: "A modern coastal retreat overlooking the bay." },
-  { title: "Beachfront Custom", image: PLACEHOLDER, description: "A custom oceanfront residence built for everyday living." },
-  { title: "Haven Hideaway", image: PLACEHOLDER, description: "A timeless family home in the heart of Ocean City." },
-  { title: "Anchor Estate", image: PLACEHOLDER, description: "A multi-generational compound on a quiet Ocean City lane." },
-  { title: "Drift Cottage", image: PLACEHOLDER, description: "A craftsman-detailed cottage with a generous covered porch." },
-  { title: "Tide & Timber", image: PLACEHOLDER, description: "A duplex residence blending classic shingle style and modern interiors." },
-];
-
-const CardInner = ({ p }: { p: PortfolioItem }) => (
-  <>
-    <div className="overflow-hidden aspect-[4/3] mb-4" style={{ borderRadius: "4px" }}>
-      <img
-        src={p.image}
-        alt={p.title}
-        className="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-90"
-        loading="lazy"
-        decoding="async"
-      />
-    </div>
-    <h3 className="heading-card text-ink text-lg mb-2">{p.title}</h3>
-    <p className="text-body text-sm">{p.description}</p>
-  </>
-);
-
-export const PortfolioCard = ({ p }: { p: PortfolioItem }) =>
-  p.slug ? (
-    <Link to={`/projects/${p.slug}`} className="group block">
-      <CardInner p={p} />
-    </Link>
-  ) : (
-    <div className="group cursor-default">
-      <CardInner p={p} />
-    </div>
-  );
+import { gap } from "@/lib/rhythm";
 
 /**
- * Combines the real projects managed in the admin panel with the curated
- * placeholder projects, so the grid always stays full.
+ * Portfolio grid — reads published projects from the database, exactly like
+ * the homepage Selected work section. No invented project data.
  */
-export function usePortfolioItems(limit?: number): PortfolioItem[] {
-  const { data: projects = [] } = usePublicProjects();
 
-  const real: PortfolioItem[] = projects
-    .filter((p) => !!p.card_image_url)
-    .map((p) => ({
-      title: p.title,
-      image: p.card_image_url as string,
-      description: p.tagline ?? p.description ?? "",
-      slug: p.slug,
-    }));
+const Frame = ({ children }: { children: React.ReactNode }) => (
+  <div className="aspect-[4/3] w-full overflow-hidden bg-sand" style={{ borderRadius: "4px" }}>
+    {children}
+  </div>
+);
 
-  const realTitles = new Set(real.map((p) => p.title.toLowerCase()));
-  const filler = portfolio.filter((p) => !realTitles.has(p.title.toLowerCase()));
-  const items = [...real, ...filler];
-  return limit ? items.slice(0, limit) : items;
-}
+const Skeleton = () => (
+  <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
+    {Array.from({ length: 3 }).map((_, i) => (
+      <div key={i}>
+        <Frame>{null}</Frame>
+        <div className="mt-5 h-3 w-1/2 bg-sand" />
+        <div className="mt-3 h-2 w-1/3 bg-sand" />
+      </div>
+    ))}
+  </div>
+);
+
+/** Deliberate empty state — matches the homepage treatment. */
+const Empty = () => (
+  <div className="border border-line px-8 py-20 text-center" style={{ borderRadius: "4px" }}>
+    <p className="text-body max-w-md mx-auto">
+      Selected projects are being prepared for the new site.
+    </p>
+    <Link to="/contact" className="mt-6 inline-block label-uppercase text-ink hover:text-brand">
+      Get in touch
+    </Link>
+  </div>
+);
 
 export const PortfolioGrid = ({ limit }: { limit?: number }) => {
-  const items = usePortfolioItems(limit);
+  const { data, isLoading } = usePublicProjects();
+  const projects = limit ? (data ?? []).slice(0, limit) : (data ?? []);
+
+  if (isLoading) return <Skeleton />;
+  if (projects.length === 0) return <Empty />;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-      {items.map((p) => (
-        <Reveal key={p.title}>
-          <PortfolioCard p={p} />
+    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
+      {projects.map((p) => (
+        <Reveal key={p.id}>
+          <Link to={`/projects/${p.slug}`} className="group block">
+            <Frame>
+              {p.card_image_url ? (
+                <img
+                  src={p.card_image_url}
+                  alt={p.title}
+                  className="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-90"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : null}
+            </Frame>
+            <h3 className="heading-card text-ink text-lg mt-5 group-hover:text-brand transition-colors">
+              {p.title}
+            </h3>
+            {p.location ? <p className="text-small mt-1">{p.location}</p> : null}
+          </Link>
         </Reveal>
       ))}
     </div>
