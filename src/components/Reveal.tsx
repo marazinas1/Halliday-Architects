@@ -17,7 +17,7 @@ const Reveal = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           el.classList.add("opacity-100", "translate-y-0");
-          el.classList.remove("opacity-0", "translate-y-6");
+          el.classList.remove("opacity-0", "translate-y-3");
           observer.unobserve(el);
         }
       },
@@ -30,7 +30,7 @@ const Reveal = ({
   return (
     <div
       ref={ref}
-      className={`opacity-0 translate-y-6 transition-all duration-700 ease-out ${className}`}
+      className={`opacity-0 translate-y-3 transition-all duration-600 ease-out ${className}`}
     >
       {children}
     </div>
