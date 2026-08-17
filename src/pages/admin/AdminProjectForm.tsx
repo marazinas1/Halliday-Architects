@@ -212,17 +212,16 @@ function AdminProjectFormInner() {
         headline: form.headline || null,
         tagline: form.tagline || null,
         description: form.description || null,
-        location_neighborhood: form.location_neighborhood || null,
         location_city: form.location_city || null,
         location_state: form.location_state || null,
-        location_highlight: form.location_highlight || null,
-        location_heading: form.location_heading || null,
-        map_embed_query: form.map_embed_query || null,
+        project_type: form.project_type,
+        year_completed: form.year_completed ? Number(form.year_completed) : null,
+        client_brief: form.client_brief || null,
+        story: form.story || null,
         sort_order: form.sort_order,
         published: form.published,
         specs: form.specs,
         features: form.features.filter((f) => f.trim()),
-        location_features: form.location_features.filter((f) => f.trim()),
       };
 
       let projectId = id;
