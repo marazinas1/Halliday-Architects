@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/halliday-logo.png";
 import { FIRM } from "@/content/firm";
 
@@ -11,17 +11,36 @@ const FOOTER_LINKS = [
 ];
 
 const GlobalFooter = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // ScrollToTop component handles scrolling to top on route change
+      navigate("/");
+    }
+  };
+
   return (
     <footer className="bg-charcoal text-white py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div>
-            <img
-              src={logo}
-              alt={FIRM.name}
-              className="h-12 w-auto mb-5"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
+            <button
+              type="button"
+              onClick={handleLogoClick}
+              className="cursor-pointer text-left"
+              aria-label={`${FIRM.name} — Home`}
+            >
+              <img
+                src={logo}
+                alt={FIRM.name}
+                className="h-12 w-auto mb-5"
+                style={{ filter: "brightness(0) invert(1)" }}
+              />
+            </button>
             <p className="text-sm text-white/60 leading-relaxed">{FIRM.tagline}</p>
           </div>
           <div>
