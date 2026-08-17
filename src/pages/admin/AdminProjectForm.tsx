@@ -54,17 +54,16 @@ type FormState = {
   headline: string;
   tagline: string;
   description: string;
-  location_neighborhood: string;
   location_city: string;
   location_state: string;
-  location_highlight: string;
-  location_heading: string;
-  map_embed_query: string;
+  project_type: ProjectType;
+  year_completed: string;
+  client_brief: string;
+  story: string;
   sort_order: number;
   published: boolean;
   specs: SpecItem[];
   features: string[];
-  location_features: string[];
 };
 
 const emptyForm: FormState = {
@@ -73,17 +72,16 @@ const emptyForm: FormState = {
   headline: "",
   tagline: "",
   description: "",
-  location_neighborhood: "",
   location_city: "Ocean City",
   location_state: "NJ",
-  location_highlight: "",
-  location_heading: "",
-  map_embed_query: "",
+  project_type: "new_build",
+  year_completed: "",
+  client_brief: "",
+  story: "",
   sort_order: 0,
   published: false,
   specs: [],
   features: [],
-  location_features: [],
 };
 
 const asArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
