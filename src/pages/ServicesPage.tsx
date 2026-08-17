@@ -10,8 +10,8 @@ const ServicesPage = () => (
   <main className="min-h-screen bg-background">
     <GlobalNav />
     <SEO
-      title="Services | Halliday Leonard General Contractors"
-      description="Custom homes, developments, joint ventures, and renovations in the Ocean City, NJ area — delivered on time and on budget."
+      title="Services | Halliday Architects"
+      description="Custom homes, renovations, multi-family, and sustainable design from Halliday Architects in Ocean City, NJ."
       path="/services"
     />
     <PageHero eyebrow="What We Do" title="Services" />
@@ -24,7 +24,7 @@ const ServicesPage = () => (
           <h2 className="heading-section text-charcoal mb-6">Start Your Project</h2>
           <div className="divider mx-auto mb-8" />
           <p className="text-body mb-10">
-            Tell us about your lot, your timeline, and your vision — we'll take it from there.
+            Tell us about your site, your timeline, and your vision — we'll take it from there.
           </p>
           <Link to="/contact" className="btn-primary inline-flex">
             Request a Consultation

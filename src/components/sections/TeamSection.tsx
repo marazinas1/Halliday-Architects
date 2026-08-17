@@ -1,13 +1,9 @@
 import Reveal from "@/components/Reveal";
+import { TEAM, type TeamMember } from "@/content/firm";
 
-export const team = [
-  { name: "Scott Halliday", role: "Founding Partner", bio: "Forty years of building the finest custom homes in Ocean City." },
-  { name: "Keith Leonard", role: "Founding Partner", bio: "A steady hand on every project — on time, on budget, on point." },
-  { name: "Scott Halliday Jr.", role: "Partner", bio: "Carrying the Halliday craftsmanship into the next generation of coastal builds." },
-  { name: "Matt Leonard", role: "Partner", bio: "Leading the development side with an eye for detail and execution." },
-];
+export const team = TEAM;
 
-export const TeamCard = ({ m }: { m: (typeof team)[0] }) => (
+export const TeamCard = ({ m }: { m: TeamMember }) => (
   <div className="text-center">
     <div
       className="aspect-square w-full mb-5 flex items-center justify-center bg-gradient-to-br from-muted to-accent"
@@ -19,9 +15,15 @@ export const TeamCard = ({ m }: { m: (typeof team)[0] }) => (
       </span>
     </div>
     <h3 className="heading-card text-charcoal text-lg mb-1">{m.name}</h3>
-    <p className="label-uppercase text-xs mb-3">{m.role}</p>
-    <div className="w-8 h-px bg-charcoal/20 mx-auto mb-3" />
-    <p className="text-body text-sm leading-relaxed">{m.bio}</p>
+    <p className="label-uppercase text-xs mb-3">
+      {m.credentials ? `${m.role} · ${m.credentials}` : m.role}
+    </p>
+    {m.bio && (
+      <>
+        <div className="w-8 h-px bg-charcoal/20 mx-auto mb-3" />
+        <p className="text-body text-sm leading-relaxed">{m.bio}</p>
+      </>
+    )}
   </div>
 );
 

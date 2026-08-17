@@ -67,7 +67,7 @@ const AdminLogin = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <p className="text-xs tracking-[0.3em] uppercase text-muted-slate mb-4">
-            Ocean City Development Group
+            Halliday Architects
           </p>
           <h1 className="text-3xl md:text-4xl text-charcoal">Administrator Sign In</h1>
           <div className="mt-6 mx-auto h-px w-12 bg-charcoal/20" />

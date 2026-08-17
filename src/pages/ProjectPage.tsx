@@ -44,7 +44,7 @@ const ProjectPage = () => {
     <main className="min-h-screen bg-background">
       <GlobalNav />
       <SEO
-        title={`${project.title} | Halliday Leonard`}
+        title={`${project.title} | Halliday Architects`}
         description={project.tagline ?? project.description ?? project.title}
         path={`/projects/${project.slug}`}
       />

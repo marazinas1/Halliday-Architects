@@ -8,8 +8,8 @@ const ContactPage = () => (
   <main className="min-h-screen bg-background">
     <GlobalNav />
     <SEO
-      title="Contact | Halliday Leonard General Contractors"
-      description="Request a consultation with Halliday Leonard — custom home builders in Ocean City, New Jersey. 609.398.5737."
+      title="Contact | Halliday Architects"
+      description="Get in touch with Halliday Architects — architecture practice in Ocean City, New Jersey. 609.957.6789."
       path="/contact"
     />
     <PageHero eyebrow="Get In Touch" title="Request a Consultation" />

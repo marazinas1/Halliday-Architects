@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
-import portfolio1 from "@/assets/anchor-109-01.jpg";
-import portfolio2 from "@/assets/28th-ext-view1.jpg";
-import portfolio3 from "@/assets/asbury-ext-03.jpg";
-import portfolio4 from "@/assets/bark-209-photo-ext-01.jpg";
-import portfolio5 from "@/assets/anchor-111-01.jpg";
-import portfolio6 from "@/assets/brighton-905-ext-01-card.jpg";
+
+/** Neutral placeholder until the client's photography arrives. */
+const PLACEHOLDER = "/placeholder.svg";
 
 export type PortfolioItem = {
   title: string;
@@ -16,14 +13,14 @@ export type PortfolioItem = {
   slug?: string;
 };
 
-/** Curated placeholder projects, shown alongside the real ones. */
+/** Placeholder projects shown until the client's projects are added in the admin panel. */
 export const portfolio: PortfolioItem[] = [
-  { title: "Bayfront Retreat", image: portfolio1, description: "A modern coastal retreat overlooking the bay." },
-  { title: "Beachfront Custom", image: portfolio2, description: "A custom oceanfront residence built for everyday living." },
-  { title: "Haven Hideaway", image: portfolio3, description: "A timeless family home in the heart of Ocean City." },
-  { title: "Anchor Estate", image: portfolio5, description: "A multi-generational compound on a quiet Ocean City lane." },
-  { title: "Drift Cottage", image: portfolio4, description: "A craftsman-detailed cottage with a generous covered porch." },
-  { title: "Tide & Timber", image: portfolio6, description: "A duplex residence blending classic shingle style and modern interiors." },
+  { title: "Bayfront Retreat", image: PLACEHOLDER, description: "A modern coastal retreat overlooking the bay." },
+  { title: "Beachfront Custom", image: PLACEHOLDER, description: "A custom oceanfront residence built for everyday living." },
+  { title: "Haven Hideaway", image: PLACEHOLDER, description: "A timeless family home in the heart of Ocean City." },
+  { title: "Anchor Estate", image: PLACEHOLDER, description: "A multi-generational compound on a quiet Ocean City lane." },
+  { title: "Drift Cottage", image: PLACEHOLDER, description: "A craftsman-detailed cottage with a generous covered porch." },
+  { title: "Tide & Timber", image: PLACEHOLDER, description: "A duplex residence blending classic shingle style and modern interiors." },
 ];
 
 const CardInner = ({ p }: { p: PortfolioItem }) => (
