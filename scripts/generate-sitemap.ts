@@ -5,10 +5,10 @@
 import { writeFileSync } from "fs";
 import { resolve } from "path";
 
-const BASE_URL = "https://www.hallidayleonardinc.com";
+const BASE_URL = "https://halliday-architects.lovable.app";
 
 const SUPABASE_URL =
-  process.env.VITE_SUPABASE_URL ?? "https://kephppakificmpsqwgqq.supabase.co";
+  process.env.VITE_SUPABASE_URL ?? "https://cbngutdwgciuvpbzpmoy.supabase.co";
 const SUPABASE_ANON_KEY =
   process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "";
 
@@ -18,7 +18,6 @@ const STATIC_PAGES = [
   { path: "/team", changefreq: "monthly", priority: "0.6" },
   { path: "/services", changefreq: "monthly", priority: "0.8" },
   { path: "/projects", changefreq: "weekly", priority: "0.9" },
-  { path: "/testimonials", changefreq: "monthly", priority: "0.6" },
   { path: "/contact", changefreq: "monthly", priority: "0.6" },
 ];
 
@@ -72,7 +71,7 @@ async function main() {
 
   writeFileSync(resolve("public/sitemap.xml"), xml);
   console.log(
-    `sitemap.xml written (${STATIC_PAGES.length} static + ${properties.length} properties)`,
+    `sitemap.xml written (${STATIC_PAGES.length} static + ${projects.length} projects)`,
   );
 }
 

@@ -1,13 +1,12 @@
 // Dynamic sitemap: static pages + every published project at /projects/:slug.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const BASE_URL = "https://www.hallidayleonard.com";
+const BASE_URL = "https://halliday-architects.lovable.app";
 
 const STATIC_PAGES: Array<{ path: string; changefreq: string; priority: string }> = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.7" },
   { path: "/projects", changefreq: "weekly", priority: "0.9" },
-  { path: "/testimonials", changefreq: "monthly", priority: "0.6" },
   { path: "/contact", changefreq: "monthly", priority: "0.6" },
 ];
 

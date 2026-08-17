@@ -13,7 +13,7 @@ import {
 } from 'npm:@react-email/components@0.0.22'
 import type { TemplateEntry } from './registry.ts'
 
-const SITE_NAME = 'Halliday-Leonard General Contractors'
+const SITE_NAME = 'Halliday Architects'
 
 interface InquiryNotificationProps {
   name?: string
@@ -101,7 +101,7 @@ const InquiryNotification = ({
 
           <Hr style={hr} />
           <Text style={footer}>
-            Sent from {SITE_NAME} — hallidayleonardinc.com
+            Sent from {SITE_NAME} — hallidayarchitects.com
           </Text>
         </Container>
       </Body>
@@ -132,14 +132,14 @@ export const template = {
     `New inquiry${data?.name ? ` from ${data.name}` : ''}${
       data?.interest ? ` — ${data.interest}` : ''
     }`,
-  to: 'Info@HallidayLeonardInc.com',
+  to: 'chris@hallidayarchitects.com',
   displayName: 'Inquiry notification',
   previewData: {
     name: 'Jane Doe',
     email: 'jane@example.com',
     phone: '(555) 123-4567',
     interest: 'Custom Home / New Build',
-    source: 'Halliday Leonard — Contact',
+    source: 'Halliday Architects — Contact',
     message: 'I would love to learn more about building a custom home and schedule a consultation next week.',
   },
 } satisfies TemplateEntry

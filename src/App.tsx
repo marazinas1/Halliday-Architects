@@ -11,7 +11,6 @@ import Index from "./pages/Index";
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
-const TestimonialsPage = lazy(() => import("./pages/TestimonialsPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
 const ProjectPage = lazy(() => import("./pages/ProjectPage"));
@@ -48,7 +47,7 @@ const App = () => (
             <Route path="/developments" element={<Navigate to="/projects" replace />} />
             <Route path="/developments/*" element={<Navigate to="/projects" replace />} />
             <Route path="/gallery" element={<Navigate to="/projects" replace />} />
-            <Route path="/testimonials" element={<TestimonialsPage />} />
+            <Route path="/testimonials" element={<Navigate to="/" replace />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminProjects />} />
