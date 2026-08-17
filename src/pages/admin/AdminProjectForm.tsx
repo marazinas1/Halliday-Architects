@@ -48,23 +48,31 @@ type ImageRow = {
   sort_order: number;
 };
 
+const PROJECT_TYPES = ["new_build", "renovation", "interior", "addition"] as const;
+type ProjectType = (typeof PROJECT_TYPES)[number];
+const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
+  new_build: "New build",
+  renovation: "Renovation",
+  interior: "Interior",
+  addition: "Addition",
+};
+
 type FormState = {
   slug: string;
   title: string;
   headline: string;
   tagline: string;
   description: string;
-  location_neighborhood: string;
   location_city: string;
   location_state: string;
-  location_highlight: string;
-  location_heading: string;
-  map_embed_query: string;
+  project_type: ProjectType;
+  year_completed: string;
+  client_brief: string;
+  story: string;
   sort_order: number;
   published: boolean;
   specs: SpecItem[];
   features: string[];
-  location_features: string[];
 };
 
 const emptyForm: FormState = {
@@ -73,17 +81,16 @@ const emptyForm: FormState = {
   headline: "",
   tagline: "",
   description: "",
-  location_neighborhood: "",
   location_city: "Ocean City",
   location_state: "NJ",
-  location_highlight: "",
-  location_heading: "",
-  map_embed_query: "",
+  project_type: "new_build",
+  year_completed: "",
+  client_brief: "",
+  story: "",
   sort_order: 0,
   published: false,
   specs: [],
   features: [],
-  location_features: [],
 };
 
 const asArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
@@ -113,17 +120,18 @@ function AdminProjectFormInner() {
       headline: (p.headline as string) ?? "",
       tagline: (p.tagline as string) ?? "",
       description: (p.description as string) ?? "",
-      location_neighborhood: (p.location_neighborhood as string) ?? "",
       location_city: (p.location_city as string) ?? "",
       location_state: (p.location_state as string) ?? "",
-      location_highlight: (p.location_highlight as string) ?? "",
-      location_heading: (p.location_heading as string) ?? "",
-      map_embed_query: (p.map_embed_query as string) ?? "",
+      project_type: (PROJECT_TYPES as readonly string[]).includes(p.project_type as string)
+        ? (p.project_type as ProjectType)
+        : "new_build",
+      year_completed: p.year_completed != null ? String(p.year_completed) : "",
+      client_brief: (p.client_brief as string) ?? "",
+      story: (p.story as string) ?? "",
       sort_order: (p.sort_order as number) ?? 0,
       published: (p.published as boolean) ?? false,
       specs: asArray<SpecItem>(p.specs),
       features: asArray<string>(p.features),
-      location_features: asArray<string>(p.location_features),
     });
     setImages(
       data.images.map((img) => ({
@@ -204,17 +212,16 @@ function AdminProjectFormInner() {
         headline: form.headline || null,
         tagline: form.tagline || null,
         description: form.description || null,
-        location_neighborhood: form.location_neighborhood || null,
         location_city: form.location_city || null,
         location_state: form.location_state || null,
-        location_highlight: form.location_highlight || null,
-        location_heading: form.location_heading || null,
-        map_embed_query: form.map_embed_query || null,
+        project_type: form.project_type,
+        year_completed: form.year_completed ? Number(form.year_completed) : null,
+        client_brief: form.client_brief || null,
+        story: form.story || null,
         sort_order: form.sort_order,
         published: form.published,
         specs: form.specs,
         features: form.features.filter((f) => f.trim()),
-        location_features: form.location_features.filter((f) => f.trim()),
       };
 
       let projectId = id;
@@ -396,18 +403,10 @@ function AdminProjectFormInner() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">General area (no exact address)</CardTitle>
+          <CardTitle className="text-base">Location &amp; classification</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label>Area</Label>
-              <Input
-                value={form.location_neighborhood}
-                onChange={(e) => set("location_neighborhood", e.target.value)}
-                placeholder="North End"
-              />
-            </div>
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>City</Label>
               <Input
@@ -425,33 +424,54 @@ function AdminProjectFormInner() {
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Location heading</Label>
-              <Input
-                value={form.location_heading}
-                onChange={(e) => set("location_heading", e.target.value)}
-              />
+              <Label>Project type</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={form.project_type}
+                onChange={(e) => set("project_type", e.target.value as ProjectType)}
+              >
+                {PROJECT_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {PROJECT_TYPE_LABELS[t]}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="space-y-2">
-              <Label>Map embed query</Label>
+              <Label>Year completed (optional)</Label>
               <Input
-                value={form.map_embed_query}
-                onChange={(e) => set("map_embed_query", e.target.value)}
+                type="number"
+                inputMode="numeric"
+                placeholder="2024"
+                value={form.year_completed}
+                onChange={(e) => set("year_completed", e.target.value)}
               />
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Narrative</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label>Location highlight</Label>
-            <Input
-              value={form.location_highlight}
-              onChange={(e) => set("location_highlight", e.target.value)}
+            <Label>Client brief (optional)</Label>
+            <Textarea
+              rows={4}
+              placeholder="The design problem this project solved."
+              value={form.client_brief}
+              onChange={(e) => set("client_brief", e.target.value)}
             />
           </div>
           <div className="space-y-2">
-            <Label>Location features</Label>
-            <StringListEditor
-              value={form.location_features}
-              onChange={(v) => set("location_features", v)}
-              placeholder="Steps from the beach"
+            <Label>Story (optional)</Label>
+            <Textarea
+              rows={10}
+              placeholder="Long-form narrative about the project."
+              value={form.story}
+              onChange={(e) => set("story", e.target.value)}
             />
           </div>
         </CardContent>

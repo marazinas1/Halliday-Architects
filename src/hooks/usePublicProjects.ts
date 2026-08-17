@@ -17,11 +17,10 @@ const publicUrl = (path: string) =>
   supabase.storage.from("property-images").getPublicUrl(path).data.publicUrl;
 
 const formatLocation = (row: {
-  location_neighborhood: string | null;
   location_city: string | null;
   location_state: string | null;
 }) =>
-  [row.location_neighborhood, row.location_city, row.location_state]
+  [row.location_city, row.location_state]
     .filter((x): x is string => !!x && x.trim().length > 0)
     .join(", ");
 
@@ -36,7 +35,7 @@ export function usePublicProjects() {
       const { data: rows, error } = await supabase
         .from("projects")
         .select(
-          "id, slug, title, tagline, description, location_neighborhood, location_city, location_state, sort_order, created_at",
+          "id, slug, title, tagline, description, location_city, location_state, sort_order, created_at",
         )
         .eq("published", true)
         .order("sort_order", { ascending: true });
