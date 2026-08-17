@@ -9,7 +9,7 @@
 - [Home](/): Overview of the practice, services, and featured projects.
 - [About](/about): The practice and how it works.
 - [Our Team](/team): The people behind the practice.
-- [Services](/services): Custom homes, renovations, multi-family, sustainable design.
+- [Services](/services): Architectural consultation, architectural design, building code analysis, permit coordination.
 - [Projects](/projects): Portfolio of completed projects.
 - [Contact](/contact): Inquiry form, phone, email, and office address.
 

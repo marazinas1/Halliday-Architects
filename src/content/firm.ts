@@ -23,34 +23,33 @@ export type Service = {
   detail: string;
 };
 
+// PLACEHOLDER COPY — awaiting the client's own words.
+// Service names follow the practice's own Google Business listing; descriptions
+// are deliberately short and factual. Do not add services we cannot verify.
 export const SERVICES: Service[] = [
   {
-    title: "Custom Homes",
-    description:
-      "Bespoke residences designed for the way you live — from primary residences to coastal retreats.",
+    title: "Architectural Consultation",
+    description: "Early conversations about a site, a property, or an idea for a home.",
     detail:
-      "We work with you from first sketch through construction administration, resolving every plan for how it will be built and how it will hold up to the coastal environment.",
+      "We review the site and what is possible on it before drawings begin, so decisions are made with the constraints already understood.",
   },
   {
-    title: "Renovations & Additions",
-    description:
-      "Thoughtful renovations and additions that respect the character of a home while elevating how it works.",
+    title: "Architectural Design",
+    description: "Design of new homes, renovations, and additions.",
     detail:
-      "Whole-home renovations, additions, and careful restorations — designed with the same rigour as our new construction, and with respect for the home that is already there.",
+      "From first sketches through drawings a builder can work from, each project is led personally by a principal.",
   },
   {
-    title: "Multi-Family & Mixed Use",
-    description:
-      "Duplex, multi-family, and mixed-use buildings designed for their street and their site.",
+    title: "Building Code Analysis",
+    description: "Review of a project against applicable building and zoning codes.",
     detail:
-      "From zoning and feasibility through permit documents, we manage the approvals process and produce drawings contractors can build from without guesswork.",
+      "Requirements are checked against the design as it develops, rather than after the fact.",
   },
   {
-    title: "Sustainable Design",
-    description:
-      "LEED-accredited design focused on comfort, durability, and long-term performance.",
+    title: "Permit Coordination",
+    description: "Preparation and coordination of drawings for permit approval.",
     detail:
-      "Envelope, orientation, daylight, and mechanical strategy considered together, so the building performs quietly in the background for decades.",
+      "We assemble the documents required for submission and stay involved through the approvals process.",
   },
 ];
 

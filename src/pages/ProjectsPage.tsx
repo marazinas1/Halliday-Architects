@@ -3,16 +3,10 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import { PortfolioGrid } from "@/components/sections/PortfolioSection";
-import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { container, sectionPadding } from "@/lib/rhythm";
 
-/**
- * Featured Projects — one combined portfolio grid.
- * Falls back to the curated static portfolio until projects are added in the admin panel.
- */
+/** Portfolio — published projects from the database, with a deliberate empty state. */
 const ProjectsPage = () => {
-  const { isLoading } = usePublicProjects();
-
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
@@ -25,11 +19,12 @@ const ProjectsPage = () => {
 
       <section className={`${sectionPadding.base}`}>
         <div className={container.wide}>
+          {/* PLACEHOLDER COPY — awaiting the client's own words. */}
           <p className="text-body max-w-2xl mx-auto text-center mb-16">
-            A selection of completed projects across the Ocean City, NJ area.
+            A selection of residential projects in and around Ocean City, New Jersey.
           </p>
 
-          {isLoading ? <p className="text-center text-small py-16">Loading…</p> : <PortfolioGrid />}
+          <PortfolioGrid />
         </div>
       </section>
 
