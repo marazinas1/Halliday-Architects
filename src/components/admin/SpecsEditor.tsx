@@ -37,7 +37,7 @@ export default function SpecsEditor({
       {value.map((spec, i) => (
         <div
           key={i}
-          className="grid grid-cols-1 md:grid-cols-[160px_1fr_2fr_40px] gap-3 items-start p-3 rounded border border-slate-200"
+          className="grid grid-cols-1 md:grid-cols-[160px_1fr_2fr_40px] gap-3 items-start p-3 rounded border border-line"
         >
           <Select value={spec.icon} onValueChange={(v) => update(i, { icon: v })}>
             <SelectTrigger>

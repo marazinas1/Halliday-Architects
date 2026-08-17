@@ -276,13 +276,13 @@ function AdminProjectFormInner() {
   };
 
   if (isEdit && isLoading) {
-    return <div className="py-24 text-center text-slate-500">Loading…</div>;
+    return <div className="py-24 text-center text-stone">Loading…</div>;
   }
 
   return (
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-slate-900">
+        <h1 className="text-2xl font-semibold text-ink">
           {isEdit ? "Edit Project" : "New Project"}
         </h1>
         <div className="flex gap-2">
@@ -522,7 +522,7 @@ function AdminProjectFormInner() {
                 {byCategory[category].map((img) => (
                   <div
                     key={img.storage_path}
-                    className="border border-slate-200 rounded overflow-hidden"
+                    className="border border-line rounded overflow-hidden"
                   >
                     <img
                       src={getPublicUrl(img.storage_path)}

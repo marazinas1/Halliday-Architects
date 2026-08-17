@@ -5,7 +5,7 @@ import AdminShell from "./AdminShell";
 
 const Spinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="w-8 h-8 border-2 border-slate-300 border-t-slate-700 rounded-full animate-spin" />
+    <div className="w-8 h-8 border-2 border-line border-t-ink rounded-full animate-spin" />
   </div>
 );
 
