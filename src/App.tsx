@@ -43,7 +43,7 @@ const App = () => (
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:slug" element={<ProjectPage />} />
-            {/* Legacy OCDG listing URLs collapse to the portfolio. */}
+            {/* Legacy listing URLs collapse to the portfolio. */}
             <Route path="/developments" element={<Navigate to="/projects" replace />} />
             <Route path="/developments/*" element={<Navigate to="/projects" replace />} />
             <Route path="/gallery" element={<Navigate to="/projects" replace />} />

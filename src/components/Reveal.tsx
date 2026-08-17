@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-/** Fade-in-up on scroll, matching the Halliday Leonard motion language. */
+/** Fade-in-up on scroll, matching the site motion language. */
 const Reveal = ({
   children,
   className = "",
