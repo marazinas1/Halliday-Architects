@@ -21,11 +21,6 @@
     --background-sand: var(--sand);
     --foreground: var(--ink);
 
-    /* Text */
-    --ink: var(--ink);
-    --stone: var(--stone);
-    --stone: 43 4% 45%;
-
     --card: var(--paper);
     --card-foreground: var(--ink);
 
@@ -74,12 +69,14 @@
 
 
   .dark {
-    --background: var(--ink);
+    --background: 40 6% 10%;
     --background-sand: 40 6% 14%;
-    --foreground: var(--paper);
-    --ink: var(--paper);
+    --foreground: 40 27% 98%;
+    --ink: 40 27% 98%;
     --stone: 40 8% 72%;
-    --stone: 40 6% 58%;
+    --line: 40 6% 20%;
+    --paper: 40 6% 10%;
+    --sand: 40 6% 14%;
     --card: 40 6% 13%;
     --card-foreground: var(--paper);
     --popover: 40 6% 13%;
