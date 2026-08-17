@@ -58,7 +58,6 @@ const MobileCarousel = ({ children, itemCount }: { children: React.ReactNode[]; 
 
 const ServiceCard = ({ s }: { s: (typeof services)[0] }) => (
   <div className="card-elegant p-8 h-full text-center">
-    <div className="w-12 h-12 mx-auto mb-6 flex items-center justify-center">{s.icon}</div>
     <h3 className="heading-card text-ink mb-4">{s.title}</h3>
     <div className="w-8 h-px bg-ink/30 mx-auto mb-4" />
     <p className="text-body text-sm leading-relaxed">{s.description}</p>
@@ -97,9 +96,10 @@ const ServicesSection = ({ heading = "Services" }: { heading?: string }) => (
           <p className="label-uppercase mb-4">What We Do</p>
           <h2 className="heading-section text-ink mb-6">{heading}</h2>
           <div className="divider mx-auto mb-6" />
+          {/* PLACEHOLDER COPY — awaiting the client's own words. */}
           <p className="text-body max-w-2xl mx-auto">
-            Whether you're building your dream home on your own lot, developing a multi-home project,
-            or partnering with us on a joint venture — we bring the same craftsmanship to every build.
+            An architecture practice in Ocean City, New Jersey, working on residential projects
+            along the shore.
           </p>
         </div>
       </Reveal>
