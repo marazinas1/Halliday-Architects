@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import AuthSplit from "@/components/brand/AuthSplit";
+import AuthCard from "@/components/brand/AuthCard";
+import BrandLogo from "@/components/BrandLogo";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -63,19 +66,15 @@ const AdminLogin = () => {
   };
 
   return (
-    <main className="min-h-screen bg-background-sand flex items-center justify-center px-6">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <p className="text-xs tracking-[0.3em] uppercase text-stone mb-4">
-            Halliday Architects
-          </p>
-          <h1 className="text-3xl md:text-4xl text-ink">Administrator Sign In</h1>
-          <div className="mt-6 mx-auto h-px w-12 bg-ink/20" />
-        </div>
-
+    <AuthSplit>
+      {/* The branded panel is hidden on small screens, so show the mark here. */}
+      <div className="md:hidden mb-10">
+        <BrandLogo className="h-10 w-auto" />
+      </div>
+      <AuthCard eyebrow="Administrator" title="Sign in">
         <form
           onSubmit={handleSubmit}
-          className="bg-card border border-border-subtle rounded p-8 space-y-6"
+          className="space-y-6"
         >
           <div className="space-y-2">
             <label
@@ -127,12 +126,11 @@ const AdminLogin = () => {
             {loading ? "Signing In…" : "Sign In"}
           </button>
         </form>
-
-        <p className="mt-8 text-center text-xs tracking-[0.15em] uppercase text-stone">
+      </AuthCard>
+      <p className="mt-8 text-xs tracking-[0.15em] uppercase text-stone">
           Authorized Personnel Only
         </p>
-      </div>
-    </main>
+    </AuthSplit>
   );
 };
 
