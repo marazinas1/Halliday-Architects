@@ -52,19 +52,3 @@ export const SERVICES: Service[] = [
       "We assemble the documents required for submission and stay involved through the approvals process.",
   },
 ];
-
-export type TeamMember = {
-  name: string;
-  role: string;
-  credentials?: string;
-  bio: string;
-};
-
-// TODO: temporary — moves to the database in a later phase. Bios pending from the client.
-export const TEAM: TeamMember[] = [
-  { name: "Chris Halliday", role: "Principal", credentials: "RA, LEED AP", bio: "" },
-  { name: "Shannon Halliday", role: "Principal", credentials: "RA, LEED AP", bio: "" },
-  { name: "Brett Hagerty", role: "Draftsman", bio: "" },
-  { name: "Christy Hill", role: "Studio Designer", bio: "" },
-  { name: "Samantha Cozzi", role: "Studio Designer", bio: "" },
-];

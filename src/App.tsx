@@ -19,6 +19,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
 const AdminProjectForm = lazy(() => import("./pages/admin/AdminProjectForm"));
+const AdminTeam = lazy(() => import("./pages/admin/AdminTeam"));
+const AdminTeamForm = lazy(() => import("./pages/admin/AdminTeamForm"));
 
 const queryClient = new QueryClient();
 
@@ -53,6 +55,9 @@ const App = () => (
             <Route path="/admin" element={<AdminProjects />} />
             <Route path="/admin/projects/new" element={<AdminProjectForm />} />
             <Route path="/admin/projects/:id/edit" element={<AdminProjectForm />} />
+            <Route path="/admin/team" element={<AdminTeam />} />
+            <Route path="/admin/team/new" element={<AdminTeamForm />} />
+            <Route path="/admin/team/:id/edit" element={<AdminTeamForm />} />
             <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
