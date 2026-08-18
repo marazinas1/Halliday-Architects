@@ -15,6 +15,8 @@ const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
 const ProjectPage = lazy(() => import("./pages/ProjectPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -23,6 +25,9 @@ const AdminProjectForm = lazy(() => import("./pages/admin/AdminProjectForm"));
 const AdminTeam = lazy(() => import("./pages/admin/AdminTeam"));
 const AdminTeamForm = lazy(() => import("./pages/admin/AdminTeamForm"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
+const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
+const AdminBlogCategories = lazy(() => import("./pages/admin/AdminBlogCategories"));
 
 const queryClient = new QueryClient();
 
@@ -54,6 +59,8 @@ const App = () => (
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:slug" element={<ProjectPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
             {/* Legacy listing URLs collapse to the portfolio. */}
             <Route path="/developments" element={<Navigate to="/projects" replace />} />
             <Route path="/developments/*" element={<Navigate to="/projects" replace />} />
@@ -67,6 +74,10 @@ const App = () => (
             <Route path="/admin/team" element={<AdminTeam />} />
             <Route path="/admin/team/new" element={<AdminTeamForm />} />
             <Route path="/admin/team/:id/edit" element={<AdminTeamForm />} />
+            <Route path="/admin/blog" element={<AdminBlog />} />
+            <Route path="/admin/blog/categories" element={<AdminBlogCategories />} />
+            <Route path="/admin/blog/new" element={<AdminBlogForm />} />
+            <Route path="/admin/blog/:id/edit" element={<AdminBlogForm />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
