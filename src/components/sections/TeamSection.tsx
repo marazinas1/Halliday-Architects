@@ -65,3 +65,31 @@ export const TeamGrid = () => {
 };
 
 export default TeamGrid;
+
+/** Only the principals — used on the About page so it does not duplicate /team. */
+export const PrincipalsGrid = () => {
+  const { data, isLoading } = useTeamMembers();
+  const principals = (data ?? []).filter((m) => m.role.toLowerCase().includes("principal"));
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 max-w-2xl mx-auto">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <div key={i} className="aspect-square w-full bg-sand" style={{ borderRadius: "4px" }} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!principals.length) return null;
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 max-w-2xl mx-auto">
+      {principals.map((m) => (
+        <Reveal key={m.id}>
+          <TeamCard m={m} />
+        </Reveal>
+      ))}
+    </div>
+  );
+};
