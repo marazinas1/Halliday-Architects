@@ -1,47 +1,59 @@
-# Interior heroes, homepage composition, contact map
+# Team in the database, with a reusable image pipeline
 
-## 1. Fix placeholder images
+## Part 1 — Shared image optimisation utility (built first)
 
-`PageHero.tsx` and `AboutSection.tsx` are the only two places rendering `/placeholder.svg`.
+New module `src/lib/images/optimizeImage.ts`, built on `browser-image-compression` (well-maintained, web-worker based, strips EXIF by re-encoding).
 
-- `PageHero`: keep height, typography and overlay exactly as they are. Replace the `<img src="/placeholder.svg">` with a flat ink block rendered in the same position. The `image` prop stays optional, so passing a real photo later is a one-line change per page.
-- `AboutSection`: replace the placeholder image with a flat sand/ink block at the same aspect ratio, same slot, same one-line swap when photography arrives.
+- Per-use-case presets: `headshot` (1200px long edge), `project` (2400px), `cover` (1800px) — each with its own max dimension, WebP quality, and max file size.
+- Converts to WebP, preserves aspect ratio, strips metadata.
+- Skips re-encoding when the source is already under the preset's size and dimension budget.
+- Rejects non-image files with a plain message ("That file is not an image").
+- Reports progress via a callback so upload UI can show a bar.
 
-## 2. Homepage and services
+New `src/lib/admin/uploadImage.ts` helper wraps optimise + upload to a given bucket/path and returns the storage path. Project images keep working as they do today; they can be migrated to this pipeline in a later pass.
 
-New sections between Selected Work and the statement band:
+## Part 2 — team_members table and admin CRUD
 
-- **Services preview** — the four services from `src/content/firm.ts` in a row. Each item leads with a large Newsreader light numeral (01–04) in a pale stone/line tone, noticeably larger than the title, then title and one-line description. Each links to `/services`.
-- **Studio preview** — a short line about the practice being led personally by both principals, with a link to `/team`.
+Migration (structure only, no client data):
 
-Same numeral treatment replaces the divider/icon treatment on the services page cards.
+- `team_members`: id, name, role, credentials, bio, photo_path, sort_order, published, created_at, updated_at (with the existing updated_at trigger).
+- GRANTs, RLS mirroring `projects`: public reads `published = true`, admins do everything via `is_admin()`.
+- New public storage bucket `team-photos` with admin-only write policies.
 
-Heading alignment: use "Residential architecture in Ocean City, New Jersey" on both the homepage and About; drop "Architecture for the Jersey Shore".
+Admin at `/admin/team`, matching the existing Projects admin structure (AdminProtected + AdminShell, table list, shadcn components, TanStack Query hooks):
 
-Layout changes (presentation only):
+- List view: photo thumbnail, name, role, order, published switch, edit and delete actions.
+- Add / edit form: name, role, credentials, bio, photo upload with preview and progress, replace photo, published toggle.
+- Reordering with up/down controls that write `sort_order`.
+- Delete: confirmation dialog, then the storage object is removed **before** the row, and replacing a photo deletes the old file. No orphans.
 
-- Left-align section headings; content sits in asymmetric columns (e.g. label column + wider content column) rather than centred blocks. Applies to homepage sections, Services, and the About/Team heading blocks touched here.
-- Stronger scale contrast: large display headings against small uppercase labels.
-- Hover states, 400–600ms ease-out: image scale on project cards, underline drawing in on text links, colour shift to brand red. Added as shared utility classes in `src/index.css` so they stay consistent.
-- Section backgrounds alternate paper / sand / ink down the page for rhythm.
+A "Team" link is added to the admin navigation.
 
-No shadows, gradients, rounded cards, or decorative flourishes. All spacing still from `src/lib/rhythm.ts`.
+## Part 3 — Public pages read from the database
 
-## 3. Contact map
+- `useTeamMembers()` hook fetches published members ordered by `sort_order`.
+- `TeamSection` renders the photo when `photo_path` exists, and keeps the current initials block as the fallback.
+- Team page and the studio section on the About page both use the hook, so an admin upload appears immediately with no rebuild.
+- The hardcoded `TEAM` array and `TeamMember` type are removed from `src/content/firm.ts`; firm facts stay.
 
-Add `maplibre-gl` and render a full-width band below the contact details, replacing the current Google Maps iframe.
+## Part 4 — Seed the current five
 
-- CARTO Positron raster tiles (no API key), muted with a light desaturation filter so it reads as context.
-- Centred on 728 West Avenue, Ocean City NJ with a single small marker in the palette (ink dot / brand red accent), zoom ~15.
-- Non-scroll-hijacking: scroll zoom off, drag pan on; attribution kept.
+Seeded as data (not in a migration): the five people, bios left empty, published, in the given order.
 
-## Technical notes
+Photos are pulled from the current Squarespace team page, run through the same headshot preset, and uploaded into `team-photos` so they behave exactly like admin uploads and are replaceable without code changes.
 
-- New files: `src/components/sections/ServicesPreview.tsx`, `src/components/sections/StudioPreview.tsx`, `src/components/ContactMap.tsx`, plus a small shared `ServiceNumeral` treatment reused by the services page.
-- Dependency added: `maplibre-gl` (plus its CSS import).
-- Existing Google Maps iframe in `ContactSection.tsx` is removed.
+Note found while checking the live site: only four real headshots exist there — Shannon Halliday, Brett Hagerty, Christy Hill and Samantha Cozzi. **Chris Halliday's slot on the current site uses a generic "Placeholder.jpg"**, so he will be seeded with no photo and will show the initials fallback until a real headshot arrives.
 
 ## Verification
 
-- Grep for `placeholder.svg` in `src` — zero rendering usages.
-- Homepage, Services, Contact checked at 1280px and 390px: numerals render at both widths, hover states behave, map loads with no console errors.
+- Upload a photo in admin: resulting file is WebP and clearly smaller than the original.
+- The uploaded photo appears on `/team` without a rebuild.
+- Deleting a member removes both the row and the stored file (verified by listing the bucket).
+- `/team` and the About studio section render cleanly with a mix of photo and initials-only members, at 1280px and 390px.
+
+## Technical notes
+
+- New dependency: `browser-image-compression`.
+- New files: image utility, upload helper, `useTeamMembers` / admin team hooks, `AdminTeam` list page, `AdminTeamForm`.
+- Routes added to `src/App.tsx`: `/admin/team`, `/admin/team/new`, `/admin/team/:id/edit`.
+- English only; no translation layer is introduced.
