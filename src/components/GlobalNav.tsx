@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import logo from "@/assets/halliday-logo.png";
+import BrandLogo from "@/components/BrandLogo";
 import { container } from "@/lib/rhythm";
 
 const NAV_LINKS = [
@@ -62,14 +62,11 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
               className="flex-shrink-0 flex items-center transition-opacity hover:opacity-80"
               aria-label="Halliday Architects — Home"
             >
-              <img
-                src={logo}
-                alt="Halliday Architects"
+              <BrandLogo
+                variant={onLight ? "light" : "dark"}
                 className="h-9 md:h-11 w-auto transition-all duration-500"
                 style={{
-                  filter: !onLight
-                    ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.35))"
-                    : "none",
+                  filter: !onLight ? "drop-shadow(0 2px 4px rgba(0,0,0,0.35))" : undefined,
                 }}
               />
             </Link>

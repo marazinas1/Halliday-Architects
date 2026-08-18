@@ -4,7 +4,7 @@ import imageCompression from "browser-image-compression";
  * Shared client-side image pipeline. Every admin upload goes through this
  * before it reaches storage: resize down, convert to WebP, strip EXIF.
  */
-export type ImagePreset = "headshot" | "project" | "cover";
+export type ImagePreset = "headshot" | "project" | "cover" | "logo" | "favicon";
 
 type PresetConfig = {
   /** Longest edge, in px. */
@@ -14,12 +14,17 @@ type PresetConfig = {
   /** Files already under this size (bytes) skip re-encoding. */
   skipUnderBytes: number;
   quality: number;
+  /** Output type. PNG keeps transparency, which logos and favicons need. */
+  fileType: "image/webp" | "image/png";
 };
 
 export const IMAGE_PRESETS: Record<ImagePreset, PresetConfig> = {
-  headshot: { maxDimension: 1200, maxSizeMB: 0.25, skipUnderBytes: 120_000, quality: 0.82 },
-  project: { maxDimension: 2400, maxSizeMB: 1, skipUnderBytes: 400_000, quality: 0.82 },
-  cover: { maxDimension: 1800, maxSizeMB: 0.6, skipUnderBytes: 250_000, quality: 0.82 },
+  headshot: { maxDimension: 1200, maxSizeMB: 0.25, skipUnderBytes: 120_000, quality: 0.82, fileType: "image/webp" },
+  project: { maxDimension: 2400, maxSizeMB: 1, skipUnderBytes: 400_000, quality: 0.82, fileType: "image/webp" },
+  cover: { maxDimension: 1800, maxSizeMB: 0.6, skipUnderBytes: 250_000, quality: 0.82, fileType: "image/webp" },
+  // A logo is line art, not photography: keep transparency and barely compress.
+  logo: { maxDimension: 800, maxSizeMB: 0.5, skipUnderBytes: 150_000, quality: 1, fileType: "image/png" },
+  favicon: { maxDimension: 256, maxSizeMB: 0.1, skipUnderBytes: 30_000, quality: 1, fileType: "image/png" },
 };
 
 export class NotAnImageError extends Error {
@@ -50,7 +55,7 @@ export async function optimizeImage(
   }
   const cfg = IMAGE_PRESETS[preset];
 
-  if (file.size <= cfg.skipUnderBytes && file.type === "image/webp") {
+  if (file.size <= cfg.skipUnderBytes && file.type === cfg.fileType) {
     const { width, height } = await readDimensions(file);
     if (Math.max(width, height) <= cfg.maxDimension) {
       onProgress?.(100);
@@ -62,7 +67,7 @@ export async function optimizeImage(
     maxWidthOrHeight: cfg.maxDimension,
     maxSizeMB: cfg.maxSizeMB,
     initialQuality: cfg.quality,
-    fileType: "image/webp",
+    fileType: cfg.fileType,
     useWebWorker: true,
     preserveExif: false,
     onProgress: (p) => onProgress?.(p),
