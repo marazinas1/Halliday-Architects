@@ -27,6 +27,7 @@ function AssetSlot({
   label,
   help,
   url,
+  hasUpload,
   dark,
   busy,
   progress,
@@ -36,6 +37,7 @@ function AssetSlot({
   label: string;
   help: string;
   url: string | null;
+  hasUpload: boolean;
   dark?: boolean;
   busy: boolean;
   progress: number;
@@ -53,9 +55,9 @@ function AssetSlot({
         </div>
         <div className="flex gap-2 shrink-0">
           <Button type="button" variant="outline" size="sm" disabled={busy} onClick={() => inputRef.current?.click()}>
-            {url ? "Replace" : "Upload"}
+            {hasUpload ? "Replace" : "Upload"}
           </Button>
-          {url && (
+          {hasUpload && (
             <Button type="button" variant="ghost" size="sm" disabled={busy} onClick={onRemove}>
               Remove
             </Button>
@@ -189,6 +191,7 @@ function SettingsBody() {
             help={slot.help}
             dark={slot.dark}
             url={urlFor(slot.key)}
+            hasUpload={Boolean(pathFor(slot.key))}
             busy={busyKey === slot.key}
             progress={progress}
             onPick={(file) => handleUpload(slot.key, slot.kind, file)}
