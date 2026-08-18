@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
+import { useFaviconFromSettings } from "@/hooks/useSiteSettings";
 
 // Lazy-load all non-landing pages so the initial bundle stays small.
 const AboutPage = lazy(() => import("./pages/AboutPage"));
@@ -31,12 +32,19 @@ const PageFallback = () => (
   </div>
 );
 
+/** Applies an uploaded favicon at runtime. Must sit inside the query provider. */
+const FaviconSync = () => {
+  useFaviconFromSettings();
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <FaviconSync />
         <ScrollToTop />
         <Suspense fallback={<PageFallback />}>
           <Routes>
