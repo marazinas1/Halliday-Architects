@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "@/assets/halliday-logo.png";
+import BrandLogo from "@/components/BrandLogo";
 import { FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 
@@ -35,12 +35,7 @@ const GlobalFooter = () => {
               className="cursor-pointer text-left"
               aria-label={`${FIRM.name} — Home`}
             >
-              <img
-                src={logo}
-                alt={FIRM.name}
-                className="h-12 w-auto mb-5"
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
+              <BrandLogo variant="dark" className="h-12 w-auto mb-5" />
             </button>
             <p className="text-sm text-paper/60 leading-relaxed">{FIRM.tagline}</p>
           </div>
