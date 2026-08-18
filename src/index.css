@@ -220,9 +220,9 @@
     @apply w-full my-12;
     border-radius: 4px;
   }
-  /* Images are allowed to break wider than the reading measure. */
+  /* On the public post, images break wider than the reading measure. */
   @screen lg {
-    .post-body img {
+    .post-body--editorial img {
       width: calc(100% + 8rem);
       max-width: none;
       margin-left: -4rem;
