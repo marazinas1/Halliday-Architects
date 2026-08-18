@@ -1,59 +1,61 @@
-# Central branding, admin settings, sidebar shell, branded login
+# Blog module
 
-## Part 1 — site_settings as the single branding source
+A full blog for the practice: image-led posts, client-managed categories, a comfortable writing experience in admin, and public pages that read like part of this site rather than a bolted-on module.
 
-Migration (structure only, no data):
+## Data model
 
-- `site_settings`: `id` (uuid pk), single-row guard (unique constant column), `site_name` text, `logo_path`, `logo_dark_path`, `favicon_path`, `og_image_path` (all nullable text storage paths), `updated_at` with the existing trigger.
-- GRANTs + RLS mirroring `team_members`: `anon` and `authenticated` can read; only `is_admin()` can insert/update/delete.
-- New public storage bucket `brand-assets`: public read, admin-only write/update/delete policies on `storage.objects`.
+`blog_categories` — name, slug, sort_order, created_at. Managed in admin so the client defines his own topics. No categories seeded from our side.
 
-Client side:
+`blog_posts` — title, slug (unique), excerpt, body (HTML), cover_path, category_id (nullable, set null on category delete), published, published_at, created_at, updated_at.
 
-- `src/lib/admin/uploadBrandAsset.ts` — optimise + upload + delete helpers, same shape as `uploadTeamPhoto.ts`, returning storage paths.
-- `src/hooks/useSiteSettings.ts` — TanStack Query hook returning resolved public URLs plus `site_name`. When no row or no upload exists it falls back to the bundled `src/assets/halliday-logo.png` and the firm name from `src/content/firm.ts`, so the mark never disappears.
-- `src/components/BrandLogo.tsx` — small component taking `variant="light" | "dark"`, reading the hook, rendering the right URL with the current sizing/alt behaviour.
+Storage bucket `blog-images`, public read, admin-only write. Holds both cover images and images placed inside post bodies, under `covers/` and `body/` prefixes.
 
-Replace the static import in `GlobalNav.tsx`, `GlobalFooter.tsx` and the admin shell with `BrandLogo`. The footer keeps its current dark treatment: it uses `logo_dark_url` when uploaded, otherwise the existing brightness/invert filter on the fallback.
+RLS mirrors the existing tables:
+- Categories: public read, admin write.
+- Posts: public read only where `published = true`; admins full access.
+- Grants: `anon` gets SELECT only; `authenticated` full CRUD; `service_role` all.
 
-Favicon and OG image: when `favicon_path` / `og_image_path` are set, a small effect updates the `<link rel="icon">` href and `og:image` meta at runtime. The static tags in `index.html` remain as the default.
+Draft invisibility is verified by querying the posts table as an anonymous client after inserting an unpublished post — not assumed.
 
-## Part 2 — Admin Settings
+## Rich text editor
 
-New route `/admin/settings` with `AdminSettings.tsx`:
+TipTap (StarterKit + Link + Image) in a new `src/components/admin/RichTextEditor.tsx`, storing HTML. Restrained toolbar: H2, H3, bold, italic, link, bullet list, numbered list, blockquote, image, undo/redo.
 
-- Site name text field.
-- Four upload slots: logo, dark logo, favicon, OG image — each with current preview, replace and remove. Replacing deletes the previous storage object, so no orphans.
-- Uploads go through the existing pipeline with a new `logo` preset in `src/lib/images/optimizeImage.ts`: PNG output (not WebP), transparency preserved, max 800px long edge, minimal compression. A separate `favicon` preset outputs a 256px square PNG. The OG image uses the existing `cover` preset.
-- Live preview panel showing the logo on paper and on ink side by side, so the correct variant is obvious.
-- Saving writes to the single `site_settings` row (upsert) and invalidates the query, so the change appears immediately everywhere.
+Inline images go through the existing `optimizeImage` pipeline (`project` preset, WebP) via a new `src/lib/admin/uploadBlogImage.ts`, the same path as every other upload.
 
-## Part 3 — Admin sidebar shell
+Storage cleanup on delete: body HTML is scanned for `blog-images` URLs, and those paths plus the cover are removed from storage before the row is deleted — the same fail-first ordering used for team photos.
 
-`AdminShell.tsx` is rebuilt on the shadcn sidebar (`SidebarProvider`, `Sidebar collapsible="icon"`):
+## Admin
 
-- Top: logo from `site_settings`.
-- Nav: Projects, Team, Settings — active state from the current route. Blog and Inquiries appear as disabled items marked "Coming soon", so the structure is visible without pretending they work.
-- Bottom: signed-in email and sign-out.
-- A `SidebarTrigger` lives in a thin top bar so the sidebar can always be reopened; on mobile it opens as an overlay.
+`/admin/blog` — list with cover thumbnail, title, category, status badge (Draft in muted stone, Published in ink), published date, edit and delete.
 
-## Part 4 — Branded login split
+`/admin/blog/new` and `/admin/blog/:id/edit` — title with auto slug (overridable, availability-checked like projects), excerpt, category selector, cover upload with progress, rich text body, publish toggle. Publishing stamps `published_at` the first time.
 
-`AdminLogin.tsx` becomes a two-column layout:
+Preview: a toggle in the form that renders the post exactly as the public detail page will, using the same shared components.
 
-- Left (or top on mobile): the existing email/password form, restyled into a quiet card. No provider buttons — there is no Google option in the current code and none will be added.
-- Right: a solid ink panel with the dark logo centred, generously spaced, plus the site name in small caps. Hidden below `md` where the form takes the full width.
-- Reusable pieces live in `src/components/brand/AuthSplit.tsx` and `AuthCard.tsx`, patterned on the reference build but with no translation layer.
+`/admin/blog/categories` — add, rename, reorder, delete categories. Reachable as a secondary link from the Blog list header.
 
-## Verification
+Sidebar: Blog replaces its "coming soon" placeholder; Inquiries stays as-is.
 
-- Upload a new logo in Settings and confirm it changes on the homepage nav, the footer, the admin sidebar and the login panel with no code change.
-- Clear the uploads and confirm the bundled fallback renders in all four places.
-- Sidebar and login checked at 1280px and 390px.
-- Deleting/replacing an asset removes the old file from the bucket.
+## Public pages
+
+`/blog` — reverse chronological published posts, image-led cards (cover, category, date, title, excerpt), category filter row. Intentional empty state matching the projects page.
+
+`/blog/:slug` — cover image full-bleed, then title, date and category, then the body at narrow editorial measure. Typography styles for headings, blockquotes, lists and inline images are defined once in a `prose`-style block; body images are allowed to break wider than the text column. Ends with two or three other recent posts. 404 for unknown or unpublished slugs.
+
+Blog is added to the main navigation, and the sitemap generator picks up published post URLs.
+
+## Footer
+
+A small, low-contrast "Admin" link in the footer bottom row next to the copyright, linking to `/admin`.
 
 ## Technical notes
 
-- New files: migration, `uploadBrandAsset.ts`, `useSiteSettings.ts`, `BrandLogo.tsx`, `AdminSettings.tsx`, `components/brand/AuthSplit.tsx`, `AuthCard.tsx`.
-- Edited: `optimizeImage.ts` (logo/favicon presets), `AdminShell.tsx`, `AdminLogin.tsx`, `GlobalNav.tsx`, `GlobalFooter.tsx`, `App.tsx` (new `/admin/settings` route).
-- English only; no i18n layer introduced.
+- New dependency: `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-link`, `@tiptap/extension-image`.
+- New files: `src/components/admin/RichTextEditor.tsx`, `src/lib/admin/uploadBlogImage.ts`, `src/hooks/admin/useAdminBlog.ts`, `src/hooks/admin/useBlogCategories.ts`, `src/hooks/usePublicBlog.ts`, `src/pages/admin/AdminBlog.tsx`, `AdminBlogForm.tsx`, `AdminBlogCategories.tsx`, `src/pages/BlogPage.tsx`, `src/pages/BlogPostPage.tsx`, `src/components/blog/PostBody.tsx`, `PostCard.tsx`.
+- Edited: `src/App.tsx` (routes), `AdminSidebar.tsx`, `GlobalNav.tsx`, `GlobalFooter.tsx`, `scripts/generate-sitemap.ts`.
+- All spacing from `src/lib/rhythm.ts`; Newsreader headings, Inter body; red only for link hover and small markers.
+
+## Verification
+
+Draft hidden from anonymous reads but listed in admin; publishing surfaces it on `/blog` immediately; inline image uploads land as optimised WebP; deleting a post clears cover and body images from storage; index and detail render cleanly at 1280px and 390px.
