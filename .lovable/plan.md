@@ -21,9 +21,13 @@ Draft invisibility is verified by querying the posts table as an anonymous clien
 
 TipTap (StarterKit + Link + Image) in a new `src/components/admin/RichTextEditor.tsx`, storing HTML. Restrained toolbar: H2, H3, bold, italic, link, bullet list, numbered list, blockquote, image, undo/redo.
 
-Inline images go through the existing `optimizeImage` pipeline (`project` preset, WebP) via a new `src/lib/admin/uploadBlogImage.ts`, the same path as every other upload.
+Inline images go through the existing `optimizeImage` pipeline via a new `src/lib/admin/uploadBlogImage.ts`, the same path as every other upload. A new `body` preset is added to `optimizeImage.ts` — 1600px long edge, WebP — because body images render inside a narrow editorial column and the 2400px `project` preset would bloat a photo-heavy post. Covers keep a larger preset since they render full-bleed.
 
-Storage cleanup on delete: body HTML is scanned for `blog-images` URLs, and those paths plus the cover are removed from storage before the row is deleted — the same fail-first ordering used for team photos.
+Stored HTML is sanitized on render: it passes through DOMPurify with an allow-list limited to what the editor can actually produce (headings, p, strong, em, a, ul/ol/li, blockquote, img, br and their needed attributes) before reaching `dangerouslySetInnerHTML`, in both the public post and the admin preview.
+
+Storage cleanup runs in two places:
+- On delete — body HTML is scanned for `blog-images` paths, and those plus the cover are removed from storage before the row is deleted, the same fail-first ordering used for team photos.
+- On save — images referenced in the incoming body are compared against those referenced in the post's previously stored body, and any no longer referenced are deleted, so an image dropped from a draft before saving does not linger in storage.
 
 ## Admin
 
