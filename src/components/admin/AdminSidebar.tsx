@@ -19,14 +19,12 @@ import {
 const ITEMS = [
   { title: "Projects", url: "/admin", icon: FolderOpen, match: (p: string) => p === "/admin" || p.startsWith("/admin/projects") },
   { title: "Team", url: "/admin/team", icon: Users, match: (p: string) => p.startsWith("/admin/team") },
+  { title: "Blog", url: "/admin/blog", icon: FileText, match: (p: string) => p.startsWith("/admin/blog") },
   { title: "Settings", url: "/admin/settings", icon: Settings, match: (p: string) => p.startsWith("/admin/settings") },
 ];
 
 // Coming next — shown so the structure is visible, not clickable yet.
-const UPCOMING = [
-  { title: "Blog", icon: FileText },
-  { title: "Inquiries", icon: Inbox },
-];
+const UPCOMING = [{ title: "Inquiries", icon: Inbox }];
 
 export default function AdminSidebar({ email }: { email: string }) {
   const { pathname } = useLocation();

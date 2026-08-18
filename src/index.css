@@ -179,6 +179,59 @@
   .divider {
     @apply w-16 h-px bg-border;
   }
+
+  /* Blog post body — shared by the public post, the admin preview and the
+     editor surface, so writing matches reading. */
+  .post-body {
+    @apply text-body-base;
+    color: hsl(var(--stone));
+  }
+  .post-body > * + * {
+    @apply mt-6;
+  }
+  .post-body h2 {
+    @apply font-serif font-light text-h3 mt-14;
+    color: hsl(var(--ink));
+  }
+  .post-body h3 {
+    @apply font-serif font-light text-xl mt-10;
+    color: hsl(var(--ink));
+  }
+  .post-body strong {
+    @apply font-medium;
+    color: hsl(var(--ink));
+  }
+  .post-body a {
+    color: hsl(var(--brand));
+    @apply underline underline-offset-4 decoration-1;
+  }
+  .post-body ul {
+    @apply list-disc pl-5 space-y-2;
+  }
+  .post-body ol {
+    @apply list-decimal pl-5 space-y-2;
+  }
+  .post-body blockquote {
+    @apply border-l pl-6 font-serif font-light text-xl italic my-10;
+    border-color: hsl(var(--brand));
+    color: hsl(var(--ink));
+  }
+  .post-body img {
+    @apply w-full my-12;
+    border-radius: 4px;
+  }
+  /* On the public post, images break wider than the reading measure. */
+  @screen lg {
+    .post-body--editorial img {
+      width: calc(100% + 8rem);
+      max-width: none;
+      margin-left: -4rem;
+    }
+  }
+  .post-body hr {
+    @apply my-12;
+    border-color: hsl(var(--line));
+  }
   
   /* Image overlay gradient */
   .hero-overlay {

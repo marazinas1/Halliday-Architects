@@ -8,6 +8,7 @@ const FOOTER_LINKS = [
   { label: "Our Team", to: "/team" },
   { label: "Services", to: "/services" },
   { label: "Projects", to: "/projects" },
+  { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
 ];
 
@@ -62,8 +63,12 @@ const GlobalFooter = () => {
             ))}
           </div>
         </div>
-        <div className="border-t border-paper/10 pt-8 text-center">
+        <div className="border-t border-paper/10 pt-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
           <p className="text-xs text-paper/40">© 2026 {FIRM.name}. All rights reserved.</p>
+          <span className="hidden sm:inline text-xs text-paper/20">/</span>
+          <Link to="/admin" className="text-xs text-paper/30 hover:text-paper/60 transition-colors">
+            Admin
+          </Link>
         </div>
       </div>
     </footer>

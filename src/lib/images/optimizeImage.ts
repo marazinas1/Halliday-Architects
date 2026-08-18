@@ -4,7 +4,7 @@ import imageCompression from "browser-image-compression";
  * Shared client-side image pipeline. Every admin upload goes through this
  * before it reaches storage: resize down, convert to WebP, strip EXIF.
  */
-export type ImagePreset = "headshot" | "project" | "cover" | "logo" | "favicon";
+export type ImagePreset = "headshot" | "project" | "body" | "cover" | "logo" | "favicon";
 
 type PresetConfig = {
   /** Longest edge, in px. */
@@ -21,6 +21,10 @@ type PresetConfig = {
 export const IMAGE_PRESETS: Record<ImagePreset, PresetConfig> = {
   headshot: { maxDimension: 1200, maxSizeMB: 0.25, skipUnderBytes: 120_000, quality: 0.82, fileType: "image/webp" },
   project: { maxDimension: 2400, maxSizeMB: 1, skipUnderBytes: 400_000, quality: 0.82, fileType: "image/webp" },
+  // Images placed inside a post body render inside a narrow editorial column,
+  // so they never need project-scale pixels. 1600px still allows an image to
+  // break wider than the text without bloating a photo-heavy post.
+  body: { maxDimension: 1600, maxSizeMB: 0.5, skipUnderBytes: 200_000, quality: 0.82, fileType: "image/webp" },
   cover: { maxDimension: 1800, maxSizeMB: 0.6, skipUnderBytes: 250_000, quality: 0.82, fileType: "image/webp" },
   // A logo is line art, not photography: keep transparency and barely compress.
   logo: { maxDimension: 800, maxSizeMB: 0.5, skipUnderBytes: 150_000, quality: 1, fileType: "image/png" },

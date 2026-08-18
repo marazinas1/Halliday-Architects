@@ -18,6 +18,7 @@ const STATIC_PAGES = [
   { path: "/team", changefreq: "monthly", priority: "0.6" },
   { path: "/services", changefreq: "monthly", priority: "0.8" },
   { path: "/projects", changefreq: "weekly", priority: "0.9" },
+  { path: "/blog", changefreq: "weekly", priority: "0.7" },
   { path: "/contact", changefreq: "monthly", priority: "0.6" },
 ];
 
@@ -42,8 +43,27 @@ async function fetchProjects(): Promise<
   return res.json();
 }
 
+async function fetchPosts(): Promise<
+  Array<{ slug: string; updated_at: string | null }>
+> {
+  if (!SUPABASE_ANON_KEY) return [];
+  const url = `${SUPABASE_URL}/rest/v1/blog_posts?select=slug,updated_at&published=eq.true`;
+  const res = await fetch(url, {
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+  });
+  if (!res.ok) {
+    console.warn(`[sitemap] posts fetch failed: ${res.status}`);
+    return [];
+  }
+  return res.json();
+}
+
 async function main() {
   const projects = await fetchProjects();
+  const posts = await fetchPosts();
 
   const urls: string[] = [];
   for (const p of STATIC_PAGES) {
@@ -61,6 +81,15 @@ async function main() {
     );
   }
 
+  for (const row of posts) {
+    const slug = xmlEscape(String(row.slug));
+    const lastmod = row.updated_at
+      ? new Date(row.updated_at).toISOString().slice(0, 10)
+      : null;
+    urls.push(
+      `  <url><loc>${BASE_URL}/blog/${slug}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<priority>0.6</priority></url>`,
+    );
+  }
 
   const xml = [
     `<?xml version="1.0" encoding="UTF-8"?>`,
@@ -71,7 +100,7 @@ async function main() {
 
   writeFileSync(resolve("public/sitemap.xml"), xml);
   console.log(
-    `sitemap.xml written (${STATIC_PAGES.length} static + ${projects.length} projects)`,
+    `sitemap.xml written (${STATIC_PAGES.length} static + ${projects.length} projects + ${posts.length} posts)`,
   );
 }
 
