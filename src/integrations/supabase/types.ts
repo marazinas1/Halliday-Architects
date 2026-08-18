@@ -211,6 +211,39 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          created_at: string
+          favicon_path: string | null
+          id: string
+          logo_dark_path: string | null
+          logo_path: string | null
+          singleton: boolean
+          site_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          favicon_path?: string | null
+          id?: string
+          logo_dark_path?: string | null
+          logo_path?: string | null
+          singleton?: boolean
+          site_name?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          favicon_path?: string | null
+          id?: string
+          logo_dark_path?: string | null
+          logo_path?: string | null
+          singleton?: boolean
+          site_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           created_at: string
