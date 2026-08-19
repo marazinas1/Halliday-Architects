@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import Lightbox from "@/components/projects/Lightbox";
+import PreviewBanner from "@/components/admin/PreviewBanner";
+import { previewPath, readPreview } from "@/lib/admin/preview";
 import {
   PROJECT_TYPE_LABELS,
   usePublicProject,
@@ -26,16 +28,25 @@ const RATIOS = ["aspect-[16/9]", "aspect-[4/3]", "aspect-[4/3]", "aspect-[3/2]",
 
 const ProjectPage = () => {
   const { slug } = useParams();
-  const { data, isLoading } = usePublicProject(slug);
+  const location = useLocation();
+  // Preview mode renders unsaved admin form state instead of the database row.
+  const isPreview = location.pathname === previewPath("project");
+  const previewData = useMemo(
+    () => (isPreview ? readPreview<ReturnType<typeof usePublicProject>["data"]>("project") : null),
+    [isPreview],
+  );
+  const query = usePublicProject(isPreview ? undefined : slug);
+  const data = isPreview ? previewData : query.data;
+  const isLoading = isPreview ? false : query.isLoading;
   const { data: order = [] } = useProjectOrder();
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   const next = useMemo(() => {
-    if (!slug || order.length < 2) return null;
+    if (isPreview || !slug || order.length < 2) return null;
     const i = order.findIndex((p) => p.slug === slug);
     if (i === -1) return null;
     return order[(i + 1) % order.length];
-  }, [order, slug]);
+  }, [order, slug, isPreview]);
 
   if (isLoading) {
     return (
@@ -52,7 +63,14 @@ const ProjectPage = () => {
       <main className="min-h-screen bg-background">
         <GlobalNav />
         <div className="py-40 text-center">
-          <h1 className="font-serif text-3xl font-light text-ink">Project not found</h1>
+          <h1 className="font-serif text-3xl font-light text-ink">
+            {isPreview ? "No preview data" : "Project not found"}
+          </h1>
+          {isPreview && (
+            <p className="mt-4 text-sm text-stone">
+              Open this from the project form's Preview button.
+            </p>
+          )}
           <Link
             to="/projects"
             className="mt-8 inline-flex text-xs uppercase tracking-[0.16em] text-ink underline underline-offset-8"
@@ -75,13 +93,16 @@ const ProjectPage = () => {
   ].filter(Boolean);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
+      {isPreview && <PreviewBanner label="project page" />}
       <GlobalNav />
-      <SEO
-        title={`${project.title} | Halliday Architects`}
-        description={project.tagline ?? project.description ?? project.title}
-        path={`/projects/${project.slug}`}
-      />
+      {!isPreview && (
+        <SEO
+          title={`${project.title} | Halliday Architects`}
+          description={project.tagline ?? project.description ?? project.title}
+          path={`/projects/${project.slug}`}
+        />
+      )}
 
       {/* Hero — image fading into the page on a white gradient */}
       <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
