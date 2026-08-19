@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
+import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import PostCard from "@/components/blog/PostCard";
@@ -86,6 +87,8 @@ const BlogPage = () => {
           )}
         </div>
       </section>
+
+      <CTASection variant="sand" />
 
       <GlobalFooter />
     </main>

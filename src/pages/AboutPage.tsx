@@ -1,5 +1,6 @@
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
+import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import AboutSection from "@/components/sections/AboutSection";
@@ -46,7 +47,9 @@ const AboutPage = () => (
       </div>
     </section>
 
-    <GlobalFooter />
+    <CTASection variant="light" />
+
+      <GlobalFooter />
   </main>
 );
 

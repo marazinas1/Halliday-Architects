@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
+import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import ProjectFilters from "@/components/projects/ProjectFilters";
@@ -144,6 +145,8 @@ const ProjectsPage = () => {
           )}
         </div>
       </section>
+
+      <CTASection variant="light" />
 
       <GlobalFooter />
     </main>
