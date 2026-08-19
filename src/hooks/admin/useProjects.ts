@@ -9,6 +9,9 @@ export type ProjectListItem = {
   published: boolean;
   sort_order: number;
   updated_at: string;
+  project_type: string;
+  location_city: string | null;
+  year_completed: number | null;
   card_image_url: string | null;
 };
 
@@ -18,7 +21,9 @@ export function useProjects() {
     queryFn: async (): Promise<ProjectListItem[]> => {
       const { data: rows, error } = await supabase
         .from("projects")
-        .select("id, slug, title, published, sort_order, updated_at")
+        .select(
+          "id, slug, title, published, sort_order, updated_at, project_type, location_city, year_completed",
+        )
         .order("sort_order", { ascending: true })
         .order("updated_at", { ascending: false });
       if (error) throw error;
