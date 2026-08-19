@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { ArrowLeft, User } from "lucide-react";
+import { ArrowLeft, Eye, User } from "lucide-react";
 import AdminProtected from "@/components/admin/AdminProtected";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ import {
   uploadTeamPhoto,
 } from "@/lib/admin/uploadTeamPhoto";
 import { NotAnImageError } from "@/lib/images/optimizeImage";
+import { openPreview } from "@/lib/admin/preview";
 
 function AdminTeamFormInner() {
   const { id } = useParams();
@@ -106,6 +107,17 @@ function AdminTeamFormInner() {
 
   if (id && isLoading) return <div className="text-stone py-16 text-center">Loading…</div>;
 
+  // Previews the unsaved member exactly as the /team grid card renders it.
+  const preview = () =>
+    openPreview("team", {
+      id: id ?? "preview",
+      name: name.trim() || "Team member",
+      role: role.trim(),
+      credentials: credentials.trim() || null,
+      bio: bio.trim() || null,
+      photo_url: photoPath ? getTeamPhotoUrl(photoPath) : null,
+    });
+
   return (
     <form onSubmit={submit} className="space-y-6 max-w-2xl">
       <Link to="/admin/team" className="inline-flex items-center text-sm text-stone">
@@ -191,6 +203,10 @@ function AdminTeamFormInner() {
       <div className="flex gap-3">
         <Button type="submit" disabled={save.isPending || uploading}>
           {save.isPending ? "Saving…" : "Save"}
+        </Button>
+        <Button type="button" variant="outline" onClick={preview} disabled={uploading}>
+          <Eye className="w-4 h-4 mr-2" />
+          Preview
         </Button>
         <Button type="button" variant="outline" onClick={() => navigate("/admin/team")}>
           Cancel

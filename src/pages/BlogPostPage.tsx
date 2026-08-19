@@ -1,18 +1,34 @@
-import { Link, useParams } from "react-router-dom";
+import { useMemo } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PostBody from "@/components/blog/PostBody";
 import PostCard from "@/components/blog/PostCard";
-import { formatPostDate, usePublishedPost, usePublishedPosts } from "@/hooks/usePublicBlog";
+import PreviewBanner from "@/components/admin/PreviewBanner";
+import { previewPath, readPreview } from "@/lib/admin/preview";
+import {
+  formatPostDate,
+  usePublishedPost,
+  usePublishedPosts,
+  type PublicPost,
+} from "@/hooks/usePublicBlog";
 import { container, gap, sectionPadding } from "@/lib/rhythm";
 
 const BlogPostPage = () => {
   const { slug } = useParams();
-  const { data: post, isLoading } = usePublishedPost(slug);
+  const location = useLocation();
+  const isPreview = location.pathname === previewPath("blog");
+  const previewPost = useMemo(
+    () => (isPreview ? readPreview<PublicPost>("blog") : null),
+    [isPreview],
+  );
+  const query = usePublishedPost(isPreview ? undefined : slug);
+  const post = isPreview ? previewPost : query.data;
+  const isLoading = isPreview ? false : query.isLoading;
   const { data: all } = usePublishedPosts();
 
-  const recent = (all ?? []).filter((p) => p.slug !== slug).slice(0, 3);
+  const recent = (all ?? []).filter((p) => p.slug !== post?.slug).slice(0, 3);
 
   if (isLoading) {
     return (
@@ -31,7 +47,12 @@ const BlogPostPage = () => {
         <SEO title="Post not found | Halliday Architects" description="This journal entry could not be found." path={`/blog/${slug ?? ""}`} />
         <section className="pt-40 pb-32">
           <div className={`${container.narrow} text-center`}>
-            <h1 className="heading-section text-ink mb-6">Post not found</h1>
+            <h1 className="heading-section text-ink mb-6">
+              {isPreview ? "No preview data" : "Post not found"}
+            </h1>
+            {isPreview && (
+              <p className="text-stone mb-6">Open this from the post editor's Preview button.</p>
+            )}
             <Link to="/blog" className="label-uppercase text-ink hover:text-brand">
               Back to the journal
             </Link>
@@ -43,8 +64,10 @@ const BlogPostPage = () => {
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
+      {isPreview && <PreviewBanner label="journal entry" />}
       <GlobalNav lightHero={!post.cover_url} />
+      {!isPreview && (
       <SEO
         title={`${post.title} | Halliday Architects`}
         description={post.excerpt ?? `${post.title} — from the Halliday Architects journal.`}
@@ -52,6 +75,7 @@ const BlogPostPage = () => {
         type="article"
         image={post.cover_url ?? undefined}
       />
+      )}
 
       {post.cover_url ? (
         <div className="w-full h-[60vh] min-h-[380px] bg-sand overflow-hidden">
