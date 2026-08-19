@@ -14,20 +14,23 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["'Newsreader'", "Georgia", "serif"],
-        sans: ["'Inter'", "system-ui", "sans-serif"],
+        sans: ["Urbanist", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+        serif: ["Urbanist", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
       },
       fontWeight: {
         light: "300",
         normal: "400",
         medium: "500",
+        semibold: "600",
+        bold: "700",
+        extrabold: "800",
       },
       fontSize: {
         /* Display and headings — Newsreader, light, tight leading */
-        display: ["clamp(2.75rem, 6vw, 4.5rem)", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-        h1: ["clamp(2.25rem, 4.5vw, 3.5rem)", { lineHeight: "1.12", letterSpacing: "-0.015em" }],
-        h2: ["clamp(1.875rem, 3.2vw, 2.75rem)", { lineHeight: "1.15", letterSpacing: "-0.01em" }],
-        h3: ["clamp(1.375rem, 2vw, 1.75rem)", { lineHeight: "1.2", letterSpacing: "-0.005em" }],
+        display: ["clamp(2.5rem, 5.5vw, 3.75rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],
+        h1: ["clamp(2.25rem, 4.5vw, 3.75rem)", { lineHeight: "1.08", letterSpacing: "-0.02em" }],
+        h2: ["clamp(1.875rem, 3.2vw, 2.25rem)", { lineHeight: "1.15", letterSpacing: "-0.02em" }],
+        h3: ["1.25rem", { lineHeight: "1.3", letterSpacing: "-0.02em" }],
         h4: ["1.125rem", { lineHeight: "1.25" }],
         /* Body and UI — Inter, comfortable leading */
         "body-lg": ["1.125rem", { lineHeight: "1.7" }],
@@ -45,6 +48,9 @@ export default {
         /* Brand red — links, active states and small markers only.
            Never for large fills, buttons or backgrounds. */
         brand: "hsl(var(--brand))",
+        headline: "hsl(var(--text-headline))",
+        body: "hsl(var(--text-body))",
+        caption: "hsl(var(--text-caption))",
         border: "hsl(var(--border))",
         "border-subtle": "hsl(var(--border-subtle))",
         input: "hsl(var(--input))",
