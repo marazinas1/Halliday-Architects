@@ -220,7 +220,7 @@ function AdminProjectFormInner() {
               </AlertDialogContent>
             </AlertDialog>
           )}
-          <Button onClick={save} disabled={saving || uploading}>
+          <Button onClick={save} disabled={saving}>
             {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Save
           </Button>
@@ -399,89 +399,29 @@ function AdminProjectFormInner() {
 
       <Card>
         <CardHeader>
+          <CardTitle className="text-base">Tags</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isEdit ? (
+            <ProjectTagPicker projectId={id!} />
+          ) : (
+            <p className="text-sm text-stone">Save the project first to assign tags.</p>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle className="text-base">Images</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-8">
-          {IMAGE_CATEGORIES.map((category) => (
-            <div key={category} className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label>{IMAGE_CATEGORY_LABELS[category]}</Label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple={category === "gallery"}
-                  disabled={uploading}
-                  onChange={(e) => {
-                    handleUpload(category, e.target.files);
-                    e.target.value = "";
-                  }}
-                  className="text-sm"
-                />
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {byCategory[category].map((img) => (
-                  <div
-                    key={img.storage_path}
-                    className="border border-line rounded overflow-hidden"
-                  >
-                    <img
-                      src={getPublicUrl(img.storage_path)}
-                      alt=""
-                      className="w-full aspect-[4/3] object-cover"
-                      loading="lazy"
-                    />
-                    <div className="p-2 space-y-2">
-                      <Input
-                        value={img.alt_text}
-                        placeholder="Alt text"
-                        onChange={(e) =>
-                          setImages((prev) =>
-                            prev.map((i) =>
-                              i.storage_path === img.storage_path
-                                ? { ...i, alt_text: e.target.value }
-                                : i,
-                            ),
-                          )
-                        }
-                        className="h-8 text-xs"
-                      />
-                      <div className="flex justify-between">
-                        <div className="flex gap-1">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7"
-                            onClick={() => moveImage(img, -1)}
-                          >
-                            <ArrowUp className="w-3.5 h-3.5" />
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7"
-                            onClick={() => moveImage(img, 1)}
-                          >
-                            <ArrowDown className="w-3.5 h-3.5" />
-                          </Button>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => removeImage(img)}
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+        <CardContent>
+          {isEdit ? (
+            <ProjectImageManager projectId={id!} slug={form.slug} />
+          ) : (
+            <p className="text-sm text-stone">
+              Save the project first — images are attached to a saved project.
+            </p>
+          )}
         </CardContent>
       </Card>
     </div>
