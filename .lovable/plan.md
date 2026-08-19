@@ -47,7 +47,9 @@ Rebuild `/projects` as an image-led grid: card image, title, location, year.
 
 ## Technical notes
 
-- Data: `project_images` gains no new columns; cover is expressed via the existing `card` category. Tag joins use the existing `tags` / `project_tags` / `image_tags` tables. No migration is expected; if a uniqueness guard on cover is wanted it would be a small structural migration only.
+- Migration: add `is_cover boolean not null default false` to `project_images`, plus a partial unique index on `(project_id) where is_cover`. Setting a cover goes through a security-definer function that clears the previous cover and sets the new one in a single transaction, so the index can never be tripped by a partial write.
+- Storage: create the `project-images` bucket (public read, admin write) and a `list_project_bucket_paths(_slug)` admin RPC against it; drop the empty `property-images` bucket and its `list_property_bucket_paths` helper.
+- Tag joins use the existing `tags` / `project_tags` / `image_tags` tables.
 - New: `src/components/admin/ProjectImageManager.tsx`, `src/components/admin/TagPicker.tsx`, `src/pages/admin/AdminTags.tsx`, `src/hooks/admin/useTags.ts`, `src/hooks/admin/useImageTags.ts`, `src/components/Lightbox.tsx`, `src/components/projects/ProjectFilters.tsx`.
 - Reworked: `src/lib/admin/imageUpload.ts`, `src/pages/admin/AdminProjectForm.tsx`, `src/pages/ProjectsPage.tsx`, `src/pages/ProjectPage.tsx`, `src/hooks/usePublicProjects.ts`, `AdminSidebar`, `App.tsx` routes.
 - Reordering uses `@dnd-kit` (already the common choice in this stack); if it is not installed it will be added.
