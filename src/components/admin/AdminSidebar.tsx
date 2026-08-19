@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags } from "lucide-react";
+import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
 import {
@@ -21,6 +21,7 @@ const ITEMS = [
   { title: "Tags", url: "/admin/tags", icon: Tags, match: (p: string) => p.startsWith("/admin/tags") },
   { title: "Team", url: "/admin/team", icon: Users, match: (p: string) => p.startsWith("/admin/team") },
   { title: "Blog", url: "/admin/blog", icon: FileText, match: (p: string) => p.startsWith("/admin/blog") },
+  { title: "Homepage", url: "/admin/homepage", icon: Home, match: (p: string) => p.startsWith("/admin/homepage") },
   { title: "Settings", url: "/admin/settings", icon: Settings, match: (p: string) => p.startsWith("/admin/settings") },
 ];
 

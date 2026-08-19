@@ -7,13 +7,69 @@ import fallbackLogo from "@/assets/halliday-logo.png";
 
 export const SITE_SETTINGS_KEY = ["site-settings"];
 
+/**
+ * Homepage copy the client has not overridden yet. Every editable homepage
+ * field falls back to one of these, so the page can never render blank.
+ */
+export const HOMEPAGE_FALLBACKS = {
+  heroHeadline: "Residential architecture in Ocean City, New Jersey",
+  heroSubline: "Halliday Architects — Christopher and Shannon Halliday, RA, LEED AP.",
+  introHeading:
+    "Halliday Architects is a residential architecture practice based in Ocean City, New Jersey.",
+  introBody:
+    "The practice is led by Christopher and Shannon Halliday, both registered architects and LEED accredited professionals, working with homeowners along the New Jersey shore.",
+} as const;
+
+/** Buckets a hero image may live in. */
+export type HeroImageBucket = "site-images" | "project-images";
+
 export type SiteSettingsRow = {
   id: string;
   site_name: string;
   logo_path: string | null;
   logo_dark_path: string | null;
   favicon_path: string | null;
+  hero_image_bucket: string | null;
+  hero_image_path: string | null;
+  hero_headline: string | null;
+  hero_subline: string | null;
+  intro_heading: string | null;
+  intro_body: string | null;
 };
+
+const SETTINGS_COLUMNS =
+  "id, site_name, logo_path, logo_dark_path, favicon_path, hero_image_bucket, hero_image_path, hero_headline, hero_subline, intro_heading, intro_body";
+
+/** Public URL for a hero reference, whichever bucket it points at. */
+export function heroImageUrl(
+  bucket: string | null | undefined,
+  path: string | null | undefined,
+): string | null {
+  if (!bucket || !path) return null;
+  return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+}
+
+export type HomepageContent = {
+  heroImageUrl: string | null;
+  heroHeadline: string;
+  heroSubline: string;
+  introHeading: string;
+  introBody: string;
+};
+
+const trimmed = (value: string | null | undefined, fallback: string) =>
+  value && value.trim().length > 0 ? value.trim() : fallback;
+
+/** Resolves a settings row (or a preview payload) into homepage copy. */
+export function resolveHomepage(row: Partial<SiteSettingsRow> | null): HomepageContent {
+  return {
+    heroImageUrl: heroImageUrl(row?.hero_image_bucket, row?.hero_image_path),
+    heroHeadline: trimmed(row?.hero_headline, HOMEPAGE_FALLBACKS.heroHeadline),
+    heroSubline: trimmed(row?.hero_subline, HOMEPAGE_FALLBACKS.heroSubline),
+    introHeading: trimmed(row?.intro_heading, HOMEPAGE_FALLBACKS.introHeading),
+    introBody: trimmed(row?.intro_body, HOMEPAGE_FALLBACKS.introBody),
+  };
+}
 
 export type SiteSettings = {
   row: SiteSettingsRow | null;
@@ -26,6 +82,7 @@ export type SiteSettings = {
    */
   logoDarkUrl: string | null;
   faviconUrl: string | null;
+  homepage: HomepageContent;
 };
 
 export const FALLBACK_LOGO = fallbackLogo;
@@ -37,7 +94,7 @@ export function useSiteSettings() {
     queryFn: async (): Promise<SiteSettings> => {
       const { data, error } = await supabase
         .from("site_settings")
-        .select("id, site_name, logo_path, logo_dark_path, favicon_path")
+        .select(SETTINGS_COLUMNS)
         .maybeSingle();
       if (error) throw error;
       const row = (data as SiteSettingsRow | null) ?? null;
@@ -47,6 +104,7 @@ export function useSiteSettings() {
         logoUrl: row?.logo_path ? getBrandAssetUrl(row.logo_path) : fallbackLogo,
         logoDarkUrl: row?.logo_dark_path ? getBrandAssetUrl(row.logo_dark_path) : null,
         faviconUrl: row?.favicon_path ? getBrandAssetUrl(row.favicon_path) : null,
+        homepage: resolveHomepage(row),
       };
     },
   });
@@ -60,6 +118,7 @@ export function useSiteSettings() {
         logoUrl: fallbackLogo,
         logoDarkUrl: null,
         faviconUrl: null,
+        homepage: resolveHomepage(null),
       },
   };
 }

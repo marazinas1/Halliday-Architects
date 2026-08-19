@@ -58,6 +58,7 @@ type FormState = {
   story: string;
   sort_order: number;
   published: boolean;
+  featured: boolean;
   specs: SpecItem[];
   features: string[];
 };
@@ -76,6 +77,7 @@ const emptyForm: FormState = {
   story: "",
   sort_order: 0,
   published: false,
+  featured: false,
   specs: [],
   features: [],
 };
@@ -114,6 +116,7 @@ function AdminProjectFormInner() {
       story: (p.story as string) ?? "",
       sort_order: (p.sort_order as number) ?? 0,
       published: (p.published as boolean) ?? false,
+      featured: (p.featured as boolean) ?? false,
       specs: asArray<SpecItem>(p.specs),
       features: asArray<string>(p.features),
     });
@@ -143,6 +146,7 @@ function AdminProjectFormInner() {
         story: form.story || null,
         sort_order: form.sort_order,
         published: form.published,
+        featured: form.featured,
         specs: form.specs,
         features: form.features.filter((f) => f.trim()),
       };
@@ -346,6 +350,19 @@ function AdminProjectFormInner() {
                 onCheckedChange={(v) => set("published", v)}
               />
               <Label>Published</Label>
+            </div>
+            <div className="space-y-1 md:col-span-2">
+              <div className="flex items-center gap-3">
+                <Switch
+                  checked={form.featured}
+                  onCheckedChange={(v) => set("featured", v)}
+                />
+                <Label>Feature on the homepage</Label>
+              </div>
+              <p className="text-xs text-stone">
+                The homepage shows four projects. Featured ones come first; the rest
+                of the grid fills with the most recent published projects.
+              </p>
             </div>
           </div>
         </CardContent>

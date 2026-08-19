@@ -4,7 +4,14 @@ import imageCompression from "browser-image-compression";
  * Shared client-side image pipeline. Every admin upload goes through this
  * before it reaches storage: resize down, convert to WebP, strip EXIF.
  */
-export type ImagePreset = "headshot" | "project" | "body" | "cover" | "logo" | "favicon";
+export type ImagePreset =
+  | "headshot"
+  | "project"
+  | "body"
+  | "cover"
+  | "logo"
+  | "favicon"
+  | "hero";
 
 type PresetConfig = {
   /** Longest edge, in px. */
@@ -21,6 +28,9 @@ type PresetConfig = {
 export const IMAGE_PRESETS: Record<ImagePreset, PresetConfig> = {
   headshot: { maxDimension: 1200, maxSizeMB: 0.25, skipUnderBytes: 120_000, quality: 0.82, fileType: "image/webp" },
   project: { maxDimension: 2400, maxSizeMB: 1, skipUnderBytes: 400_000, quality: 0.82, fileType: "image/webp" },
+  // The homepage hero renders full-bleed on large displays, so it needs more
+  // pixels than a gallery image inside a grid.
+  hero: { maxDimension: 2560, maxSizeMB: 1.2, skipUnderBytes: 500_000, quality: 0.82, fileType: "image/webp" },
   // Images placed inside a post body render inside a narrow editorial column,
   // so they never need project-scale pixels. 1600px still allows an image to
   // break wider than the text without bloating a photo-heavy post.

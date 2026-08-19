@@ -16,6 +16,7 @@ import {
 import { toast } from "sonner";
 import { useProjects, type ProjectListItem } from "@/hooks/admin/useProjects";
 import { useUpdateProjectPublished } from "@/hooks/admin/useUpdateProjectPublished";
+import { useUpdateProjectFeatured } from "@/hooks/admin/useUpdateProjectFeatured";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectType } from "@/hooks/usePublicProjects";
 import AdminProtected from "@/components/admin/AdminProtected";
@@ -69,6 +70,7 @@ const typeLabel = (t: string) => PROJECT_TYPE_LABELS[t as ProjectType] ?? t;
 function AdminProjectsInner() {
   const { data, isLoading } = useProjects();
   const updatePublished = useUpdateProjectPublished();
+  const updateFeatured = useUpdateProjectFeatured();
   const deleteProject = useDeleteProject();
 
   const [view, setView] = useState<ViewMode>("grid");
@@ -132,6 +134,11 @@ function AdminProjectsInner() {
   const onTogglePublished = (id: string, published: boolean) =>
     updatePublished.mutate({ id, published });
 
+  const onToggleFeatured = (id: string, featured: boolean) =>
+    updateFeatured.mutate({ id, featured });
+
+  const featuredCount = rows.filter((p) => p.featured).length;
+
   const confirmDelete = () => {
     if (!toDelete) return;
     deleteProject.mutate(toDelete.id, {
@@ -148,6 +155,14 @@ function AdminProjectsInner() {
           <h1 className="truncate text-2xl font-semibold text-ink">Projects</h1>
           <p className="text-sm text-stone">
             {rows.length} {rows.length === 1 ? "project" : "projects"} total
+            {" · "}
+            <span
+              className={cn(
+                featuredCount === 4 ? "text-stone" : "font-medium text-amber-700",
+              )}
+            >
+              {featuredCount} of 4 featured on the homepage
+            </span>
           </p>
         </div>
         <Button asChild>
@@ -230,6 +245,7 @@ function AdminProjectsInner() {
           onDelete={setToDelete}
           onCopy={copyLink}
           onTogglePublished={onTogglePublished}
+          onToggleFeatured={onToggleFeatured}
         />
       ) : (
         <TableView
@@ -237,6 +253,7 @@ function AdminProjectsInner() {
           onDelete={setToDelete}
           onCopy={copyLink}
           onTogglePublished={onTogglePublished}
+          onToggleFeatured={onToggleFeatured}
         />
       )}
 
@@ -294,9 +311,14 @@ type RowHandlers = {
   onDelete: (v: { id: string; title: string }) => void;
   onCopy: (slug: string) => void;
   onTogglePublished: (id: string, published: boolean) => void;
+  onToggleFeatured: (id: string, featured: boolean) => void;
 };
 
-function RowActions({ p, onDelete, onCopy }: { p: ProjectListItem } & Omit<RowHandlers, "onTogglePublished">) {
+function RowActions({
+  p,
+  onDelete,
+  onCopy,
+}: { p: ProjectListItem } & Omit<RowHandlers, "onTogglePublished" | "onToggleFeatured">) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -327,7 +349,13 @@ function RowActions({ p, onDelete, onCopy }: { p: ProjectListItem } & Omit<RowHa
   );
 }
 
-function GridView({ items, onDelete, onCopy, onTogglePublished }: { items: ProjectListItem[] } & RowHandlers) {
+function GridView({
+  items,
+  onDelete,
+  onCopy,
+  onTogglePublished,
+  onToggleFeatured,
+}: { items: ProjectListItem[] } & RowHandlers) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {items.map((p) => (
@@ -366,6 +394,14 @@ function GridView({ items, onDelete, onCopy, onTogglePublished }: { items: Proje
               />
               <span>{p.published ? "Visible on site" : "Hidden"}</span>
             </div>
+            <div className="flex items-center gap-2 text-sm text-stone">
+              <Switch
+                checked={p.featured}
+                onCheckedChange={(c) => onToggleFeatured(p.id, c)}
+                aria-label="Featured on homepage"
+              />
+              <span>{p.featured ? "On the homepage" : "Not on the homepage"}</span>
+            </div>
           </CardContent>
           <CardFooter className="flex items-center justify-between gap-2 border-t border-line pt-4">
             <Button asChild variant="secondary" size="sm" className="flex-1">
@@ -382,7 +418,13 @@ function GridView({ items, onDelete, onCopy, onTogglePublished }: { items: Proje
   );
 }
 
-function TableView({ items, onDelete, onCopy, onTogglePublished }: { items: ProjectListItem[] } & RowHandlers) {
+function TableView({
+  items,
+  onDelete,
+  onCopy,
+  onTogglePublished,
+  onToggleFeatured,
+}: { items: ProjectListItem[] } & RowHandlers) {
   const navigate = useNavigate();
   return (
     <div className="overflow-x-auto rounded-lg border border-line bg-card">
@@ -395,6 +437,7 @@ function TableView({ items, onDelete, onCopy, onTogglePublished }: { items: Proj
             <TableHead>Year</TableHead>
             <TableHead>Order</TableHead>
             <TableHead>Published</TableHead>
+            <TableHead>Homepage</TableHead>
             <TableHead className="w-[140px] text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -423,6 +466,13 @@ function TableView({ items, onDelete, onCopy, onTogglePublished }: { items: Proj
                   checked={p.published}
                   onCheckedChange={(c) => onTogglePublished(p.id, c)}
                   aria-label="Published"
+                />
+              </TableCell>
+              <TableCell>
+                <Switch
+                  checked={p.featured}
+                  onCheckedChange={(c) => onToggleFeatured(p.id, c)}
+                  aria-label="Featured on homepage"
                 />
               </TableCell>
               <TableCell>

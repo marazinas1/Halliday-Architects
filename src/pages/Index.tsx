@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
@@ -8,18 +9,36 @@ import Reveal from "@/components/Reveal";
 import SelectedWork from "@/components/sections/SelectedWork";
 import ServicesPreview from "@/components/sections/ServicesPreview";
 import StudioPreview from "@/components/sections/StudioPreview";
+import PreviewBanner from "@/components/admin/PreviewBanner";
 import { container, sectionPadding } from "@/lib/rhythm";
+import {
+  resolveHomepage,
+  useSiteSettings,
+  type SiteSettingsRow,
+} from "@/hooks/useSiteSettings";
+import { readPreview } from "@/lib/admin/preview";
 
 /*
- * PLACEHOLDER COPY — awaiting the client's own words.
- * Everything written here is factually defensible (a residential architecture
- * practice in Ocean City, New Jersey) and deliberately says less rather than
- * claiming services we have no evidence for.
+ * Hero and introduction copy come from site_settings, edited at /admin/homepage.
+ * Every field falls back to HOMEPAGE_FALLBACKS when empty, so the page never
+ * renders blank.
  */
 
 const Index = () => {
+  const { pathname } = useLocation();
+  const isPreview = pathname === "/admin/preview/homepage";
+  const { settings } = useSiteSettings();
+  const previewRow = isPreview ? readPreview<Partial<SiteSettingsRow>>("homepage") : null;
+  const content = isPreview ? resolveHomepage(previewRow) : settings.homepage;
+
+  // A hero that referenced a since-deleted project image must not leave a
+  // broken frame — treat a failed load exactly like no image at all.
+  const [heroFailed, setHeroFailed] = useState(false);
+  const heroUrl = content.heroImageUrl && !heroFailed ? content.heroImageUrl : null;
+
   return (
     <main className="min-h-screen bg-background">
+      {isPreview && <PreviewBanner label="homepage" />}
       <GlobalNav lightHero />
       <SEO
         title="Halliday Architects | Residential Architecture in Ocean City, NJ"
@@ -27,32 +46,51 @@ const Index = () => {
         path="/"
       />
 
-      {/*
-        Hero — flat sand block at 16:9 stands in for the photography the client
-        is sending. No scrim until a real image sits behind it.
-      */}
-      <section className="bg-sand">
-        <div className={`${container.wide} min-h-[70vh] md:min-h-[80vh] flex items-end pt-32 pb-16 md:pb-24`}>
+      {/* Hero — photography when set, otherwise the plain sand block. */}
+      <section className={`relative ${heroUrl ? "bg-ink" : "bg-sand"}`}>
+        {heroUrl && (
+          <>
+            <img
+              src={heroUrl}
+              alt=""
+              aria-hidden="true"
+              onError={() => setHeroFailed(true)}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Scrim for legibility, then the white fade the project heroes use. */}
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/25 to-ink/40" />
+            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+          </>
+        )}
+        <div
+          className={`relative ${container.wide} min-h-[70vh] md:min-h-[80vh] flex items-end pt-32 pb-16 md:pb-24`}
+        >
           <div className="max-w-3xl animate-fade-in-up">
-            <h1 className="heading-display text-ink">
-              Residential architecture
-              <br className="hidden md:block" />{" "}
-              in Ocean City, New Jersey
+            <h1 className={`heading-display ${heroUrl ? "text-background" : "text-ink"}`}>
+              {content.heroHeadline}
             </h1>
-            <p className="text-body mt-8 max-w-xl">
-              Halliday Architects — Christopher and Shannon Halliday, RA, LEED AP.
+            <p
+              className={`mt-8 max-w-xl text-base leading-relaxed ${heroUrl ? "text-background/85" : "text-stone"}`}
+            >
+              {content.heroSubline}
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
                 to="/contact"
-                className="group inline-flex items-center justify-center gap-2 h-12 px-8 rounded bg-ink text-paper text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 hover:opacity-90"
+                className={`group inline-flex items-center justify-center gap-2 h-12 px-8 rounded text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 hover:opacity-90 ${
+                  heroUrl ? "bg-background text-ink" : "bg-ink text-paper"
+                }`}
               >
                 Start a project
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/projects"
-                className="inline-flex items-center justify-center h-12 px-8 rounded border border-line text-ink text-sm font-medium uppercase tracking-[0.1em] transition-colors duration-300 hover:bg-sand"
+                className={`inline-flex items-center justify-center h-12 px-8 rounded border text-sm font-medium uppercase tracking-[0.1em] transition-colors duration-300 ${
+                  heroUrl
+                    ? "border-background/50 text-background hover:bg-background/10"
+                    : "border-line text-ink hover:bg-sand"
+                }`}
               >
                 View our work
               </Link>
@@ -61,7 +99,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ─── Introduction — placeholder, awaiting the client's own words ─── */}
+      {/* ─── Introduction ─── */}
       <section className={sectionPadding.base}>
         <div className={container.wide}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
@@ -69,13 +107,10 @@ const Index = () => {
             <div className="lg:col-span-9">
               <Reveal>
                 <p className="font-serif font-light text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-ink max-w-3xl">
-                  Halliday Architects is a residential architecture practice based in
-                  Ocean City, New Jersey.
+                  {content.introHeading}
                 </p>
                 <p className="text-body mt-10 max-w-xl">
-                  The practice is led by Christopher and Shannon Halliday, both
-                  registered architects and LEED accredited professionals, working
-                  with homeowners along the New Jersey shore.
+                  {content.introBody}
                 </p>
                 <Link
                   to="/about"

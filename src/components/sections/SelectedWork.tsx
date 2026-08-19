@@ -59,7 +59,17 @@ const MobileProjectCard = ({ card }: { card: Card }) => {
 
 const SelectedWork = () => {
   const { data, isLoading } = usePublicProjects();
-  const projects = (data ?? []).slice(0, LIMIT);
+  // Featured projects lead, in their sort order. Any remaining slots fill with
+  // the most recent published projects so the grid is never half empty — and
+  // the /projects ordering stays untouched.
+  const all = data ?? [];
+  const featured = all.filter((p) => p.featured).slice(0, LIMIT);
+  const chosen = new Set(featured.map((p) => p.id));
+  const filler = all
+    .filter((p) => !chosen.has(p.id))
+    .slice()
+    .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+  const projects = [...featured, ...filler].slice(0, LIMIT);
 
   const cards: Card[] = [
     ...projects.map((p) => ({
