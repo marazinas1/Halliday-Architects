@@ -245,6 +245,7 @@ function AdminProjectsInner() {
           onDelete={setToDelete}
           onCopy={copyLink}
           onTogglePublished={onTogglePublished}
+          onToggleFeatured={onToggleFeatured}
         />
       ) : (
         <TableView
@@ -252,6 +253,7 @@ function AdminProjectsInner() {
           onDelete={setToDelete}
           onCopy={copyLink}
           onTogglePublished={onTogglePublished}
+          onToggleFeatured={onToggleFeatured}
         />
       )}
 
