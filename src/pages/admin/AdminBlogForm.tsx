@@ -185,6 +185,7 @@ function AdminBlogFormInner() {
   if (id && isLoading) return <div className="text-stone py-16 text-center">Loading…</div>;
 
   const categoryName = categories?.find((c) => c.id === categoryId)?.name ?? null;
+  const coverUrl = coverPath ? getBlogImageUrl(coverPath) : null;
 
   return (
     <form onSubmit={submit} className="space-y-8 max-w-4xl pb-12">
