@@ -230,6 +230,7 @@ export type Database = {
           client_brief: string | null
           created_at: string
           description: string | null
+          featured: boolean
           features: Json
           headline: string | null
           id: string
@@ -250,6 +251,7 @@ export type Database = {
           client_brief?: string | null
           created_at?: string
           description?: string | null
+          featured?: boolean
           features?: Json
           headline?: string | null
           id?: string
@@ -270,6 +272,7 @@ export type Database = {
           client_brief?: string | null
           created_at?: string
           description?: string | null
+          featured?: boolean
           features?: Json
           headline?: string | null
           id?: string
@@ -292,7 +295,13 @@ export type Database = {
         Row: {
           created_at: string
           favicon_path: string | null
+          hero_headline: string | null
+          hero_image_bucket: string | null
+          hero_image_path: string | null
+          hero_subline: string | null
           id: string
+          intro_body: string | null
+          intro_heading: string | null
           logo_dark_path: string | null
           logo_path: string | null
           singleton: boolean
@@ -302,7 +311,13 @@ export type Database = {
         Insert: {
           created_at?: string
           favicon_path?: string | null
+          hero_headline?: string | null
+          hero_image_bucket?: string | null
+          hero_image_path?: string | null
+          hero_subline?: string | null
           id?: string
+          intro_body?: string | null
+          intro_heading?: string | null
           logo_dark_path?: string | null
           logo_path?: string | null
           singleton?: boolean
@@ -312,7 +327,13 @@ export type Database = {
         Update: {
           created_at?: string
           favicon_path?: string | null
+          hero_headline?: string | null
+          hero_image_bucket?: string | null
+          hero_image_path?: string | null
+          hero_subline?: string | null
           id?: string
+          intro_body?: string | null
+          intro_heading?: string | null
           logo_dark_path?: string | null
           logo_path?: string | null
           singleton?: boolean
