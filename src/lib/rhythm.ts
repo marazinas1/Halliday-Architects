@@ -6,27 +6,31 @@
  * site and crowding reads as cheap.
  */
 
-/** Vertical padding for full-width page sections. */
+/**
+ * Mirrors the StageHomy system 1:1:
+ *   .section-padding  → py-24 md:py-32
+ *   .container-wide   → max-w-[1440px] mx-auto px-6 lg:px-8
+ */
 export const sectionPadding = {
   /** Standard section rhythm. */
-  base: "py-24 md:py-32 lg:py-40",
+  base: "py-24 md:py-32",
   /** Tighter section, used when two related bands sit next to each other. */
-  tight: "py-16 md:py-20 lg:py-24",
+  tight: "py-16 md:py-20",
   /** Expansive section, for statements and closing calls to action. */
-  loose: "py-32 md:py-44 lg:py-56",
+  loose: "py-32 md:py-40",
 } as const;
 
 /** Horizontal gutters applied to every container. */
-export const gutter = "px-6 sm:px-8 lg:px-12" as const;
+export const gutter = "px-6 lg:px-8" as const;
 
 /** Container widths. */
 export const container = {
   /** Default content width for grids and galleries. */
-  wide: `container mx-auto ${gutter} max-w-7xl`,
+  wide: `max-w-[1440px] mx-auto ${gutter}`,
   /** Editorial width for prose-led sections. */
-  content: `container mx-auto ${gutter} max-w-5xl`,
+  content: `max-w-5xl mx-auto ${gutter}`,
   /** Narrow measure for single-column reading. */
-  narrow: `container mx-auto ${gutter} max-w-3xl`,
+  narrow: `max-w-3xl mx-auto ${gutter}`,
   /** Unconstrained, for full-bleed imagery. */
   full: `w-full ${gutter}`,
 } as const;
