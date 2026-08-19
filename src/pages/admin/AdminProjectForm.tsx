@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Trash2, Loader2 } from "lucide-react";
+import { Trash2, Loader2, Eye } from "lucide-react";
 
 import AdminProtected from "@/components/admin/AdminProtected";
 import StringListEditor from "@/components/admin/StringListEditor";
@@ -32,6 +32,8 @@ import { useProject } from "@/hooks/admin/useProject";
 import { useSlugAvailability } from "@/hooks/admin/useSlugAvailability";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
 import { isValidSlug, slugify } from "@/lib/admin/slug";
+import { getPublicUrl } from "@/lib/admin/imageUpload";
+import { openPreview } from "@/lib/admin/preview";
 
 const PROJECT_TYPES = ["new_build", "renovation", "interior", "addition"] as const;
 type ProjectType = (typeof PROJECT_TYPES)[number];
@@ -179,6 +181,50 @@ function AdminProjectFormInner() {
     return <div className="py-24 text-center text-stone">Loading…</div>;
   }
 
+  /**
+   * Opens the public project page in a new tab rendered from the current form
+   * state. Images come from the rows already saved by the image manager.
+   */
+  const preview = () => {
+    const images = (data?.images ?? []) as Array<{
+      id: string;
+      category: string;
+      storage_path: string;
+      alt_text: string | null;
+      is_cover: boolean;
+    }>;
+    const hero =
+      images.find((i) => i.category === "hero") ?? images.find((i) => i.is_cover) ?? images[0];
+    openPreview("project", {
+      project: {
+        id: id ?? "preview",
+        slug: form.slug || "preview",
+        title: form.title || "Untitled project",
+        headline: form.headline || null,
+        tagline: form.tagline || null,
+        description: form.description || null,
+        location_city: form.location_city || null,
+        location_state: form.location_state || null,
+        project_type: form.project_type,
+        year_completed: form.year_completed ? Number(form.year_completed) : null,
+        client_brief: form.client_brief || null,
+        story: form.story || null,
+        specs: form.specs,
+        features: form.features.filter((f) => f.trim()),
+        published: form.published,
+      },
+      location: [form.location_city, form.location_state].filter(Boolean).join(", "),
+      heroUrl: hero ? getPublicUrl(hero.storage_path) : null,
+      gallery: images
+        .filter((i) => i.id !== hero?.id && i.category !== "card")
+        .map((i) => ({
+          id: i.id,
+          src: getPublicUrl(i.storage_path),
+          alt: i.alt_text ?? form.title,
+        })),
+    });
+  };
+
   return (
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
@@ -223,6 +269,10 @@ function AdminProjectFormInner() {
           <Button onClick={save} disabled={saving}>
             {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Save
+          </Button>
+          <Button variant="outline" onClick={preview} disabled={saving}>
+            <Eye className="w-4 h-4 mr-2" />
+            Preview
           </Button>
         </div>
       </div>
