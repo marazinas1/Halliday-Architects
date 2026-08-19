@@ -9,6 +9,10 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Progress } from "@/components/ui/progress";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { uploadBlogBodyImage } from "@/lib/admin/uploadBlogImage";
 import { getBlogImageUrl } from "@/lib/admin/uploadBlogImage";
 import { NotAnImageError } from "@/lib/images/optimizeImage";
@@ -16,6 +20,8 @@ import { NotAnImageError } from "@/lib/images/optimizeImage";
 type Props = {
   value: string;
   onChange: (html: string) => void;
+  /** Minimum editor height. The body is the main working area. */
+  minHeight?: string;
 };
 
 const ToolbarButton = ({
@@ -31,23 +37,29 @@ const ToolbarButton = ({
   children: React.ReactNode;
   disabled?: boolean;
 }) => (
-  <Button
-    type="button"
-    variant={active ? "secondary" : "ghost"}
-    size="icon"
-    className="h-8 w-8"
-    onClick={onClick}
-    aria-label={label}
-    title={label}
-    disabled={disabled}
-  >
-    {children}
-  </Button>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button
+        type="button"
+        variant={active ? "secondary" : "ghost"}
+        size="icon"
+        className="h-9 w-9"
+        onClick={onClick}
+        aria-label={label}
+        disabled={disabled}
+      >
+        {children}
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent side="bottom">{label}</TooltipContent>
+  </Tooltip>
 );
 
-export default function RichTextEditor({ value, onChange }: Props) {
+export default function RichTextEditor({ value, onChange, minHeight = "560px" }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [dragOver, setDragOver] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -59,8 +71,10 @@ export default function RichTextEditor({ value, onChange }: Props) {
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
-        class: "post-body focus:outline-none min-h-[360px] px-4 py-4",
+        class: "post-body focus:outline-none px-5 py-5",
+        style: `min-height:${minHeight}`,
       },
+      handleDrop: () => false,
     },
   });
 
@@ -85,27 +99,56 @@ export default function RichTextEditor({ value, onChange }: Props) {
     editor.chain().focus().extendMarkRange("link").setLink({ href: url.trim() }).run();
   }, [editor]);
 
-  const handleFile = async (file: File | undefined) => {
+  const handleFile = async (file: File | undefined, posAtDrop?: number) => {
     if (!file || !editor) return;
     setUploading(true);
+    setProgress(0);
     try {
-      const path = await uploadBlogBodyImage(file);
-      editor.chain().focus().setImage({ src: getBlogImageUrl(path) }).run();
+      const path = await uploadBlogBodyImage(file, setProgress);
+      const chain = editor.chain().focus();
+      if (typeof posAtDrop === "number") chain.setTextSelection(posAtDrop);
+      chain.setImage({ src: getBlogImageUrl(path) }).run();
     } catch (e) {
       toast.error(
         e instanceof NotAnImageError ? e.message : `Upload failed: ${(e as Error).message}`,
       );
     } finally {
       setUploading(false);
+      setProgress(0);
       if (fileRef.current) fileRef.current.value = "";
     }
+  };
+
+  /** Dropping an image file anywhere in the editor inserts it at the drop point. */
+  const onDrop = (e: React.DragEvent) => {
+    const file = Array.from(e.dataTransfer.files ?? []).find((f) => f.type.startsWith("image/"));
+    setDragOver(false);
+    if (!file || !editor) return;
+    e.preventDefault();
+    const coords = editor.view.posAtCoords({ left: e.clientX, top: e.clientY });
+    void handleFile(file, coords?.pos);
   };
 
   if (!editor) return null;
 
   return (
-    <div className="border border-line rounded-md bg-card overflow-hidden">
-      <div className="flex flex-wrap items-center gap-1 border-b border-line px-2 py-1.5 bg-sand/60">
+    <div
+      className={cn(
+        "relative border rounded-md bg-card overflow-hidden transition-colors duration-300",
+        dragOver ? "border-ink/60" : "border-line",
+      )}
+      onDragOver={(e) => {
+        if (!Array.from(e.dataTransfer.types ?? []).includes("Files")) return;
+        e.preventDefault();
+        setDragOver(true);
+      }}
+      onDragLeave={(e) => {
+        if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+        setDragOver(false);
+      }}
+      onDrop={onDrop}
+    >
+      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1 border-b border-line px-2 py-1.5 bg-sand/80 backdrop-blur">
         <ToolbarButton label="Heading 2" active={editor.isActive("heading", { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
           <Heading2 className="h-4 w-4" />
         </ToolbarButton>
@@ -133,8 +176,12 @@ export default function RichTextEditor({ value, onChange }: Props) {
           <Quote className="h-4 w-4" />
         </ToolbarButton>
         <span className="w-px h-5 bg-line mx-1" />
-        <ToolbarButton label={uploading ? "Uploading image…" : "Insert image"} disabled={uploading} onClick={() => fileRef.current?.click()}>
-          <ImagePlus className="h-4 w-4" />
+        <ToolbarButton
+          label={uploading ? "Uploading image…" : "Insert image (or drag one in)"}
+          disabled={uploading}
+          onClick={() => fileRef.current?.click()}
+        >
+          {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImagePlus className="h-4 w-4" />}
         </ToolbarButton>
         <span className="flex-1" />
         <ToolbarButton label="Undo" onClick={() => editor.chain().focus().undo().run()}>
@@ -154,7 +201,22 @@ export default function RichTextEditor({ value, onChange }: Props) {
       />
 
       <EditorContent editor={editor} />
-      {uploading && <div className="px-4 py-2 text-xs text-stone border-t border-line">Optimising and uploading image…</div>}
+
+      {dragOver && !uploading && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-sand/70">
+          <span className="text-xs uppercase tracking-[0.14em] text-ink">Drop image to insert</span>
+        </div>
+      )}
+
+      {uploading && (
+        <div className="border-t border-line bg-sand/60 px-4 py-3 space-y-2">
+          <p className="flex items-center gap-2 text-xs text-stone">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            Optimising and uploading image… {Math.round(progress)}%
+          </p>
+          <Progress value={progress} className="h-1" />
+        </div>
+      )}
     </div>
   );
 }
