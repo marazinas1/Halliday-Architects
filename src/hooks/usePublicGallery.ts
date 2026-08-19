@@ -11,7 +11,7 @@ export type GalleryBlock = {
 };
 
 const publicUrl = (path: string) =>
-  supabase.storage.from("property-images").getPublicUrl(path).data.publicUrl;
+  supabase.storage.from("project-images").getPublicUrl(path).data.publicUrl;
 
 /**
  * Loads the combined portfolio gallery: every `gallery` image of every
