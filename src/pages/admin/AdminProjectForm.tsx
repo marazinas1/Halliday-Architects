@@ -120,23 +120,6 @@ function AdminProjectFormInner() {
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
 
-  const moveImage = (img: ImageRow, dir: -1 | 1) => {
-    const group = byCategory[img.category];
-    const idx = group.findIndex((i) => i.storage_path === img.storage_path);
-    const target = idx + dir;
-    if (target < 0 || target >= group.length) return;
-    const reordered = [...group];
-    [reordered[idx], reordered[target]] = [reordered[target], reordered[idx]];
-    const orderByPath = new Map(reordered.map((i, n) => [i.storage_path, n]));
-    setImages((prev) =>
-      prev.map((i) =>
-        i.category === img.category
-          ? { ...i, sort_order: orderByPath.get(i.storage_path) ?? i.sort_order }
-          : i,
-      ),
-    );
-  };
-
   const save = async () => {
     if (!form.title.trim()) return toast.error("Project name is required");
     if (!isValidSlug(form.slug)) return toast.error("Slug is invalid");
@@ -176,36 +159,15 @@ function AdminProjectFormInner() {
         projectId = created.id;
       }
 
-      // Images: replace the whole set for this project (rows are cheap).
-      const { error: delErr } = await supabase
-        .from("project_images")
-        .delete()
-        .eq("project_id", projectId!);
-      if (delErr) throw delErr;
-
-      if (images.length) {
-        const { error: insErr } = await supabase.from("project_images").insert(
-          images.map((img) => ({
-            project_id: projectId!,
-            category: img.category,
-            storage_path: img.storage_path,
-            alt_text: img.alt_text || null,
-            sort_order: img.sort_order,
-          })),
-        );
-        if (insErr) throw insErr;
-      }
-
-      if (removedPaths.length) await deleteStorageObjects(removedPaths);
-      if (images.length) {
-        await sweepProjectFolder(form.slug, new Set(images.map((i) => i.storage_path)));
-      }
-
+      // Images manage themselves — every action in the image manager writes
+      // straight to the database, so a save never rewrites those rows.
       qc.invalidateQueries({ queryKey: ["admin-projects"] });
       qc.invalidateQueries({ queryKey: ["public-projects"] });
       qc.invalidateQueries({ queryKey: ["public-gallery"] });
       toast.success("Project saved");
-      navigate("/admin");
+      // A new project goes straight to its own edit screen so images can be
+      // added immediately.
+      navigate(isEdit ? "/admin" : `/admin/projects/${projectId}/edit`, { replace: !isEdit });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Save failed");
     } finally {
