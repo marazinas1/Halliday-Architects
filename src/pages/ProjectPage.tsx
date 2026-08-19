@@ -28,9 +28,9 @@ const RATIOS = ["aspect-[16/9]", "aspect-[4/3]", "aspect-[4/3]", "aspect-[3/2]",
 
 const ProjectPage = () => {
   const { slug } = useParams();
-  const location = useLocation();
+  const routeLocation = useLocation();
   // Preview mode renders unsaved admin form state instead of the database row.
-  const isPreview = location.pathname === previewPath("project");
+  const isPreview = routeLocation.pathname === previewPath("project");
   const previewData = useMemo(
     () => (isPreview ? readPreview<ReturnType<typeof usePublicProject>["data"]>("project") : null),
     [isPreview],
