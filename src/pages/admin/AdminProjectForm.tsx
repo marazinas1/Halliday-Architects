@@ -89,10 +89,7 @@ function AdminProjectFormInner() {
   const deleteProject = useDeleteProject();
 
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [images, setImages] = useState<ImageRow[]>([]);
-  const [removedPaths, setRemovedPaths] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
   const slugAvailable = useSlugAvailability(form.slug, id);
 
@@ -118,54 +115,10 @@ function AdminProjectFormInner() {
       specs: asArray<SpecItem>(p.specs),
       features: asArray<string>(p.features),
     });
-    setImages(
-      data.images.map((img) => ({
-        id: img.id,
-        category: img.category as ImageCategory,
-        storage_path: img.storage_path,
-        alt_text: img.alt_text ?? "",
-        sort_order: img.sort_order,
-      })),
-    );
   }, [data]);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
-
-  const byCategory = useMemo(() => {
-    const map: Record<ImageCategory, ImageRow[]> = { hero: [], card: [], gallery: [] };
-    for (const img of images) map[img.category]?.push(img);
-    for (const key of IMAGE_CATEGORIES) map[key].sort((a, b) => a.sort_order - b.sort_order);
-    return map;
-  }, [images]);
-
-  const handleUpload = async (category: ImageCategory, files: FileList | null) => {
-    if (!files?.length) return;
-    if (!isValidSlug(form.slug)) {
-      toast.error("Set a valid slug before uploading images.");
-      return;
-    }
-    setUploading(true);
-    try {
-      const uploaded: ImageRow[] = [];
-      let order = byCategory[category].length;
-      for (const file of Array.from(files)) {
-        const { storage_path } = await uploadImage({ file, category, slug: form.slug });
-        uploaded.push({ category, storage_path, alt_text: "", sort_order: order++ });
-      }
-      setImages((prev) => [...prev, ...uploaded]);
-      toast.success(`${uploaded.length} image(s) uploaded`);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Upload failed");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const removeImage = (img: ImageRow) => {
-    setImages((prev) => prev.filter((i) => i.storage_path !== img.storage_path));
-    setRemovedPaths((prev) => [...prev, img.storage_path]);
-  };
 
   const moveImage = (img: ImageRow, dir: -1 | 1) => {
     const group = byCategory[img.category];
