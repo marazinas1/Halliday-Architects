@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Check, Eye, Loader2, Pencil } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Eye, Loader2, Pencil } from "lucide-react";
 import AdminProtected from "@/components/admin/AdminProtected";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,7 @@ import {
 import { NotAnImageError } from "@/lib/images/optimizeImage";
 import { isValidSlug, slugify } from "@/lib/admin/slug";
 import { formatPostDate } from "@/hooks/usePublicBlog";
+import { openPreview } from "@/lib/admin/preview";
 
 const NO_CATEGORY = "__none__";
 
@@ -212,6 +213,28 @@ function AdminBlogFormInner() {
           <Button type="button" variant="outline" onClick={() => setPreview((p) => !p)}>
             {preview ? <Pencil className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
             {preview ? "Edit" : "Preview"}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() =>
+              openPreview("blog", {
+                id: id ?? "preview",
+                title: title.trim() || "Untitled post",
+                slug: slug.trim() || "preview",
+                excerpt: excerpt.trim() || null,
+                body,
+                cover_url: coverUrl,
+                category: categoryName
+                  ? { id: categoryId, name: categoryName, slug: categoryId }
+                  : null,
+                published_at: null,
+                created_at: new Date().toISOString(),
+              })
+            }
+          >
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Preview page
           </Button>
           <Button type="submit" disabled={save.isPending || uploading}>
             {save.isPending ? (
