@@ -16,6 +16,7 @@ import {
 import { toast } from "sonner";
 import { useProjects, type ProjectListItem } from "@/hooks/admin/useProjects";
 import { useUpdateProjectPublished } from "@/hooks/admin/useUpdateProjectPublished";
+import { useUpdateProjectFeatured } from "@/hooks/admin/useUpdateProjectFeatured";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectType } from "@/hooks/usePublicProjects";
 import AdminProtected from "@/components/admin/AdminProtected";
@@ -69,6 +70,7 @@ const typeLabel = (t: string) => PROJECT_TYPE_LABELS[t as ProjectType] ?? t;
 function AdminProjectsInner() {
   const { data, isLoading } = useProjects();
   const updatePublished = useUpdateProjectPublished();
+  const updateFeatured = useUpdateProjectFeatured();
   const deleteProject = useDeleteProject();
 
   const [view, setView] = useState<ViewMode>("grid");
@@ -132,6 +134,11 @@ function AdminProjectsInner() {
   const onTogglePublished = (id: string, published: boolean) =>
     updatePublished.mutate({ id, published });
 
+  const onToggleFeatured = (id: string, featured: boolean) =>
+    updateFeatured.mutate({ id, featured });
+
+  const featuredCount = rows.filter((p) => p.featured).length;
+
   const confirmDelete = () => {
     if (!toDelete) return;
     deleteProject.mutate(toDelete.id, {
@@ -148,6 +155,14 @@ function AdminProjectsInner() {
           <h1 className="truncate text-2xl font-semibold text-ink">Projects</h1>
           <p className="text-sm text-stone">
             {rows.length} {rows.length === 1 ? "project" : "projects"} total
+            {" · "}
+            <span
+              className={cn(
+                featuredCount === 4 ? "text-stone" : "font-medium text-amber-700",
+              )}
+            >
+              {featuredCount} of 4 featured on the homepage
+            </span>
           </p>
         </div>
         <Button asChild>
