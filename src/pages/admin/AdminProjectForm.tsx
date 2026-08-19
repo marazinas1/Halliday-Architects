@@ -1,12 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Trash2, X, ArrowUp, ArrowDown, Loader2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 
 import AdminProtected from "@/components/admin/AdminProtected";
 import StringListEditor from "@/components/admin/StringListEditor";
 import SpecsEditor, { SpecItem } from "@/components/admin/SpecsEditor";
+import ProjectImageManager from "@/components/admin/ProjectImageManager";
+import ProjectTagPicker from "@/components/admin/ProjectTagPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,24 +31,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProject } from "@/hooks/admin/useProject";
 import { useSlugAvailability } from "@/hooks/admin/useSlugAvailability";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
-import {
-  IMAGE_CATEGORIES,
-  IMAGE_CATEGORY_LABELS,
-  type ImageCategory,
-  deleteStorageObjects,
-  getPublicUrl,
-  sweepProjectFolder,
-  uploadImage,
-} from "@/lib/admin/imageUpload";
 import { isValidSlug, slugify } from "@/lib/admin/slug";
-
-type ImageRow = {
-  id?: string;
-  category: ImageCategory;
-  storage_path: string;
-  alt_text: string;
-  sort_order: number;
-};
 
 const PROJECT_TYPES = ["new_build", "renovation", "interior", "addition"] as const;
 type ProjectType = (typeof PROJECT_TYPES)[number];
@@ -104,10 +89,7 @@ function AdminProjectFormInner() {
   const deleteProject = useDeleteProject();
 
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [images, setImages] = useState<ImageRow[]>([]);
-  const [removedPaths, setRemovedPaths] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
   const slugAvailable = useSlugAvailability(form.slug, id);
 
@@ -133,71 +115,10 @@ function AdminProjectFormInner() {
       specs: asArray<SpecItem>(p.specs),
       features: asArray<string>(p.features),
     });
-    setImages(
-      data.images.map((img) => ({
-        id: img.id,
-        category: img.category as ImageCategory,
-        storage_path: img.storage_path,
-        alt_text: img.alt_text ?? "",
-        sort_order: img.sort_order,
-      })),
-    );
   }, [data]);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
-
-  const byCategory = useMemo(() => {
-    const map: Record<ImageCategory, ImageRow[]> = { hero: [], card: [], gallery: [] };
-    for (const img of images) map[img.category]?.push(img);
-    for (const key of IMAGE_CATEGORIES) map[key].sort((a, b) => a.sort_order - b.sort_order);
-    return map;
-  }, [images]);
-
-  const handleUpload = async (category: ImageCategory, files: FileList | null) => {
-    if (!files?.length) return;
-    if (!isValidSlug(form.slug)) {
-      toast.error("Set a valid slug before uploading images.");
-      return;
-    }
-    setUploading(true);
-    try {
-      const uploaded: ImageRow[] = [];
-      let order = byCategory[category].length;
-      for (const file of Array.from(files)) {
-        const { storage_path } = await uploadImage({ file, category, slug: form.slug });
-        uploaded.push({ category, storage_path, alt_text: "", sort_order: order++ });
-      }
-      setImages((prev) => [...prev, ...uploaded]);
-      toast.success(`${uploaded.length} image(s) uploaded`);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Upload failed");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const removeImage = (img: ImageRow) => {
-    setImages((prev) => prev.filter((i) => i.storage_path !== img.storage_path));
-    setRemovedPaths((prev) => [...prev, img.storage_path]);
-  };
-
-  const moveImage = (img: ImageRow, dir: -1 | 1) => {
-    const group = byCategory[img.category];
-    const idx = group.findIndex((i) => i.storage_path === img.storage_path);
-    const target = idx + dir;
-    if (target < 0 || target >= group.length) return;
-    const reordered = [...group];
-    [reordered[idx], reordered[target]] = [reordered[target], reordered[idx]];
-    const orderByPath = new Map(reordered.map((i, n) => [i.storage_path, n]));
-    setImages((prev) =>
-      prev.map((i) =>
-        i.category === img.category
-          ? { ...i, sort_order: orderByPath.get(i.storage_path) ?? i.sort_order }
-          : i,
-      ),
-    );
-  };
 
   const save = async () => {
     if (!form.title.trim()) return toast.error("Project name is required");
@@ -238,36 +159,15 @@ function AdminProjectFormInner() {
         projectId = created.id;
       }
 
-      // Images: replace the whole set for this project (rows are cheap).
-      const { error: delErr } = await supabase
-        .from("project_images")
-        .delete()
-        .eq("project_id", projectId!);
-      if (delErr) throw delErr;
-
-      if (images.length) {
-        const { error: insErr } = await supabase.from("project_images").insert(
-          images.map((img) => ({
-            project_id: projectId!,
-            category: img.category,
-            storage_path: img.storage_path,
-            alt_text: img.alt_text || null,
-            sort_order: img.sort_order,
-          })),
-        );
-        if (insErr) throw insErr;
-      }
-
-      if (removedPaths.length) await deleteStorageObjects(removedPaths);
-      if (images.length) {
-        await sweepProjectFolder(form.slug, new Set(images.map((i) => i.storage_path)));
-      }
-
+      // Images manage themselves — every action in the image manager writes
+      // straight to the database, so a save never rewrites those rows.
       qc.invalidateQueries({ queryKey: ["admin-projects"] });
       qc.invalidateQueries({ queryKey: ["public-projects"] });
       qc.invalidateQueries({ queryKey: ["public-gallery"] });
       toast.success("Project saved");
-      navigate("/admin");
+      // A new project goes straight to its own edit screen so images can be
+      // added immediately.
+      navigate(isEdit ? "/admin" : `/admin/projects/${projectId}/edit`, { replace: !isEdit });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Save failed");
     } finally {
@@ -320,7 +220,7 @@ function AdminProjectFormInner() {
               </AlertDialogContent>
             </AlertDialog>
           )}
-          <Button onClick={save} disabled={saving || uploading}>
+          <Button onClick={save} disabled={saving}>
             {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Save
           </Button>
@@ -499,89 +399,29 @@ function AdminProjectFormInner() {
 
       <Card>
         <CardHeader>
+          <CardTitle className="text-base">Tags</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isEdit ? (
+            <ProjectTagPicker projectId={id!} />
+          ) : (
+            <p className="text-sm text-stone">Save the project first to assign tags.</p>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle className="text-base">Images</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-8">
-          {IMAGE_CATEGORIES.map((category) => (
-            <div key={category} className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label>{IMAGE_CATEGORY_LABELS[category]}</Label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple={category === "gallery"}
-                  disabled={uploading}
-                  onChange={(e) => {
-                    handleUpload(category, e.target.files);
-                    e.target.value = "";
-                  }}
-                  className="text-sm"
-                />
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {byCategory[category].map((img) => (
-                  <div
-                    key={img.storage_path}
-                    className="border border-line rounded overflow-hidden"
-                  >
-                    <img
-                      src={getPublicUrl(img.storage_path)}
-                      alt=""
-                      className="w-full aspect-[4/3] object-cover"
-                      loading="lazy"
-                    />
-                    <div className="p-2 space-y-2">
-                      <Input
-                        value={img.alt_text}
-                        placeholder="Alt text"
-                        onChange={(e) =>
-                          setImages((prev) =>
-                            prev.map((i) =>
-                              i.storage_path === img.storage_path
-                                ? { ...i, alt_text: e.target.value }
-                                : i,
-                            ),
-                          )
-                        }
-                        className="h-8 text-xs"
-                      />
-                      <div className="flex justify-between">
-                        <div className="flex gap-1">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7"
-                            onClick={() => moveImage(img, -1)}
-                          >
-                            <ArrowUp className="w-3.5 h-3.5" />
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7"
-                            onClick={() => moveImage(img, 1)}
-                          >
-                            <ArrowDown className="w-3.5 h-3.5" />
-                          </Button>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => removeImage(img)}
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+        <CardContent>
+          {isEdit ? (
+            <ProjectImageManager projectId={id!} slug={form.slug} />
+          ) : (
+            <p className="text-sm text-stone">
+              Save the project first — images are attached to a saved project.
+            </p>
+          )}
         </CardContent>
       </Card>
     </div>

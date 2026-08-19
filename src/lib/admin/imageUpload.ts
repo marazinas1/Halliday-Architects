@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
+import { optimizeImage } from "@/lib/images/optimizeImage";
 
-/** Portfolio image categories. `gallery` holds the main project photo set. */
+/** Portfolio image categories — these describe layout role, not the cover. */
 export type ImageCategory = "hero" | "card" | "gallery";
 
 export const IMAGE_CATEGORIES: ImageCategory[] = ["hero", "card", "gallery"];
@@ -11,58 +12,23 @@ export const IMAGE_CATEGORY_LABELS: Record<ImageCategory, string> = {
   gallery: "Gallery",
 };
 
-const LONG_EDGE: Record<ImageCategory, number> = {
-  hero: 2400,
-  card: 800,
-  gallery: 2400,
-};
+const BUCKET = "project-images";
 
-const BUCKET = "property-images";
-
-async function resizeToJpeg(file: File, maxLongEdge: number, quality = 0.8): Promise<Blob> {
-  const bmp = await createImageBitmap(file);
-  const { width, height } = bmp;
-  const longest = Math.max(width, height);
-  const scale = longest > maxLongEdge ? maxLongEdge / longest : 1;
-  const targetW = Math.round(width * scale);
-  const targetH = Math.round(height * scale);
-
-  let blob: Blob;
-  if (typeof OffscreenCanvas !== "undefined") {
-    const canvas = new OffscreenCanvas(targetW, targetH);
-    const ctx = canvas.getContext("2d");
-    if (!ctx) throw new Error("Canvas context unavailable");
-    ctx.drawImage(bmp, 0, 0, targetW, targetH);
-    blob = await canvas.convertToBlob({ type: "image/jpeg", quality });
-  } else {
-    const canvas = document.createElement("canvas");
-    canvas.width = targetW;
-    canvas.height = targetH;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) throw new Error("Canvas context unavailable");
-    ctx.drawImage(bmp, 0, 0, targetW, targetH);
-    blob = await new Promise<Blob>((resolve, reject) =>
-      canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error("Canvas encode failed"))),
-        "image/jpeg",
-        quality,
-      ),
-    );
-  }
-  bmp.close?.();
-  return blob;
-}
-
+/**
+ * Optimises with the shared `project` preset (2400px WebP, EXIF stripped) and
+ * uploads. `onProgress` reports 0-100 while the file is processed.
+ */
 export async function uploadImage(params: {
   file: File;
   category: ImageCategory;
   slug: string;
+  onProgress?: (percent: number) => void;
 }): Promise<{ storage_path: string; public_url: string }> {
-  const blob = await resizeToJpeg(params.file, LONG_EDGE[params.category]);
-  const path = `${params.slug}/${params.category}/${crypto.randomUUID()}.jpg`;
+  const blob = await optimizeImage(params.file, "project", params.onProgress);
+  const path = `${params.slug}/${params.category}/${crypto.randomUUID()}.webp`;
   const { error } = await supabase.storage.from(BUCKET).upload(path, blob, {
     cacheControl: "31536000",
-    contentType: "image/jpeg",
+    contentType: "image/webp",
     upsert: false,
   });
   if (error) throw error;
@@ -97,7 +63,7 @@ export async function deleteStorageObjects(paths: string[]): Promise<void> {
       const stillPresent: string[] = [];
       for (const [slug, slugPaths] of bySlug) {
         const { data: listData, error: listErr } = await supabase.rpc(
-          "list_property_bucket_paths",
+          "list_project_bucket_paths",
           { _slug: slug },
         );
         if (listErr) {
@@ -126,11 +92,11 @@ export async function deleteStorageObjects(paths: string[]): Promise<void> {
 async function listAllUnder(slug: string): Promise<string[]> {
   const clean = slug.trim().replace(/^\/+|\/+$/g, "");
   if (!clean) throw new Error("listAllUnder: empty slug");
-  const { data, error } = await supabase.rpc("list_property_bucket_paths", {
+  const { data, error } = await supabase.rpc("list_project_bucket_paths", {
     _slug: clean,
   });
   if (error) throw error;
-  if (!data) throw new Error("list_property_bucket_paths returned no data");
+  if (!data) throw new Error("list_project_bucket_paths returned no data");
   return (data as { name: string }[]).map((r) => r.name);
 }
 
