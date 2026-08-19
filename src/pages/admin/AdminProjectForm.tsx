@@ -2,11 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Trash2, X, ArrowUp, ArrowDown, Loader2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 
 import AdminProtected from "@/components/admin/AdminProtected";
 import StringListEditor from "@/components/admin/StringListEditor";
 import SpecsEditor, { SpecItem } from "@/components/admin/SpecsEditor";
+import ProjectImageManager from "@/components/admin/ProjectImageManager";
+import ProjectTagPicker from "@/components/admin/ProjectTagPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,24 +31,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProject } from "@/hooks/admin/useProject";
 import { useSlugAvailability } from "@/hooks/admin/useSlugAvailability";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
-import {
-  IMAGE_CATEGORIES,
-  IMAGE_CATEGORY_LABELS,
-  type ImageCategory,
-  deleteStorageObjects,
-  getPublicUrl,
-  sweepProjectFolder,
-  uploadImage,
-} from "@/lib/admin/imageUpload";
 import { isValidSlug, slugify } from "@/lib/admin/slug";
-
-type ImageRow = {
-  id?: string;
-  category: ImageCategory;
-  storage_path: string;
-  alt_text: string;
-  sort_order: number;
-};
 
 const PROJECT_TYPES = ["new_build", "renovation", "interior", "addition"] as const;
 type ProjectType = (typeof PROJECT_TYPES)[number];
