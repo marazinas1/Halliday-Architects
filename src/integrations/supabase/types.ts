@@ -160,6 +160,7 @@ export type Database = {
           category: string
           created_at: string
           id: string
+          is_cover: boolean
           project_id: string
           sort_order: number
           storage_path: string
@@ -169,6 +170,7 @@ export type Database = {
           category: string
           created_at?: string
           id?: string
+          is_cover?: boolean
           project_id: string
           sort_order?: number
           storage_path: string
@@ -178,6 +180,7 @@ export type Database = {
           category?: string
           created_at?: string
           id?: string
+          is_cover?: boolean
           project_id?: string
           sort_order?: number
           storage_path?: string
@@ -408,11 +411,15 @@ export type Database = {
     }
     Functions: {
       is_admin: { Args: { _user_id?: string }; Returns: boolean }
-      list_property_bucket_paths: {
+      list_project_bucket_paths: {
         Args: { _slug: string }
         Returns: {
           name: string
         }[]
+      }
+      set_project_cover: {
+        Args: { _image_id: string; _project_id: string }
+        Returns: undefined
       }
     }
     Enums: {
