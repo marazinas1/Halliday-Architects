@@ -4,7 +4,8 @@ Give the client control of the homepage hero and intro, plus a simple way to cho
 
 ## What changes for the client
 
-- A new **Homepage** item in the admin sidebar: hero image upload with preview, and four text fields (headline, subline, intro heading, intro body). Each field carries a one-line note saying where it appears.
+- A new **Homepage** item in the admin sidebar: hero image chooser with preview, and four text fields (headline, subline, intro heading, intro body). Each field carries a one-line note saying where it appears.
+- The hero image can be **picked from existing project photography** (a grid of published project images, searchable by project) or **uploaded** as a standalone photograph. Picking an existing image references it in place — no copy, no second file.
 - A **Preview** button that opens the real homepage in a new tab from the unsaved form state, exactly like the project, blog and team forms already do.
 - A **Featured** toggle on each project, in both the projects list and the project form, with a visible count ("3 of 4 featured") so it is obvious when too few or too many are marked.
 - Any text field left empty falls back to the copy that is on the site today, so the homepage can never render blank.
@@ -17,14 +18,15 @@ Give the client control of the homepage hero and intro, plus a simple way to cho
 ## Technical notes
 
 **Migration**
-- `site_settings`: add `hero_image_path text`, `hero_headline text`, `hero_subline text`, `intro_heading text`, `intro_body text` — all nullable, no defaults. Nothing else.
+- `site_settings`: add `hero_image_bucket text`, `hero_image_path text`, `hero_headline text`, `hero_subline text`, `intro_heading text`, `intro_body text` — all nullable, no defaults. `hero_image_bucket` is `'project-images'` for a picked photo and `'site-images'` for an uploaded one; it is what makes the reference unambiguous and the cleanup rule safe.
 - `projects`: add `featured boolean not null default false`, plus a partial index on `(featured, sort_order)`.
 - Existing RLS and grants on both tables already cover these columns; no policy changes needed.
 
 **Storage and pipeline**
-- Hero image goes to the existing public `brand-assets` bucket under `hero/`, via `uploadBrandAsset` extended with a `hero` kind.
-- New `hero` preset in `src/lib/images/optimizeImage.ts`: 2560px longest edge, ~1.2MB target, quality 0.82, WebP. Full-bleed needs more pixels than the `project` preset.
-- Replacing or clearing the hero deletes the previous storage object, per the existing cleanup rule.
+- New public `site-images` bucket for uploaded homepage photography, admin-write / public-read RLS matching the other buckets. `brand-assets` stays what it is: small, permanent brand marks.
+- Uploads go to `site-images/homepage/<uuid>.webp` through a new `uploadSiteImage` helper on the shared pipeline, using a new `hero` preset in `src/lib/images/optimizeImage.ts`: 2560px longest edge, ~1.2MB target, quality 0.82, WebP.
+- Picked project images are referenced as `('project-images', <existing storage_path>)`. Nothing is copied.
+- **Deletion hazard:** the cleanup rule applies only when `hero_image_bucket = 'site-images'`. Replacing or clearing a picked project image changes the two columns and deletes nothing. Project deletion already wipes its own folder; if the hero pointed at one of those images, the homepage falls back to the sand block rather than a broken image, which the renderer handles by treating a failed/missing URL the same as no image.
 
 **Code**
 - `useSiteSettings`: extend `SiteSettingsRow` and the resolved settings object with the five fields plus a resolved `heroImageUrl`, applying the hardcoded fallbacks currently in `Index.tsx` (kept in one exported `HOMEPAGE_FALLBACKS` object). `useSaveSiteSettings` needs no change — its patch type derives from the row.
