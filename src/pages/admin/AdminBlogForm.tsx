@@ -241,7 +241,7 @@ function AdminBlogFormInner() {
         </article>
       ) : (
         <div className="space-y-8">
-          <Section title="Post details" description="Title, address and summary shown on the blog index.">
+          <Section title="Post details" description="Title, web address and the summary shown on the blog index.">
             <div className="space-y-5">
             <div>
               <Label htmlFor="title">Title</Label>
