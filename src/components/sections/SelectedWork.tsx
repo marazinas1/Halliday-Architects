@@ -82,7 +82,7 @@ const SelectedWork = () => {
 
   return (
     <section className="py-16 md:py-20 bg-background">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-8">
         <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
             <span className="text-sm font-sans font-medium uppercase tracking-widest text-stone mb-4 block">
