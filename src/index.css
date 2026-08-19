@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Inter:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -9,12 +9,17 @@
     /* ── Palette ────────────────────────────────────────────────
        paper #FBFAF8 · sand #F1EEE9 · ink #1C1B19
        stone #55534E · line #E3E0DA · brand red #A81611          */
-    --paper: 40 27% 98%;
-    --sand: 38 22% 93%;
-    --ink: 40 6% 10%;
-    --stone: 43 4% 32%;
-    --line: 40 14% 87%;
+    --paper: 0 0% 100%;
+    --sand: 0 0% 97.6%;
+    --ink: 0 0% 8%;
+    --stone: 0 0% 35%;
+    --line: 0 0% 90%;
     --brand: 2 82% 36%;
+
+    /* StageHomy text tokens */
+    --text-headline: 0 0% 8%;
+    --text-body: 0 0% 35%;
+    --text-caption: 0 0% 38%;
 
     /* Semantic surfaces */
     --background: var(--paper);
@@ -34,7 +39,7 @@
     --secondary-foreground: var(--ink);
 
     --muted: var(--sand);
-    --muted-foreground: 43 4% 45%;
+    --muted-foreground: 0 0% 45%;
 
     --accent: var(--sand);
     --accent-foreground: var(--ink);
@@ -44,11 +49,11 @@
 
     /* Borders */
     --border: var(--line);
-    --border-subtle: 40 14% 91%;
+    --border-subtle: 0 0% 94%;
     --input: var(--line);
     --ring: var(--ink);
 
-    --radius: 0.25rem;
+    --radius: 0.5rem;
 
     /* Glass Effect */
     --glass-bg: 40 27% 98% / 0.85;
@@ -81,17 +86,22 @@
   }
   
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground font-sans antialiased;
     font-weight: 400;
-    line-height: 1.65;
+    line-height: 1.6;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 300;
-    line-height: 1.15;
-    @apply tracking-[-0.01em];
+    @apply font-sans tracking-tight;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: hsl(var(--text-headline));
+  }
+
+  p {
+    @apply font-sans;
+    font-weight: 400;
+    line-height: 1.6;
   }
 
   a {
@@ -111,32 +121,22 @@
   
   /* Elegant Button Styles */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase;
-    @apply bg-ink text-paper rounded;
-    @apply transition-all duration-300 ease-out;
-    @apply hover:bg-ink/90 hover:shadow-md;
-    letter-spacing: 0.15em;
-    border-radius: 4px;
+    @apply inline-flex items-center justify-center gap-2 px-8 h-11 text-sm font-medium rounded;
+    @apply bg-primary text-primary-foreground;
+    @apply transition-colors hover:bg-primary/90;
   }
-  
+
   .btn-outline {
-    @apply inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase;
-    @apply border border-ink text-ink bg-transparent;
-    @apply transition-all duration-300 ease-out;
-    @apply hover:bg-ink hover:text-paper hover:shadow-md;
-    letter-spacing: 0.15em;
-    border-radius: 4px;
+    @apply inline-flex items-center justify-center gap-2 px-8 h-11 text-sm font-medium rounded;
+    @apply border border-input bg-background text-headline;
+    @apply transition-all duration-300 hover:bg-headline hover:text-background;
   }
-  
+
   .btn-ghost {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium;
-    @apply text-stone bg-transparent;
-    @apply transition-all duration-200;
-    @apply hover:text-brand;
-    letter-spacing: 0.05em;
-    border-radius: 4px;
+    @apply inline-flex items-center justify-center gap-2 px-4 h-10 text-sm font-medium rounded;
+    @apply text-headline bg-transparent transition-colors hover:bg-secondary;
   }
-  
+
   /* Section styling */
   .section-padding {
     @apply py-24 md:py-32 lg:py-40;
@@ -146,35 +146,58 @@
     background-color: hsl(var(--background-sand));
   }
   
-  /* Typography */
+  /* Typography — StageHomy scale */
   .heading-display {
-    @apply font-serif font-light text-display;
+    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight;
+    color: hsl(var(--text-headline));
+    letter-spacing: -0.02em;
   }
-  
+
   .heading-section {
-    @apply font-serif font-light text-h2;
+    @apply text-3xl md:text-4xl font-extrabold tracking-tight;
+    color: hsl(var(--text-headline));
+    letter-spacing: -0.02em;
   }
-  
+
   .heading-card {
-    @apply font-serif font-light text-h3;
+    @apply text-xl font-extrabold tracking-tight;
+    color: hsl(var(--text-headline));
+    letter-spacing: -0.02em;
   }
-  
+
   .text-body {
-    @apply text-body-base;
-    color: hsl(var(--stone));
+    @apply text-base font-normal leading-relaxed;
+    color: hsl(var(--text-body));
   }
-  
+
   .text-small {
     @apply text-sm;
-    color: hsl(var(--stone));
+    color: hsl(var(--text-body));
   }
-  
+
   .label-uppercase {
-    @apply text-xs font-medium uppercase tracking-widest;
-    color: hsl(var(--stone));
-    letter-spacing: 0.2em;
+    @apply text-[11px] font-medium uppercase tracking-widest;
+    color: hsl(var(--text-caption));
   }
-  
+
+  /* Unified page header hero */
+  .page-hero {
+    @apply py-12 md:py-16;
+  }
+  .page-hero-content {
+    @apply max-w-4xl mx-auto text-center;
+  }
+  .page-hero-label {
+    @apply text-[11px] font-medium uppercase tracking-widest text-caption mb-4 block;
+  }
+  .page-hero-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold text-headline mb-6 tracking-tight;
+    letter-spacing: -0.02em;
+  }
+  .page-hero-description {
+    @apply text-lg text-body max-w-2xl mx-auto font-normal leading-relaxed;
+  }
+
   /* Divider */
   .divider {
     @apply w-16 h-px bg-border;
@@ -190,11 +213,11 @@
     @apply mt-6;
   }
   .post-body h2 {
-    @apply font-serif font-light text-h3 mt-14;
+    @apply text-2xl font-extrabold tracking-tight mt-14;
     color: hsl(var(--ink));
   }
   .post-body h3 {
-    @apply font-serif font-light text-xl mt-10;
+    @apply text-xl font-extrabold tracking-tight mt-10;
     color: hsl(var(--ink));
   }
   .post-body strong {
@@ -212,7 +235,7 @@
     @apply list-decimal pl-5 space-y-2;
   }
   .post-body blockquote {
-    @apply border-l pl-6 font-serif font-light text-xl italic my-10;
+    @apply border-l pl-6 text-xl font-light italic my-10;
     border-color: hsl(var(--brand));
     color: hsl(var(--ink));
   }
@@ -365,7 +388,23 @@
 
   /* Architectural drawing notation numerals. */
   .numeral {
-    @apply font-serif font-light leading-none;
+    @apply font-light leading-none;
     color: hsl(var(--stone) / 0.35);
+  }
+}
+
+@layer utilities {
+  /* StageHomy layout helpers */
+  .container-wide {
+    @apply max-w-[1440px] mx-auto px-6 lg:px-8;
+  }
+  .bg-subtle {
+    background-color: hsl(var(--sand));
+  }
+  .text-headline {
+    color: hsl(var(--text-headline));
+  }
+  .text-caption {
+    color: hsl(var(--text-caption));
   }
 }
