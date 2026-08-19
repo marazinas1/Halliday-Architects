@@ -6,7 +6,7 @@
  * to the database. localStorage (not sessionStorage) is used because
  * window.open with "noopener" does not clone sessionStorage into the new tab.
  */
-export type PreviewKind = "project" | "blog" | "team";
+export type PreviewKind = "project" | "blog" | "team" | "homepage";
 
 const storageKey = (kind: PreviewKind) => `admin-preview-${kind}`;
 
