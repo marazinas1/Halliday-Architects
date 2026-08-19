@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
@@ -82,7 +83,8 @@ const ProjectPage = () => {
         path={`/projects/${project.slug}`}
       />
 
-      <section className="relative flex h-[72vh] min-h-[440px] items-end overflow-hidden bg-ink">
+      {/* Hero — image fading into the page on a white gradient */}
+      <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
         {heroUrl && (
           <img
             src={heroUrl}
@@ -91,18 +93,35 @@ const ProjectPage = () => {
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/20 to-transparent" />
-        <div className={`relative z-10 ${container.wide} pb-14`}>
-          <h1 className="font-serif text-4xl font-light leading-[1.1] text-paper md:text-6xl">
-            {project.title}
-          </h1>
-          {meta.length > 0 && (
-            <p className="mt-4 text-xs uppercase tracking-[0.18em] text-paper/70">
-              {meta.join(" · ")}
-            </p>
-          )}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
+          <div className="container-wide animate-fade-in-up">
+            <Link
+              to="/projects"
+              className="mb-6 inline-flex items-center gap-2 text-sm text-body transition-colors hover:text-headline"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to projects
+            </Link>
+            {meta.length > 0 && (
+              <span className="mb-2 block text-[11px] font-medium uppercase tracking-widest text-caption">
+                {meta.join(" · ")}
+              </span>
+            )}
+            <h1
+              className="mb-4 text-4xl font-extrabold tracking-tight text-headline md:text-5xl lg:text-6xl"
+              style={{ letterSpacing: "-0.02em" }}
+            >
+              {project.title}
+            </h1>
+            {project.tagline && (
+              <p className="max-w-2xl text-lg font-light text-headline/80">{project.tagline}</p>
+            )}
+          </div>
         </div>
       </section>
+
+      <div className="border-b border-border" />
 
       {(project.client_brief || project.story || project.description) && (
         <section className={sectionPadding.base}>
