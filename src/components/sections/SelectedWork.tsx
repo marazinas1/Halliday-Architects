@@ -3,45 +3,31 @@ import Reveal from "@/components/Reveal";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { container, gap, sectionPadding } from "@/lib/rhythm";
 
-/** Number of projects surfaced on the homepage. */
-const LIMIT = 6;
+/** Number of cards surfaced on the homepage — always four slots. */
+const LIMIT = 4;
 
 const Frame = ({ children }: { children: React.ReactNode }) => (
-  <div className="aspect-[4/3] w-full overflow-hidden bg-sand" style={{ borderRadius: "4px" }}>
+  <div
+    className="relative aspect-[4/5] w-full overflow-hidden bg-sand"
+    style={{ borderRadius: "4px" }}
+  >
     {children}
   </div>
 );
 
-const Skeleton = () => (
-  <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
-    {Array.from({ length: 3 }).map((_, i) => (
-      <div key={i}>
-        <Frame>{null}</Frame>
-        <div className="mt-5 h-3 w-1/2 bg-sand" />
-        <div className="mt-3 h-2 w-1/3 bg-sand" />
-      </div>
-    ))}
-  </div>
-);
-
-/** Deliberate empty state — the portfolio is entered through the admin panel. */
-const Empty = () => (
-  <div
-    className="border border-line px-8 py-20 text-center"
-    style={{ borderRadius: "4px" }}
-  >
-    <p className="text-body max-w-md mx-auto">
-      Selected projects are being prepared for the new site.
-    </p>
-    <Link to="/projects" className="mt-6 inline-block label-uppercase text-ink link-underline">
-      View the portfolio
-    </Link>
-  </div>
+/** Quiet slot shown while the remaining projects are being added. */
+const PlaceholderCard = () => (
+  <Frame>
+    <div className="absolute inset-0 flex items-end p-6">
+      <span className="label-uppercase text-stone/60">In preparation</span>
+    </div>
+  </Frame>
 );
 
 const SelectedWork = () => {
   const { data, isLoading } = usePublicProjects();
   const projects = (data ?? []).slice(0, LIMIT);
+  const placeholders = Math.max(0, LIMIT - projects.length);
 
   return (
     <section className={sectionPadding.base}>
@@ -50,40 +36,52 @@ const SelectedWork = () => {
           <div className="flex flex-wrap items-baseline justify-between gap-4 mb-14 lg:mb-20">
             <h2 className="heading-section text-ink">Selected work</h2>
             <Link to="/projects" className="label-uppercase text-ink link-underline">
-              All projects
+              View all work
             </Link>
           </div>
         </Reveal>
 
-        {isLoading ? (
-          <Skeleton />
-        ) : projects.length === 0 ? (
-          <Empty />
-        ) : (
-          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
-            {projects.map((p) => (
-              <Reveal key={p.id}>
-                <Link to={`/projects/${p.slug}`} className="group block">
-                  <Frame>
-                    {p.card_image_url ? (
-                      <img
-                        src={p.card_image_url}
-                        alt={p.title}
-                        className="w-full h-full object-cover img-hover-scale"
-                        loading="lazy"
-                        decoding="async"
-                      />
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ${gap.grid}`}>
+          {projects.map((p) => (
+            <Reveal key={p.id}>
+              <Link to={`/projects/${p.slug}`} className="group block">
+                <Frame>
+                  {p.card_image_url ? (
+                    <img
+                      src={p.card_image_url}
+                      alt={p.title}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : null}
+                  {/* Title reveals on hover, exactly like the reference grid. */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+                    {p.location ? (
+                      <span className="label-uppercase text-paper/70 block mb-2">{p.location}</span>
                     ) : null}
-                  </Frame>
-                  <h3 className="heading-card text-ink text-lg mt-5 transition-colors duration-500 ease-out group-hover:text-brand">
-                    {p.title}
-                  </h3>
-                  {p.location ? <p className="text-small mt-1">{p.location}</p> : null}
-                </Link>
+                    <h3 className="heading-card text-paper text-xl">{p.title}</h3>
+                  </div>
+                </Frame>
+              </Link>
+            </Reveal>
+          ))}
+
+          {!isLoading &&
+            Array.from({ length: placeholders }).map((_, i) => (
+              <Reveal key={`placeholder-${i}`}>
+                <PlaceholderCard />
               </Reveal>
             ))}
-          </div>
-        )}
+
+          {isLoading &&
+            Array.from({ length: LIMIT }).map((_, i) => (
+              <div key={`skeleton-${i}`}>
+                <Frame>{null}</Frame>
+              </div>
+            ))}
+        </div>
       </div>
     </section>
   );
