@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
+import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import Reveal from "@/components/Reveal";
 import SelectedWork from "@/components/sections/SelectedWork";
@@ -40,6 +42,21 @@ const Index = () => {
             <p className="text-body mt-8 max-w-xl">
               Halliday Architects — Christopher and Shannon Halliday, RA, LEED AP.
             </p>
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Link
+                to="/contact"
+                className="group inline-flex items-center justify-center gap-2 h-12 px-8 rounded bg-ink text-paper text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 hover:opacity-90"
+              >
+                Start a project
+                <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                to="/projects"
+                className="inline-flex items-center justify-center h-12 px-8 rounded border border-line text-ink text-sm font-medium uppercase tracking-[0.1em] transition-colors duration-300 hover:bg-sand"
+              >
+                View our work
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -92,31 +109,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ─── Closing ─── */}
-      <section className={`${sectionPadding.base} section-sand`}>
-        <div className={container.wide}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
-            <p className="label-uppercase lg:col-span-3 lg:pt-4">Contact</p>
-            <div className="lg:col-span-9">
-              <Reveal>
-                <h2 className="heading-display text-ink">Get in touch</h2>
-                <p className="text-body mt-8 max-w-xl">
-                  We are glad to hear about projects along the shore. Call the studio
-                  or send a note and we will reply personally.
-                </p>
-                <div className="mt-10 flex flex-wrap items-center gap-10">
-                  <Link to="/contact" className="label-uppercase text-ink link-underline">
-                    Contact
-                  </Link>
-                  <a href="tel:6099576789" className="label-uppercase text-ink link-underline">
-                    609.957.6789
-                  </a>
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ─── Closing call to action ─── */}
+      <CTASection
+        variant="sand"
+        eyebrow="Get in touch"
+        heading="Start a project with us"
+        description="Tell us about your site and what you have in mind, or call the studio on 609.957.6789. Every enquiry is answered personally."
+      />
 
       <GlobalFooter />
     </main>
