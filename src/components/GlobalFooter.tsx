@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import BrandLogo from "@/components/BrandLogo";
+import SocialLinks from "@/components/SocialLinks";
 import { FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 
@@ -39,6 +40,7 @@ const GlobalFooter = () => {
               <BrandLogo variant="dark" className="h-12 w-auto mb-5" />
             </button>
             <p className="text-sm text-paper/60 leading-relaxed">{FIRM.tagline}</p>
+            <SocialLinks className="mt-6" />
           </div>
           <div>
             <h4 className="text-sm font-sans font-medium uppercase tracking-widest text-paper/40 mb-4">Contact</h4>
