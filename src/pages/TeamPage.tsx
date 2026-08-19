@@ -1,5 +1,6 @@
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
+import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
@@ -28,7 +29,9 @@ const TeamPage = () => (
       </div>
     </section>
 
-    <GlobalFooter />
+    <CTASection variant="sand" />
+
+      <GlobalFooter />
   </main>
 );
 

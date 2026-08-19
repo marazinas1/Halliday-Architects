@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { container } from "@/lib/rhythm";
 
@@ -12,6 +13,8 @@ const NAV_LINKS = [
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
 ];
+
+const CTA_LABEL = "Start a project";
 
 /**
  * `lightHero` is set by pages whose hero is a light surface (currently the
@@ -79,6 +82,15 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
                   {l.label}
                 </NavLink>
               ))}
+              <Link
+                to="/contact"
+                className={`group ml-1 inline-flex items-center gap-2 h-11 px-6 rounded text-xs font-medium uppercase tracking-[0.12em] transition-all duration-300 hover:opacity-90 ${
+                  onLight ? "bg-ink text-paper" : "bg-paper text-ink"
+                }`}
+              >
+                {CTA_LABEL}
+                <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
             </div>
 
             {/* Mobile hamburger */}
@@ -108,6 +120,16 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
                   {l.label}
                 </Link>
               ))}
+              <Link
+                to="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`group mt-2 inline-flex items-center justify-center gap-2 h-12 w-full rounded text-sm font-medium uppercase tracking-[0.12em] transition-all duration-300 hover:opacity-90 ${
+                  onLight ? "bg-ink text-paper" : "bg-paper text-ink"
+                }`}
+              >
+                {CTA_LABEL}
+                <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
             </div>
           </div>
         </nav>
