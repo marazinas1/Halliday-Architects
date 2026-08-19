@@ -29,13 +29,16 @@ Give the client control of the homepage hero and intro, plus a simple way to cho
 - **Deletion hazard:** the cleanup rule applies only when `hero_image_bucket = 'site-images'`. Replacing or clearing a picked project image changes the two columns and deletes nothing. Project deletion already wipes its own folder; if the hero pointed at one of those images, the homepage falls back to the sand block rather than a broken image, which the renderer handles by treating a failed/missing URL the same as no image.
 
 **Code**
-- `useSiteSettings`: extend `SiteSettingsRow` and the resolved settings object with the five fields plus a resolved `heroImageUrl`, applying the hardcoded fallbacks currently in `Index.tsx` (kept in one exported `HOMEPAGE_FALLBACKS` object). `useSaveSiteSettings` needs no change — its patch type derives from the row.
+- `useSiteSettings`: extend `SiteSettingsRow` and the resolved settings object with the new fields plus a resolved `heroImageUrl` (public URL from whichever bucket the row names), applying the hardcoded fallbacks currently in `Index.tsx` (kept in one exported `HOMEPAGE_FALLBACKS` object). `useSaveSiteSettings` needs no change — its patch type derives from the row.
 - New `src/pages/admin/AdminHomepage.tsx` at `/admin/homepage`, reusing the asset-slot and progress pattern from `AdminSettings.tsx`. Sidebar entry added above Settings.
+- New `src/components/admin/HeroImagePicker.tsx`: two tabs — "From projects" (grid of published project images grouped by project, single-select, reusing the existing image queries) and "Upload" (the standard dropzone). Shows the current selection with its source, and a Clear action.
 - `src/lib/admin/preview.ts`: add a `"homepage"` preview kind; `Index.tsx` reads it on `/admin/preview/homepage` and renders `PreviewBanner`. Route registered in `App.tsx`.
 - `usePublicProjects` selects `featured`; `SelectedWork.tsx` does the featured-first, recent-fill selection client-side from the existing query — no second request, and the projects page keeps using the same unmodified list.
 - `AdminProjects.tsx` gets a featured switch per row/card and a header count; `AdminProjectForm.tsx` gets a featured checkbox in the same block as `published`.
 
 **Verification**
-- Upload a hero image in admin, reload the homepage, confirm the image renders and the text sits legibly over it at 1280px and 390px.
+- Pick an existing project image as the hero, reload the homepage, confirm it renders and the text sits legibly over it at 1280px and 390px.
+- Upload a standalone hero photograph, confirm it lands in `site-images` and renders.
+- Clear a picked hero, then confirm the project page still shows that image — nothing was deleted. Replace an uploaded hero and confirm the old `site-images` file is gone.
 - Clear the headline, save, confirm the current copy returns rather than an empty heading.
 - Toggle featured on four projects, confirm the homepage grid matches and `/projects` ordering is unchanged.
