@@ -103,19 +103,15 @@ const Index = () => {
               aria-hidden="true"
               onError={() => setHeroFailed(true)}
               className="absolute inset-0 h-full w-full object-cover will-change-transform"
-              style={{ transform: "scale(1.15)" }}
+              style={{ transform: "scale(1.03)" }}
             />
             {/*
               The photograph is a real house, so the lightest scrim that keeps
-              the copy legible and no more: a wash under the nav that guarantees
-              the logo and links read against any image the admin uploads, and a
-              gentle gradient behind the copy. The middle of the frame is left
-              untouched.
+              the copy legible and no more. The top scrim is owned by GlobalNav
+              (it lives with the nav it protects and works on every page); here
+              only the bottom gradient behind the copy is kept, the middle of the
+              frame left untouched.
             */}
-            <div
-              className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-ink/55 via-ink/25 to-transparent"
-              aria-hidden="true"
-            />
             <div
               className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-ink/75 via-ink/30 to-transparent"
               aria-hidden="true"
