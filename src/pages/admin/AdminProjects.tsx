@@ -141,7 +141,20 @@ function AdminProjectsInner() {
   const onToggleFeatured = (id: string, featured: boolean) =>
     updateFeatured.mutate({ id, featured });
 
-  const featuredCount = rows.filter((p) => p.featured).length;
+  // The homepage only ever shows published projects, so count those.
+  const publishedRows = rows.filter((p) => p.published);
+  const featuredCount = publishedRows.filter((p) => p.featured).length;
+  const slots = Math.min(4, publishedRows.length);
+  const featuredShown = Math.min(featuredCount, slots);
+  const autoFilled = Math.max(0, slots - featuredShown);
+  const featuredNote =
+    featuredCount > 4
+      ? `${featuredCount} of 4 featured — only the first 4 by order appear on the homepage`
+      : featuredCount === 0
+        ? `0 of 4 featured — the homepage shows the first ${slots} ${slots === 1 ? "project" : "projects"} by order`
+        : autoFilled > 0
+          ? `${featuredCount} of 4 featured — the remaining ${autoFilled} ${autoFilled === 1 ? "slot is" : "slots are"} filled automatically by order`
+          : `${featuredCount} of 4 featured on the homepage`;
 
   const confirmDelete = () => {
     if (!toDelete) return;
@@ -162,10 +175,12 @@ function AdminProjectsInner() {
             {" · "}
             <span
               className={cn(
-                featuredCount === 4 ? "text-stone" : "font-medium text-amber-700",
+                featuredCount === slots && featuredCount <= 4
+                  ? "text-stone"
+                  : "font-medium text-amber-700",
               )}
             >
-              {featuredCount} of 4 featured on the homepage
+              {featuredNote}
             </span>
           </p>
         </div>
