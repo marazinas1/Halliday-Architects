@@ -81,9 +81,12 @@ Deno.serve(async (req) => {
   /** Platform owner records are invisible and untouchable to everyone else. */
   const shielded = (userId: string) => platformOwnerIds.has(userId) && !isPlatformOwner
 
-  /** Refuses any change that would leave the site without an owner account. */
+  /**
+   * Refuses any change that would leave the site without an owner account.
+   * The platform owner keeps full access regardless, so it does not apply to them.
+   */
   const wouldRemoveLastOwner = (userId: string) =>
-    roleByUser.get(userId) === 'owner' && ownerIds.length <= 1
+    !isPlatformOwner && roleByUser.get(userId) === 'owner' && ownerIds.length <= 1
 
   if (body.action === 'list') {
     const { data, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 })
