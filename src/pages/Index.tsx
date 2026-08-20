@@ -18,6 +18,8 @@ import {
   type SiteSettingsRow,
 } from "@/hooks/useSiteSettings";
 import { readPreview } from "@/lib/admin/preview";
+import { CREDENTIALS } from "@/content/firm";
+import Testimonials from "@/components/sections/Testimonials";
 
 /*
  * Hero and introduction copy come from site_settings, edited at /admin/homepage.
@@ -26,16 +28,9 @@ import { readPreview } from "@/lib/admin/preview";
  */
 
 /*
- * Credentials shown in the band below the hero.
- * Source: the practice's Houzz profile — Best of Houzz awards 2016-2024 and the
- * 5.0 review rating across 43 reviews; RA / LEED AP from the principals' own
- * credentials. Publicly verifiable; nothing here is estimated or invented.
+ * Credentials shown in the band below the hero come from src/content/firm.ts —
+ * only claims that remain publicly verifiable (AIA, LEED, NCARB, licensure).
  */
-const CREDENTIALS = [
-  { label: "Best of Houzz", value: "Winner, 2016 – 2024" },
-  { label: "Client reviews", value: "5.0 across 43 reviews on Houzz" },
-  { label: "Licensed practice", value: "Registered architects, RA and LEED AP" },
-];
 
 const Index = () => {
   const { pathname } = useLocation();
@@ -217,6 +212,8 @@ const Index = () => {
 
       <AreasServed />
 
+      <Testimonials />
+
       {/* ─── The studio — the principals themselves ─── */}
       <section className={sectionPadding.base}>
         <div className={container.wide}>
@@ -247,7 +244,7 @@ const Index = () => {
         <div className={container.content}>
           <Reveal>
             <p className="statement text-paper max-w-3xl">
-              Every project begins with the site, the light and the way a family
+              Every project begins with the site — its light, its exposure, and the way a family
               intends to live in the house.
             </p>
           </Reveal>
