@@ -22,7 +22,7 @@ const PARTNERS = [
 
 const PartnersSection = () => (
   <section className={sectionPadding.base}>
-    <div className={container.narrow}>
+    <div className={container.content}>
       <Reveal>
         <div className="text-center mb-16">
           <p className="label-uppercase mb-4">Our Partners</p>
@@ -32,8 +32,8 @@ const PartnersSection = () => (
       </Reveal>
 
       <div className="grid gap-12 md:grid-cols-2 md:gap-16">
-        {PARTNERS.map((partner, i) => (
-          <Reveal key={partner.name} delay={i * 100}>
+        {PARTNERS.map((partner) => (
+          <Reveal key={partner.name}>
             <a
               href={partner.href}
               target="_blank"

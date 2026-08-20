@@ -6,6 +6,7 @@ import PageHero from "@/components/PageHero";
 import AboutSection from "@/components/sections/AboutSection";
 import { PrincipalsGrid } from "@/components/sections/TeamSection";
 import Reveal from "@/components/Reveal";
+import PartnersSection from "@/components/sections/PartnersSection";
 import { Link } from "react-router-dom";
 import { container, sectionPadding } from "@/lib/rhythm";
 
@@ -46,6 +47,10 @@ const AboutPage = () => (
         </Reveal>
       </div>
     </section>
+
+    <div className="w-full h-px bg-border" />
+
+    <PartnersSection />
 
     <CTASection variant="light" />
 
