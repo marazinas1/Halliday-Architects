@@ -9,7 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 export type ContentCounts = {
   publishedProjects: number;
   draftProjects: number;
-  featuredProjects: number;
   publishedPosts: number;
   draftPosts: number;
 };
@@ -19,7 +18,7 @@ type CountTable = "projects" | "blog_posts" | "team_members";
 /** `head: true` count query — returns the number only, never the rows. */
 async function countRows(
   table: CountTable,
-  column?: "published" | "featured",
+  column?: "published",
   value?: boolean,
 ) {
   let query = supabase.from(table).select("id", { count: "exact", head: true }) as any;
@@ -34,15 +33,14 @@ export function useContentCounts() {
     queryKey: ["admin", "dashboard", "counts"],
     staleTime: 30_000,
     queryFn: async (): Promise<ContentCounts> => {
-      const [publishedProjects, draftProjects, featuredProjects, publishedPosts, draftPosts] =
+      const [publishedProjects, draftProjects, publishedPosts, draftPosts] =
         await Promise.all([
           countRows("projects", "published", true),
           countRows("projects", "published", false),
-          countRows("projects", "featured", true),
           countRows("blog_posts", "published", true),
           countRows("blog_posts", "published", false),
         ]);
-      return { publishedProjects, draftProjects, featuredProjects, publishedPosts, draftPosts };
+      return { publishedProjects, draftProjects, publishedPosts, draftPosts };
     },
   });
 }

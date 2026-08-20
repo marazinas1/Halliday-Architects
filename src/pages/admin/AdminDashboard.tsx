@@ -119,18 +119,7 @@ function AdminDashboardInner() {
             label="Published projects"
             to="/admin/projects"
           />
-          <Stat
-            value={counts?.featuredProjects ?? 0}
-            label="Featured on homepage"
-            note={
-              (counts?.featuredProjects ?? 0) === 0
-                ? "None flagged — homepage falls back to ordering"
-                : (counts?.featuredProjects ?? 0) === 4
-                  ? undefined
-                  : "The homepage grid shows four"
-            }
-            to="/admin/projects"
-          />
+          <Stat value={counts?.draftProjects ?? 0} label="Draft projects" to="/admin/projects?status=draft" />
           <Stat value={counts?.publishedPosts ?? 0} label="Published posts" to="/admin/blog" />
           {owner && <Stat value={teamCount ?? 0} label="Team members" to="/admin/team" />}
         </div>
