@@ -6,6 +6,25 @@ A quiet dashboard that answers "is anything waiting for me?" and "where do I go?
 
 `/admin` currently renders the Projects list. It becomes the dashboard; the projects list moves to `/admin/projects`, and the sidebar gains a "Dashboard" item above "Projects" (Projects then matches `/admin/projects*` only). All existing links to project edit screens are unaffected.
 
+Nothing breaks for anyone who bookmarked `/admin` expecting the list: that URL still opens the admin panel, and the dashboard's first block is a Projects entry point — the content overview leads with published/draft project counts, both linking straight to `/admin/projects`, and "Add a project" sits in quick actions. The sidebar shows "Dashboard" active on `/admin` and "Projects" active on `/admin/projects*`, so the new location is visible immediately.
+
+Every existing reference to `/admin` was checked and will be updated where it meant "the projects list":
+
+| Reference | Now |
+|---|---|
+| `AdminProjectForm` redirect after saving an edit | `/admin/projects` |
+| `AdminProjectForm` redirect after deleting a project | `/admin/projects` |
+| `AdminProtected` "Back to Projects" button | `/admin/projects` |
+| `AdminSidebar` Projects item and active match | `/admin/projects` |
+| `AdminSidebar` logo link | `/admin` (dashboard) — unchanged, correct |
+| `AdminLogin` post-login redirect | `/admin` (dashboard) — unchanged, intended landing screen |
+| `GlobalFooter` Admin link | `/admin` (dashboard) — unchanged, correct |
+| `/admin/*` catch-all redirect | `/admin` — unchanged |
+
+Preview buttons (project, blog, team, homepage) point at `/admin/preview/*` routes and are unaffected. New-project saves still land on the project's own edit screen.
+
+The projects list also gains support for `?status=draft` so the dashboard's draft link opens it pre-filtered.
+
 ## Sections
 
 **1. Needs attention** (only when something is waiting)
