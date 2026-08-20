@@ -228,7 +228,7 @@ const Index = () => {
                   Led personally by both principals.
                 </p>
                 <div className="mt-10">
-                  <PrincipalsGrid />
+                  <PrincipalsGrid centered={false} />
                 </div>
                 <Link
                   to="/team"
