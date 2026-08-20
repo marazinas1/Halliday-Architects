@@ -54,7 +54,10 @@ const Index = () => {
   const imageRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
     if (!heroUrl) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (imageRef.current) imageRef.current.style.transform = "scale(1)";
+      return;
+    }
     let frame = 0;
     const onScroll = () => {
       if (frame) return;
@@ -63,7 +66,7 @@ const Index = () => {
         const el = imageRef.current;
         if (!el) return;
         const y = Math.min(window.scrollY, window.innerHeight);
-        el.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(1.15)`;
+        el.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(1.03)`;
       });
     };
     onScroll();
