@@ -63,6 +63,7 @@ const ServiceCard = ({ s, index }: { s: (typeof services)[0]; index: number }) =
     </span>
     <h3 className="heading-card text-ink text-lg mb-3">{s.title}</h3>
     <p className="text-body text-sm leading-relaxed">{s.description}</p>
+    <p className="text-body text-sm leading-relaxed mt-3 text-stone">{s.detail}</p>
   </div>
 );
 
