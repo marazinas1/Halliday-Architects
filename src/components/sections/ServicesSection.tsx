@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "@/components/Reveal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { container, sectionPadding } from "@/lib/rhythm";
-import { SERVICES } from "@/content/firm";
+import { COASTAL_NOTE, SERVICES } from "@/content/firm";
 
 /**
  * Services come from src/content/firm.ts (placeholder copy awaiting the
