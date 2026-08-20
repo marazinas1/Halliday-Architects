@@ -25,15 +25,21 @@ const AboutSection = () => (
               in Ocean City, New Jersey
             </h2>
             <div className="divider mb-8" />
-            {/* PLACEHOLDER COPY — awaiting the client's own words. */}
             <p className="text-body mb-6">
-              Halliday Architects is an architecture practice in Ocean City, New Jersey, led by
-              Christopher Halliday (RA, LEED AP) and Shannon Halliday. The studio works on
-              residential architecture along the shore.
+              Halliday Architects is a residential architecture practice in Ocean City, New Jersey,
+              led by Christopher and Shannon Halliday. Both are registered architects and LEED
+              accredited professionals, and the studio has worked along the shore since 2013.
             </p>
             <p className="text-body mb-6">
-              Every project is led personally by a principal, from the first sketch through
-              construction administration.
+              The work draws on the local vernacular, on current building technology, and on the
+              functional relationships between the spaces of a house. New homes, additions,
+              renovations and interiors — each one designed for its site and for the family who
+              will live in it.
+            </p>
+            <p className="text-body mb-6">
+              The studio is deliberately small. Every project is led personally by a principal,
+              from the first site visit through construction administration, so the person who
+              drew the house is the person answering questions on site.
             </p>
             <Link to="/services" className="btn-outline text-xs inline-flex">
               Services

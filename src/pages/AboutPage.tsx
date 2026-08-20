@@ -7,6 +7,8 @@ import AboutSection from "@/components/sections/AboutSection";
 import { PrincipalsGrid } from "@/components/sections/TeamSection";
 import Reveal from "@/components/Reveal";
 import PartnersSection from "@/components/sections/PartnersSection";
+import Testimonials from "@/components/sections/Testimonials";
+import { HOW_WE_WORK } from "@/content/firm";
 import { Link } from "react-router-dom";
 import { container, sectionPadding } from "@/lib/rhythm";
 
@@ -21,6 +23,34 @@ const AboutPage = () => (
     <PageHero eyebrow="Our Story" title="About Halliday Architects" />
 
     <AboutSection />
+
+    <div className="w-full h-px bg-border" />
+
+    <section className={sectionPadding.base}>
+      <div className={container.wide}>
+        <Reveal>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20 mb-14 lg:mb-20">
+            <p className="label-uppercase lg:col-span-3 lg:pt-3">How we work</p>
+            <h2 className="heading-section text-ink lg:col-span-9 max-w-2xl">
+              One practice, from the first site visit to the last site visit
+            </h2>
+          </div>
+        </Reveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+          {HOW_WE_WORK.map((step, i) => (
+            <Reveal key={step.title}>
+              <div className="border-t border-line pt-8">
+                <span className="numeral block text-5xl md:text-6xl mb-6">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="heading-card text-ink text-lg mb-3">{step.title}</h3>
+                <p className="text-body text-sm leading-relaxed">{step.description}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
 
     <div className="w-full h-px bg-border" />
 
@@ -51,6 +81,8 @@ const AboutPage = () => (
     <div className="w-full h-px bg-border" />
 
     <PartnersSection />
+
+    <Testimonials />
 
     <CTASection variant="light" />
 

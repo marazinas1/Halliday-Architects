@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home, UserCog, LayoutDashboard } from "lucide-react";
+import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home, UserCog, LayoutDashboard, Quote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +33,13 @@ const ITEMS: Item[] = [
   { title: "Projects", url: "/admin/projects", icon: FolderOpen, access: "staff", match: (p) => p.startsWith("/admin/projects") },
   { title: "Tags", url: "/admin/tags", icon: Tags, access: "staff", match: (p) => p.startsWith("/admin/tags") },
   { title: "Team", url: "/admin/team", icon: Users, access: "owner", match: (p) => p.startsWith("/admin/team") },
+  {
+    title: "Testimonials",
+    url: "/admin/testimonials",
+    icon: Quote,
+    access: "owner",
+    match: (p) => p.startsWith("/admin/testimonials"),
+  },
   { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
   { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, access: "owner", match: (p) => p.startsWith("/admin/inquiries") },
   { title: "Homepage", url: "/admin/homepage", icon: Home, access: "owner", match: (p) => p.startsWith("/admin/homepage") },

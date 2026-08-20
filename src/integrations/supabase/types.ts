@@ -426,6 +426,50 @@ export type Database = {
         }
         Relationships: []
       }
+      testimonials: {
+        Row: {
+          author_detail: string | null
+          author_name: string
+          created_at: string
+          id: string
+          project_id: string | null
+          published: boolean
+          quote: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          author_detail?: string | null
+          author_name: string
+          created_at?: string
+          id?: string
+          project_id?: string | null
+          published?: boolean
+          quote: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          author_detail?: string | null
+          author_name?: string
+          created_at?: string
+          id?: string
+          project_id?: string | null
+          published?: boolean
+          quote?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "testimonials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string

@@ -1,17 +1,21 @@
 # Halliday Architects
 
-> Architecture practice in Ocean City, New Jersey, led by Christopher Halliday
-> (RA, LEED AP) and Shannon Halliday. The site is a portfolio of the practice's
-> built work — it is not a real estate listings platform and does not publish
-> prices or MLS data.
+> Residential architecture practice in Ocean City, New Jersey, working along the
+> New Jersey shore since 2013. Led personally by Christopher and Shannon
+> Halliday, both registered architects and LEED accredited professionals. Work
+> covers new custom homes, additions, renovations and interiors, together with
+> code analysis, permit coordination and construction administration. The site is
+> a portfolio of the practice's built work — it is not a real estate listings
+> platform and does not publish prices or MLS data.
 
 ## Pages
 - [Home](/): Overview of the practice, services, and featured projects.
 - [About](/about): The practice and how it works.
 - [Our Team](/team): The people behind the practice.
-- [Services](/services): Architectural consultation, architectural design, building code analysis, permit coordination.
+- [Services](/services): Architectural consultation, new homes, additions and renovations, interiors and kitchens, code analysis and permits, construction administration.
 - [Projects](/projects): Portfolio of completed projects.
 - [Contact](/contact): Inquiry form, phone, email, and office address.
 
 ## Contact
-728 West Avenue, Suite A, Ocean City, NJ 08226 · 609.957.6789 · chris@hallidayarchitects.com
+728 West Avenue, Suite A, Ocean City, NJ 08226 (mail: P.O. Box 186, Ocean City, NJ 08226)
+609.957.6789 · fax 609.337.1758 · chris@hallidayarchitects.com

@@ -12,12 +12,13 @@ export const SITE_SETTINGS_KEY = ["site-settings"];
  * field falls back to one of these, so the page can never render blank.
  */
 export const HOMEPAGE_FALLBACKS = {
-  heroHeadline: "Residential architecture in Ocean City, New Jersey",
-  heroSubline: "Halliday Architects — Christopher and Shannon Halliday, RA, LEED AP.",
+  heroHeadline: "Houses designed for the shore they stand on",
+  heroSubline:
+    "Halliday Architects — a residential architecture studio in Ocean City, New Jersey, led personally by Christopher and Shannon Halliday.",
   introHeading:
-    "Halliday Architects is a residential architecture practice based in Ocean City, New Jersey.",
+    "We approach design as a response to the local vernacular, to new building technology, and to the way the spaces of a house work together.",
   introBody:
-    "The practice is led by Christopher and Shannon Halliday, both registered architects and LEED accredited professionals, working with homeowners along the New Jersey shore.",
+    "The practice has worked along the New Jersey shore since 2013, on new houses, additions and renovations. Both principals are registered architects and LEED accredited professionals, and both stay with a project from the first site visit through construction — which is also how energy performance, flood elevation and salt-air durability get resolved as part of the design rather than after it.",
 } as const;
 
 /** Buckets a hero image may live in. */
