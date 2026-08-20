@@ -26,13 +26,13 @@ import { readPreview } from "@/lib/admin/preview";
  */
 
 /*
- * Credentials shown in the hero band.
- * Source: the practice's Houzz profile — Best of Houzz awards 2016-2022 and the
+ * Credentials shown in the band below the hero.
+ * Source: the practice's Houzz profile — Best of Houzz awards 2016-2024 and the
  * 5.0 review rating across 43 reviews; RA / LEED AP from the principals' own
  * credentials. Publicly verifiable; nothing here is estimated or invented.
  */
 const CREDENTIALS = [
-  { label: "Best of Houzz", value: "Winner, 2016 – 2022" },
+  { label: "Best of Houzz", value: "Winner, 2016 – 2024" },
   { label: "Client reviews", value: "5.0 across 43 reviews on Houzz" },
   { label: "Licensed practice", value: "Registered architects, RA and LEED AP" },
 ];
@@ -54,7 +54,10 @@ const Index = () => {
   const imageRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
     if (!heroUrl) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (imageRef.current) imageRef.current.style.transform = "scale(1)";
+      return;
+    }
     let frame = 0;
     const onScroll = () => {
       if (frame) return;
@@ -63,7 +66,7 @@ const Index = () => {
         const el = imageRef.current;
         if (!el) return;
         const y = Math.min(window.scrollY, window.innerHeight);
-        el.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(1.15)`;
+        el.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(1.03)`;
       });
     };
     onScroll();
@@ -100,19 +103,15 @@ const Index = () => {
               aria-hidden="true"
               onError={() => setHeroFailed(true)}
               className="absolute inset-0 h-full w-full object-cover will-change-transform"
-              style={{ transform: "scale(1.15)" }}
+              style={{ transform: "scale(1.03)" }}
             />
             {/*
               The photograph is a real house, so the lightest scrim that keeps
-              the copy legible and no more: a wash under the nav that guarantees
-              the logo and links read against any image the admin uploads, and a
-              gentle gradient behind the copy. The middle of the frame is left
-              untouched.
+              the copy legible and no more. The top scrim is owned by GlobalNav
+              (it lives with the nav it protects and works on every page); here
+              only the bottom gradient behind the copy is kept, the middle of the
+              frame left untouched.
             */}
-            <div
-              className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-ink/55 via-ink/25 to-transparent"
-              aria-hidden="true"
-            />
             <div
               className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-ink/75 via-ink/30 to-transparent"
               aria-hidden="true"
@@ -164,36 +163,28 @@ const Index = () => {
             </div>
           </div>
         </div>
-
-        {/* Credentials — a quiet footnote to the hero, not a second headline. */}
-        <div className="relative">
-          <div className={`${container.wide} pb-8 md:pb-10`}>
-            <ul
-              className={`flex flex-col gap-2 text-xs leading-relaxed sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2 ${
-                heroUrl ? "text-background/70" : "text-stone"
-              }`}
-            >
-              {CREDENTIALS.map((c, i) => (
-                <li key={c.label} className="flex items-center gap-6">
-                  {i > 0 && (
-                    <span
-                      aria-hidden="true"
-                      className={`hidden h-3 w-px sm:block ${heroUrl ? "bg-background/25" : "bg-line"}`}
-                    />
-                  )}
-                  <span>
-                    <span className="uppercase tracking-widest">{c.label}</span>
-                    <span aria-hidden="true" className="px-2 opacity-50">
-                      ·
-                    </span>
-                    <span className={heroUrl ? "text-background/90" : "text-ink"}>{c.value}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </section>
+
+      {/* Credentials — a quiet footnote on the solid page surface, not a
+          second headline competing with the photograph. */}
+      <div className="border-b border-line">
+        <div className={`${container.wide} py-5`}>
+          <ul className="flex flex-col gap-3 text-xs leading-relaxed sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2">
+            {CREDENTIALS.map((c, i) => (
+              <li key={c.label} className="flex items-center gap-x-6">
+                {i > 0 && (
+                  <span aria-hidden="true" className="hidden h-3 w-px bg-line sm:block" />
+                )}
+                <span>
+                  <span className="uppercase tracking-widest text-stone">{c.label}</span>
+                  <span aria-hidden="true" className="px-2 opacity-50">·</span>
+                  <span className="text-ink">{c.value}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
       {/* ─── Introduction ─── */}
       <section className={sectionPadding.base}>
