@@ -51,7 +51,7 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
   return (
     <>
       {!onLight && (
-        <div className="fixed top-0 left-0 right-0 h-32 z-40 pointer-events-none bg-gradient-to-b from-black/50 via-black/25 to-transparent" />
+        <div className="fixed top-0 left-0 right-0 h-40 z-40 pointer-events-none bg-gradient-to-b from-ink/70 via-ink/35 to-transparent" />
       )}
 
       <header
