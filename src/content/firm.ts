@@ -21,15 +21,20 @@ export const FIRM = {
 };
 
 /**
- * Verifiable credentials only — AIA membership, LEED accreditation and NCARB
- * certification from the principals' own listings, the Ocean City award and the
- * founding year from the practice's public profiles. Nothing estimated.
+ * Headline figures, all from the practice's own Houzz profile
+ * (houzz.com/pro/chris-halliday). Verified 2026-08-20. Nothing estimated.
+ * If a remix of this project reuses this file, these numbers MUST be
+ * replaced — they belong to Halliday Architects alone.
  */
-export const CREDENTIALS = [
-  { label: "Registered practice", value: "AIA member · LEED accredited · NCARB certified" },
-  { label: "Licensed", value: "New Jersey and California" },
-  { label: "On the shore", value: "Designing residential work since 2013" },
+export const STATS = [
+  { figure: "9×", label: "Best of Houzz", detail: "Service, 2016 – 2024" },
+  { figure: "5.0", label: "Client rating", detail: "From 43 reviews" },
+  { figure: "10", label: "Shore communities", detail: "Ocean City to Atlantic City" },
 ] as const;
+
+/** Memberships and licensure, from the principals' own listings. */
+export const ACCREDITATIONS =
+  "AIA member · LEED accredited · NCARB certified · Licensed in New Jersey and California";
 
 /** The sequence a project moves through, in the client's language. */
 export const HOW_WE_WORK = [
