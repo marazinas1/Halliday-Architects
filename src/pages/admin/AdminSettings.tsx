@@ -97,12 +97,17 @@ function SettingsBody() {
   const save = useSaveSiteSettings();
   const { toast } = useToast();
   const [siteName, setSiteName] = useState("");
+  const [notifyEmails, setNotifyEmails] = useState("");
   const [busyKey, setBusyKey] = useState<SlotKey | null>(null);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (settings.row) setSiteName(settings.row.site_name);
-    else if (!isLoading) setSiteName(settings.siteName);
+    if (settings.row) {
+      setSiteName(settings.row.site_name);
+      setNotifyEmails(settings.row.inquiry_notify_emails ?? "");
+    } else if (!isLoading) {
+      setSiteName(settings.siteName);
+    }
   }, [settings.row, settings.siteName, isLoading]);
 
   const rowId = settings.row?.id ?? null;
@@ -159,6 +164,16 @@ function SettingsBody() {
     }
   };
 
+  const handleSaveNotifyEmails = async () => {
+    try {
+      const value = notifyEmails.trim();
+      await save.mutateAsync({ id: rowId, patch: { inquiry_notify_emails: value || null } });
+      toast({ title: "Saved", description: "Inquiry notification recipients updated." });
+    } catch (err) {
+      toast({ variant: "destructive", title: "Could not save", description: (err as Error).message });
+    }
+  };
+
   return (
     <div className="max-w-3xl">
       <h1 className="text-2xl text-ink mb-1">Settings</h1>
@@ -178,6 +193,26 @@ function SettingsBody() {
             placeholder="Halliday Architects"
           />
           <Button onClick={handleSaveName} disabled={save.isPending || !siteName.trim()}>
+            Save
+          </Button>
+        </div>
+      </div>
+
+      <div className="border border-line rounded bg-card p-5 mb-6">
+        <Label htmlFor="notify-emails" className="text-sm font-medium text-ink">
+          Inquiry notifications
+        </Label>
+        <p className="text-xs text-stone mt-1">
+          Where contact form submissions are emailed. Separate several addresses with commas.
+        </p>
+        <div className="flex gap-3 mt-3">
+          <Input
+            id="notify-emails"
+            value={notifyEmails}
+            onChange={(e) => setNotifyEmails(e.target.value)}
+            placeholder="chris@hallidayarchitects.com, shannon@hallidayarchitects.com"
+          />
+          <Button onClick={handleSaveNotifyEmails} disabled={save.isPending}>
             Save
           </Button>
         </div>
