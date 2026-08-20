@@ -1,9 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home } from "lucide-react";
+import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home, UserCog } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
 import { Badge } from "@/components/ui/badge";
 import { useUnreadInquiryCount } from "@/hooks/admin/useInquiries";
+import { canAccess, isOwnerRole, type AdminAccess, type AdminRole } from "@/hooks/admin/useAdminAuth";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Sidebar,
   SidebarContent,
@@ -18,22 +20,38 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-const ITEMS = [
-  { title: "Projects", url: "/admin", icon: FolderOpen, match: (p: string) => p === "/admin" || p.startsWith("/admin/projects") },
-  { title: "Tags", url: "/admin/tags", icon: Tags, match: (p: string) => p.startsWith("/admin/tags") },
-  { title: "Team", url: "/admin/team", icon: Users, match: (p: string) => p.startsWith("/admin/team") },
-  { title: "Blog", url: "/admin/blog", icon: FileText, match: (p: string) => p.startsWith("/admin/blog") },
-  { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, match: (p: string) => p.startsWith("/admin/inquiries") },
-  { title: "Homepage", url: "/admin/homepage", icon: Home, match: (p: string) => p.startsWith("/admin/homepage") },
-  { title: "Settings", url: "/admin/settings", icon: Settings, match: (p: string) => p.startsWith("/admin/settings") },
+type Item = {
+  title: string;
+  url: string;
+  icon: typeof FolderOpen;
+  access: AdminAccess;
+  match: (p: string) => boolean;
+};
+
+const ITEMS: Item[] = [
+  { title: "Projects", url: "/admin", icon: FolderOpen, access: "staff", match: (p) => p === "/admin" || p.startsWith("/admin/projects") },
+  { title: "Tags", url: "/admin/tags", icon: Tags, access: "staff", match: (p) => p.startsWith("/admin/tags") },
+  { title: "Team", url: "/admin/team", icon: Users, access: "owner", match: (p) => p.startsWith("/admin/team") },
+  { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
+  { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, access: "owner", match: (p) => p.startsWith("/admin/inquiries") },
+  { title: "Homepage", url: "/admin/homepage", icon: Home, access: "owner", match: (p) => p.startsWith("/admin/homepage") },
+  { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
+  { title: "Settings", url: "/admin/settings", icon: Settings, access: "owner", match: (p) => p.startsWith("/admin/settings") },
 ];
 
-export default function AdminSidebar({ email }: { email: string }) {
+const ROLE_LABEL: Record<AdminRole, string> = {
+  platform_owner: "Platform owner",
+  owner: "Owner",
+  editor: "Editor",
+};
+
+export default function AdminSidebar({ email, role }: { email: string; role: AdminRole }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const { data: unreadCount = 0 } = useUnreadInquiryCount();
+  const owner = isOwnerRole(role);
+  const { data: unreadCount = 0 } = useUnreadInquiryCount(owner);
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -53,21 +71,49 @@ export default function AdminSidebar({ email }: { email: string }) {
           <SidebarGroupLabel>Manage</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {ITEMS.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={item.match(pathname)} tooltip={item.title}>
-                    <Link to={item.url} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                      {item.title === "Inquiries" && unreadCount > 0 && (
-                        <Badge className="ml-auto h-5 min-w-5 justify-center px-1.5 text-[11px]">
-                          {unreadCount}
-                        </Badge>
-                      )}
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {ITEMS.map((item) => {
+                const allowed = canAccess(role, item.access);
+
+                if (!allowed) {
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <SidebarMenuButton
+                              disabled
+                              aria-disabled="true"
+                              className="opacity-40 cursor-not-allowed"
+                            >
+                              <item.icon className="h-4 w-4" />
+                              <span>{item.title}</span>
+                            </SidebarMenuButton>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                          Only owners can manage {item.title.toLowerCase()}
+                        </TooltipContent>
+                      </Tooltip>
+                    </SidebarMenuItem>
+                  );
+                }
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={item.match(pathname)} tooltip={item.title}>
+                      <Link to={item.url} className="flex items-center gap-2">
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                        {item.title === "Inquiries" && unreadCount > 0 && (
+                          <Badge className="ml-auto h-5 min-w-5 justify-center px-1.5 text-[11px]">
+                            {unreadCount}
+                          </Badge>
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -76,7 +122,12 @@ export default function AdminSidebar({ email }: { email: string }) {
       <SidebarFooter className="border-t border-line">
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className={`px-2 py-1 text-xs text-stone truncate ${collapsed ? "hidden" : ""}`}>{email}</div>
+            <div className={`px-2 py-1 ${collapsed ? "hidden" : ""}`}>
+              <div className="text-xs text-stone truncate">{email}</div>
+              <div className="text-[11px] uppercase tracking-wider text-stone/70">
+                {ROLE_LABEL[role]}
+              </div>
+            </div>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={signOut} tooltip="Sign out">

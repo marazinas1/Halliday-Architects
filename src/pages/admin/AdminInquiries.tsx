@@ -284,7 +284,7 @@ function InquiriesBody() {
 
 export default function AdminInquiries() {
   return (
-    <AdminProtected>
+    <AdminProtected access="owner">
       <InquiriesBody />
     </AdminProtected>
   );

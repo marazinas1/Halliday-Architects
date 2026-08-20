@@ -218,7 +218,7 @@ function AdminTeamFormInner() {
 
 export default function AdminTeamForm() {
   return (
-    <AdminProtected>
+    <AdminProtected access="owner">
       <AdminTeamFormInner />
     </AdminProtected>
   );

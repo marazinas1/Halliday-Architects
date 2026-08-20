@@ -186,7 +186,7 @@ function AdminTeamInner() {
 
 export default function AdminTeam() {
   return (
-    <AdminProtected>
+    <AdminProtected access="owner">
       <AdminTeamInner />
     </AdminProtected>
   );
