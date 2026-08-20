@@ -39,7 +39,7 @@ export default function AdminProtected({
             Only owners can open this page. Ask an owner if you need access.
           </p>
           <Button asChild className="mt-8">
-            <Link to="/admin">Back to Projects</Link>
+            <Link to="/admin">Back to the dashboard</Link>
           </Button>
         </div>
       </AdminShell>
