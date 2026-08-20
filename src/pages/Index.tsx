@@ -177,7 +177,7 @@ const Index = () => {
             }`}
           >
             {STATS.map((s) => (
-              <div key={s.label} className="min-w-[86px]">
+              <div key={s.label} className="min-w-[86px] text-center">
                 <span
                   className={`block text-2xl font-extrabold leading-none md:text-3xl ${heroUrl ? "text-background" : "text-ink"}`}
                   style={heroUrl ? { textShadow: "0 2px 8px rgba(0,0,0,0.5)" } : undefined}
