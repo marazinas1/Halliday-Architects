@@ -80,7 +80,7 @@ export const ServicesGrid = () => {
     );
   }
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
       {services.map((s, i) => (
         <Reveal key={s.title}>
           <ServiceCard s={s} index={i} />
@@ -104,15 +104,22 @@ const ServicesSection = ({
           {withHeading && <p className="label-uppercase lg:col-span-3 lg:pt-4">What We Do</p>}
           <div className={withHeading ? "lg:col-span-9" : "lg:col-span-9 lg:col-start-4"}>
             {withHeading && <h2 className="heading-display text-ink mb-6">{heading}</h2>}
-            {/* PLACEHOLDER COPY — awaiting the client's own words. */}
             <p className="text-body max-w-xl">
-              An architecture practice in Ocean City, New Jersey, working on residential projects
-              along the shore.
+              A residential architecture practice in Ocean City, New Jersey. We take a house from
+              the first conversation about a site through to the questions that come up during
+              construction — design, approvals and everything in between.
             </p>
           </div>
         </div>
       </Reveal>
       <ServicesGrid />
+
+      <Reveal>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20 mt-16 lg:mt-24">
+          <p className="label-uppercase lg:col-span-3 lg:pt-1">Building on the shore</p>
+          <p className="text-body lg:col-span-9 max-w-2xl">{COASTAL_NOTE}</p>
+        </div>
+      </Reveal>
     </div>
   </section>
 );
