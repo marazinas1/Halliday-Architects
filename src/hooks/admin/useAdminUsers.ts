@@ -19,6 +19,8 @@ export type InviteResult = {
   emailSent: boolean;
   password: string | null;
   actionLink: string | null;
+  /** True when the address already existed and a recovery link was sent instead. */
+  reinvited?: boolean;
 };
 
 export const ADMIN_USERS_KEY = ["admin", "users"];
