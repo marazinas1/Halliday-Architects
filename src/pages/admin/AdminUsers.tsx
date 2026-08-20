@@ -35,7 +35,7 @@ import {
 } from "@/hooks/admin/useAdminUsers";
 
 const ROLE_LABEL: Record<string, string> = {
-  platform_owner: "Platform owner",
+  platform_owner: "Developer",
   owner: "Owner",
   editor: "Editor",
   admin: "Legacy admin",
