@@ -35,7 +35,7 @@ import {
 } from "@/hooks/admin/useAdminUsers";
 
 const ROLE_LABEL: Record<string, string> = {
-  platform_owner: "Platform owner",
+  platform_owner: "Developer",
   owner: "Owner",
   editor: "Editor",
   admin: "Legacy admin",
@@ -189,6 +189,11 @@ function AdminUsersInner() {
                         <ShieldCheck className="h-3 w-3" /> Last owner
                       </Badge>
                     )}
+                    {user.isPlatformOwner && (
+                      <Badge variant="outline" className="gap-1">
+                        <ShieldCheck className="h-3 w-3" /> Developer
+                      </Badge>
+                    )}
                     {!user.confirmed && <Badge variant="outline">Invited</Badge>}
                   </div>
                   <div className="mt-1 text-xs text-stone">
@@ -212,7 +217,10 @@ function AdminUsersInner() {
                     )
                   }
                 >
-                  <SelectTrigger className="w-36">
+                  <SelectTrigger
+                    className="w-36"
+                    title={user.isPlatformOwner ? "Managed by the developer" : undefined}
+                  >
                     <SelectValue placeholder="No access" />
                   </SelectTrigger>
                   <SelectContent>
@@ -226,7 +234,11 @@ function AdminUsersInner() {
                   size="sm"
                   disabled={user.isPlatformOwner || user.isLastOwner || !user.role}
                   title={
-                    user.isLastOwner ? "At least one owner account must remain" : "Remove access"
+                    user.isPlatformOwner
+                      ? "Managed by the developer"
+                      : user.isLastOwner
+                        ? "At least one owner account must remain"
+                        : "Remove access"
                   }
                   onClick={() => setToRevoke(user)}
                 >
@@ -238,6 +250,7 @@ function AdminUsersInner() {
                   size="sm"
                   className="text-destructive hover:text-destructive"
                   disabled={user.isPlatformOwner || user.isLastOwner}
+                  title={user.isPlatformOwner ? "Managed by the developer" : undefined}
                   onClick={() => {
                     setDeleteConfirm("");
                     setToDelete(user);

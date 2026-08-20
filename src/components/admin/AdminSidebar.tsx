@@ -40,7 +40,7 @@ const ITEMS: Item[] = [
 ];
 
 const ROLE_LABEL: Record<AdminRole, string> = {
-  platform_owner: "Platform owner",
+  platform_owner: "Developer",
   owner: "Owner",
   editor: "Editor",
 };

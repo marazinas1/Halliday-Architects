@@ -78,7 +78,10 @@ Deno.serve(async (req) => {
   )
   const ownerIds = (allRoles ?? []).filter((r) => r.role === 'owner').map((r) => r.user_id)
 
-  /** Platform owner records are invisible and untouchable to everyone else. */
+  /**
+   * Developer (platform_owner) records are visible to everyone, so the client can
+   * see who maintains the system, but only a developer may change them.
+   */
   const shielded = (userId: string) => platformOwnerIds.has(userId) && !isPlatformOwner
 
   /**
@@ -92,7 +95,6 @@ Deno.serve(async (req) => {
     const { data, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 })
     if (error) return json({ error: error.message }, 500)
     const users = data.users
-      .filter((u) => !shielded(u.id))
       .map((u) => ({
         id: u.id,
         email: u.email ?? '',
@@ -161,9 +163,8 @@ Deno.serve(async (req) => {
     return json({ success: true, userId, emailSent, password, actionLink })
   }
 
-  if (shielded(body.userId)) return json({ error: 'Account not found.' }, 404)
-  if (platformOwnerIds.has(body.userId) && !isPlatformOwner) {
-    return json({ error: 'Platform owner accounts cannot be changed.' }, 403)
+  if (shielded(body.userId)) {
+    return json({ error: 'This account is managed by the developer.' }, 403)
   }
 
   if (body.action === 'set_role') {
