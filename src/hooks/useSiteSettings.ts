@@ -14,7 +14,7 @@ export const SITE_SETTINGS_KEY = ["site-settings"];
 export const HOMEPAGE_FALLBACKS = {
   heroHeadline: "Houses designed for the shore they stand on",
   heroSubline:
-    "Halliday Architects — a residential architecture studio in Ocean City, New Jersey, led personally by Christopher and Shannon Halliday.",
+    "Christopher and Shannon Halliday lead every project personally, from the first site visit through construction.",
   introHeading:
     "We approach design as a response to the local vernacular, to new building technology, and to the way the spaces of a house work together.",
   introBody:
