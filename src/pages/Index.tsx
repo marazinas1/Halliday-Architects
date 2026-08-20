@@ -271,7 +271,7 @@ const Index = () => {
       <section className={`${sectionPadding.loose} bg-ink`}>
         <div className={container.content}>
           <Reveal>
-            <p className="statement text-paper max-w-3xl">
+            <p className="statement text-paper max-w-3xl mx-auto text-center">
               Every project begins with the site — its light, its exposure, and the way a family
               intends to live in the house.
             </p>
