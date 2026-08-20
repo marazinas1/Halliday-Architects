@@ -62,9 +62,14 @@ const SelectedWork = () => {
           </Link>
         </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {/* Mobile: horizontal snap rail (StageHomy pattern). sm+: responsive grid. */}
+        <div className="flex snap-x snap-mandatory overflow-x-auto no-scrollbar -mx-6 px-6 pb-2 sm:mx-0 sm:px-0 sm:pb-0 sm:overflow-visible sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {cards.map((card, i) => (
-            <Reveal key={card.key} delay={i * 100}>
+            <Reveal
+              key={card.key}
+              delay={i * 100}
+              className="w-[78%] shrink-0 snap-start sm:w-auto sm:shrink"
+            >
               <Link to={card.link} className="group block">
                 <div className="overflow-hidden bg-sand">
                   {card.image ? (
