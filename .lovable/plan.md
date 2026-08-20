@@ -20,7 +20,7 @@ The blurred band carries three facts only, each marked in a code comment as sour
 - 5.0 from 43 reviews on Houzz
 - Registered architects, RA and LEED AP
 
-Three columns on desktop, stacked on mobile, with hairline dividers. No invented project counts or years in business. On mobile the band sits below the copy rather than over it, so it never obscures the photograph.
+These are recognition rather than volume, so the treatment deliberately differs from StageHomy's three large figures: each item gets more room, the label sits quietly above a short phrase, and nothing is blown up as a numeral. Three columns on desktop, stacked on mobile, separated by hairlines. No invented project counts or years in business. On mobile the band sits below the copy rather than over it, so it never obscures the photograph.
 
 ## 3. Areas served
 
