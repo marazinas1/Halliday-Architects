@@ -18,7 +18,7 @@ import {
   type SiteSettingsRow,
 } from "@/hooks/useSiteSettings";
 import { readPreview } from "@/lib/admin/preview";
-import { CREDENTIALS } from "@/content/firm";
+import { STATS, ACCREDITATIONS } from "@/content/firm";
 import Testimonials from "@/components/sections/Testimonials";
 
 /*
