@@ -62,37 +62,63 @@ const SelectedWork = () => {
           </Link>
         </Reveal>
 
-        {/* Mobile: horizontal snap rail (StageHomy pattern). sm+: responsive grid. */}
-        <div className="flex snap-x snap-mandatory overflow-x-auto no-scrollbar -mr-6 pr-6 pb-2 sm:mr-0 sm:pr-0 sm:pb-0 sm:overflow-visible sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {/* Mobile: horizontal snap rail with stacked card (StageHomy MobileProjectCard). */}
+        <div className="flex snap-x snap-mandatory overflow-x-auto no-scrollbar -mr-6 pr-6 pb-2 gap-4 md:hidden">
           {cards.map((card, i) => (
-            <Reveal
-              key={card.key}
-              delay={i * 100}
-              className="w-[78%] shrink-0 snap-start sm:w-auto sm:shrink"
-            >
-              <Link to={card.link} className="group block">
-                <div className="overflow-hidden bg-sand">
+            <Reveal key={card.key} delay={i * 100} className="w-[85%] shrink-0 snap-center">
+              <Link to={card.link} className="block">
+                <div className="flex flex-col overflow-hidden rounded-[4px] border border-line bg-paper">
                   {card.image ? (
                     <img
                       src={card.image}
                       alt={card.title}
                       loading="lazy"
                       decoding="async"
-                      className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      className="block w-full aspect-[4/5] object-cover object-center"
                     />
                   ) : (
                     <div className="aspect-[4/5] w-full bg-sand" />
                   )}
+                  <div className="w-full p-6">
+                    {card.meta ? (
+                      <span className="mb-2 block text-xs uppercase tracking-[0.14em] text-stone">
+                        {card.meta}
+                      </span>
+                    ) : null}
+                    <h3 className="heading-card text-ink">{card.title}</h3>
+                  </div>
                 </div>
-                <div className="mt-5">
-                  <h3 className="heading-card text-ink">
-                    {card.title}
-                  </h3>
-                  {card.meta ? (
-                    <p className="mt-2 text-xs uppercase tracking-[0.14em] text-stone">
-                      {card.meta}
-                    </p>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Desktop: grid with hover overlay (StageHomy FeaturedWork). */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {cards.map((card, i) => (
+            <Reveal key={card.key} delay={i * 100}>
+              <Link to={card.link} className="block">
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[4px] bg-sand cursor-pointer">
+                  {card.image ? (
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full rounded-[4px] object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
                   ) : null}
+                  {/* Hover gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-paper/90 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  {/* Hover caption */}
+                  <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    {card.meta ? (
+                      <span className="mb-2 block text-xs uppercase tracking-[0.14em] text-stone">
+                        {card.meta}
+                      </span>
+                    ) : null}
+                    <h3 className="heading-card text-ink">{card.title}</h3>
+                  </div>
                 </div>
               </Link>
             </Reveal>
