@@ -16,7 +16,6 @@ import {
 import { toast } from "sonner";
 import { useProjects, type ProjectListItem } from "@/hooks/admin/useProjects";
 import { useUpdateProjectPublished } from "@/hooks/admin/useUpdateProjectPublished";
-import { useUpdateProjectFeatured } from "@/hooks/admin/useUpdateProjectFeatured";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectType } from "@/hooks/usePublicProjects";
 import AdminProtected from "@/components/admin/AdminProtected";
@@ -72,7 +71,6 @@ function AdminProjectsInner() {
   const [searchParams] = useSearchParams();
   const initialStatus = searchParams.get("status");
   const updatePublished = useUpdateProjectPublished();
-  const updateFeatured = useUpdateProjectFeatured();
   const deleteProject = useDeleteProject();
 
   const [view, setView] = useState<ViewMode>("grid");
@@ -138,23 +136,14 @@ function AdminProjectsInner() {
   const onTogglePublished = (id: string, published: boolean) =>
     updatePublished.mutate({ id, published });
 
-  const onToggleFeatured = (id: string, featured: boolean) =>
-    updateFeatured.mutate({ id, featured });
-
-  // The homepage only ever shows published projects, so count those.
-  const publishedRows = rows.filter((p) => p.published);
-  const featuredCount = publishedRows.filter((p) => p.featured).length;
-  const slots = Math.min(4, publishedRows.length);
-  const featuredShown = Math.min(featuredCount, slots);
-  const autoFilled = Math.max(0, slots - featuredShown);
-  const featuredNote =
-    featuredCount > 4
-      ? `${featuredCount} of 4 featured — only the first 4 by order appear on the homepage`
-      : featuredCount === 0
-        ? `0 of 4 featured — the homepage shows the first ${slots} ${slots === 1 ? "project" : "projects"} by order`
-        : autoFilled > 0
-          ? `${featuredCount} of 4 featured — the remaining ${autoFilled} ${autoFilled === 1 ? "slot is" : "slots are"} filled automatically by order`
-          : `${featuredCount} of 4 featured on the homepage`;
+  // The homepage always shows the first four published projects by sort_order.
+  const homepageIds = useMemo(() => {
+    const published = rows
+      .filter((p) => p.published)
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .slice(0, 4);
+    return new Set(published.map((p) => p.id));
+  }, [rows]);
 
   const confirmDelete = () => {
     if (!toDelete) return;
@@ -173,14 +162,8 @@ function AdminProjectsInner() {
           <p className="text-sm text-stone">
             {rows.length} {rows.length === 1 ? "project" : "projects"} total
             {" · "}
-            <span
-              className={cn(
-                featuredCount === slots && featuredCount <= 4
-                  ? "text-stone"
-                  : "font-medium text-amber-700",
-              )}
-            >
-              {featuredNote}
+            <span className="text-stone">
+              The first four published projects appear on the homepage — reorder to change which.
             </span>
           </p>
         </div>
@@ -264,7 +247,7 @@ function AdminProjectsInner() {
           onDelete={setToDelete}
           onCopy={copyLink}
           onTogglePublished={onTogglePublished}
-          onToggleFeatured={onToggleFeatured}
+          homepageIds={homepageIds}
         />
       ) : (
         <TableView
@@ -272,7 +255,7 @@ function AdminProjectsInner() {
           onDelete={setToDelete}
           onCopy={copyLink}
           onTogglePublished={onTogglePublished}
-          onToggleFeatured={onToggleFeatured}
+          homepageIds={homepageIds}
         />
       )}
 
@@ -315,6 +298,18 @@ function StatusBadge({ published }: { published: boolean }) {
   );
 }
 
+/** Non-interactive indicator: this project is currently one of the homepage four. */
+function HomepageBadge() {
+  return (
+    <Badge
+      variant="secondary"
+      className="border-transparent bg-ink/10 text-ink"
+    >
+      On homepage
+    </Badge>
+  );
+}
+
 function Thumb({ src, alt, className }: { src?: string | null; alt: string; className?: string }) {
   if (!src) {
     return (
@@ -330,14 +325,14 @@ type RowHandlers = {
   onDelete: (v: { id: string; title: string }) => void;
   onCopy: (slug: string) => void;
   onTogglePublished: (id: string, published: boolean) => void;
-  onToggleFeatured: (id: string, featured: boolean) => void;
+  homepageIds: Set<string>;
 };
 
 function RowActions({
   p,
   onDelete,
   onCopy,
-}: { p: ProjectListItem } & Omit<RowHandlers, "onTogglePublished" | "onToggleFeatured">) {
+}: { p: ProjectListItem } & Omit<RowHandlers, "onTogglePublished" | "homepageIds">) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -373,7 +368,7 @@ function GridView({
   onDelete,
   onCopy,
   onTogglePublished,
-  onToggleFeatured,
+  homepageIds,
 }: { items: ProjectListItem[] } & RowHandlers) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -384,6 +379,11 @@ function GridView({
             <div className="absolute left-3 top-3">
               <StatusBadge published={p.published} />
             </div>
+            {homepageIds.has(p.id) ? (
+              <div className="absolute right-3 top-3">
+                <HomepageBadge />
+              </div>
+            ) : null}
           </div>
           <CardContent className="space-y-3 pt-4">
             <div className="min-w-0">
@@ -413,14 +413,6 @@ function GridView({
               />
               <span>{p.published ? "Visible on site" : "Hidden"}</span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-stone">
-              <Switch
-                checked={p.featured}
-                onCheckedChange={(c) => onToggleFeatured(p.id, c)}
-                aria-label="Featured on homepage"
-              />
-              <span>{p.featured ? "On the homepage" : "Not on the homepage"}</span>
-            </div>
           </CardContent>
           <CardFooter className="flex items-center justify-between gap-2 border-t border-line pt-4">
             <Button asChild variant="secondary" size="sm" className="flex-1">
@@ -442,7 +434,7 @@ function TableView({
   onDelete,
   onCopy,
   onTogglePublished,
-  onToggleFeatured,
+  homepageIds,
 }: { items: ProjectListItem[] } & RowHandlers) {
   const navigate = useNavigate();
   return (
@@ -487,13 +479,7 @@ function TableView({
                   aria-label="Published"
                 />
               </TableCell>
-              <TableCell>
-                <Switch
-                  checked={p.featured}
-                  onCheckedChange={(c) => onToggleFeatured(p.id, c)}
-                  aria-label="Featured on homepage"
-                />
-              </TableCell>
+              <TableCell>{homepageIds.has(p.id) ? <HomepageBadge /> : <span className="text-stone">—</span>}</TableCell>
               <TableCell>
                 <div className="flex items-center justify-end gap-1">
                   <Button
