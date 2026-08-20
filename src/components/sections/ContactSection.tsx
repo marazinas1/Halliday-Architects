@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowRight, CheckCircle, Clock, Loader2, Mail, Phone } from "lucide-react";
+import { ArrowRight, CheckCircle, Clock, Loader2, Mail, MapPin, Phone, Printer } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import { FIRM } from "@/content/firm";
 import { supabase } from "@/integrations/supabase/client";
 import { container, sectionPadding } from "@/lib/rhythm";
 
@@ -225,18 +226,31 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
         <Reveal>
           <div>
-            <h3 className="heading-section mb-4">Halliday Architects</h3>
+            <h3 className="heading-section mb-4">{FIRM.name}</h3>
             <p className="text-body mb-8 max-w-md">
-              728 West Avenue, Suite A, Ocean City, NJ 08226.
+              The studio is on West Avenue in Ocean City. Every enquiry is read and answered
+              personally by one of the principals.
             </p>
             <div className="space-y-6 md:space-y-8">
+              <InfoRow icon={MapPin} label="Studio">
+                <span className="block">{FIRM.address1}</span>
+                <span className="block">{FIRM.address2}</span>
+                <span className="mt-1 block text-sm font-normal text-stone">
+                  Mail: {FIRM.mailing1}, {FIRM.mailing2}
+                </span>
+              </InfoRow>
               <InfoRow icon={Mail} label="Email">
-                <a href="mailto:chris@hallidayarchitects.com" className="hover:opacity-70 transition-opacity">
-                  chris@hallidayarchitects.com
+                <a href={`mailto:${FIRM.email}`} className="hover:opacity-70 transition-opacity">
+                  {FIRM.email}
                 </a>
               </InfoRow>
               <InfoRow icon={Phone} label="Phone">
-                <a href="tel:6099576789" className="hover:opacity-70 transition-opacity">609.957.6789</a>
+                <a href={FIRM.phoneHref} className="hover:opacity-70 transition-opacity">
+                  {FIRM.phone}
+                </a>
+              </InfoRow>
+              <InfoRow icon={Printer} label="Fax">
+                {FIRM.fax}
               </InfoRow>
               <InfoRow icon={Clock} label="Response time">
                 Within one business day
