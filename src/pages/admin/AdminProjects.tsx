@@ -16,7 +16,6 @@ import {
 import { toast } from "sonner";
 import { useProjects, type ProjectListItem } from "@/hooks/admin/useProjects";
 import { useUpdateProjectPublished } from "@/hooks/admin/useUpdateProjectPublished";
-import { useUpdateProjectFeatured } from "@/hooks/admin/useUpdateProjectFeatured";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectType } from "@/hooks/usePublicProjects";
 import AdminProtected from "@/components/admin/AdminProtected";
@@ -72,7 +71,6 @@ function AdminProjectsInner() {
   const [searchParams] = useSearchParams();
   const initialStatus = searchParams.get("status");
   const updatePublished = useUpdateProjectPublished();
-  const updateFeatured = useUpdateProjectFeatured();
   const deleteProject = useDeleteProject();
 
   const [view, setView] = useState<ViewMode>("grid");
@@ -138,23 +136,14 @@ function AdminProjectsInner() {
   const onTogglePublished = (id: string, published: boolean) =>
     updatePublished.mutate({ id, published });
 
-  const onToggleFeatured = (id: string, featured: boolean) =>
-    updateFeatured.mutate({ id, featured });
-
-  // The homepage only ever shows published projects, so count those.
-  const publishedRows = rows.filter((p) => p.published);
-  const featuredCount = publishedRows.filter((p) => p.featured).length;
-  const slots = Math.min(4, publishedRows.length);
-  const featuredShown = Math.min(featuredCount, slots);
-  const autoFilled = Math.max(0, slots - featuredShown);
-  const featuredNote =
-    featuredCount > 4
-      ? `${featuredCount} of 4 featured — only the first 4 by order appear on the homepage`
-      : featuredCount === 0
-        ? `0 of 4 featured — the homepage shows the first ${slots} ${slots === 1 ? "project" : "projects"} by order`
-        : autoFilled > 0
-          ? `${featuredCount} of 4 featured — the remaining ${autoFilled} ${autoFilled === 1 ? "slot is" : "slots are"} filled automatically by order`
-          : `${featuredCount} of 4 featured on the homepage`;
+  // The homepage always shows the first four published projects by sort_order.
+  const homepageIds = useMemo(() => {
+    const published = rows
+      .filter((p) => p.published)
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .slice(0, 4);
+    return new Set(published.map((p) => p.id));
+  }, [rows]);
 
   const confirmDelete = () => {
     if (!toDelete) return;
@@ -173,14 +162,8 @@ function AdminProjectsInner() {
           <p className="text-sm text-stone">
             {rows.length} {rows.length === 1 ? "project" : "projects"} total
             {" · "}
-            <span
-              className={cn(
-                featuredCount === slots && featuredCount <= 4
-                  ? "text-stone"
-                  : "font-medium text-amber-700",
-              )}
-            >
-              {featuredNote}
+            <span className="text-stone">
+              The first four published projects appear on the homepage — reorder to change which.
             </span>
           </p>
         </div>
