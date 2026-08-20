@@ -12,7 +12,7 @@ export const SITE_SETTINGS_KEY = ["site-settings"];
  * field falls back to one of these, so the page can never render blank.
  */
 export const HOMEPAGE_FALLBACKS = {
-  heroHeadline: "Houses designed for the shore they stand on",
+  heroHeadline: "Residential architecture\nin Ocean City, New Jersey",
   heroSubline:
     "Christopher and Shannon Halliday lead every project personally, from the first site visit through construction.",
   introHeading:
