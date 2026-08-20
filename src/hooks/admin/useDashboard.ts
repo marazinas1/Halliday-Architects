@@ -16,18 +16,17 @@ export type ContentCounts = {
 
 type CountTable = "projects" | "blog_posts" | "team_members";
 
+/** `head: true` count query — returns the number only, never the rows. */
 async function countRows(
   table: CountTable,
-  apply?: (q: ReturnType<typeof buildCountQuery>) => ReturnType<typeof buildCountQuery>,
+  column?: "published" | "featured",
+  value?: boolean,
 ) {
-  const base = buildCountQuery(table);
-  const { count, error } = await (apply ? apply(base) : base);
+  let query = supabase.from(table).select("id", { count: "exact", head: true }) as any;
+  if (column) query = query.eq(column, value);
+  const { count, error } = await query;
   if (error) throw error;
-  return count ?? 0;
-}
-
-function buildCountQuery(table: CountTable) {
-  return supabase.from(table).select("id", { count: "exact", head: true });
+  return (count as number | null) ?? 0;
 }
 
 export function useContentCounts() {
@@ -37,11 +36,11 @@ export function useContentCounts() {
     queryFn: async (): Promise<ContentCounts> => {
       const [publishedProjects, draftProjects, featuredProjects, publishedPosts, draftPosts] =
         await Promise.all([
-          countRows("projects", (q) => q.eq("published", true)),
-          countRows("projects", (q) => q.eq("published", false)),
-          countRows("projects", (q) => q.eq("featured", true)),
-          countRows("blog_posts", (q) => q.eq("published", true)),
-          countRows("blog_posts", (q) => q.eq("published", false)),
+          countRows("projects", "published", true),
+          countRows("projects", "published", false),
+          countRows("projects", "featured", true),
+          countRows("blog_posts", "published", true),
+          countRows("blog_posts", "published", false),
         ]);
       return { publishedProjects, draftProjects, featuredProjects, publishedPosts, draftPosts };
     },
