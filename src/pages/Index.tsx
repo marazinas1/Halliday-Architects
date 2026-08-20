@@ -89,7 +89,7 @@ const Index = () => {
         )}
 
         <div
-          className={`relative flex flex-1 items-end ${container.wide} pt-32 pb-12 md:pb-16`}
+          className={`relative flex flex-1 items-end ${container.wide} pt-28 pb-8 md:pt-32 md:pb-16`}
         >
           <div className="max-w-3xl animate-fade-in-up">
             <span
@@ -150,7 +150,7 @@ const Index = () => {
               {CREDENTIALS.map((c) => (
                 <div
                   key={c.label}
-                  className="py-6 md:py-8 md:px-8 md:first:pl-0 md:last:pr-0"
+                  className="py-4 md:py-8 md:px-8 md:first:pl-0 md:last:pr-0"
                 >
                   <p
                     className={`text-[11px] font-medium uppercase tracking-widest ${
@@ -160,7 +160,7 @@ const Index = () => {
                     {c.label}
                   </p>
                   <p
-                    className={`mt-3 text-base leading-relaxed ${
+                    className={`mt-2 text-sm leading-relaxed md:mt-3 md:text-base ${
                       heroUrl ? "text-background" : "text-ink"
                     }`}
                   >
