@@ -124,7 +124,7 @@ Deno.serve(async (req) => {
 
     // Preferred path: a real invitation email.
     const invited = await admin.auth.admin.inviteUserByEmail(email, {
-      redirectTo: `${req.headers.get('origin') ?? ''}/admin/login`,
+      redirectTo: `${req.headers.get('origin') ?? ''}/admin/set-password`,
     })
     if (!invited.error && invited.data.user) {
       userId = invited.data.user.id
@@ -145,7 +145,7 @@ Deno.serve(async (req) => {
       const link = await admin.auth.admin.generateLink({
         type: 'recovery',
         email,
-        options: { redirectTo: `${req.headers.get('origin') ?? ''}/admin/login` },
+        options: { redirectTo: `${req.headers.get('origin') ?? ''}/admin/set-password` },
       })
       actionLink = link.data?.properties?.action_link ?? null
     }
