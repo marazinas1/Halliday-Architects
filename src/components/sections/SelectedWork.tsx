@@ -79,7 +79,7 @@ const SelectedWork = () => {
   if (isLoading) return null;
 
   return (
-    <section className="py-16 md:py-20 bg-background">
+    <section className="py-16 md:py-20 section-sand">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-8">
         <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
