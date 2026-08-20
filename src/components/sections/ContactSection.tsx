@@ -54,6 +54,7 @@ export const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return; // guard against double submission
     if (form.phone.replace(/\D/g, "").length !== 10) {
       toast.error("Please enter a valid US phone number — (555) 000-0000");
       return;
@@ -66,7 +67,11 @@ export const ContactForm = () => {
     setSubmitting(true);
     const id = crypto.randomUUID();
 
-    // 1. Capture the lead. Only a failure here is a real failure for the user.
+    const projectTypeLabel = PROJECT_TYPES.find((t) => t.value === form.projectType)?.label ?? null;
+    const timelineLabel = TIMELINES.find((t) => t.value === form.timeline)?.label ?? null;
+
+    // Capture the lead. The database trigger sends the notification email, so
+    // nothing here needs to call an edge function.
     try {
       const { error: insertError } = await supabase.from("leads").insert({
         id,
@@ -74,6 +79,8 @@ export const ContactForm = () => {
         email: form.email,
         phone: form.phone,
         interest,
+        project_type: projectTypeLabel,
+        timeline: timelineLabel,
         message: form.message || null,
         source: "Halliday Architects — Contact",
         user_agent: navigator.userAgent,
@@ -84,27 +91,6 @@ export const ContactForm = () => {
       toast.error("Something went wrong. Please call 609.957.6789 or email chris@hallidayarchitects.com.");
       setSubmitting(false);
       return;
-    }
-
-    // 2. Notification email is best-effort — never surfaced to the user.
-    try {
-      const { error } = await supabase.functions.invoke("send-transactional-email", {
-        body: {
-          templateName: "inquiry-notification",
-          idempotencyKey: `contact-${id}`,
-          templateData: {
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            interest,
-            message: form.message,
-            source: "Halliday Architects — Contact",
-          },
-        },
-      });
-      if (error) console.error("Inquiry notification email failed (lead was saved)", error);
-    } catch (err) {
-      console.error("Inquiry notification email failed (lead was saved)", err);
     }
 
     setSubmitting(false);
