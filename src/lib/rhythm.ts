@@ -15,7 +15,7 @@ export const sectionPadding = {
   /** Standard section rhythm. */
   base: "py-24 md:py-32",
   /** Tighter section, used when two related bands sit next to each other. */
-  tight: "py-40 md:py-48",
+  tight: "py-16 md:py-20",
   /** Expansive section, for statements and closing calls to action. */
   loose: "py-32 md:py-40",
 } as const;
