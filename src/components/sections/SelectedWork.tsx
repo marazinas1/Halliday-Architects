@@ -63,8 +63,8 @@ const SelectedWork = () => {
         </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {cards.map((card) => (
-            <Reveal key={card.key}>
+          {cards.map((card, i) => (
+            <Reveal key={card.key} delay={i * 100}>
               <Link to={card.link} className="group block">
                 <div className="overflow-hidden bg-sand">
                   {card.image ? (
