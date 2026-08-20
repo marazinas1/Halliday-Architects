@@ -18,7 +18,7 @@ import {
   type SiteSettingsRow,
 } from "@/hooks/useSiteSettings";
 import { readPreview } from "@/lib/admin/preview";
-import { CREDENTIALS } from "@/content/firm";
+import { STATS, ACCREDITATIONS } from "@/content/firm";
 import Testimonials from "@/components/sections/Testimonials";
 
 /*
@@ -28,8 +28,8 @@ import Testimonials from "@/components/sections/Testimonials";
  */
 
 /*
- * Credentials shown in the band below the hero come from src/content/firm.ts —
- * only claims that remain publicly verifiable (AIA, LEED, NCARB, licensure).
+ * Statistics and accreditations come from src/content/firm.ts — only claims
+ * that remain publicly verifiable (Houzz figures, AIA, LEED, NCARB, licensure).
  */
 
 const Index = () => {
@@ -115,7 +115,7 @@ const Index = () => {
         )}
 
         <div
-          className={`relative flex flex-1 items-end ${container.wide} pt-28 pb-8 md:pt-32 md:pb-16`}
+          className={`relative flex flex-1 items-end ${container.wide} pt-28 pb-5 md:pt-32 md:pb-8`}
         >
           <div className="max-w-3xl animate-fade-in-up">
             <span
@@ -125,7 +125,7 @@ const Index = () => {
                   : "border-line bg-paper text-stone"
               }`}
             >
-              Residential architecture · Ocean City, NJ
+              Best of Houzz · Service · 2016 – 2024
             </span>
             <h1 className={`heading-display mt-8 ${heroUrl ? "text-background" : "text-ink"}`}>
               {content.heroHeadline}
@@ -158,26 +158,43 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Statistics strip — flush against the bottom edge of the hero,
+            spanning the full viewport width, not inside the copy container. */}
+        <div
+          className={`w-full ${heroUrl ? "border-t border-background/15 bg-ink/60 backdrop-blur-sm" : "border-t border-line bg-sand"}`}
+        >
+          <div className={`${container.wide} py-6`}>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {STATS.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={`flex flex-col ${i > 0 ? `sm:border-l sm:pl-6 ${heroUrl ? "sm:border-background/15" : "sm:border-line"}` : ""}`}
+                >
+                  <span
+                    className={`text-3xl font-extrabold leading-none md:text-4xl ${heroUrl ? "text-paper" : "text-ink"}`}
+                  >
+                    {s.figure}
+                  </span>
+                  <span className={`label-uppercase mt-3 ${heroUrl ? "text-paper" : "text-ink"}`}>
+                    {s.label}
+                  </span>
+                  <span className={`mt-1 text-xs ${heroUrl ? "text-paper/70" : "text-stone/70"}`}>
+                    {s.detail}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* Credentials — a quiet footnote on the solid page surface, not a
-          second headline competing with the photograph. */}
+      {/* Accreditations — one quiet line below the hero. */}
       <div className="border-b border-line">
-        <div className={`${container.wide} py-5`}>
-          <ul className="flex flex-col gap-3 text-xs leading-relaxed sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2">
-            {CREDENTIALS.map((c, i) => (
-              <li key={c.label} className="flex items-center gap-x-6">
-                {i > 0 && (
-                  <span aria-hidden="true" className="hidden h-3 w-px bg-line sm:block" />
-                )}
-                <span>
-                  <span className="uppercase tracking-widest text-stone">{c.label}</span>
-                  <span aria-hidden="true" className="px-2 opacity-50">·</span>
-                  <span className="text-ink">{c.value}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
+        <div className={`${container.wide} py-4`}>
+          <p className="text-xs uppercase tracking-widest text-stone">
+            {ACCREDITATIONS}
+          </p>
         </div>
       </div>
 
