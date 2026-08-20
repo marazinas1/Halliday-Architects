@@ -43,7 +43,7 @@ Four real projects: 111 Anchor Rd, 11605 Paradise Drive, 19 Flamingo Road, 10 Le
 
 ### Design direction
 
-The site follows the visual language of stagehomy.com: **Urbanist** throughout, extrabold tight headings, white and grey tokens, rounded button variants, 4:5 project cards with hover zoom and title reveal, project heroes fading into a white gradient.
+The site follows the visual language of stagehomy.com: **Urbanist** throughout, extrabold tight headings, white and grey tokens, rounded button variants, 4:5 project cards with a restrained hover zoom; project name and location always visible beneath the image, matching the projects index, project heroes fading into a white gradient.
 
 This replaced an earlier Newsreader serif direction. The current direction is settled - do not reintroduce the serif unless the client asks.
 

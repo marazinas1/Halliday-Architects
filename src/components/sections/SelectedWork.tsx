@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/Reveal";
-import { usePublicProjects } from "@/hooks/usePublicProjects";
+import {
+  PROJECT_TYPE_LABELS,
+  usePublicProjects,
+  type ProjectType,
+} from "@/hooks/usePublicProjects";
 import { container, sectionPadding } from "@/lib/rhythm";
 
 /** Number of cards surfaced on the homepage — always four slots. */
@@ -10,49 +14,9 @@ const LIMIT = 4;
 type Card = {
   key: string;
   title: string;
-  category: string;
   image: string | null;
-  link: string | null;
-};
-
-/** Mobile card: strict vertical stack, image on top, content below. */
-const MobileProjectCard = ({ card }: { card: Card }) => {
-  const body = (
-    <div className="flex flex-col overflow-hidden rounded-[4px] border border-border bg-card">
-      {card.image ? (
-        <img
-          src={card.image}
-          alt={`${card.title} — ${card.category}`}
-          className="block w-full aspect-[3/4] object-cover object-center"
-          loading="lazy"
-        />
-      ) : (
-        <div className="block w-full aspect-[3/4] bg-sand" />
-      )}
-      <div className="block static w-full bg-card p-6">
-        <span className="label-uppercase mb-2 block">
-          {card.category}
-        </span>
-        <h3 className="heading-card text-ink mb-3">
-          {card.title}
-        </h3>
-        {card.link ? (
-          <span className="inline-flex items-center gap-2 text-sm font-medium text-ink">
-            View project
-            <ArrowRight className="w-4 h-4" />
-          </span>
-        ) : null}
-      </div>
-    </div>
-  );
-
-  return card.link ? (
-    <Link to={card.link} className="block">
-      {body}
-    </Link>
-  ) : (
-    <div className="block">{body}</div>
-  );
+  link: string;
+  meta: string;
 };
 
 const SelectedWork = () => {
@@ -64,9 +28,15 @@ const SelectedWork = () => {
   const cards: Card[] = projects.map((p) => ({
     key: p.id,
     title: p.title,
-    category: p.location ?? "",
     image: p.card_image_url ?? null,
     link: `/projects/${p.slug}`,
+    meta: [
+      p.location,
+      PROJECT_TYPE_LABELS[p.project_type as ProjectType] ?? null,
+      p.year_completed ?? null,
+    ]
+      .filter(Boolean)
+      .join(" · "),
   }));
 
   if (isLoading) return null;
@@ -92,54 +62,37 @@ const SelectedWork = () => {
           </Link>
         </Reveal>
 
-        {/* Mobile: stacked cards */}
-        <div className="md:hidden space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {cards.map((card) => (
-            <MobileProjectCard key={card.key} card={card} />
+            <Reveal key={card.key}>
+              <Link to={card.link} className="group block">
+                <div className="overflow-hidden bg-sand">
+                  {card.image ? (
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    <div className="aspect-[4/5] w-full bg-sand" />
+                  )}
+                </div>
+                <div className="mt-5">
+                  <h3 className="heading-card text-ink">
+                    {card.title}
+                  </h3>
+                  {card.meta ? (
+                    <p className="mt-2 text-xs uppercase tracking-[0.14em] text-stone">
+                      {card.meta}
+                    </p>
+                  ) : null}
+                </div>
+              </Link>
+            </Reveal>
           ))}
         </div>
-
-        {/* Desktop: grid with hover overlays */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {cards.map((card) => {
-            const inner = (
-              <div className="group relative aspect-[4/5] overflow-hidden rounded-[4px] cursor-pointer bg-sand">
-                {card.image ? (
-                  <img
-                    src={card.image}
-                    alt={`${card.title} — ${card.category}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 rounded-[4px]"
-                    loading="lazy"
-                  />
-                ) : null}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                  <span className="label-uppercase block mb-2">
-                    {card.category}
-                  </span>
-                  <h3 className="heading-card text-ink">{card.title}</h3>
-                </div>
-              </div>
-            );
-            return card.link ? (
-              <Link key={card.key} to={card.link}>
-                <Reveal>{inner}</Reveal>
-              </Link>
-            ) : (
-              <Reveal key={card.key}>{inner}</Reveal>
-            );
-          })}
-        </div>
-
-        <Reveal className="flex justify-center mt-12">
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-2 px-8 py-3 border border-ink/20 rounded-[4px] text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-all duration-300"
-          >
-            Explore more work
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </Reveal>
       </div>
     </section>
   );
