@@ -122,9 +122,9 @@ const Index = () => {
         )}
 
         <div
-          className={`relative flex flex-1 items-end ${container.wide} pt-28 pb-5 md:pt-32 md:pb-8`}
+          className={`relative flex flex-1 items-center justify-center text-center ${container.wide} pt-28 pb-5 md:pt-32 md:pb-8`}
         >
-          <div className="max-w-3xl animate-fade-in-up">
+          <div className="mx-auto max-w-3xl animate-fade-in-up">
             <span
               className={`inline-flex items-center rounded-full border px-4 py-1.5 text-[11px] font-medium uppercase tracking-widest ${
                 heroUrl
@@ -138,11 +138,11 @@ const Index = () => {
               {content.heroHeadline}
             </h1>
             <p
-              className={`mt-8 max-w-xl text-base leading-relaxed ${heroUrl ? "text-background/85" : "text-stone"}`}
+              className={`mx-auto mt-8 max-w-xl text-base leading-relaxed ${heroUrl ? "text-background/85" : "text-stone"}`}
             >
               {content.heroSubline}
             </p>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link
                 to="/contact"
                 className={`group inline-flex items-center justify-center gap-2 h-12 px-8 rounded text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 hover:opacity-90 ${
