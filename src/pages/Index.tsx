@@ -158,6 +158,35 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Statistics strip — flush against the bottom edge of the hero,
+            spanning the full viewport width, not inside the copy container. */}
+        <div
+          className={`w-full ${heroUrl ? "border-t border-background/15 bg-ink/60 backdrop-blur-sm" : "border-t border-line bg-sand"}`}
+        >
+          <div className={`${container.wide} py-6`}>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {STATS.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={`flex flex-col ${i > 0 ? `sm:border-l sm:pl-6 ${heroUrl ? "sm:border-background/15" : "sm:border-line"}` : ""}`}
+                >
+                  <span
+                    className={`text-3xl font-extrabold leading-none md:text-4xl ${heroUrl ? "text-paper" : "text-ink"}`}
+                  >
+                    {s.figure}
+                  </span>
+                  <span className={`label-uppercase mt-3 ${heroUrl ? "text-paper" : "text-ink"}`}>
+                    {s.label}
+                  </span>
+                  <span className={`mt-1 text-xs ${heroUrl ? "text-paper/70" : "text-stone/70"}`}>
+                    {s.detail}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Credentials — a quiet footnote on the solid page surface, not a
