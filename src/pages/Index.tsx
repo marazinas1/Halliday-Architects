@@ -115,7 +115,7 @@ const Index = () => {
         )}
 
         <div
-          className={`relative flex flex-1 items-end ${container.wide} pt-28 pb-8 md:pt-32 md:pb-16`}
+          className={`relative flex flex-1 items-end ${container.wide} pt-28 pb-5 md:pt-32 md:pb-8`}
         >
           <div className="max-w-3xl animate-fade-in-up">
             <span
