@@ -1,8 +1,14 @@
 import Reveal from "@/components/Reveal";
 import { useTeamMembers, type TeamMember } from "@/hooks/useTeamMembers";
 
-export const TeamCard = ({ m }: { m: TeamMember }) => (
-  <div className="text-center">
+export const TeamCard = ({
+  m,
+  align = "center",
+}: {
+  m: TeamMember;
+  align?: "center" | "left";
+}) => (
+  <div className={align === "center" ? "text-center" : "text-left"}>
     <div
       className="aspect-square w-full mb-5 overflow-hidden bg-sand"
       style={{ borderRadius: "4px" }}
