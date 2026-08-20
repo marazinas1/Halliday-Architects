@@ -250,7 +250,7 @@ function HomepageBody() {
 
 export default function AdminHomepage() {
   return (
-    <AdminProtected>
+    <AdminProtected access="owner">
       <HomepageBody />
     </AdminProtected>
   );

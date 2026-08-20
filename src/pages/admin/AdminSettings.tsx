@@ -257,7 +257,7 @@ function SettingsBody() {
 
 export default function AdminSettings() {
   return (
-    <AdminProtected>
+    <AdminProtected access="owner">
       <SettingsBody />
     </AdminProtected>
   );

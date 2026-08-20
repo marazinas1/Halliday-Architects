@@ -32,6 +32,7 @@ const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
 const AdminBlogCategories = lazy(() => import("./pages/admin/AdminBlogCategories"));
 const TeamMemberPreview = lazy(() => import("./pages/admin/TeamMemberPreview"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 
 const queryClient = new QueryClient();
 
@@ -86,6 +87,7 @@ const App = () => (
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/inquiries" element={<AdminInquiries />} />
             <Route path="/admin/homepage" element={<AdminHomepage />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
             {/* Preview routes render unsaved admin form state — no DB writes. */}
             <Route path="/admin/preview/project" element={<ProjectPage />} />
             <Route path="/admin/preview/blog" element={<BlogPostPage />} />
