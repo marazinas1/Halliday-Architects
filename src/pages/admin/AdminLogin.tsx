@@ -12,7 +12,7 @@ const AdminLogin = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // If already signed in as an admin, skip the form.
+  // If already signed in with any staff role, skip the form.
   useEffect(() => {
     let active = true;
     (async () => {
@@ -21,10 +21,8 @@ const AdminLogin = () => {
       const { data: roles } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin")
-        .maybeSingle();
-      if (active && roles) navigate("/admin", { replace: true });
+        .eq("user_id", session.user.id);
+      if (active && (roles?.length ?? 0) > 0) navigate("/admin", { replace: true });
     })();
     return () => {
       active = false;
@@ -47,15 +45,13 @@ const AdminLogin = () => {
       return;
     }
 
-    // Verify admin role. Non-admins get filtered out by RLS.
-    const { data: roleRow, error: roleError } = await supabase
+    // Verify the account has a staff role. Others are filtered out by RLS.
+    const { data: roleRows, error: roleError } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", data.session.user.id)
-      .eq("role", "admin")
-      .maybeSingle();
+      .eq("user_id", data.session.user.id);
 
-    if (roleError || !roleRow) {
+    if (roleError || !roleRows || roleRows.length === 0) {
       await supabase.auth.signOut();
       setError("This account is not authorized.");
       setLoading(false);
