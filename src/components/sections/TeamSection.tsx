@@ -19,7 +19,7 @@ export const TeamCard = ({ m }: { m: TeamMember }) => (
           className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-accent"
           aria-label={`Portrait placeholder for ${m.name}`}
         >
-          <span className="font-serif text-5xl text-ink/30">
+          <span className="text-5xl font-light text-ink/30">
             {m.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
           </span>
         </div>
@@ -66,14 +66,19 @@ export const TeamGrid = () => {
 
 export default TeamGrid;
 
-/** Only the principals — used on the About page so it does not duplicate /team. */
-export const PrincipalsGrid = () => {
+/**
+ * Only the principals — used on the About page so it does not duplicate /team.
+ * `centered` (default true) restores the mx-auto centring the About page relied
+ * on; the homepage studio section passes `centered={false}` to align left.
+ */
+export const PrincipalsGrid = ({ centered = true }: { centered?: boolean }) => {
   const { data, isLoading } = useTeamMembers();
   const principals = (data ?? []).filter((m) => m.role.toLowerCase().includes("principal"));
+  const align = centered ? "max-w-2xl mx-auto" : "max-w-2xl";
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 max-w-2xl mx-auto">
+      <div className={`grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 ${align}`}>
         {Array.from({ length: 2 }).map((_, i) => (
           <div key={i} className="aspect-square w-full bg-sand" style={{ borderRadius: "4px" }} />
         ))}
@@ -84,7 +89,7 @@ export const PrincipalsGrid = () => {
   if (!principals.length) return null;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 max-w-2xl mx-auto">
+    <div className={`grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 ${align}`}>
       {principals.map((m) => (
         <Reveal key={m.id}>
           <TeamCard m={m} />

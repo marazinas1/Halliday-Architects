@@ -8,7 +8,7 @@ import SEO from "@/components/SEO";
 import Reveal from "@/components/Reveal";
 import SelectedWork from "@/components/sections/SelectedWork";
 import ServicesPreview from "@/components/sections/ServicesPreview";
-import StudioPreview from "@/components/sections/StudioPreview";
+import { PrincipalsGrid } from "@/components/sections/TeamSection";
 import AreasServed from "@/components/sections/AreasServed";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import { container, sectionPadding } from "@/lib/rhythm";
@@ -217,7 +217,30 @@ const Index = () => {
 
       <AreasServed />
 
-      <StudioPreview />
+      {/* ─── The studio — the principals themselves ─── */}
+      <section className={sectionPadding.base}>
+        <div className={container.wide}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
+            <p className="label-uppercase lg:col-span-3 lg:pt-4">The studio</p>
+            <div className="lg:col-span-9">
+              <Reveal>
+                <p className="statement text-ink max-w-3xl">
+                  Led personally by both principals.
+                </p>
+                <div className="mt-10">
+                  <PrincipalsGrid centered={false} />
+                </div>
+                <Link
+                  to="/team"
+                  className="mt-10 inline-block label-uppercase text-ink link-underline"
+                >
+                  Meet the studio
+                </Link>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ─── Practice statement — placeholder, awaiting the client's own words ─── */}
       <section className={`${sectionPadding.loose} bg-ink`}>
