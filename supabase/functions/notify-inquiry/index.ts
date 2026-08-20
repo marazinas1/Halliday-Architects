@@ -22,8 +22,36 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   })
 
+// Constant-time string comparison: never short-circuits on the first mismatch
+// and walks the longer of the two so timing does not leak the secret's length.
+const timingSafeEqual = (a: string, b: string) => {
+  const length = Math.max(a.length, b.length)
+  let diff = a.length ^ b.length
+  for (let i = 0; i < length; i++) {
+    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0)
+  }
+  return diff === 0
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders })
+
+  // This function runs with JWT verification off (the database trigger calls it
+  // over net.http_post), so a shared secret is the only credential.
+  const expectedSecret = Deno.env.get('NOTIFY_INQUIRY_SECRET')
+  if (!expectedSecret) {
+    console.error('NOTIFY_INQUIRY_SECRET is not set — refusing to send')
+    return json({ error: 'Server configuration error' }, 500)
+  }
+
+  const providedSecret = req.headers.get('x-notify-secret')
+  if (
+    typeof providedSecret !== 'string' ||
+    providedSecret.length === 0 ||
+    !timingSafeEqual(providedSecret, expectedSecret)
+  ) {
+    return json({ error: 'Unauthorized' }, 401)
+  }
 
   const parsed = BodySchema.safeParse(await req.json().catch(() => null))
   if (!parsed.success) return json({ error: 'leadId (uuid) is required' }, 400)
