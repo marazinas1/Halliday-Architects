@@ -126,11 +126,12 @@ const Index = () => {
         >
           <div className="mx-auto max-w-3xl animate-fade-in-up">
             <span
-              className={`inline-flex items-center rounded-full border px-4 py-1.5 text-[11px] font-medium uppercase tracking-widest ${
+              className={`inline-flex items-center rounded-full border px-4 py-1.5 text-[11px] font-medium uppercase tracking-widest transition-colors ${
                 heroUrl
-                  ? "border-background/40 bg-background/10 text-background/90 backdrop-blur-sm"
+                  ? "border-background/20 bg-ink/45 text-background backdrop-blur-md"
                   : "border-line bg-paper text-stone"
               }`}
+              style={heroUrl ? { textShadow: "0 1px 4px rgba(0,0,0,0.45)" } : undefined}
             >
               Best of Houzz · Service · 2016 – 2024
             </span>
