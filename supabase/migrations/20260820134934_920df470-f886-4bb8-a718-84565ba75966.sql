@@ -1,0 +1,1 @@
+DELETE FROM public.leads WHERE email = 'sec@example.com' AND source IS NOT DISTINCT FROM source AND name = 'Security Test';
