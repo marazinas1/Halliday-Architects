@@ -11,7 +11,14 @@ import {
   Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
-import type { TemplateEntry } from './registry.ts'
+
+export interface TemplateEntry {
+  component: React.ComponentType<any>
+  subject: string | ((data: Record<string, any>) => string)
+  to?: string
+  displayName?: string
+  previewData?: Record<string, any>
+}
 
 const SITE_NAME = 'Halliday Architects'
 
