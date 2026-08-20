@@ -452,7 +452,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_admin: { Args: { _user_id?: string }; Returns: boolean }
+      is_owner: { Args: { _user_id?: string }; Returns: boolean }
+      is_platform_owner: { Args: { _user_id?: string }; Returns: boolean }
+      is_staff: { Args: { _user_id?: string }; Returns: boolean }
       list_project_bucket_paths: {
         Args: { _slug: string }
         Returns: {
