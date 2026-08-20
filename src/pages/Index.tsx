@@ -142,13 +142,15 @@ const Index = () => {
           }`}
         >
           <div className={container.wide}>
-            <div className="grid grid-cols-1 divide-y md:grid-cols-3 md:divide-x md:divide-y-0 ${''}">
+            <div
+              className={`grid grid-cols-1 divide-y md:grid-cols-3 md:divide-x md:divide-y-0 ${
+                heroUrl ? "divide-background/15" : "divide-line"
+              }`}
+            >
               {CREDENTIALS.map((c) => (
                 <div
                   key={c.label}
-                  className={`py-6 md:py-8 md:px-8 md:first:pl-0 md:last:pr-0 ${
-                    heroUrl ? "divide-background/15" : "divide-line"
-                  }`}
+                  className="py-6 md:py-8 md:px-8 md:first:pl-0 md:last:pr-0"
                 >
                   <p
                     className={`text-[11px] font-medium uppercase tracking-widest ${
