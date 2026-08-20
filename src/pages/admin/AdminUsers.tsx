@@ -71,7 +71,11 @@ function AdminUsersInner() {
           setResult({ ...data, email: address });
           setEmail("");
           toast.success(
-            data.emailSent ? "Invitation sent" : "Account created — share the credentials below",
+            data.reinvited
+              ? "Account already existed — password reset link sent"
+              : data.emailSent
+                ? "Invitation sent"
+                : "Account created — share the credentials below",
           );
         },
         onError: (err: Error) => toast.error(err.message),
@@ -121,9 +125,11 @@ function AdminUsersInner() {
         {result && (
           <div className="mt-6 rounded-md border border-line bg-sand p-4 text-sm">
             <p className="font-medium text-ink">
-              {result.emailSent
-                ? `An invitation email was sent to ${result.email}.`
-                : `Account created for ${result.email}. Email delivery isn't available yet, so pass these on yourself.`}
+              {result.reinvited
+                ? `${result.email} already has an account, so a password reset link was sent instead. Their existing role was left unchanged.`
+                : result.emailSent
+                  ? `An invitation email was sent to ${result.email}.`
+                  : `Account created for ${result.email}. Email delivery isn't available yet, so pass these on yourself.`}
             </p>
             {result.password && (
               <div className="mt-3 flex items-center gap-2">

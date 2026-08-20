@@ -33,6 +33,25 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 const ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!
 
+/**
+ * Email links must be absolute. The Origin header is raw request input and can
+ * be missing entirely, so it is parsed rather than trusted, and a configured
+ * APP_BASE_URL (or a hard fallback) covers the case where it is absent.
+ */
+const APP_BASE_URL_FALLBACK = 'https://ha.stagehomy.com'
+
+function appLink(path: string, requestedOrigin?: string | null): string {
+  let base = APP_BASE_URL_FALLBACK
+  const fromEnv = Deno.env.get('APP_BASE_URL')
+  if (fromEnv) {
+    try { base = new URL(fromEnv).origin } catch { /* ignore */ }
+  }
+  if (requestedOrigin) {
+    try { base = new URL(requestedOrigin).origin } catch { /* ignore */ }
+  }
+  return `${base}${path.startsWith('/') ? path : `/${path}`}`
+}
+
 /** Random password that satisfies any reasonable policy. */
 function tempPassword() {
   const bytes = crypto.getRandomValues(new Uint8Array(18))
@@ -111,10 +130,27 @@ Deno.serve(async (req) => {
 
   if (body.action === 'invite') {
     const email = body.email.trim().toLowerCase()
+    const redirectTo = appLink('/admin/set-password', req.headers.get('origin'))
 
     const { data: existing } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 })
-    if (existing.users.some((u) => (u.email ?? '').toLowerCase() === email)) {
-      return json({ error: 'An account with this email already exists.' }, 409)
+    const alreadyThere = existing.users.find((u) => (u.email ?? '').toLowerCase() === email)
+    if (alreadyThere) {
+      // Someone invited but never finished setting a password would otherwise be
+      // stuck forever. Send a recovery link instead; the role stays untouched.
+      const link = await admin.auth.admin.generateLink({
+        type: 'recovery',
+        email,
+        options: { redirectTo },
+      })
+      if (link.error) return json({ error: link.error.message }, 400)
+      return json({
+        success: true,
+        userId: alreadyThere.id,
+        emailSent: false,
+        password: null,
+        actionLink: link.data?.properties?.action_link ?? null,
+        reinvited: true,
+      })
     }
 
     let userId: string | null = null
@@ -123,9 +159,7 @@ Deno.serve(async (req) => {
     let actionLink: string | null = null
 
     // Preferred path: a real invitation email.
-    const invited = await admin.auth.admin.inviteUserByEmail(email, {
-      redirectTo: `${req.headers.get('origin') ?? ''}/admin/set-password`,
-    })
+    const invited = await admin.auth.admin.inviteUserByEmail(email, { redirectTo })
     if (!invited.error && invited.data.user) {
       userId = invited.data.user.id
       emailSent = true
@@ -145,7 +179,7 @@ Deno.serve(async (req) => {
       const link = await admin.auth.admin.generateLink({
         type: 'recovery',
         email,
-        options: { redirectTo: `${req.headers.get('origin') ?? ''}/admin/set-password` },
+        options: { redirectTo },
       })
       actionLink = link.data?.properties?.action_link ?? null
     }
@@ -154,7 +188,7 @@ Deno.serve(async (req) => {
     // trigger ordering. A failure here must not leave a roleless account.
     const { error: roleError } = await admin
       .from('user_roles')
-      .insert({ user_id: userId, role: body.role })
+      .upsert({ user_id: userId, role: body.role }, { onConflict: 'user_id,role' })
     if (roleError) {
       await admin.auth.admin.deleteUser(userId)
       return json({ error: roleError.message }, 400)
