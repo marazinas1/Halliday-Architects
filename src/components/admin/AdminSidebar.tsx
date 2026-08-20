@@ -2,6 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
+import { Badge } from "@/components/ui/badge";
+import { useUnreadInquiryCount } from "@/hooks/admin/useInquiries";
 import {
   Sidebar,
   SidebarContent,
@@ -21,18 +23,17 @@ const ITEMS = [
   { title: "Tags", url: "/admin/tags", icon: Tags, match: (p: string) => p.startsWith("/admin/tags") },
   { title: "Team", url: "/admin/team", icon: Users, match: (p: string) => p.startsWith("/admin/team") },
   { title: "Blog", url: "/admin/blog", icon: FileText, match: (p: string) => p.startsWith("/admin/blog") },
+  { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, match: (p: string) => p.startsWith("/admin/inquiries") },
   { title: "Homepage", url: "/admin/homepage", icon: Home, match: (p: string) => p.startsWith("/admin/homepage") },
   { title: "Settings", url: "/admin/settings", icon: Settings, match: (p: string) => p.startsWith("/admin/settings") },
 ];
-
-// Coming next — shown so the structure is visible, not clickable yet.
-const UPCOMING = [{ title: "Inquiries", icon: Inbox }];
 
 export default function AdminSidebar({ email }: { email: string }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+  const { data: unreadCount = 0 } = useUnreadInquiryCount();
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -58,23 +59,12 @@ export default function AdminSidebar({ email }: { email: string }) {
                     <Link to={item.url} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
+                      {item.title === "Inquiries" && unreadCount > 0 && (
+                        <Badge className="ml-auto h-5 min-w-5 justify-center px-1.5 text-[11px]">
+                          {unreadCount}
+                        </Badge>
+                      )}
                     </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Coming soon</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {UPCOMING.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton disabled tooltip={`${item.title} — coming soon`} className="opacity-50 cursor-default">
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
