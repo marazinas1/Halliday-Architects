@@ -414,4 +414,12 @@
   .text-caption {
     color: hsl(var(--text-caption));
   }
+  /* Hide scrollbars on mobile horizontal rails */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
