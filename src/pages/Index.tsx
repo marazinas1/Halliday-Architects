@@ -163,36 +163,28 @@ const Index = () => {
             </div>
           </div>
         </div>
-
-        {/* Credentials — a quiet footnote to the hero, not a second headline. */}
-        <div className="relative">
-          <div className={`${container.wide} pb-8 md:pb-10`}>
-            <ul
-              className={`flex flex-col gap-2 text-xs leading-relaxed sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2 ${
-                heroUrl ? "text-background/70" : "text-stone"
-              }`}
-            >
-              {CREDENTIALS.map((c, i) => (
-                <li key={c.label} className="flex items-center gap-6">
-                  {i > 0 && (
-                    <span
-                      aria-hidden="true"
-                      className={`hidden h-3 w-px sm:block ${heroUrl ? "bg-background/25" : "bg-line"}`}
-                    />
-                  )}
-                  <span>
-                    <span className="uppercase tracking-widest">{c.label}</span>
-                    <span aria-hidden="true" className="px-2 opacity-50">
-                      ·
-                    </span>
-                    <span className={heroUrl ? "text-background/90" : "text-ink"}>{c.value}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </section>
+
+      {/* Credentials — a quiet footnote on the solid page surface, not a
+          second headline competing with the photograph. */}
+      <div className="border-b border-line">
+        <div className={`${container.wide} py-5`}>
+          <ul className="flex flex-col gap-3 text-xs leading-relaxed sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2">
+            {CREDENTIALS.map((c, i) => (
+              <li key={c.label} className="flex items-center gap-x-6">
+                {i > 0 && (
+                  <span aria-hidden="true" className="hidden h-3 w-px bg-line sm:block" />
+                )}
+                <span>
+                  <span className="uppercase tracking-widest text-stone">{c.label}</span>
+                  <span aria-hidden="true" className="px-2 opacity-50">·</span>
+                  <span className="text-ink">{c.value}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
       {/* ─── Introduction ─── */}
       <section className={sectionPadding.base}>
