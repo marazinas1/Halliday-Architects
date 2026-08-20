@@ -134,7 +134,7 @@ const Index = () => {
             >
               Best of Houzz · Service · 2016 – 2024
             </span>
-            <h1 className={`heading-display mt-8 ${heroUrl ? "text-background" : "text-ink"}`}>
+            <h1 className={`heading-display whitespace-pre-line mt-8 ${heroUrl ? "text-background" : "text-ink"}`}>
               {content.heroHeadline}
             </h1>
             <p

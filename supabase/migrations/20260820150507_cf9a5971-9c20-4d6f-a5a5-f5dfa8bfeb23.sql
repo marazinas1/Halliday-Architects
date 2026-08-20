@@ -1,0 +1,1 @@
+UPDATE public.site_settings SET hero_headline = E'Residential architecture\nin Ocean City, New Jersey';
