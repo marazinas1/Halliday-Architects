@@ -37,7 +37,7 @@ export const TeamCard = ({
     </p>
     {m.bio && (
       <>
-        <div className="w-8 h-px bg-ink/20 mx-auto mb-3" />
+        <div className={`w-8 h-px bg-ink/20 mb-3 ${align === "center" ? "mx-auto" : ""}`} />
         <p className="text-body text-sm leading-relaxed">{m.bio}</p>
       </>
     )}
@@ -98,7 +98,7 @@ export const PrincipalsGrid = ({ centered = true }: { centered?: boolean }) => {
     <div className={`grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 ${align}`}>
       {principals.map((m) => (
         <Reveal key={m.id}>
-          <TeamCard m={m} />
+          <TeamCard m={m} align={centered ? "center" : "left"} />
         </Reveal>
       ))}
     </div>
