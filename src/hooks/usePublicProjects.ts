@@ -20,7 +20,6 @@ export type PublicProjectCard = {
   project_type: string;
   year_completed: number | null;
   sort_order: number;
-  featured: boolean;
   created_at: string;
   card_image_url: string | null;
   /** Every tag slug attached to the project or to any of its images. */
@@ -49,7 +48,7 @@ export function usePublicProjects() {
       const { data: rows, error } = await supabase
         .from("projects")
         .select(
-          "id, slug, title, tagline, description, location_city, location_state, project_type, year_completed, sort_order, featured, created_at",
+          "id, slug, title, tagline, description, location_city, location_state, project_type, year_completed, sort_order, created_at",
         )
         .eq("published", true)
         .order("sort_order", { ascending: true });
@@ -107,7 +106,6 @@ export function usePublicProjects() {
         project_type: p.project_type,
         year_completed: p.year_completed,
         sort_order: p.sort_order,
-        featured: p.featured,
         created_at: p.created_at,
         card_image_url: pick(p.id),
         tag_slugs: [...(tagsByProject.get(p.id) ?? [])],
