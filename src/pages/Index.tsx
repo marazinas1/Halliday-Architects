@@ -168,7 +168,7 @@ const Index = () => {
 
         {/* Statistics — a floating glass bar at the bottom of the hero,
             the same social-proof pattern used on StageHomy. */}
-        <div className={`relative ${container.wide} pb-8 md:pb-12`}>
+        <div className={`relative flex justify-center ${container.wide} pb-8 md:pb-12`}>
           <div
             className={`inline-flex w-full flex-wrap gap-x-6 gap-y-4 rounded px-4 py-4 sm:w-auto sm:gap-x-10 sm:px-6 md:gap-x-14 ${
               heroUrl
