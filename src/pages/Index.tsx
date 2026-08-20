@@ -26,13 +26,13 @@ import { readPreview } from "@/lib/admin/preview";
  */
 
 /*
- * Credentials shown in the hero band.
- * Source: the practice's Houzz profile — Best of Houzz awards 2016-2022 and the
+ * Credentials shown in the band below the hero.
+ * Source: the practice's Houzz profile — Best of Houzz awards 2016-2024 and the
  * 5.0 review rating across 43 reviews; RA / LEED AP from the principals' own
  * credentials. Publicly verifiable; nothing here is estimated or invented.
  */
 const CREDENTIALS = [
-  { label: "Best of Houzz", value: "Winner, 2016 – 2022" },
+  { label: "Best of Houzz", value: "Winner, 2016 – 2024" },
   { label: "Client reviews", value: "5.0 across 43 reviews on Houzz" },
   { label: "Licensed practice", value: "Registered architects, RA and LEED AP" },
 ];
