@@ -352,16 +352,9 @@ function AdminProjectFormInner() {
               <Label>Published</Label>
             </div>
             <div className="space-y-1 md:col-span-2">
-              <div className="flex items-center gap-3">
-                <Switch
-                  checked={form.featured}
-                  onCheckedChange={(v) => set("featured", v)}
-                />
-                <Label>Feature on the homepage</Label>
-              </div>
               <p className="text-xs text-stone">
-                The homepage shows four projects. Featured ones come first; the rest
-                of the grid fills with the most recent published projects.
+                The first four published projects by sort order appear on the homepage —
+                change the order to change which.
               </p>
             </div>
           </div>
