@@ -8,7 +8,7 @@ import { container, sectionPadding } from "@/lib/rhythm";
  * Copy comes from src/content/firm.ts (placeholder, awaiting the client).
  */
 const ServicesPreview = () => (
-  <section className={`${sectionPadding.base} section-sand`}>
+  <section className={`${sectionPadding.base} bg-background`}>
     <div className={container.wide}>
       <Reveal>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20 mb-14 lg:mb-20">
