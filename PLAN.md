@@ -65,8 +65,10 @@ Keep the editable surface small: five fields the client will actually use, not t
 
 This touches RLS on every table and is security-sensitive. Treat it as its own phase and verify each policy rather than assuming.
 
-### 3. Inquiries
-`leads` receives contact form submissions but nothing surfaces them, so an enquiry would never be seen. Needs an admin list with read/unread state and ideally an email notification. Required before launch.
+### 3. Inquiries - done, except email delivery
+Built: `/admin/inquiries` inbox (search, unread/all/archived filters, detail panel with mailto, read/unread toggle, archive instead of delete, unread badge on the sidebar). `leads` gained `read_at`, `archived_at`, `project_type`, `timeline`, `notified_at`, `notify_error`. An `AFTER INSERT` trigger calls the `notify-inquiry` edge function, which emails the addresses set in Settings > Inquiry notifications.
+
+**Outstanding, blocking launch:** the sending domain `notify.hallidayarchitects.com` is not verified, so notification emails currently fail with `no_matching_sender` and the failure is recorded on the enquiry (`notify_error`, shown in admin). Verify the domain before launch, then re-test by submitting the public contact form. Until then, inquiries must be checked in the admin panel.
 
 ### 4. Admin dashboard
 A quiet landing screen: content counts, recent drafts, quick actions. Not a metrics dashboard - this site is edited a few times a year, not daily.
@@ -79,6 +81,8 @@ SEO meta per page, social preview images (needs prerendering or build-time gener
 ## Launch checklist
 
 - [ ] Remove test content (test blog post and category)
+- [ ] Verify the email sending domain so inquiry notifications deliver, then submit a test enquiry and confirm the email arrives
+- [ ] Set the inquiry notification recipients in Settings (both principals)
 - [ ] Remove the `noindex` meta from `index.html`
 - [ ] Open `public/robots.txt` (Allow: /, disallow /admin, sitemap pointing at hallidayarchitects.com)
 - [ ] Point hallidayarchitects.com DNS at the deployment

@@ -20,8 +20,11 @@ interface InquiryNotificationProps {
   email?: string
   phone?: string
   interest?: string
+  projectType?: string
+  timeline?: string
   message?: string
   source?: string
+  adminUrl?: string
 }
 
 const InquiryNotification = ({
@@ -29,8 +32,11 @@ const InquiryNotification = ({
   email,
   phone,
   interest,
+  projectType,
+  timeline,
   message,
   source,
+  adminUrl,
 }: InquiryNotificationProps) => {
   const replyTo = email
     ? `mailto:${email}?subject=${encodeURIComponent(
@@ -75,7 +81,9 @@ const InquiryNotification = ({
                 }
               />
             )}
-            {interest && <Row label="Interest" value={interest} />}
+            {projectType && <Row label="Project type" value={projectType} />}
+            {timeline && <Row label="Timeline" value={timeline} />}
+            {!projectType && interest && <Row label="Interest" value={interest} />}
             {source && <Row label="Source" value={source} />}
           </Section>
 
@@ -84,6 +92,17 @@ const InquiryNotification = ({
               <Hr style={hr} />
               <Text style={messageLabel}>Message</Text>
               <Text style={messageBody}>{message}</Text>
+            </>
+          )}
+
+          {adminUrl && (
+            <>
+              <Hr style={hr} />
+              <Text style={text}>
+                <Link href={adminUrl} style={link}>
+                  Open this enquiry in the admin panel
+                </Link>
+              </Text>
             </>
           )}
 
@@ -138,8 +157,11 @@ export const template = {
     name: 'Jane Doe',
     email: 'jane@example.com',
     phone: '(555) 123-4567',
-    interest: 'Custom Home / New Build',
+    interest: 'New build — In 3–6 months',
+    projectType: 'New build',
+    timeline: 'In 3–6 months',
     source: 'Halliday Architects — Contact',
+    adminUrl: 'https://hallidayarchitects.com/admin/inquiries',
     message: 'I would love to learn more about building a custom home and schedule a consultation next week.',
   },
 } satisfies TemplateEntry

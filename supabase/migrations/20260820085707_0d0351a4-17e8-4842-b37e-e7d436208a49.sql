@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.notify_new_lead() FROM PUBLIC, anon, authenticated;

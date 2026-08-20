@@ -120,36 +120,54 @@ export type Database = {
       }
       leads: {
         Row: {
+          archived_at: string | null
           created_at: string
           email: string
           id: string
           interest: string | null
           message: string | null
           name: string
+          notified_at: string | null
+          notify_error: string | null
           phone: string | null
+          project_type: string | null
+          read_at: string | null
           source: string | null
+          timeline: string | null
           user_agent: string | null
         }
         Insert: {
+          archived_at?: string | null
           created_at?: string
           email: string
           id?: string
           interest?: string | null
           message?: string | null
           name: string
+          notified_at?: string | null
+          notify_error?: string | null
           phone?: string | null
+          project_type?: string | null
+          read_at?: string | null
           source?: string | null
+          timeline?: string | null
           user_agent?: string | null
         }
         Update: {
+          archived_at?: string | null
           created_at?: string
           email?: string
           id?: string
           interest?: string | null
           message?: string | null
           name?: string
+          notified_at?: string | null
+          notify_error?: string | null
           phone?: string | null
+          project_type?: string | null
+          read_at?: string | null
           source?: string | null
+          timeline?: string | null
           user_agent?: string | null
         }
         Relationships: []
@@ -300,6 +318,7 @@ export type Database = {
           hero_image_path: string | null
           hero_subline: string | null
           id: string
+          inquiry_notify_emails: string | null
           intro_body: string | null
           intro_heading: string | null
           logo_dark_path: string | null
@@ -316,6 +335,7 @@ export type Database = {
           hero_image_path?: string | null
           hero_subline?: string | null
           id?: string
+          inquiry_notify_emails?: string | null
           intro_body?: string | null
           intro_heading?: string | null
           logo_dark_path?: string | null
@@ -332,6 +352,7 @@ export type Database = {
           hero_image_path?: string | null
           hero_subline?: string | null
           id?: string
+          inquiry_notify_emails?: string | null
           intro_body?: string | null
           intro_heading?: string | null
           logo_dark_path?: string | null

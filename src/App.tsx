@@ -26,6 +26,7 @@ const AdminTags = lazy(() => import("./pages/admin/AdminTags"));
 const AdminTeam = lazy(() => import("./pages/admin/AdminTeam"));
 const AdminTeamForm = lazy(() => import("./pages/admin/AdminTeamForm"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 const AdminHomepage = lazy(() => import("./pages/admin/AdminHomepage"));
 const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
@@ -83,6 +84,7 @@ const App = () => (
             <Route path="/admin/blog/new" element={<AdminBlogForm />} />
             <Route path="/admin/blog/:id/edit" element={<AdminBlogForm />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
+            <Route path="/admin/inquiries" element={<AdminInquiries />} />
             <Route path="/admin/homepage" element={<AdminHomepage />} />
             {/* Preview routes render unsaved admin form state — no DB writes. */}
             <Route path="/admin/preview/project" element={<ProjectPage />} />
