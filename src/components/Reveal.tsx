@@ -4,9 +4,12 @@ import { useEffect, useRef } from "react";
 const Reveal = ({
   children,
   className = "",
+  delay = 0,
 }: {
   children: React.ReactNode;
   className?: string;
+  /** Stagger in milliseconds — used to cascade grids of cards. */
+  delay?: number;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -17,11 +20,11 @@ const Reveal = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           el.classList.add("opacity-100", "translate-y-0");
-          el.classList.remove("opacity-0", "translate-y-3");
+          el.classList.remove("opacity-0", "translate-y-6");
           observer.unobserve(el);
         }
       },
-      { threshold: 0.15 },
+      { threshold: 0.1, rootMargin: "0px 0px -80px 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -30,7 +33,8 @@ const Reveal = ({
   return (
     <div
       ref={ref}
-      className={`opacity-0 translate-y-3 transition-all duration-600 ease-out ${className}`}
+      style={{ transitionDelay: delay ? `${delay}ms` : undefined }}
+      className={`opacity-0 translate-y-6 transition-all duration-700 ease-out ${className}`}
     >
       {children}
     </div>

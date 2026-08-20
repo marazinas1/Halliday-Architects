@@ -107,8 +107,15 @@ const Index = () => {
               only the bottom gradient behind the copy is kept, the middle of the
               frame left untouched.
             */}
+            {/* The hero photograph is a white house, so the copy needs a
+                firmer scrim: a bottom gradient plus a soft left-side wash
+                behind the left-aligned headline block. */}
             <div
-              className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-ink/75 via-ink/30 to-transparent"
+              className="absolute inset-x-0 bottom-0 h-[75%] bg-gradient-to-t from-ink/90 via-ink/55 to-transparent"
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-0 bg-gradient-to-r from-ink/65 via-ink/25 to-transparent"
               aria-hidden="true"
             />
           </>
@@ -159,32 +166,36 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Statistics strip — flush against the bottom edge of the hero,
-            spanning the full viewport width, not inside the copy container. */}
-        <div
-          className={`w-full ${heroUrl ? "border-t border-background/15 bg-ink/60 backdrop-blur-sm" : "border-t border-line bg-sand"}`}
-        >
-          <div className={`${container.wide} py-6`}>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-              {STATS.map((s, i) => (
-                <div
-                  key={s.label}
-                  className={`flex flex-col ${i > 0 ? `sm:border-l sm:pl-6 ${heroUrl ? "sm:border-background/15" : "sm:border-line"}` : ""}`}
+        {/* Statistics — a floating glass bar at the bottom of the hero,
+            the same social-proof pattern used on StageHomy. */}
+        <div className={`relative ${container.wide} pb-8 md:pb-12`}>
+          <div
+            className={`inline-flex w-full flex-wrap gap-x-6 gap-y-4 rounded px-4 py-4 sm:w-auto sm:gap-x-10 sm:px-6 md:gap-x-14 ${
+              heroUrl
+                ? "border border-background/15 bg-ink/50 backdrop-blur-md"
+                : "border border-line bg-paper"
+            }`}
+          >
+            {STATS.map((s) => (
+              <div key={s.label} className="min-w-[86px]">
+                <span
+                  className={`block text-2xl font-extrabold leading-none md:text-3xl ${heroUrl ? "text-background" : "text-ink"}`}
+                  style={heroUrl ? { textShadow: "0 2px 8px rgba(0,0,0,0.5)" } : undefined}
                 >
-                  <span
-                    className={`text-3xl font-extrabold leading-none md:text-4xl ${heroUrl ? "text-paper" : "text-ink"}`}
-                  >
-                    {s.figure}
-                  </span>
-                  <span className={`label-uppercase mt-3 ${heroUrl ? "text-paper" : "text-ink"}`}>
-                    {s.label}
-                  </span>
-                  <span className={`mt-1 text-xs ${heroUrl ? "text-paper/70" : "text-stone/70"}`}>
-                    {s.detail}
-                  </span>
-                </div>
-              ))}
-            </div>
+                  {s.figure}
+                </span>
+                <span
+                  className={`mt-2 block text-[11px] font-medium leading-tight md:text-xs ${heroUrl ? "text-background" : "text-ink"}`}
+                >
+                  {s.label}
+                </span>
+                <span
+                  className={`block text-[10px] leading-tight md:text-[11px] ${heroUrl ? "text-background/70" : "text-stone/70"}`}
+                >
+                  {s.detail}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
