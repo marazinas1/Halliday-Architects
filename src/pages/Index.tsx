@@ -193,7 +193,7 @@ const Index = () => {
             <p className="label-uppercase lg:col-span-3 lg:pt-4">The practice</p>
             <div className="lg:col-span-9">
               <Reveal>
-                <p className="font-serif font-light text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-ink max-w-3xl">
+                <p className="statement text-ink max-w-3xl">
                   {content.introHeading}
                 </p>
                 <p className="text-body mt-10 max-w-xl">
@@ -223,7 +223,7 @@ const Index = () => {
       <section className={`${sectionPadding.loose} bg-ink`}>
         <div className={container.content}>
           <Reveal>
-            <p className="font-serif font-light text-3xl md:text-4xl leading-snug text-paper max-w-3xl">
+            <p className="statement text-paper max-w-3xl">
               Every project begins with the site, the light and the way a family
               intends to live in the house.
             </p>

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
+import { container, sectionPadding } from "@/lib/rhythm";
 
 /** Number of cards surfaced on the homepage — always four slots. */
 const LIMIT = 4;
@@ -29,13 +30,10 @@ const MobileProjectCard = ({ card }: { card: Card }) => {
         <div className="block w-full aspect-[3/4] bg-sand" />
       )}
       <div className="block static w-full bg-card p-6">
-        <span className="text-xs font-sans font-normal uppercase tracking-widest text-stone mb-2 block">
+        <span className="label-uppercase mb-2 block">
           {card.category}
         </span>
-        <h3
-          className="text-2xl font-serif font-light text-ink mb-3"
-          style={{ letterSpacing: "-0.02em" }}
-        >
+        <h3 className="heading-card text-ink mb-3">
           {card.title}
         </h3>
         {card.link ? (
@@ -74,14 +72,14 @@ const SelectedWork = () => {
   if (isLoading) return null;
 
   return (
-    <section className="py-16 md:py-20 section-sand">
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-8">
+    <section className={`${sectionPadding.tight} section-sand`}>
+      <div className={container.wide}>
         <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <span className="text-sm font-sans font-medium uppercase tracking-widest text-stone mb-4 block">
+            <span className="label-uppercase mb-4 block">
               Portfolio
             </span>
-            <h2 className="text-3xl md:text-4xl font-serif font-light text-ink">
+            <h2 className="heading-section text-ink">
               Selected work
             </h2>
           </div>
@@ -116,10 +114,10 @@ const SelectedWork = () => {
                 ) : null}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                  <span className="text-xs font-medium uppercase tracking-wider text-stone block mb-2">
+                  <span className="label-uppercase block mb-2">
                     {card.category}
                   </span>
-                  <h3 className="text-xl font-serif font-light text-ink">{card.title}</h3>
+                  <h3 className="heading-card text-ink">{card.title}</h3>
                 </div>
               </div>
             );

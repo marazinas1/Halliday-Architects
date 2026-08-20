@@ -10,7 +10,7 @@ const StudioPreview = () => (
         <p className="label-uppercase lg:col-span-3 lg:pt-4">The studio</p>
         <div className="lg:col-span-9">
           <Reveal>
-            <p className="font-serif font-light text-2xl md:text-3xl lg:text-4xl leading-snug text-ink max-w-3xl">
+            <p className="statement text-ink max-w-3xl">
               A small studio in Ocean City, led personally by both principals — Christopher and
               Shannon Halliday, RA, LEED AP.
             </p>
