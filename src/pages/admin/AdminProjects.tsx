@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Plus,
   Pencil,
@@ -69,6 +69,8 @@ const typeLabel = (t: string) => PROJECT_TYPE_LABELS[t as ProjectType] ?? t;
 
 function AdminProjectsInner() {
   const { data, isLoading } = useProjects();
+  const [searchParams] = useSearchParams();
+  const initialStatus = searchParams.get("status");
   const updatePublished = useUpdateProjectPublished();
   const updateFeatured = useUpdateProjectFeatured();
   const deleteProject = useDeleteProject();
@@ -76,7 +78,9 @@ function AdminProjectsInner() {
   const [view, setView] = useState<ViewMode>("grid");
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>(
+    initialStatus === "draft" || initialStatus === "published" ? initialStatus : "all",
+  );
   const [sort, setSort] = useState<SortKey>("default");
   const [toDelete, setToDelete] = useState<{ id: string; title: string } | null>(null);
 

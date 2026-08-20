@@ -173,7 +173,7 @@ function AdminProjectFormInner() {
       toast.success("Project saved");
       // A new project goes straight to its own edit screen so images can be
       // added immediately.
-      navigate(isEdit ? "/admin" : `/admin/projects/${projectId}/edit`, { replace: !isEdit });
+      navigate(isEdit ? "/admin/projects" : `/admin/projects/${projectId}/edit`, { replace: !isEdit });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Save failed");
     } finally {
@@ -258,7 +258,7 @@ function AdminProjectFormInner() {
                       try {
                         await deleteProject.mutateAsync(id!);
                         toast.success("Project deleted");
-                        navigate("/admin");
+                        navigate("/admin/projects");
                       } catch (e) {
                         toast.error(e instanceof Error ? e.message : "Delete failed");
                       }
