@@ -59,14 +59,9 @@ const MobileProjectCard = ({ card }: { card: Card }) => {
 
 const SelectedWork = () => {
   const { data, isLoading } = usePublicProjects();
-  // Featured projects lead, in sort_order. Any remaining slots fill with the
-  // next projects by sort_order — the order the client controls and can see.
+  // Single rule: the first four published projects by sort_order.
   // No placeholders: fewer than four projects simply renders fewer cards.
-  const all = data ?? []; // already ordered by sort_order
-  const featured = all.filter((p) => p.featured).slice(0, LIMIT);
-  const chosen = new Set(featured.map((p) => p.id));
-  const filler = all.filter((p) => !chosen.has(p.id));
-  const projects = [...featured, ...filler].slice(0, LIMIT);
+  const projects = (data ?? []).slice(0, LIMIT); // already ordered by sort_order
 
   const cards: Card[] = projects.map((p) => ({
     key: p.id,
