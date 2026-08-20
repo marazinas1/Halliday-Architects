@@ -52,9 +52,23 @@ Because auth user listing and creation need service-role access, one edge functi
 - `list` — accounts + roles, platform owners stripped.
 - `invite` — sends the auth invitation email **and** returns a copyable invite/action link plus a generated temporary password, since the sending domain isn't verified yet. The role is written to `user_roles` in the same call, after the account exists, so nothing depends on trigger ordering.
 - `set_role` — change a user's role.
-- `revoke` — remove access (delete role rows; optionally delete the account).
+- `revoke` — **removes the role only by default**. Deleting the auth account is a separate, explicitly confirmed action, never the default meaning of "remove access".
 
 Every branch refuses to read or write platform owner records unless the caller is one.
+
+### Last-owner protection
+
+At least one non-platform-owner account with the `owner` role must always remain. Enforced in the database, not only in the edge function, so it holds however the change arrives:
+
+- The `user_roles` guard trigger counts remaining `owner` rows (excluding platform owners) on any DELETE or UPDATE that would drop an owner role, and raises a clear error — "At least one owner account must remain" — when the count would reach zero. This covers an owner revoking themselves, an owner revoking the last other owner, and a role change from `owner` to `editor`.
+- The same check runs before account deletion in `manage-users`, with the message surfaced in the UI rather than as a raw error.
+- The user list marks the last remaining owner so the revoke and role controls are disabled with an explanation before anyone tries.
+
+### Account deletion and orphaned content
+
+Verified against the live schema: the only table in `public` referencing `auth.users` is `user_roles` (`user_id`, `ON DELETE CASCADE`). `projects`, `project_images`, `blog_posts`, `team_members`, `leads` and `site_settings` carry no author or owner column, so deleting an account removes its role rows and nothing else — no content is orphaned.
+
+Deletion stays available but deliberately hard to reach: a secondary action behind a typed confirmation, described as irreversible, and blocked by the same last-owner check.
 
 ## UI behaviour
 
@@ -71,5 +85,6 @@ Signed-in checks against the API, not the UI:
 2. As an editor: `/admin/settings` in the address bar shows the refusal screen.
 3. As an owner: full content, team, settings and inquiries access; the user list contains no platform owner; attempting to update or delete a platform owner's role row is rejected by the trigger; attempting to grant `platform_owner` is rejected.
 4. Invite a test user with the editor role and confirm the role landed with no manual correction, then remove the test user.
+5. Attempt to revoke the only owner account and confirm the database refuses it with the intended message, both through the UI and through a direct API call.
 
 Anything that cannot be verified with a real signed-in session will be reported as unverified rather than claimed done.
