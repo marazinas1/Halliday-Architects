@@ -46,6 +46,11 @@ Deleting a project, team member or post must delete its images from storage. Rep
 
 Auth is inherited and working. Currently only the `admin` role exists. When the fuller role system is added, verify every RLS policy individually rather than assuming `is_admin()` covers the new cases.
 
+- Invitation and recovery links are built with `appLink()`, never from a raw Origin header. Set `APP_BASE_URL` per deployment.
+- Invited users land on `/admin/set-password` and choose a password before entering the admin. Never redirect an invite straight to `/admin/login`.
+- Re-inviting an existing address sends a recovery link; it never creates a second account and never rewrites the existing role.
+- Edge functions that run with JWT verification off must authenticate with a shared secret compared in constant time. See `notify-inquiry`.
+
 ---
 
 ## Architecture
