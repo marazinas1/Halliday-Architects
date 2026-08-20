@@ -28,8 +28,8 @@ import Testimonials from "@/components/sections/Testimonials";
  */
 
 /*
- * Credentials shown in the band below the hero come from src/content/firm.ts —
- * only claims that remain publicly verifiable (AIA, LEED, NCARB, licensure).
+ * Statistics and accreditations come from src/content/firm.ts — only claims
+ * that remain publicly verifiable (Houzz figures, AIA, LEED, NCARB, licensure).
  */
 
 const Index = () => {
