@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
@@ -49,10 +49,38 @@ const Index = () => {
   const [heroFailed, setHeroFailed] = useState(false);
   const heroUrl = content.heroImageUrl && !heroFailed ? content.heroImageUrl : null;
 
+  // Parallax: the photograph drifts slower than the page, as on StageHomy.
+  // rAF-throttled, and skipped entirely for reduced-motion users.
+  const imageRef = useRef<HTMLImageElement>(null);
+  useEffect(() => {
+    if (!heroUrl) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const el = imageRef.current;
+        if (!el) return;
+        const y = Math.min(window.scrollY, window.innerHeight);
+        el.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(1.15)`;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [heroUrl]);
+
   return (
     <main className="min-h-screen bg-background">
       {isPreview && <PreviewBanner label="homepage" />}
-      <GlobalNav lightHero />
+      {/* With photography behind it the nav switches to its light-on-dark
+          treatment and the fixed scrim above keeps the mark legible whatever
+          image the admin sets. */}
+      <GlobalNav lightHero={!heroUrl} />
       <SEO
         title="Halliday Architects | Residential Architecture in Ocean City, NJ"
         description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
@@ -61,28 +89,32 @@ const Index = () => {
 
       {/* Hero — full viewport, photography when set, otherwise a plain sand block. */}
       <section
-        className={`relative flex min-h-screen min-h-[100svh] flex-col ${heroUrl ? "bg-ink" : "bg-sand"}`}
+        className={`relative flex min-h-screen min-h-[100svh] flex-col overflow-hidden ${heroUrl ? "bg-ink" : "bg-sand"}`}
       >
         {heroUrl && (
           <>
             <img
+              ref={imageRef}
               src={heroUrl}
               alt=""
               aria-hidden="true"
               onError={() => setHeroFailed(true)}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover will-change-transform"
+              style={{ transform: "scale(1.15)" }}
             />
             {/*
-              The photograph is a real house, so the lightest scrim that keeps the
-              headline legible and no more: a soft wash under the nav and a gentle
-              gradient behind the copy. The middle of the frame stays untouched.
+              The photograph is a real house, so the lightest scrim that keeps
+              the copy legible and no more: a wash under the nav that guarantees
+              the logo and links read against any image the admin uploads, and a
+              gentle gradient behind the copy. The middle of the frame is left
+              untouched.
             */}
             <div
-              className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink/45 to-transparent"
+              className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-ink/55 via-ink/25 to-transparent"
               aria-hidden="true"
             />
             <div
-              className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-ink/75 via-ink/35 to-transparent"
+              className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-ink/75 via-ink/30 to-transparent"
               aria-hidden="true"
             />
           </>
@@ -133,42 +165,32 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Credentials — recognition rather than volume, so given room and set quietly. */}
-        <div
-          className={`relative ${
-            heroUrl
-              ? "border-t border-background/15 bg-ink/25 backdrop-blur-md"
-              : "border-t border-line bg-paper/70"
-          }`}
-        >
-          <div className={container.wide}>
-            <div
-              className={`grid grid-cols-1 divide-y md:grid-cols-3 md:divide-x md:divide-y-0 ${
-                heroUrl ? "divide-background/15" : "divide-line"
+        {/* Credentials — a quiet footnote to the hero, not a second headline. */}
+        <div className="relative">
+          <div className={`${container.wide} pb-8 md:pb-10`}>
+            <ul
+              className={`flex flex-col gap-2 text-xs leading-relaxed sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2 ${
+                heroUrl ? "text-background/70" : "text-stone"
               }`}
             >
-              {CREDENTIALS.map((c) => (
-                <div
-                  key={c.label}
-                  className="py-4 md:py-8 md:px-8 md:first:pl-0 md:last:pr-0"
-                >
-                  <p
-                    className={`text-[11px] font-medium uppercase tracking-widest ${
-                      heroUrl ? "text-background/60" : "text-stone"
-                    }`}
-                  >
-                    {c.label}
-                  </p>
-                  <p
-                    className={`mt-2 text-sm leading-relaxed md:mt-3 md:text-base ${
-                      heroUrl ? "text-background" : "text-ink"
-                    }`}
-                  >
-                    {c.value}
-                  </p>
-                </div>
+              {CREDENTIALS.map((c, i) => (
+                <li key={c.label} className="flex items-center gap-6">
+                  {i > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className={`hidden h-3 w-px sm:block ${heroUrl ? "bg-background/25" : "bg-line"}`}
+                    />
+                  )}
+                  <span>
+                    <span className="uppercase tracking-widest">{c.label}</span>
+                    <span aria-hidden="true" className="px-2 opacity-50">
+                      ·
+                    </span>
+                    <span className={heroUrl ? "text-background/90" : "text-ink"}>{c.value}</span>
+                  </span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </section>
