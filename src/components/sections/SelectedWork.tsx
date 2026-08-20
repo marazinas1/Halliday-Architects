@@ -59,34 +59,22 @@ const MobileProjectCard = ({ card }: { card: Card }) => {
 
 const SelectedWork = () => {
   const { data, isLoading } = usePublicProjects();
-  // Featured projects lead, in their sort order. Any remaining slots fill with
-  // the most recent published projects so the grid is never half empty — and
-  // the /projects ordering stays untouched.
-  const all = data ?? [];
+  // Featured projects lead, in sort_order. Any remaining slots fill with the
+  // next projects by sort_order — the order the client controls and can see.
+  // No placeholders: fewer than four projects simply renders fewer cards.
+  const all = data ?? []; // already ordered by sort_order
   const featured = all.filter((p) => p.featured).slice(0, LIMIT);
   const chosen = new Set(featured.map((p) => p.id));
-  const filler = all
-    .filter((p) => !chosen.has(p.id))
-    .slice()
-    .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+  const filler = all.filter((p) => !chosen.has(p.id));
   const projects = [...featured, ...filler].slice(0, LIMIT);
 
-  const cards: Card[] = [
-    ...projects.map((p) => ({
-      key: p.id,
-      title: p.title,
-      category: p.location ?? "",
-      image: p.card_image_url ?? null,
-      link: `/projects/${p.slug}`,
-    })),
-    ...Array.from({ length: Math.max(0, LIMIT - projects.length) }, (_, i) => ({
-      key: `placeholder-${i}`,
-      title: "In preparation",
-      category: "",
-      image: null,
-      link: null,
-    })),
-  ];
+  const cards: Card[] = projects.map((p) => ({
+    key: p.id,
+    title: p.title,
+    category: p.location ?? "",
+    image: p.card_image_url ?? null,
+    link: `/projects/${p.slug}`,
+  }));
 
   if (isLoading) return null;
 
