@@ -20,6 +20,7 @@ const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
+const AdminSetPassword = lazy(() => import("./pages/admin/AdminSetPassword"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
 const AdminProjectForm = lazy(() => import("./pages/admin/AdminProjectForm"));
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/testimonials" element={<Navigate to="/" replace />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/set-password" element={<AdminSetPassword />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/projects" element={<AdminProjects />} />
             <Route path="/admin/projects/new" element={<AdminProjectForm />} />

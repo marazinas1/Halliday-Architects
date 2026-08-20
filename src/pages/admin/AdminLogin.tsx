@@ -11,6 +11,7 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   // If already signed in with any staff role, skip the form.
   useEffect(() => {
@@ -59,6 +60,21 @@ const AdminLogin = () => {
     }
 
     navigate("/admin", { replace: true });
+  };
+
+  const handleForgotPassword = async () => {
+    setError(null);
+    setNotice(null);
+
+    if (!email.trim()) {
+      setError("Enter your email address first.");
+      return;
+    }
+
+    await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/admin/set-password`,
+    });
+    setNotice("If that address has an account, a reset link is on its way.");
   };
 
   return (
@@ -114,6 +130,8 @@ const AdminLogin = () => {
             </p>
           )}
 
+          {notice && <p className="text-sm text-stone">{notice}</p>}
+
           <button
             type="submit"
             disabled={loading}
@@ -122,6 +140,14 @@ const AdminLogin = () => {
             {loading ? "Signing In…" : "Sign In"}
           </button>
         </form>
+
+        <button
+          type="button"
+          onClick={handleForgotPassword}
+          className="mt-4 w-full text-center text-sm text-stone underline underline-offset-4 hover:text-ink transition"
+        >
+          Forgot password?
+        </button>
 
         {/* Visual only — no OAuth provider is configured for this project yet. */}
         <div className="mt-8 flex items-center gap-4" aria-hidden="true">
