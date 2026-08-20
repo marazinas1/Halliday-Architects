@@ -35,10 +35,11 @@ export type SiteSettingsRow = {
   hero_subline: string | null;
   intro_heading: string | null;
   intro_body: string | null;
+  inquiry_notify_emails: string | null;
 };
 
 const SETTINGS_COLUMNS =
-  "id, site_name, logo_path, logo_dark_path, favicon_path, hero_image_bucket, hero_image_path, hero_headline, hero_subline, intro_heading, intro_body";
+  "id, site_name, logo_path, logo_dark_path, favicon_path, hero_image_bucket, hero_image_path, hero_headline, hero_subline, intro_heading, intro_body, inquiry_notify_emails";
 
 /** Public URL for a hero reference, whichever bucket it points at. */
 export function heroImageUrl(
