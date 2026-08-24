@@ -4,13 +4,10 @@ import SocialLinks from "@/components/SocialLinks";
 import { FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 
-const STUDIO_LINKS = [
+const EXPLORE_LINKS = [
   { label: "About", to: "/about" },
   { label: "Our Team", to: "/team" },
   { label: "Services", to: "/services" },
-];
-
-const EXPLORE_LINKS = [
   { label: "Projects", to: "/projects" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
@@ -52,23 +49,19 @@ const GlobalFooter = () => {
           {/* Studio */}
           <div>
             <h4 className={colHeading}>Studio</h4>
-            {STUDIO_LINKS.map((l) => (
-              <Link key={l.to} to={l.to} className={colLink}>
-                {l.label}
-              </Link>
-            ))}
+            <p className="text-sm text-paper/70 mb-1">{FIRM.address1}</p>
+            <p className="text-sm text-paper/70 mb-1">{FIRM.address2}</p>
+            <p className="text-sm text-paper/70">Monday – Friday</p>
           </div>
 
           {/* Contact */}
           <div>
             <h4 className={colHeading}>Contact</h4>
-            <p className="text-sm text-paper/70 mb-1">{FIRM.address1}</p>
-            <p className="text-sm text-paper/70 mb-3">{FIRM.address2}</p>
             <a href={FIRM.phoneHref} className="block text-sm text-paper/70 hover:text-paper transition-colors mb-1">
               {FIRM.phone}
             </a>
             <p className="text-sm text-paper/70 mb-1">Fax {FIRM.fax}</p>
-            <a href={`mailto:${FIRM.email}`} className="block text-sm text-paper/70 hover:text-paper transition-colors">
+            <a href={`mailto:${FIRM.email}`} className="block text-sm text-paper/70 hover:text-paper transition-colors break-words">
               {FIRM.email}
             </a>
           </div>

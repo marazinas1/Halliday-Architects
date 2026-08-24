@@ -133,7 +133,7 @@ const Index = () => {
                 hairline. Figures from src/content/firm.ts (STATS). */}
             <div className="mt-12 flex flex-wrap gap-x-12 gap-y-6 border-t border-line pt-8">
               {STATS.map((s) => (
-                <div key={s.label} className="min-w-[86px]">
+                <div key={s.label} className="min-w-[86px] text-center">
                   <span className="block text-2xl font-bold leading-none text-ink md:text-3xl">
                     {s.figure}
                   </span>
