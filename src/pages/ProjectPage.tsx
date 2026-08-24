@@ -6,6 +6,7 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import Lightbox from "@/components/projects/Lightbox";
+import Reveal from "@/components/Reveal";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import { previewPath, readPreview } from "@/lib/admin/preview";
 import {
@@ -146,7 +147,7 @@ const ProjectPage = () => {
 
       {(project.client_brief || project.story || project.description) && (
         <section className={sectionPadding.base}>
-          <div className={`${container.narrow} space-y-12`}>
+          <Reveal className={`${container.narrow} space-y-12`}>
             {project.client_brief && (
               <div>
                 <p className="mb-4 text-xs uppercase tracking-[0.18em] text-stone">The brief</p>
@@ -167,7 +168,7 @@ const ProjectPage = () => {
                   ))}
               </div>
             )}
-          </div>
+          </Reveal>
         </section>
       )}
 
@@ -176,11 +177,11 @@ const ProjectPage = () => {
           <div className={container.wide}>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
               {gallery.map((img, i) => (
+                <Reveal key={img.id} delay={(i % 3) * 90} className={SPANS[i % SPANS.length]}>
                 <button
-                  key={img.id}
                   type="button"
                   onClick={() => setLightbox(i)}
-                  className={`${SPANS[i % SPANS.length]} group block overflow-hidden bg-sand`}
+                  className="group block overflow-hidden bg-sand w-full"
                   aria-label={`Open image ${i + 1}`}
                 >
                   <img
@@ -191,6 +192,7 @@ const ProjectPage = () => {
                     className={`w-full ${RATIOS[i % RATIOS.length]} object-cover transition-opacity duration-500 group-hover:opacity-90`}
                   />
                 </button>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -199,7 +201,7 @@ const ProjectPage = () => {
 
       {(specs.length > 0 || features.length > 0) && (
         <section className={`${sectionPadding.tight} bg-sand`}>
-          <div className={`${container.content} grid gap-14 md:grid-cols-2`}>
+          <Reveal className={`${container.content} grid gap-14 md:grid-cols-2`}>
             {specs.length > 0 && (
               <div>
                 <p className="mb-6 text-xs uppercase tracking-[0.18em] text-stone">Details</p>
@@ -223,19 +225,19 @@ const ProjectPage = () => {
                 </ul>
               </div>
             )}
-          </div>
+          </Reveal>
         </section>
       )}
 
       {next && (
         <section className={sectionPadding.tight}>
           <div className={container.wide}>
-            <Link to={`/projects/${next.slug}`} className="group block border-t border-line pt-8">
+            <Reveal><Link to={`/projects/${next.slug}`} className="group block border-t border-line pt-8">
               <p className="text-xs uppercase tracking-[0.18em] text-stone">Next project</p>
               <h2 className="mt-3 font-serif text-3xl font-light text-ink transition-colors duration-300 group-hover:text-brand md:text-4xl">
                 {next.title}
               </h2>
-            </Link>
+            </Link></Reveal>
           </div>
         </section>
       )}
