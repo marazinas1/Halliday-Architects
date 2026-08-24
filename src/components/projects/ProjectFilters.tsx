@@ -22,6 +22,10 @@ const chip = (active: boolean) =>
 /**
  * Filter bar for the portfolio index. Horizontally scrollable on small
  * screens so it stays usable on a phone in front of a client.
+ *
+ * A row only renders when it actually offers a choice: the type row needs more
+ * than one type, the tag row more than one tag. When neither qualifies the
+ * component returns null and the page goes straight to the grid.
  */
 export default function ProjectFilters({
   types,
@@ -32,24 +36,31 @@ export default function ProjectFilters({
   onToggleTag,
   onClear,
 }: Props) {
+  const showTypes = types.length > 1;
+  const showTags = tags.length > 1;
+
+  if (!showTypes && !showTags) return null;
+
   const hasFilters = activeType !== "all" || activeTags.length > 0;
 
   return (
     <div className="space-y-4">
-      <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex gap-2">
-          <button type="button" className={chip(activeType === "all")} onClick={() => onType("all")}>
-            All work
-          </button>
-          {PROJECT_TYPES.filter((t) => types.includes(t)).map((t) => (
-            <button key={t} type="button" className={chip(activeType === t)} onClick={() => onType(t)}>
-              {PROJECT_TYPE_LABELS[t]}
+      {showTypes && (
+        <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex gap-2">
+            <button type="button" className={chip(activeType === "all")} onClick={() => onType("all")}>
+              All work
             </button>
-          ))}
+            {PROJECT_TYPES.filter((t) => types.includes(t)).map((t) => (
+              <button key={t} type="button" className={chip(activeType === t)} onClick={() => onType(t)}>
+                {PROJECT_TYPE_LABELS[t]}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {tags.length > 0 && (
+      {showTags && (
         <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-center gap-4">
             {tags.map((tag) => {
