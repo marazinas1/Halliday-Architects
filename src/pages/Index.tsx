@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
@@ -45,34 +45,6 @@ const Index = () => {
   const [heroFailed, setHeroFailed] = useState(false);
   const heroUrl = content.heroImageUrl && !heroFailed ? content.heroImageUrl : null;
 
-  // Parallax: the photograph drifts slower than the page, as on StageHomy.
-  // rAF-throttled, and skipped entirely for reduced-motion users.
-  const imageRef = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    if (!heroUrl) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (imageRef.current) imageRef.current.style.transform = "scale(1)";
-      return;
-    }
-    let frame = 0;
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const el = imageRef.current;
-        if (!el) return;
-        const y = Math.min(window.scrollY, window.innerHeight);
-        el.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(1.03)`;
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [heroUrl]);
-
   return (
     <main className="min-h-screen bg-background">
       {isPreview && <PreviewBanner label="homepage" />}
@@ -92,13 +64,11 @@ const Index = () => {
         <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto lg:min-h-[600px]">
           {heroUrl && (
             <img
-              ref={imageRef}
               src={heroUrl}
               alt=""
               aria-hidden="true"
               onError={() => setHeroFailed(true)}
-              className="absolute inset-0 h-full w-full object-cover will-change-transform"
-              style={{ transform: "scale(1.03)" }}
+              className="absolute inset-0 h-full w-full object-cover"
             />
           )}
         </div>
@@ -177,19 +147,9 @@ const Index = () => {
 
       <ServicesPreview />
 
-      {/* ─── Our approach — the hero photograph under a dark veil ─── */}
-      <section className="relative overflow-hidden bg-ink">
-        {heroUrl && (
-          <img
-            src={heroUrl}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        )}
-        <div className="absolute inset-0 bg-ink/[0.62]" />
-        <div className={`relative ${sectionPadding.loose}`}>
+      {/* ─── Our approach — a clean solid ink band ─── */}
+      <section className="bg-ink">
+        <div className={sectionPadding.loose}>
           <div className={container.content}>
             <Reveal>
               <div className="text-center">
