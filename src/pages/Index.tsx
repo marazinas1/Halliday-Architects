@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
@@ -44,34 +44,6 @@ const Index = () => {
   // broken frame — treat a failed load exactly like no image at all.
   const [heroFailed, setHeroFailed] = useState(false);
   const heroUrl = content.heroImageUrl && !heroFailed ? content.heroImageUrl : null;
-
-  // Parallax: the photograph drifts slower than the page, as on StageHomy.
-  // rAF-throttled, and skipped entirely for reduced-motion users.
-  const imageRef = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    if (!heroUrl) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (imageRef.current) imageRef.current.style.transform = "scale(1)";
-      return;
-    }
-    let frame = 0;
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const el = imageRef.current;
-        if (!el) return;
-        const y = Math.min(window.scrollY, window.innerHeight);
-        el.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(1.03)`;
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [heroUrl]);
 
   return (
     <main className="min-h-screen bg-background">
