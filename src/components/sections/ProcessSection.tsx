@@ -5,14 +5,23 @@ import { container, sectionPadding } from "@/lib/rhythm";
 /**
  * The sequence a project moves through, in the client's language.
  * Copy lives in src/content/firm.ts (HOW_WE_WORK); this is presentation only.
+ *
+ * `eyebrow` and `heading` default to the homepage wording and are overridable
+ * so the About page can reuse this section without duplicating it.
  */
-const ProcessSection = () => (
+const ProcessSection = ({
+  eyebrow = "The process",
+  heading = "From first visit to final walkthrough",
+}: {
+  eyebrow?: string;
+  heading?: string;
+}) => (
   <section className={`${sectionPadding.base} bg-background`}>
     <div className={container.wide}>
       <Reveal>
         <div className="section-head">
-          <span className="label-uppercase">The process</span>
-          <h2 className="heading-section text-ink">From first visit to final walkthrough</h2>
+          <span className="label-uppercase">{eyebrow}</span>
+          <h2 className="heading-section text-ink">{heading}</h2>
         </div>
       </Reveal>
 
