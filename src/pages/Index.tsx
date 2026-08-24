@@ -61,7 +61,7 @@ const Index = () => {
           or missing image leaves a plain sand panel, never a broken frame. */}
       <section className="grid grid-cols-1 bg-background lg:grid-cols-[0.9fr_1.1fr]">
         {/* Photograph — right column on desktop, stacked first on mobile. */}
-        <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto lg:min-h-[600px]">
+        <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto lg:min-h-[520px]">
           {heroUrl && (
             <img
               src={heroUrl}
@@ -75,15 +75,15 @@ const Index = () => {
 
         {/* Copy — white panel, vertically centered, left-aligned. */}
         <div className="flex items-center">
-          <div className="w-full px-6 py-14 sm:px-10 lg:py-24 lg:pl-16 lg:pr-14 xl:pl-20 animate-fade-in-up">
+          <div className="w-full px-6 py-14 sm:px-10 lg:py-10 lg:pl-16 lg:pr-14 xl:py-12 xl:pl-20 animate-fade-in-up">
             <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand">
               Best of Houzz · Service · 2016 – 2024
             </span>
-            <h1 className="heading-display whitespace-pre-line mt-6 max-w-[15ch] text-ink">
+            <h1 className="heading-display whitespace-pre-line mt-4 max-w-[17ch] text-[1.75rem] sm:text-[2rem] lg:text-[2.1rem] xl:text-[2.3rem] text-ink">
               {content.heroHeadline}
             </h1>
-            <p className="text-body mt-6 max-w-[40ch]">{content.heroSubline}</p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+            <p className="text-body mt-4 max-w-[40ch]">{content.heroSubline}</p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <Link
                 to="/contact"
                 className="group inline-flex w-full items-center justify-center gap-2 h-12 px-8 bg-ink text-paper text-[11px] font-medium uppercase tracking-[0.16em] transition-opacity duration-300 hover:opacity-90 sm:w-auto"
@@ -101,10 +101,10 @@ const Index = () => {
 
             {/* Statistics — a quiet strip under the buttons, separated by a
                 hairline. Figures from src/content/firm.ts (STATS). */}
-            <div className="mt-12 flex flex-wrap gap-x-12 gap-y-6 border-t border-line pt-8">
+            <div className="mt-7 flex flex-wrap gap-x-12 gap-y-6 border-t border-line pt-6">
               {STATS.map((s) => (
                 <div key={s.label} className="min-w-[86px] text-center">
-                  <span className="block text-2xl font-bold leading-none text-ink md:text-3xl">
+                  <span className="block text-xl font-bold leading-none text-ink lg:text-2xl">
                     {s.figure}
                   </span>
                   <span className="mt-2 block text-[11px] font-medium uppercase tracking-[0.16em] text-ink">
