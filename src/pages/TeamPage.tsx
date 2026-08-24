@@ -4,7 +4,7 @@ import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
-import { TeamGrid } from "@/components/sections/TeamSection";
+import { TeamRoster } from "@/components/sections/TeamSection";
 import { container, sectionPadding } from "@/lib/rhythm";
 
 const TeamPage = () => (
@@ -25,7 +25,7 @@ const TeamPage = () => (
             first sketch to construction administration.
           </p>
         </Reveal>
-        <TeamGrid />
+        <TeamRoster />
       </div>
     </section>
 
