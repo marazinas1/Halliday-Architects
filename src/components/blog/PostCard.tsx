@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
 import { formatPostDate, type PublicPost } from "@/hooks/usePublicBlog";
 
-const PostCard = ({ post }: { post: PublicPost }) => (
-  <Reveal>
+const PostCard = ({ post, delay = 0 }: { post: PublicPost; delay?: number }) => (
+  <Reveal delay={delay}>
     <Link to={`/blog/${post.slug}`} className="group block">
       <div
         className="aspect-[4/3] w-full overflow-hidden bg-sand"
