@@ -12,7 +12,7 @@ const AboutSection = () => {
   if (!STUDIO_IMAGE) {
     return (
       <section className={`${sectionPadding.base}`}>
-        <div className={container.measure}>
+        <div className={container.content}>
           <Reveal>
             <div className="text-center">
               <p className="label-uppercase mb-4">About Us</p>
