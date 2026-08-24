@@ -192,3 +192,60 @@ export const HOMEPAGE_SERVICES: Service[] = [
     icon: Leaf,
   },
 ];
+
+/**
+ * The /services page. Six groups matching the homepage preview, each with a
+ * paragraph describing the work and the Houzz service names it covers.
+ *
+ * The paragraphs are a first draft written from what the practice states
+ * publicly (its stated approach to the local vernacular, both principals'
+ * LEED accreditation, and the shore conditions the work is subject to).
+ * They describe the nature of the work only — no fees, no timescales, no
+ * commitments. Chris and Shannon should review and rewrite in their own
+ * words before launch.
+ */
+export type ServiceGroup = {
+  title: string;
+  icon: LucideIcon;
+  body: string;
+  includes: string[];
+};
+
+export const SERVICE_GROUPS: ServiceGroup[] = [
+  {
+    title: "New homes",
+    icon: Home,
+    body: "A new house on the shore begins with what the site allows — the zoning envelope, the flood elevation, and the way light moves across the lot through the day. The plan then develops around how the family intends to live in it, and the drawings are worked up into a set a builder can price and build from. Both principals stay with the project from that first site visit through construction.",
+    includes: ["Architectural Design", "Building Design", "Custom Homes", "New Home Construction"],
+  },
+  {
+    title: "Additions & renovations",
+    icon: SquarePlus,
+    body: "An addition has to belong to the house it joins. We measure and understand what is already standing — its structure, its proportions, and the quirks that come with an older shore home — before drawing anything new. The aim is a finished house that reads as one building rather than an original with something attached.",
+    includes: ["Home Additions", "Home Remodeling"],
+  },
+  {
+    title: "Restoration",
+    icon: Landmark,
+    body: "Older shore houses carry details worth keeping: porch proportions, the rhythm of the windows, trim profiles that are no longer standard. Restoration begins by recording what is there, then deciding with the owner what should be preserved, what can be repaired, and what has to be replaced.",
+    includes: ["Home Restoration"],
+  },
+  {
+    title: "Kitchens & interiors",
+    icon: ChefHat,
+    body: "Kitchens are planned with the architecture rather than fitted into it afterwards, so the layout, cabinetry, lighting and finishes are resolved as part of the plan. That includes existing kitchens reconfigured around how a household actually cooks and gathers.",
+    includes: ["Kitchen Design", "Kitchen Remodeling"],
+  },
+  {
+    title: "Pool houses & outbuildings",
+    icon: Waves,
+    body: "Pool houses, cabanas and outdoor structures are designed together with the main house so that materials, roof lines and proportions agree. Working them out at the same time also keeps the site plan, setbacks and lot coverage under control.",
+    includes: ["Pool House Design & Construction"],
+  },
+  {
+    title: "Sustainable design",
+    icon: Leaf,
+    body: "Both principals are LEED accredited professionals, and energy performance is treated as part of the design rather than a specification added at the end. On the shore that also means durability: salt air, wind exposure and flood elevation shape the construction as much as the comfort targets do.",
+    includes: ["Green Building"],
+  },
+];
