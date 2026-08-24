@@ -206,8 +206,6 @@ const Index = () => {
 
       <ProcessSection />
 
-      <Testimonials />
-
       {/* ─── The studio — the principals themselves ─── */}
       <section className={sectionPadding.base}>
         <div className={container.people}>
@@ -228,7 +226,10 @@ const Index = () => {
         </div>
       </section>
 
+      <Testimonials />
+
       <AreasServed />
+
 
       {/* ─── Closing call to action ─── */}
       <CTASection
