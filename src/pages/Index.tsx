@@ -64,13 +64,11 @@ const Index = () => {
         <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto lg:min-h-[600px]">
           {heroUrl && (
             <img
-              ref={imageRef}
               src={heroUrl}
               alt=""
               aria-hidden="true"
               onError={() => setHeroFailed(true)}
-              className="absolute inset-0 h-full w-full object-cover will-change-transform"
-              style={{ transform: "scale(1.03)" }}
+              className="absolute inset-0 h-full w-full object-cover"
             />
           )}
         </div>
