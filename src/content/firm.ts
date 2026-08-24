@@ -3,6 +3,21 @@
  * across the multi-page site.
  */
 
+import type { LucideIcon } from "lucide-react";
+import {
+  DraftingCompass,
+  Building2,
+  Hammer,
+  Home,
+  HardHat,
+  SquarePlus,
+  ChefHat,
+  UtensilsCrossed,
+  Leaf,
+  Waves,
+  Landmark,
+} from "lucide-react";
+
 export const FIRM = {
   name: "Halliday Architects",
   shortName: "Halliday Architects",
@@ -72,47 +87,66 @@ export const SOCIAL_LINKS = [
 export type Service = {
   title: string;
   description: string;
-  detail: string;
+  icon: LucideIcon;
 };
 
-// Services reflect the work the practice lists publicly (architectural design,
-// custom homes, additions, remodelling and restoration, kitchens, green
-// building). Descriptions stay factual — nothing here is invented.
+// Services are the eleven the practice lists under "Services Provided" on its
+// public Houzz profile (houzz.com/pro/chris-halliday). Verified 2026-08-24.
+// Descriptions stay factual — nothing here is invented.
 export const SERVICES: Service[] = [
   {
-    title: "Architectural Consultation",
-    description: "Early conversations about a site, a property, or an idea for a home.",
-    detail:
-      "Before drawings begin we look at the site, the zoning and the flood requirements, so the first decisions are made with the constraints already understood. Often this is the conversation that decides whether to build new, add on, or buy at all.",
+    title: "Architectural Design",
+    description: "Full architectural design for new houses, additions and renovations, from first sketch to permit set.",
+    icon: DraftingCompass,
   },
   {
-    title: "New Homes",
-    description: "Custom houses designed for their site and for the family who will live in them.",
-    detail:
-      "Each house responds to the local vernacular, to current building technology, and to the functional relationships between its spaces. Design is led personally by a principal, from first sketch to the drawings a builder works from.",
+    title: "Building Design",
+    description: "Buildings designed around their site, their structure and the codes that govern them.",
+    icon: Building2,
   },
   {
-    title: "Additions & Renovations",
-    description: "Additions, whole-house renovations and the restoration of older shore homes.",
-    detail:
-      "Existing houses are measured and understood before anything is proposed, so new work reads as part of the house rather than an attachment to it.",
+    title: "Home Remodeling",
+    description: "Whole-house remodels that rework how an existing house lives.",
+    icon: Hammer,
   },
   {
-    title: "Interiors & Kitchens",
-    description: "Interior layouts, kitchens and the detailing that follows the architecture.",
-    detail:
-      "Cabinetry, millwork, lighting and finishes are drawn alongside the plan, so the inside of the house is resolved rather than left to be decided on site.",
+    title: "Custom Homes",
+    description: "One-of-a-kind houses designed for their site and for the family who will live in them.",
+    icon: Home,
   },
   {
-    title: "Code Analysis & Permits",
-    description: "Building and zoning code review, permit drawings and municipal coordination.",
-    detail:
-      "Requirements are checked against the design as it develops rather than after the fact, and we prepare and carry the submission through the approvals process.",
+    title: "New Home Construction",
+    description: "New houses taken from the first site conversation through construction.",
+    icon: HardHat,
   },
   {
-    title: "Construction Administration",
-    description: "Staying with the project through construction.",
-    detail:
-      "We review shop drawings, visit the site and answer the questions that come up during the build, so what is drawn is what gets made.",
+    title: "Home Additions",
+    description: "Additions and second storeys that read as part of the original house.",
+    icon: SquarePlus,
+  },
+  {
+    title: "Kitchen Design",
+    description: "Kitchens planned with the architecture — layout, cabinetry, lighting and finishes.",
+    icon: ChefHat,
+  },
+  {
+    title: "Kitchen Remodeling",
+    description: "Existing kitchens reconfigured around how the household cooks and gathers.",
+    icon: UtensilsCrossed,
+  },
+  {
+    title: "Green Building",
+    description: "Energy performance and durable, efficient construction resolved as part of the design.",
+    icon: Leaf,
+  },
+  {
+    title: "Pool House Design & Construction",
+    description: "Pool houses and outdoor structures designed together with the main house.",
+    icon: Waves,
+  },
+  {
+    title: "Home Restoration",
+    description: "Older shore homes measured, understood and carefully restored.",
+    icon: Landmark,
   },
 ];

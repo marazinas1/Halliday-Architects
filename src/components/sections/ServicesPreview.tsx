@@ -4,8 +4,9 @@ import { SERVICES } from "@/content/firm";
 import { container, sectionPadding } from "@/lib/rhythm";
 
 /**
- * Homepage services preview — large drawing-notation numerals lead each item.
- * Copy comes from src/content/firm.ts (placeholder, awaiting the client).
+ * Homepage services preview — bordered circular icon chips lead each item.
+ * The list itself comes from src/content/firm.ts (the practice's public
+ * Houzz "Services Provided").
  */
 const ServicesPreview = () => (
   <section className={`${sectionPadding.base} bg-background`}>
@@ -17,17 +18,17 @@ const ServicesPreview = () => (
         </div>
       </Reveal>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
-        {SERVICES.map((s, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 lg:gap-x-12">
+        {SERVICES.map((s) => (
           <Reveal key={s.title}>
-            <Link to="/services" className="group block">
-              <span className="numeral block text-5xl md:text-6xl lg:text-7xl mb-6">
-                {String(i + 1).padStart(2, "0")}
+            <Link to="/services" className="group flex flex-col gap-4">
+              <span className="w-11 h-11 rounded-full border border-line grid place-items-center text-ink transition-colors duration-300 group-hover:border-ink">
+                <s.icon size={20} strokeWidth={1.5} />
               </span>
               <h3 className="heading-card text-ink text-lg transition-colors duration-500 ease-out group-hover:text-brand">
                 {s.title}
               </h3>
-              <p className="text-body text-sm mt-3 leading-relaxed">{s.description}</p>
+              <p className="text-body text-sm leading-relaxed">{s.description}</p>
             </Link>
           </Reveal>
         ))}

@@ -8,6 +8,7 @@ import SEO from "@/components/SEO";
 import Reveal from "@/components/Reveal";
 import SelectedWork from "@/components/sections/SelectedWork";
 import ServicesPreview from "@/components/sections/ServicesPreview";
+import ProcessSection from "@/components/sections/ProcessSection";
 import { PrincipalsGrid } from "@/components/sections/TeamSection";
 import AreasServed from "@/components/sections/AreasServed";
 import PreviewBanner from "@/components/admin/PreviewBanner";
@@ -210,28 +211,26 @@ const Index = () => {
         </div>
       </div>
 
-      {/* ─── Introduction ─── */}
+      {/* ─── Introduction — centered editorial statement ─── */}
       <section className={sectionPadding.base}>
-        <div className={container.wide}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
-            <p className="label-uppercase lg:col-span-3 lg:pt-4">The practice</p>
-            <div className="lg:col-span-9">
-              <Reveal>
-                <p className="statement text-ink max-w-3xl">
-                  {content.introHeading}
-                </p>
-                <p className="text-body mt-10 max-w-xl">
-                  {content.introBody}
-                </p>
-                <Link
-                  to="/about"
-                  className="mt-10 inline-block label-uppercase text-ink link-underline"
-                >
-                  About the practice
-                </Link>
-              </Reveal>
+        <div className={container.content}>
+          <Reveal>
+            <div className="text-center">
+              <p className="label-uppercase">The practice</p>
+              <p className="statement text-ink max-w-3xl mx-auto mt-8">
+                {content.introHeading}
+              </p>
+              <p className="text-body mt-10 max-w-2xl mx-auto">
+                {content.introBody}
+              </p>
+              <Link
+                to="/about"
+                className="mt-10 inline-block label-uppercase text-ink link-underline"
+              >
+                About the practice
+              </Link>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -239,34 +238,34 @@ const Index = () => {
 
       <ServicesPreview />
 
-      <AreasServed />
+      <ProcessSection />
 
       <Testimonials />
 
       {/* ─── The studio — the principals themselves ─── */}
       <section className={sectionPadding.base}>
         <div className={container.wide}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
-            <p className="label-uppercase lg:col-span-3 lg:pt-4">The studio</p>
-            <div className="lg:col-span-9">
-              <Reveal>
-                <p className="statement text-ink max-w-3xl">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-6 mb-14 lg:mb-20">
+              <div>
+                <p className="label-uppercase mb-6">The studio</p>
+                <p className="statement text-ink max-w-2xl">
                   Led personally by both principals.
                 </p>
-                <div className="mt-10">
-                  <PrincipalsGrid centered={false} />
-                </div>
-                <Link
-                  to="/team"
-                  className="mt-10 inline-block label-uppercase text-ink link-underline"
-                >
-                  Meet the studio
-                </Link>
-              </Reveal>
+              </div>
+              <Link
+                to="/team"
+                className="label-uppercase text-ink link-underline"
+              >
+                Meet the studio
+              </Link>
             </div>
-          </div>
+          </Reveal>
+          <PrincipalsGrid centered={false} portrait />
         </div>
       </section>
+
+      <AreasServed />
 
       {/* ─── Practice statement — placeholder, awaiting the client's own words ─── */}
       <section className={`${sectionPadding.loose} bg-ink`}>
