@@ -1,6 +1,8 @@
 import Reveal from "@/components/Reveal";
 import { useTeamMembers, type TeamMember } from "@/hooks/useTeamMembers";
 
+const isPrincipal = (m: TeamMember) => m.role.toLowerCase().includes("principal");
+
 export const TeamCard = ({
   m,
   align = "center",
