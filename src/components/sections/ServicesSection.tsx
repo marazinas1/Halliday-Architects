@@ -1,95 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "@/components/Reveal";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { container, sectionPadding } from "@/lib/rhythm";
 import { COASTAL_NOTE, SERVICES } from "@/content/firm";
 
 /**
- * Services come from src/content/firm.ts (placeholder copy awaiting the
- * client's own words). This file only supplies presentation.
+ * Services come from src/content/firm.ts (the practice's public Houzz
+ * "Services Provided" list). This file only supplies presentation —
+ * the same icon-chip cards used by the homepage preview.
  */
 export const services = SERVICES;
 
-const MobileCarousel = ({ children, itemCount }: { children: React.ReactNode[]; itemCount: number }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", dragFree: false });
-  const [selected, setSelected] = useState(0);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelected(emblaApi.selectedScrollSnap() % itemCount);
-  }, [emblaApi, itemCount]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    emblaApi.on("select", onSelect);
-    onSelect();
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
-
-  return (
-    <div className="relative">
-      <div ref={emblaRef} className="overflow-hidden">
-        <div className="flex">
-          {children.map((child, i) => (
-            <div key={i} className="min-w-0 shrink-0 grow-0 basis-[85%] pl-4">
-              {child}
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="flex justify-center gap-2 mt-6">
-        {Array.from({ length: itemCount }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => emblaApi?.scrollTo(i)}
-            aria-label={`Slide ${i + 1}`}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              i === selected ? "bg-ink w-6" : "bg-border hover:bg-stone"
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const ServiceCard = ({ s, index }: { s: (typeof services)[0]; index: number }) => (
-  <div className="h-full border-t border-line pt-8">
-    <span className="numeral block text-5xl md:text-6xl lg:text-7xl mb-6">
-      {String(index + 1).padStart(2, "0")}
+const ServiceCard = ({ s }: { s: (typeof services)[0] }) => (
+  <div className="flex flex-col gap-4">
+    <span className="w-11 h-11 rounded-full border border-line grid place-items-center text-ink">
+      <s.icon size={20} strokeWidth={1.5} />
     </span>
-    <h3 className="heading-card text-ink text-lg mb-3">{s.title}</h3>
+    <h3 className="heading-card text-ink text-lg">{s.title}</h3>
     <p className="text-body text-sm leading-relaxed">{s.description}</p>
-    <p className="text-body text-sm leading-relaxed mt-3 text-stone">{s.detail}</p>
   </div>
 );
 
-export const ServicesGrid = () => {
-  const isMobile = useIsMobile();
-  if (isMobile) {
-    return (
-      <Reveal>
-        <MobileCarousel itemCount={services.length}>
-          {services.map((s, i) => (
-            <ServiceCard key={s.title} s={s} index={i} />
-          ))}
-        </MobileCarousel>
+export const ServicesGrid = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 lg:gap-x-12">
+    {services.map((s) => (
+      <Reveal key={s.title}>
+        <ServiceCard s={s} />
       </Reveal>
-    );
-  }
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-      {services.map((s, i) => (
-        <Reveal key={s.title}>
-          <ServiceCard s={s} index={i} />
-        </Reveal>
-      ))}
-    </div>
-  );
-};
+    ))}
+  </div>
+);
 
 const ServicesSection = ({
   heading = "Services",
