@@ -147,19 +147,9 @@ const Index = () => {
 
       <ServicesPreview />
 
-      {/* ─── Our approach — the hero photograph under a dark veil ─── */}
-      <section className="relative overflow-hidden bg-ink">
-        {heroUrl && (
-          <img
-            src={heroUrl}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        )}
-        <div className="absolute inset-0 bg-ink/[0.62]" />
-        <div className={`relative ${sectionPadding.loose}`}>
+      {/* ─── Our approach — a clean solid ink band ─── */}
+      <section className="bg-ink">
+        <div className={sectionPadding.loose}>
           <div className={container.content}>
             <Reveal>
               <div className="text-center">
