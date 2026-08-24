@@ -4,20 +4,23 @@ import { useTeamMembers, type TeamMember } from "@/hooks/useTeamMembers";
 export const TeamCard = ({
   m,
   align = "center",
+  portrait = false,
 }: {
   m: TeamMember;
   align?: "center" | "left";
+  /** 4:5 grayscale portrait treatment, used by the homepage studio section. */
+  portrait?: boolean;
 }) => (
   <div className={align === "center" ? "text-center" : "text-left"}>
     <div
-      className="aspect-square w-full mb-5 overflow-hidden bg-sand"
+      className={`${portrait ? "aspect-[4/5]" : "aspect-square"} w-full mb-5 overflow-hidden bg-sand`}
       style={{ borderRadius: "4px" }}
     >
       {m.photo_url ? (
         <img
           src={m.photo_url}
           alt={`${m.name}, ${m.role} at Halliday Architects`}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover ${portrait ? "grayscale" : ""}`}
           loading="lazy"
         />
       ) : (
@@ -75,9 +78,16 @@ export default TeamGrid;
 /**
  * Only the principals — used on the About page so it does not duplicate /team.
  * `centered` (default true) restores the mx-auto centring the About page relied
- * on; the homepage studio section passes `centered={false}` to align left.
+ * on; the homepage studio section passes `centered={false}` to align left and
+ * `portrait` for the 4:5 grayscale treatment.
  */
-export const PrincipalsGrid = ({ centered = true }: { centered?: boolean }) => {
+export const PrincipalsGrid = ({
+  centered = true,
+  portrait = false,
+}: {
+  centered?: boolean;
+  portrait?: boolean;
+}) => {
   const { data, isLoading } = useTeamMembers();
   const principals = (data ?? []).filter((m) => m.role.toLowerCase().includes("principal"));
   const align = centered ? "max-w-2xl mx-auto" : "max-w-2xl";
@@ -86,7 +96,11 @@ export const PrincipalsGrid = ({ centered = true }: { centered?: boolean }) => {
     return (
       <div className={`grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 ${align}`}>
         {Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="aspect-square w-full bg-sand" style={{ borderRadius: "4px" }} />
+          <div
+            key={i}
+            className={`${portrait ? "aspect-[4/5]" : "aspect-square"} w-full bg-sand`}
+            style={{ borderRadius: "4px" }}
+          />
         ))}
       </div>
     );
@@ -98,7 +112,7 @@ export const PrincipalsGrid = ({ centered = true }: { centered?: boolean }) => {
     <div className={`grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 ${align}`}>
       {principals.map((m) => (
         <Reveal key={m.id}>
-          <TeamCard m={m} align={centered ? "center" : "left"} />
+          <TeamCard m={m} align={centered ? "center" : "left"} portrait={portrait} />
         </Reveal>
       ))}
     </div>

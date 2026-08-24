@@ -3,6 +3,21 @@
  * across the multi-page site.
  */
 
+import type { LucideIcon } from "lucide-react";
+import {
+  DraftingCompass,
+  Building2,
+  Hammer,
+  Home,
+  HardHat,
+  SquarePlus,
+  ChefHat,
+  UtensilsCrossed,
+  Leaf,
+  Waves,
+  Landmark,
+} from "lucide-react";
+
 export const FIRM = {
   name: "Halliday Architects",
   shortName: "Halliday Architects",
