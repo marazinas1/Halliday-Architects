@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
+import SectionLink from "@/components/SectionLink";
 import {
   PROJECT_TYPE_LABELS,
   usePublicProjects,
@@ -114,11 +115,7 @@ const SelectedWork = () => {
         </div>
 
         <Reveal>
-          <div className="below-link">
-            <Link to="/projects" className="link-inline">
-              View all work
-            </Link>
-          </div>
+          <SectionLink to="/projects" label="View all work" />
         </Reveal>
       </div>
     </section>
