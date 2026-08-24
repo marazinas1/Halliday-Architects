@@ -7,33 +7,37 @@
  */
 
 /**
- * Mirrors the StageHomy system 1:1:
- *   .section-padding  → py-24 md:py-32
- *   .container-wide   → max-w-[1440px] mx-auto px-6 lg:px-8
+ * Two widths, one band padding — the alignment system of the v6 homepage.
+ *   grid    1440px  → every grid (work, services, process, footer, nav)
+ *   measure 56rem   → all centered prose
+ *   people  76rem   → the one exception: the principals' portraits
  */
 export const sectionPadding = {
-  /** Standard section rhythm. */
-  base: "py-24 md:py-32",
-  /** Tighter section, used when two related bands sit next to each other. */
-  tight: "py-16 md:py-20",
-  /** Expansive section, for statements and closing calls to action. */
-  loose: "py-32 md:py-40",
+  /** Standard band rhythm — 6rem, as in the reference layout. */
+  base: "py-16 md:py-24",
+  /** Tighter band, used when two related bands sit next to each other. */
+  tight: "py-12 md:py-16",
+  /** Expansive band, for statements and closing calls to action. */
+  loose: "py-20 md:py-28",
 } as const;
 
 /** Horizontal gutters applied to every container. */
-export const gutter = "px-6 lg:px-8" as const;
+export const gutter = "px-6 md:px-8" as const;
 
 /** Container widths. */
 export const container = {
-  /** Default content width for grids and galleries. */
+  /** Grid width — every grid and the page chrome. */
   wide: `max-w-[1440px] mx-auto ${gutter}`,
-  /** Editorial width for prose-led sections. */
-  content: `max-w-5xl mx-auto ${gutter}`,
+  /** Reading measure for centered prose. */
+  content: `max-w-[56rem] mx-auto ${gutter}`,
+  /** The portraits' exception width. */
+  people: `max-w-[76rem] mx-auto ${gutter}`,
   /** Narrow measure for single-column reading. */
   narrow: `max-w-3xl mx-auto ${gutter}`,
   /** Unconstrained, for full-bleed imagery. */
   full: `w-full ${gutter}`,
 } as const;
+
 
 /** Gaps between elements inside a section. */
 export const gap = {
