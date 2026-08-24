@@ -76,9 +76,7 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       {isPreview && <PreviewBanner label="homepage" />}
-      {/* The split hero is a light surface (white copy panel left, photograph
-          right), so the nav always uses its dark-on-light treatment here. */}
-      <GlobalNav lightHero />
+      <GlobalNav />
       <SEO
         title="Halliday Architects | Residential Architecture in Ocean City, NJ"
         description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
@@ -89,9 +87,9 @@ const Index = () => {
           the right column. On mobile the photograph stacks above the copy.
           The image still comes from site_settings (/admin/homepage); a failed
           or missing image leaves a plain sand panel, never a broken frame. */}
-      <section className="grid grid-cols-1 bg-background lg:grid-cols-[0.9fr_1.1fr] lg:min-h-[calc(100svh-5rem)]">
+      <section className="grid grid-cols-1 bg-background lg:grid-cols-[0.9fr_1.1fr]">
         {/* Photograph — right column on desktop, stacked first on mobile. */}
-        <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto">
+        <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto lg:min-h-[600px]">
           {heroUrl && (
             <img
               ref={imageRef}
@@ -107,27 +105,25 @@ const Index = () => {
 
         {/* Copy — white panel, vertically centered, left-aligned. */}
         <div className="flex items-center">
-          <div className="w-full px-6 py-14 sm:px-10 lg:py-24 lg:pl-16 lg:pr-12 xl:pl-20 animate-fade-in-up">
-            <span className="text-[11px] font-semibold uppercase tracking-widest text-brand">
+          <div className="w-full px-6 py-14 sm:px-10 lg:py-24 lg:pl-16 lg:pr-14 xl:pl-20 animate-fade-in-up">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand">
               Best of Houzz · Service · 2016 – 2024
             </span>
-            <h1 className="heading-display whitespace-pre-line mt-6 max-w-[13ch] text-ink">
+            <h1 className="heading-display whitespace-pre-line mt-6 max-w-[15ch] text-ink">
               {content.heroHeadline}
             </h1>
-            <p className="mt-6 max-w-[40ch] text-base leading-relaxed text-stone">
-              {content.heroSubline}
-            </p>
+            <p className="text-body mt-6 max-w-[40ch]">{content.heroSubline}</p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <Link
                 to="/contact"
-                className="group inline-flex w-full items-center justify-center gap-2 h-12 px-8 bg-ink text-paper text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 hover:opacity-90 sm:w-auto"
+                className="group inline-flex w-full items-center justify-center gap-2 h-12 px-8 bg-ink text-paper text-[11px] font-medium uppercase tracking-[0.16em] transition-opacity duration-300 hover:opacity-90 sm:w-auto"
               >
                 Start a project
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/projects"
-                className="inline-flex w-full items-center justify-center h-12 px-8 border border-line text-ink text-sm font-medium uppercase tracking-[0.1em] transition-colors duration-300 hover:bg-sand sm:w-auto"
+                className="inline-flex w-full items-center justify-center h-12 px-8 border border-line text-ink text-[11px] font-medium uppercase tracking-[0.16em] transition-colors duration-300 hover:bg-sand sm:w-auto"
               >
                 View our work
               </Link>
@@ -135,18 +131,16 @@ const Index = () => {
 
             {/* Statistics — a quiet strip under the buttons, separated by a
                 hairline. Figures from src/content/firm.ts (STATS). */}
-            <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6 border-t border-line pt-8">
+            <div className="mt-12 flex flex-wrap gap-x-12 gap-y-6 border-t border-line pt-8">
               {STATS.map((s) => (
                 <div key={s.label} className="min-w-[86px]">
-                  <span className="block text-2xl font-extrabold leading-none text-ink md:text-3xl">
+                  <span className="block text-2xl font-bold leading-none text-ink md:text-3xl">
                     {s.figure}
                   </span>
-                  <span className="mt-2 block text-[11px] font-medium uppercase tracking-wide text-ink">
+                  <span className="mt-2 block text-[11px] font-medium uppercase tracking-[0.16em] text-ink">
                     {s.label}
                   </span>
-                  <span className="block text-[11px] text-stone">
-                    {s.detail}
-                  </span>
+                  <span className="block text-[11px] text-stone">{s.detail}</span>
                 </div>
               ))}
             </div>
@@ -155,32 +149,25 @@ const Index = () => {
       </section>
 
       {/* Accreditations — one quiet line below the hero. */}
-      <div className="border-b border-line">
+      <div className="border-y border-line">
         <div className={`${container.wide} py-4`}>
-          <p className="text-xs uppercase tracking-widest text-stone">
-            {ACCREDITATIONS}
-          </p>
+          <p className="text-[11px] uppercase tracking-[0.16em] text-stone">{ACCREDITATIONS}</p>
         </div>
       </div>
 
-      {/* ─── Introduction — centered editorial statement ─── */}
+      {/* ─── The practice — centered editorial statement ─── */}
       <section className={sectionPadding.base}>
         <div className={container.content}>
           <Reveal>
             <div className="text-center">
               <p className="label-uppercase">The practice</p>
-              <p className="statement text-ink max-w-3xl mx-auto mt-8">
-                {content.introHeading}
-              </p>
-              <p className="text-body mt-10 max-w-2xl mx-auto">
-                {content.introBody}
-              </p>
-              <Link
-                to="/about"
-                className="mt-10 inline-block label-uppercase text-ink link-underline"
-              >
-                About the practice
-              </Link>
+              <p className="statement text-ink mt-6">{content.introHeading}</p>
+              <p className="text-body mt-8 max-w-[44rem] mx-auto">{content.introBody}</p>
+              <div className="below-link">
+                <Link to="/about" className="link-inline">
+                  About the practice
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -190,50 +177,62 @@ const Index = () => {
 
       <ServicesPreview />
 
+      {/* ─── Our approach — the hero photograph under a dark veil ─── */}
+      <section className="relative overflow-hidden bg-ink">
+        {heroUrl && (
+          <img
+            src={heroUrl}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
+        <div className="absolute inset-0 bg-ink/[0.62]" />
+        <div className={`relative ${sectionPadding.loose}`}>
+          <div className={container.content}>
+            <Reveal>
+              <div className="text-center">
+                <p className="label-uppercase text-paper/60">Our approach</p>
+                <p className="statement text-paper mt-6">
+                  Every project begins with the site — its light, its exposure, and the way a
+                  family intends to live in the house.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       <ProcessSection />
 
       <Testimonials />
 
       {/* ─── The studio — the principals themselves ─── */}
       <section className={sectionPadding.base}>
-        <div className={container.wide}>
+        <div className={container.people}>
           <Reveal>
-            <div className="flex flex-wrap items-end justify-between gap-6 mb-14 lg:mb-20">
-              <div>
-                <p className="label-uppercase mb-6">The studio</p>
-                <p className="statement text-ink max-w-2xl">
-                  Led personally by both principals.
-                </p>
-              </div>
-              <Link
-                to="/team"
-                className="label-uppercase text-ink link-underline"
-              >
+            <div className="section-head">
+              <span className="label-uppercase">The studio</span>
+              <h2 className="heading-section text-ink">Led personally by both principals</h2>
+            </div>
+          </Reveal>
+          <PrincipalsGrid portrait />
+          <Reveal>
+            <div className="below-link">
+              <Link to="/team" className="link-inline">
                 Meet the studio
               </Link>
             </div>
           </Reveal>
-          <PrincipalsGrid centered={false} portrait />
         </div>
       </section>
 
       <AreasServed />
 
-      {/* ─── Practice statement — placeholder, awaiting the client's own words ─── */}
-      <section className={`${sectionPadding.loose} bg-ink`}>
-        <div className={container.content}>
-          <Reveal>
-            <p className="statement text-paper max-w-3xl mx-auto text-center">
-              Every project begins with the site — its light, its exposure, and the way a family
-              intends to live in the house.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ─── Closing call to action ─── */}
       <CTASection
-        variant="light"
+        variant="sand"
         eyebrow="Get in touch"
         heading="Start a project with us"
         description="Tell us about your site and what you have in mind, or call the studio on 609.957.6789. Every enquiry is answered personally."
@@ -245,3 +244,4 @@ const Index = () => {
 };
 
 export default Index;
+
