@@ -4,13 +4,10 @@ import SocialLinks from "@/components/SocialLinks";
 import { FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 
-const STUDIO_LINKS = [
+const EXPLORE_LINKS = [
   { label: "About", to: "/about" },
   { label: "Our Team", to: "/team" },
   { label: "Services", to: "/services" },
-];
-
-const EXPLORE_LINKS = [
   { label: "Projects", to: "/projects" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
