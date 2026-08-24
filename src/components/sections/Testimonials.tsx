@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { useTestimonials } from "@/hooks/useTestimonials";
 import { container, sectionPadding } from "@/lib/rhythm";
@@ -14,20 +15,25 @@ const Testimonials = () => {
     <section className={`${sectionPadding.base} section-sand`}>
       <div className={container.wide}>
         <Reveal>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20 mb-14 lg:mb-20">
-            <p className="label-uppercase lg:col-span-3 lg:pt-3">In their words</p>
-            <h2 className="heading-section text-ink lg:col-span-9 max-w-2xl">
-              What clients say
-            </h2>
+          <div className="section-head">
+            <span className="label-uppercase">In their words</span>
+            <h2 className="heading-section text-ink">What clients say</h2>
+            <p className="text-body mt-4">Rated 5.0 from 43 client reviews</p>
           </div>
         </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
           {data.map((t) => (
             <Reveal key={t.id}>
-              <figure className="h-full border-t border-line pt-8">
-                <blockquote className="text-body leading-relaxed">“{t.quote}”</blockquote>
-                <figcaption className="mt-6">
+              <figure className="h-full flex flex-col items-center text-center">
+                <div className="flex items-center gap-1 text-brand" aria-label="Five out of five">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} size={13} fill="currentColor" strokeWidth={0} />
+                  ))}
+                </div>
+                <blockquote className="text-body mt-6 max-w-[34ch]">“{t.quote}”</blockquote>
+                <div className="w-10 h-px bg-line my-6" />
+                <figcaption>
                   <span className="block text-sm font-medium text-ink">{t.author_name}</span>
                   {t.author_detail && (
                     <span className="block text-sm text-stone mt-1">{t.author_detail}</span>
