@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from "react";
 /** Fade-in-up on scroll, matching the site motion language.
  *
  * The animation is an enhancement, never a precondition: content is visible
- * by default when IntersectionObserver is unavailable, the element is already
- * on screen, the user prefers reduced motion, or a 1200ms safety timeout
- * expires. Nothing is ever permanently invisible. */
+ * by default when IntersectionObserver is unavailable, the user prefers
+ * reduced motion, or a safety timeout expires. Nothing is ever permanently
+ * invisible. Elements already on screen at mount still animate in — they just
+ * do not wait for a scroll event. */
 const Reveal = ({
   children,
   className = "",
@@ -40,12 +41,14 @@ const Reveal = ({
       return;
     }
 
-    // If the element is already in or above the viewport on mount, reveal it
-    // right away so above-the-fold content never waits for a scroll event.
+    let raf = 0;
+
+    // Already in or above the viewport at mount: reveal on the next frame so
+    // the transition still plays instead of the content appearing pre-loaded.
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      setVisible(true);
-      return;
+    if (rect.top < window.innerHeight * 0.9) {
+      raf = window.requestAnimationFrame(() => setVisible(true));
+      return () => window.cancelAnimationFrame(raf);
     }
 
     const observer = new IntersectionObserver(
@@ -55,29 +58,35 @@ const Reveal = ({
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -80px 0px" },
+      { threshold: 0.08, rootMargin: "0px 0px -12% 0px" },
     );
     observer.observe(el);
 
-    // Safety net: if the observer never fires within 1200ms, reveal anyway.
+    // Safety net: if the observer never fires within 2500ms while the element
+    // is on screen, reveal anyway.
     const timeout = window.setTimeout(() => {
-      setVisible(true);
-      observer.disconnect();
-    }, 1200);
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        setVisible(true);
+        observer.disconnect();
+      }
+    }, 2500);
 
     return () => {
       observer.disconnect();
       window.clearTimeout(timeout);
+      if (raf) window.cancelAnimationFrame(raf);
     };
   }, []);
-
-  const hidden = !visible;
 
   return (
     <div
       ref={ref}
       style={{ transitionDelay: delay ? `${delay}ms` : undefined }}
-      className={`${hidden ? "opacity-0 translate-y-6" : "opacity-100 translate-y-0"} transition-all duration-700 ease-out ${className}`}
+      className={`${
+        visible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-8"
+      } transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${className}`}
     >
       {children}
     </div>
