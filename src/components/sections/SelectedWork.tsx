@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import {
   PROJECT_TYPE_LABELS,
@@ -42,27 +41,16 @@ const SelectedWork = () => {
   if (isLoading) return null;
 
   return (
-    <section className={`${sectionPadding.tight} section-sand`}>
+    <section className={`${sectionPadding.base} section-sand`}>
       <div className={container.wide}>
-        <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-          <div>
-            <span className="label-uppercase mb-4 block">
-              Portfolio
-            </span>
-            <h2 className="heading-section text-ink">
-              Selected work
-            </h2>
+        <Reveal>
+          <div className="section-head">
+            <span className="label-uppercase">Portfolio</span>
+            <h2 className="heading-section text-ink">Selected work</h2>
           </div>
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:gap-3 transition-all"
-          >
-            View all work
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </Reveal>
 
-        {/* Mobile: horizontal snap rail with stacked card (StageHomy MobileProjectCard). */}
+        {/* Mobile: horizontal snap rail with stacked card. */}
         <div className="flex snap-x snap-mandatory overflow-x-auto no-scrollbar -mr-6 pr-6 pb-2 gap-4 md:hidden">
           {cards.map((card, i) => (
             <Reveal key={card.key} delay={i * 100} className="w-[85%] shrink-0 snap-center">
@@ -81,7 +69,7 @@ const SelectedWork = () => {
                   )}
                   <div className="w-full p-6">
                     {card.meta ? (
-                      <span className="mb-2 block text-xs uppercase tracking-[0.14em] text-stone">
+                      <span className="mb-2 block text-[11px] uppercase tracking-[0.16em] text-stone">
                         {card.meta}
                       </span>
                     ) : null}
@@ -93,7 +81,7 @@ const SelectedWork = () => {
           ))}
         </div>
 
-        {/* Desktop: grid with hover overlay (StageHomy FeaturedWork). */}
+        {/* Desktop: 2-up / 4-up grid, dark veil rising on hover. */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {cards.map((card, i) => (
             <Reveal key={card.key} delay={i * 100}>
@@ -108,22 +96,30 @@ const SelectedWork = () => {
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   ) : null}
-                  {/* Hover gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-paper/90 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  {/* Hover caption */}
-                  <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                  {/* Dark veil */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  {/* Caption */}
+                  <div className="absolute inset-x-0 bottom-0 p-6 translate-y-3 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                     {card.meta ? (
-                      <span className="mb-2 block text-xs uppercase tracking-[0.14em] text-stone">
+                      <span className="mb-2 block text-[11px] uppercase tracking-[0.16em] text-paper/70">
                         {card.meta}
                       </span>
                     ) : null}
-                    <h3 className="heading-card text-ink">{card.title}</h3>
+                    <h3 className="heading-card text-paper">{card.title}</h3>
                   </div>
                 </div>
               </Link>
             </Reveal>
           ))}
         </div>
+
+        <Reveal>
+          <div className="below-link">
+            <Link to="/projects" className="link-inline">
+              View all work
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
