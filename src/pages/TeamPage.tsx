@@ -25,7 +25,7 @@ const TeamPage = () => (
             first sketch to construction administration.
           </p>
         </Reveal>
-        <TeamGrid />
+        <TeamRoster />
       </div>
     </section>
 
