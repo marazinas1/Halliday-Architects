@@ -148,32 +148,42 @@
   
   /* Typography — StageHomy scale */
   .heading-display {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    font-size: clamp(2rem, 3.6vw, 3.15rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
     color: hsl(var(--text-headline));
-    letter-spacing: -0.02em;
   }
 
   .heading-section {
-    @apply text-3xl md:text-4xl font-bold tracking-tight;
-    color: hsl(var(--text-headline));
+    font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.1;
     letter-spacing: -0.02em;
+    color: hsl(var(--text-headline));
   }
 
   .heading-card {
-    @apply text-xl font-semibold tracking-tight;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
     color: hsl(var(--text-headline));
-    letter-spacing: -0.02em;
   }
 
   /* Editorial statement — a large light sentence on either surface.
      Size, weight, leading and tracking only; each usage keeps its own colour. */
   .statement {
-    @apply text-3xl md:text-4xl lg:text-5xl font-light leading-[1.15] tracking-tight;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
   }
 
   .text-body {
-    @apply text-base font-normal leading-relaxed;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.75;
     color: hsl(var(--text-body));
   }
 
@@ -183,9 +193,45 @@
   }
 
   .label-uppercase {
-    @apply text-[11px] font-medium uppercase tracking-widest;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
     color: hsl(var(--text-caption));
   }
+
+  /* Centered section header — the single alignment system for every band. */
+  .section-head {
+    @apply text-center;
+    margin-bottom: 3.5rem;
+  }
+  .section-head .label-uppercase {
+    @apply block;
+    margin-bottom: 1rem;
+  }
+
+  /* The link that sits centered below a grid. */
+  .below-link {
+    @apply text-center;
+    margin-top: 3.5rem;
+  }
+  .link-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: hsl(var(--ink));
+    border-bottom: 1px solid hsl(var(--ink));
+    padding-bottom: 0.35rem;
+    transition: gap 200ms ease-out;
+  }
+  .link-inline:hover {
+    gap: 0.85rem;
+  }
+
 
   /* Unified page header hero */
   .page-hero {

@@ -4,8 +4,8 @@ import Reveal from "@/components/Reveal";
 import { container, sectionPadding } from "@/lib/rhythm";
 
 /**
- * Shared closing call to action — mirrors the StageHomy HomeCTA pattern:
- * eyebrow, extrabold headline, one line of copy, one solid ink button.
+ * Shared closing call to action — eyebrow, headline, one line of copy and one
+ * solid button, centered on the reading measure.
  */
 const CTASection = ({
   eyebrow = "Start a project",
@@ -26,20 +26,22 @@ const CTASection = ({
 
   return (
     <section
-      className={`${sectionPadding.base} ${
+      className={`${sectionPadding.loose} ${
         isInk ? "bg-ink" : variant === "sand" ? "section-sand" : "bg-background"
       }`}
     >
-      <div className={container.wide}>
+      <div className={container.content}>
         <Reveal>
-          <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-            <p className={`label-uppercase mb-6 ${isInk ? "text-paper/50" : ""}`}>{eyebrow}</p>
+          <div className="flex flex-col items-center text-center">
+            <p className={`label-uppercase mb-4 ${isInk ? "text-paper/50" : ""}`}>{eyebrow}</p>
             <h2 className={`heading-section ${isInk ? "text-paper" : "text-ink"}`}>{heading}</h2>
-            <p className={`text-body mt-6 max-w-xl ${isInk ? "text-paper/70" : ""}`}>{description}</p>
+            <p className={`text-body mt-5 max-w-[52ch] ${isInk ? "text-paper/70" : ""}`}>
+              {description}
+            </p>
             <Link
               to={to}
-              className={`group mt-10 inline-flex items-center justify-center gap-3 h-12 px-8 text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 ${
-                isInk ? "bg-paper text-ink hover:opacity-90" : "bg-ink text-paper hover:opacity-90"
+              className={`group mt-10 inline-flex items-center justify-center gap-3 h-12 px-8 text-[11px] font-medium uppercase tracking-[0.16em] transition-opacity duration-300 hover:opacity-90 ${
+                isInk ? "bg-paper text-ink" : "bg-ink text-paper"
               }`}
             >
               {buttonLabel}

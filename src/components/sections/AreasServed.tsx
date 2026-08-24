@@ -1,5 +1,5 @@
 import Reveal from "@/components/Reveal";
-import { container, sectionPadding } from "@/lib/rhythm";
+import { container } from "@/lib/rhythm";
 
 /** Memberships and licensure, from the principals' own listings. */
 const AFFILIATIONS = ["AIA New Jersey", "NCARB", "LEED AP", "Best of Houzz ×9"];
@@ -22,14 +22,14 @@ const AREAS = [
   "Strathmere",
 ];
 
-/** Quiet centered band — affiliations above, the towns in one line below. */
+/** Slim strip, hairlines top and bottom — accreditation above, towns below. */
 const AreasServed = () => (
-  <section className={`${sectionPadding.base} section-sand`}>
-    <div className={container.content}>
+  <section className="border-y border-line py-12 md:py-14 bg-background">
+    <div className={container.wide}>
       <Reveal>
         <div className="text-center">
           <p className="label-uppercase">Registered and accredited</p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
             {AFFILIATIONS.map((a) => (
               <span
                 key={a}
@@ -39,11 +39,11 @@ const AreasServed = () => (
               </span>
             ))}
           </div>
-          <p className="text-body mt-16 max-w-2xl mx-auto">
+          <p className="text-body mt-8 max-w-[56ch] mx-auto">
             The studio works throughout the New Jersey shore, from Ocean City north to
             Atlantic City and south along the barrier islands.
           </p>
-          <p className="mt-4 text-sm font-medium text-ink">{AREAS.join(" · ")}</p>
+          <p className="mt-3 text-sm font-medium text-ink">{AREAS.join(" · ")}</p>
         </div>
       </Reveal>
     </div>
