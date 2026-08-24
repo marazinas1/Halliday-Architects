@@ -6,6 +6,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import { useTags } from "@/hooks/admin/useTags";
 import {
@@ -119,8 +120,9 @@ const ProjectsPage = () => {
             </div>
           ) : (
             <div className={`grid sm:grid-cols-2 ${gap.grid}`}>
-              {filtered.map((p) => (
-                <Link key={p.id} to={`/projects/${p.slug}`} className="group block">
+              {filtered.map((p, i) => (
+                <Reveal key={p.id} delay={(i % 2) * 100}>
+                <Link to={`/projects/${p.slug}`} className="group block">
                   <div className="overflow-hidden bg-sand">
                     {p.card_image_url ? (
                       <img
@@ -149,6 +151,7 @@ const ProjectsPage = () => {
                     </p>
                   </div>
                 </Link>
+                </Reveal>
               ))}
             </div>
           )}
