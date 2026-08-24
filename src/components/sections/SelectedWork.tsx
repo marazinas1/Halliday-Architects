@@ -67,7 +67,7 @@ const SelectedWork = () => {
           {cards.map((card, i) => (
             <Reveal key={card.key} delay={i * 100} className="w-[85%] shrink-0 snap-center">
               <Link to={card.link} className="block">
-                <div className="flex flex-col overflow-hidden rounded-[4px] border border-line bg-paper">
+                <div className="flex flex-col overflow-hidden border border-line bg-paper">
                   {card.image ? (
                     <img
                       src={card.image}
@@ -98,14 +98,14 @@ const SelectedWork = () => {
           {cards.map((card, i) => (
             <Reveal key={card.key} delay={i * 100}>
               <Link to={card.link} className="block">
-                <div className="group relative aspect-[4/5] overflow-hidden rounded-[4px] bg-sand cursor-pointer">
+                <div className="group relative aspect-[4/5] overflow-hidden bg-sand cursor-pointer">
                   {card.image ? (
                     <img
                       src={card.image}
                       alt={card.title}
                       loading="lazy"
                       decoding="async"
-                      className="h-full w-full rounded-[4px] object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   ) : null}
                   {/* Hover gradient */}

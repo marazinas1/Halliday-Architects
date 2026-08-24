@@ -84,7 +84,7 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
               ))}
               <Link
                 to="/contact"
-                className={`group ml-1 inline-flex items-center gap-2 h-11 px-6 rounded text-xs font-medium uppercase tracking-[0.12em] transition-all duration-300 hover:opacity-90 ${
+                className={`group ml-1 inline-flex items-center gap-2 h-11 px-6 text-xs font-medium uppercase tracking-[0.12em] transition-all duration-300 hover:opacity-90 ${
                   onLight ? "bg-ink text-paper" : "bg-paper text-ink"
                 }`}
               >
@@ -123,7 +123,7 @@ const GlobalNav = ({ lightHero = false }: { lightHero?: boolean }) => {
               <Link
                 to="/contact"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`group mt-2 inline-flex items-center justify-center gap-2 h-12 w-full rounded text-sm font-medium uppercase tracking-[0.12em] transition-all duration-300 hover:opacity-90 ${
+                className={`group mt-2 inline-flex items-center justify-center gap-2 h-12 w-full text-sm font-medium uppercase tracking-[0.12em] transition-all duration-300 hover:opacity-90 ${
                   onLight ? "bg-ink text-paper" : "bg-paper text-ink"
                 }`}
               >
