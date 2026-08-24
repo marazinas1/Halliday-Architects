@@ -38,7 +38,7 @@ const AboutSection = () => {
                 from the first site visit through construction administration, so the person who
                 drew the house is the person answering questions on site.
               </p>
-              <SectionLink to="/services">Services</SectionLink>
+              <SectionLink to="/services" label="What we do" />
             </div>
           </Reveal>
         </div>
@@ -85,7 +85,7 @@ const AboutSection = () => {
                 from the first site visit through construction administration, so the person who
                 drew the house is the person answering questions on site.
               </p>
-              <SectionLink to="/services">Services</SectionLink>
+              <SectionLink to="/services" label="What we do" />
             </div>
           </Reveal>
         </div>

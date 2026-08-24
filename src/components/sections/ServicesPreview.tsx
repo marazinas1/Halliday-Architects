@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
+import SectionLink from "@/components/SectionLink";
 import { HOMEPAGE_SERVICES } from "@/content/firm";
 import { container, sectionPadding } from "@/lib/rhythm";
 
@@ -35,11 +36,7 @@ const ServicesPreview = () => (
       </div>
 
       <Reveal>
-        <div className="below-link">
-          <Link to="/services" className="link-inline">
-            All services
-          </Link>
-        </div>
+        <SectionLink to="/services" label="All services" />
       </Reveal>
     </div>
   </section>
