@@ -66,19 +66,28 @@ const ProjectsPage = () => {
       />
       <PageHero eyebrow="Selected work" title="Projects" />
 
-      <section className={sectionPadding.tight}>
-        <div className={container.wide}>
-          <ProjectFilters
-            types={availableTypes}
-            activeType={activeType}
-            onType={setActiveType}
-            tags={tags}
-            activeTags={activeTags}
-            onToggleTag={toggleTag}
-            onClear={clear}
-          />
-        </div>
-      </section>
+      {(() => {
+        // ProjectFilters returns null when no row offers a real choice; in
+        // that case skip the section entirely so the grid sits flush under hero.
+        const showTypes = availableTypes.length > 1;
+        const showTags = tags.length > 1;
+        if (!showTypes && !showTags) return null;
+        return (
+          <section className={sectionPadding.tight}>
+            <div className={container.wide}>
+              <ProjectFilters
+                types={availableTypes}
+                activeType={activeType}
+                onType={setActiveType}
+                tags={tags}
+                activeTags={activeTags}
+                onToggleTag={toggleTag}
+                onClear={clear}
+              />
+            </div>
+          </section>
+        );
+      })()}
 
       <section className="pb-24 md:pb-32 lg:pb-40">
         <div className={container.wide}>
