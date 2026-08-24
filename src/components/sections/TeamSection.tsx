@@ -90,7 +90,8 @@ export const PrincipalsGrid = ({
 }) => {
   const { data, isLoading } = useTeamMembers();
   const principals = (data ?? []).filter((m) => m.role.toLowerCase().includes("principal"));
-  const align = centered ? "max-w-2xl mx-auto" : "max-w-2xl";
+  const align = centered ? "max-w-3xl mx-auto" : "max-w-3xl";
+
 
   if (isLoading) {
     return (
