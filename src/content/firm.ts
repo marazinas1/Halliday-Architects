@@ -150,3 +150,45 @@ export const SERVICES: Service[] = [
     icon: Landmark,
   },
 ];
+
+// Homepage services preview — six grouped services that summarise the full
+// eleven listed on /services. Grouped so the homepage reads cleanly rather
+// than repeating four near-identical "new build" keywords.
+export const HOMEPAGE_SERVICES: Service[] = [
+  {
+    title: "New homes",
+    description:
+      "Custom houses designed for their site and for the family who will live in them, taken from the first sketch through construction.",
+    icon: Home,
+  },
+  {
+    title: "Additions & renovations",
+    description:
+      "Additions, second storeys and whole-house renovations, worked out around what is already standing.",
+    icon: SquarePlus,
+  },
+  {
+    title: "Restoration",
+    description:
+      "Older shore homes measured, understood and carefully restored, keeping the character that makes them worth keeping.",
+    icon: Landmark,
+  },
+  {
+    title: "Kitchens & interiors",
+    description:
+      "Interior layouts, kitchens and the cabinetry, lighting and finishes that follow the architecture.",
+    icon: ChefHat,
+  },
+  {
+    title: "Pool houses & outbuildings",
+    description:
+      "Pool houses, cabanas and outdoor structures designed together with the main house rather than added on.",
+    icon: Waves,
+  },
+  {
+    title: "Sustainable design",
+    description:
+      "Energy performance and durable, efficient construction resolved as part of the design, from a LEED accredited practice.",
+    icon: Leaf,
+  },
+];

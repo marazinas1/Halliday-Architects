@@ -76,22 +76,23 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       {isPreview && <PreviewBanner label="homepage" />}
-      {/* With photography behind it the nav switches to its light-on-dark
-          treatment and the fixed scrim above keeps the mark legible whatever
-          image the admin sets. */}
-      <GlobalNav lightHero={!heroUrl} />
+      {/* The split hero is a light surface (white copy panel left, photograph
+          right), so the nav always uses its dark-on-light treatment here. */}
+      <GlobalNav lightHero />
       <SEO
         title="Halliday Architects | Residential Architecture in Ocean City, NJ"
         description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
         path="/"
       />
 
-      {/* Hero — full viewport, photography when set, otherwise a plain sand block. */}
-      <section
-        className={`relative flex min-h-screen min-h-[100svh] flex-col overflow-hidden ${heroUrl ? "bg-ink" : "bg-sand"}`}
-      >
-        {heroUrl && (
-          <>
+      {/* Hero — split layout: copy on a white panel left, the photograph in
+          the right column. On mobile the photograph stacks above the copy.
+          The image still comes from site_settings (/admin/homepage); a failed
+          or missing image leaves a plain sand panel, never a broken frame. */}
+      <section className="grid grid-cols-1 bg-background lg:grid-cols-[0.9fr_1.1fr] lg:min-h-[calc(100svh-5rem)]">
+        {/* Photograph — right column on desktop, stacked first on mobile. */}
+        <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto">
+          {heroUrl && (
             <img
               ref={imageRef}
               src={heroUrl}
@@ -101,103 +102,54 @@ const Index = () => {
               className="absolute inset-0 h-full w-full object-cover will-change-transform"
               style={{ transform: "scale(1.03)" }}
             />
-            {/*
-              The photograph is a real house, so the lightest scrim that keeps
-              the copy legible and no more. The top scrim is owned by GlobalNav
-              (it lives with the nav it protects and works on every page); here
-              only the bottom gradient behind the copy is kept, the middle of the
-              frame left untouched.
-            */}
-            {/* The hero photograph is a white house, so the copy needs a
-                firmer scrim: a bottom gradient plus a soft left-side wash
-                behind the left-aligned headline block. */}
-            <div
-              className="absolute inset-x-0 bottom-0 h-[75%] bg-gradient-to-t from-ink/90 via-ink/55 to-transparent"
-              aria-hidden="true"
-            />
-            <div
-              className="absolute inset-0 bg-gradient-to-r from-ink/65 via-ink/25 to-transparent"
-              aria-hidden="true"
-            />
-          </>
-        )}
+          )}
+        </div>
 
-        <div
-          className={`relative flex flex-1 items-center justify-center text-center ${container.wide} pt-28 pb-5 md:pt-32 md:pb-8`}
-        >
-          <div className="mx-auto max-w-3xl animate-fade-in-up">
-            <span
-              className={`inline-flex items-center rounded-full border px-4 py-1.5 text-[11px] font-medium uppercase tracking-widest transition-colors ${
-                heroUrl
-                  ? "border-background/20 bg-ink/45 text-background backdrop-blur-md"
-                  : "border-line bg-paper text-stone"
-              }`}
-              style={heroUrl ? { textShadow: "0 1px 4px rgba(0,0,0,0.45)" } : undefined}
-            >
+        {/* Copy — white panel, vertically centered, left-aligned. */}
+        <div className="flex items-center">
+          <div className="w-full px-6 py-14 sm:px-10 lg:py-24 lg:pl-16 lg:pr-12 xl:pl-20 animate-fade-in-up">
+            <span className="text-[11px] font-semibold uppercase tracking-widest text-brand">
               Best of Houzz · Service · 2016 – 2024
             </span>
-            <h1 className={`heading-display whitespace-pre-line mt-8 ${heroUrl ? "text-background" : "text-ink"}`}>
+            <h1 className="heading-display whitespace-pre-line mt-6 max-w-[13ch] text-ink">
               {content.heroHeadline}
             </h1>
-            <p
-              className={`mx-auto mt-8 max-w-xl text-base leading-relaxed ${heroUrl ? "text-background/85" : "text-stone"}`}
-            >
+            <p className="mt-6 max-w-[40ch] text-base leading-relaxed text-stone">
               {content.heroSubline}
             </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <Link
                 to="/contact"
-                className={`group inline-flex items-center justify-center gap-2 h-12 px-8 rounded text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 hover:opacity-90 ${
-                  heroUrl ? "bg-background text-ink" : "bg-ink text-paper"
-                }`}
+                className="group inline-flex w-full items-center justify-center gap-2 h-12 px-8 bg-ink text-paper text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 hover:opacity-90 sm:w-auto"
               >
                 Start a project
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/projects"
-                className={`inline-flex items-center justify-center h-12 px-8 rounded border text-sm font-medium uppercase tracking-[0.1em] transition-colors duration-300 ${
-                  heroUrl
-                    ? "border-background/50 text-background hover:bg-background/10"
-                    : "border-line text-ink hover:bg-sand"
-                }`}
+                className="inline-flex w-full items-center justify-center h-12 px-8 border border-line text-ink text-sm font-medium uppercase tracking-[0.1em] transition-colors duration-300 hover:bg-sand sm:w-auto"
               >
                 View our work
               </Link>
             </div>
-          </div>
-        </div>
 
-        {/* Statistics — a floating glass bar at the bottom of the hero,
-            the same social-proof pattern used on StageHomy. */}
-        <div className={`relative flex justify-center ${container.wide} pb-8 md:pb-12`}>
-          <div
-            className={`inline-flex w-full flex-wrap gap-x-6 gap-y-4 rounded px-4 py-4 sm:w-auto sm:gap-x-10 sm:px-6 md:gap-x-14 ${
-              heroUrl
-                ? "border border-background/15 bg-ink/50 backdrop-blur-md"
-                : "border border-line bg-paper"
-            }`}
-          >
-            {STATS.map((s) => (
-              <div key={s.label} className="min-w-[86px] text-center">
-                <span
-                  className={`block text-2xl font-extrabold leading-none md:text-3xl ${heroUrl ? "text-background" : "text-ink"}`}
-                  style={heroUrl ? { textShadow: "0 2px 8px rgba(0,0,0,0.5)" } : undefined}
-                >
-                  {s.figure}
-                </span>
-                <span
-                  className={`mt-2 block text-[11px] font-medium leading-tight md:text-xs ${heroUrl ? "text-background" : "text-ink"}`}
-                >
-                  {s.label}
-                </span>
-                <span
-                  className={`block text-[10px] leading-tight md:text-[11px] ${heroUrl ? "text-background/70" : "text-stone/70"}`}
-                >
-                  {s.detail}
-                </span>
-              </div>
-            ))}
+            {/* Statistics — a quiet strip under the buttons, separated by a
+                hairline. Figures from src/content/firm.ts (STATS). */}
+            <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6 border-t border-line pt-8">
+              {STATS.map((s) => (
+                <div key={s.label} className="min-w-[86px]">
+                  <span className="block text-2xl font-extrabold leading-none text-ink md:text-3xl">
+                    {s.figure}
+                  </span>
+                  <span className="mt-2 block text-[11px] font-medium uppercase tracking-wide text-ink">
+                    {s.label}
+                  </span>
+                  <span className="block text-[11px] text-stone">
+                    {s.detail}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

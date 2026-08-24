@@ -148,19 +148,19 @@
   
   /* Typography — StageHomy scale */
   .heading-display {
-    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
     color: hsl(var(--text-headline));
     letter-spacing: -0.02em;
   }
 
   .heading-section {
-    @apply text-3xl md:text-4xl font-extrabold tracking-tight;
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
     color: hsl(var(--text-headline));
     letter-spacing: -0.02em;
   }
 
   .heading-card {
-    @apply text-xl font-extrabold tracking-tight;
+    @apply text-xl font-semibold tracking-tight;
     color: hsl(var(--text-headline));
     letter-spacing: -0.02em;
   }

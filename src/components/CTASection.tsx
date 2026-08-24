@@ -38,7 +38,7 @@ const CTASection = ({
             <p className={`text-body mt-6 max-w-xl ${isInk ? "text-paper/70" : ""}`}>{description}</p>
             <Link
               to={to}
-              className={`group mt-10 inline-flex items-center justify-center gap-3 h-12 px-8 rounded text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 ${
+              className={`group mt-10 inline-flex items-center justify-center gap-3 h-12 px-8 text-sm font-medium uppercase tracking-[0.1em] transition-all duration-300 ${
                 isInk ? "bg-paper text-ink hover:opacity-90" : "bg-ink text-paper hover:opacity-90"
               }`}
             >
