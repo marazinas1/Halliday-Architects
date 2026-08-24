@@ -78,6 +78,62 @@ export const TeamGrid = () => {
 export default TeamGrid;
 
 /**
+ * The full roster, split into two groups so the practice's structure is visible:
+ * principals first (tall 4:5 grayscale portraits, side by side), then everyone
+ * else under a quiet "The studio" label (square cards, three across). Used on
+ * /team. TeamGrid and PrincipalsGrid are left intact for their other callers.
+ */
+export const TeamRoster = () => {
+  const { data, isLoading } = useTeamMembers();
+  const members = data ?? [];
+  const principals = members.filter(isPrincipal);
+  const studio = members.filter((m) => !isPrincipal(m));
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-14 max-w-4xl mx-auto">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <div key={i} className="aspect-[4/5] w-full bg-sand" style={{ borderRadius: "4px" }} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!members.length) return null;
+
+  return (
+    <div className="space-y-0">
+      {principals.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-14 max-w-4xl mx-auto">
+          {principals.map((m) => (
+            <Reveal key={m.id}>
+              <TeamCard m={m} align="center" portrait />
+            </Reveal>
+          ))}
+        </div>
+      )}
+
+      {studio.length > 0 && (
+        <div className="mt-20 lg:mt-24">
+          <Reveal>
+            <div className="section-head">
+              <span className="label-uppercase">The studio</span>
+            </div>
+          </Reveal>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-4xl mx-auto">
+            {studio.map((m) => (
+              <Reveal key={m.id}>
+                <TeamCard m={m} align="center" />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/**
  * Only the principals — used on the About page so it does not duplicate /team.
  * `centered` (default true) restores the mx-auto centring the About page relied
  * on; the homepage studio section passes `centered={false}` to align left and
