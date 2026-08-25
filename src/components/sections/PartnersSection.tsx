@@ -25,7 +25,7 @@ const PartnersSection = () => (
     <div className={container.content}>
       <Reveal>
         <div className="text-center mb-16">
-          <p className="label-uppercase mb-4">Our Partners</p>
+          <p className="label-uppercase mb-4">Our partners</p>
           <h2 className="heading-section text-ink mb-6">Trusted collaborators</h2>
           <div className="divider mx-auto" />
         </div>

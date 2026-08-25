@@ -116,7 +116,7 @@ export const TeamRoster = () => {
       {studio.length > 0 && (
         <div className="mt-20 lg:mt-24">
           <Reveal>
-            <div className="section-head">
+            <div className="text-center mb-16">
               <span className="label-uppercase">The studio</span>
             </div>
           </Reveal>

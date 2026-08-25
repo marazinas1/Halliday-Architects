@@ -61,35 +61,36 @@ export default function ProjectFilters({
       )}
 
       {showTags && (
-        <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex items-center gap-4">
-            {tags.map((tag) => {
-              const active = activeTags.includes(tag.slug);
-              return (
+        <div className="border-b border-line pb-6 mb-12">
+          <p className="label-uppercase mb-4">Filter by detail</p>
+          <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => {
+                const active = activeTags.includes(tag.slug);
+                return (
+                  <button
+                    key={tag.id}
+                    type="button"
+                    onClick={() => onToggleTag(tag.slug)}
+                    className={chip(active)}
+                  >
+                    {tag.name}
+                  </button>
+                );
+              })}
+              {activeTags.length > 0 && (
                 <button
-                  key={tag.id}
                   type="button"
-                  onClick={() => onToggleTag(tag.slug)}
+                  onClick={onClear}
                   className={[
-                    "whitespace-nowrap border-b py-1 text-xs transition-colors duration-300",
-                    active
-                      ? "border-brand text-brand"
-                      : "border-transparent text-stone hover:text-ink",
+                    "whitespace-nowrap border px-4 py-2 text-xs uppercase tracking-[0.14em] transition-colors duration-300",
+                    "border-line text-stone hover:border-ink hover:text-ink",
                   ].join(" ")}
                 >
-                  {tag.name}
+                  Clear
                 </button>
-              );
-            })}
-            {hasFilters && (
-              <button
-                type="button"
-                onClick={onClear}
-                className="ml-2 whitespace-nowrap text-xs text-stone underline underline-offset-4 hover:text-ink"
-              >
-                Clear
-              </button>
-            )}
+              )}
+            </div>
           </div>
         </div>
       )}
