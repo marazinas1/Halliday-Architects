@@ -294,9 +294,6 @@ function AdminUsersInner() {
               </li>
               );
             })}
-
-              </li>
-            ))}
             {users.length === 0 && (
               <li className="px-6 py-10 text-center text-sm text-stone">No accounts yet.</li>
             )}
