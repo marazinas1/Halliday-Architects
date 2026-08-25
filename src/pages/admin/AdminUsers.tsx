@@ -131,7 +131,7 @@ function AdminUsersInner() {
           <div className="mt-6 rounded-md border border-line bg-sand p-4 text-sm">
             <p className="font-medium text-ink">
               {result.reinvited
-                ? `${result.email} already has an account, so a password reset link was sent instead. Their existing role was left unchanged.`
+                ? `${result.email} already has an account, so a password reset link has been generated. Copy it and send it to them directly. Their existing role was left unchanged.`
                 : result.emailSent
                   ? `An invitation email was sent to ${result.email}.`
                   : `Account created for ${result.email}. Email delivery isn't available yet, so pass these on yourself.`}
