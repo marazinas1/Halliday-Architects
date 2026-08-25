@@ -33,6 +33,8 @@ import {
   type ManagedRole,
   type ManagedUser,
 } from "@/hooks/admin/useAdminUsers";
+import { useAdminAuth } from "@/hooks/admin/useAdminAuth";
+
 
 const ROLE_LABEL: Record<string, string> = {
   platform_owner: "Developer",
