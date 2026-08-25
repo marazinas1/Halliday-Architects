@@ -42,11 +42,14 @@ const ROLE_LABEL: Record<string, string> = {
 };
 
 function AdminUsersInner() {
+  const auth = useAdminAuth();
+  const currentUserId = auth.status === "authorized" ? auth.userId : null;
   const { data: users = [], isLoading, error } = useAdminUsers();
   const invite = useInviteUser();
   const setRole = useSetUserRole();
   const revoke = useRevokeAccess();
   const remove = useDeleteUser();
+
 
   const [email, setEmail] = useState("");
   const [role, setRoleValue] = useState<ManagedRole>("editor");
