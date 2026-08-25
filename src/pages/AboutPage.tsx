@@ -6,9 +6,9 @@ import PageHero from "@/components/PageHero";
 import AboutSection from "@/components/sections/AboutSection";
 import { PrincipalsGrid } from "@/components/sections/TeamSection";
 import Reveal from "@/components/Reveal";
+import SectionLink from "@/components/SectionLink";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ProcessSection from "@/components/sections/ProcessSection";
-import { Link } from "react-router-dom";
 import { container, sectionPadding } from "@/lib/rhythm";
 
 const AboutPage = () => (
@@ -47,11 +47,7 @@ const AboutPage = () => (
         </Reveal>
         <PrincipalsGrid />
         <Reveal>
-          <div className="text-center mt-16">
-            <Link to="/team" className="btn-outline text-xs inline-flex">
-              Meet the full studio
-            </Link>
-          </div>
+          <SectionLink to="/team" label="Meet the full studio" />
         </Reveal>
       </div>
     </section>
