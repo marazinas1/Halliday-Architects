@@ -77,7 +77,7 @@ function AdminUsersInner() {
           setEmail("");
           toast.success(
             data.reinvited
-              ? "Account already existed — password reset link sent"
+              ? "Account already existed — reset link generated below"
               : data.emailSent
                 ? "Invitation sent"
                 : "Account created — share the credentials below",
