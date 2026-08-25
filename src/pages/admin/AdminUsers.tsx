@@ -190,11 +190,19 @@ function AdminUsersInner() {
 
         {!isLoading && !error && (
           <ul className="divide-y divide-line">
-            {users.map((user) => (
+            {users.map((user) => {
+              const isSelf = Boolean(currentUserId) && user.id === currentUserId;
+              const selfTitle = "You cannot change your own access.";
+              return (
               <li key={user.id} className="flex flex-wrap items-center gap-3 px-6 py-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="truncate font-medium text-ink">{user.email}</span>
+                    {isSelf && (
+                      <Badge variant="outline" className="gap-1">
+                        <ShieldCheck className="h-3 w-3" /> You
+                      </Badge>
+                    )}
                     {user.isLastOwner && (
                       <Badge variant="outline" className="gap-1">
                         <ShieldCheck className="h-3 w-3" /> Last owner
@@ -217,7 +225,7 @@ function AdminUsersInner() {
 
                 <Select
                   value={user.role === "owner" || user.role === "editor" ? user.role : undefined}
-                  disabled={user.isPlatformOwner || user.isLastOwner || setRole.isPending}
+                  disabled={isSelf || user.isPlatformOwner || user.isLastOwner || setRole.isPending}
                   onValueChange={(v) =>
                     setRole.mutate(
                       { userId: user.id, role: v as ManagedRole },
@@ -230,7 +238,13 @@ function AdminUsersInner() {
                 >
                   <SelectTrigger
                     className="w-36"
-                    title={user.isPlatformOwner ? "Managed by the developer" : undefined}
+                    title={
+                      isSelf
+                        ? selfTitle
+                        : user.isPlatformOwner
+                          ? "Managed by the developer"
+                          : undefined
+                    }
                   >
                     <SelectValue placeholder="No access" />
                   </SelectTrigger>
@@ -243,13 +257,15 @@ function AdminUsersInner() {
                 <Button
                   variant="outline"
                   size="sm"
-                  disabled={user.isPlatformOwner || user.isLastOwner || !user.role}
+                  disabled={isSelf || user.isPlatformOwner || user.isLastOwner || !user.role}
                   title={
-                    user.isPlatformOwner
-                      ? "Managed by the developer"
-                      : user.isLastOwner
-                        ? "At least one owner account must remain"
-                        : "Remove access"
+                    isSelf
+                      ? selfTitle
+                      : user.isPlatformOwner
+                        ? "Managed by the developer"
+                        : user.isLastOwner
+                          ? "At least one owner account must remain"
+                          : "Remove access"
                   }
                   onClick={() => setToRevoke(user)}
                 >
@@ -260,8 +276,14 @@ function AdminUsersInner() {
                   variant="ghost"
                   size="sm"
                   className="text-destructive hover:text-destructive"
-                  disabled={user.isPlatformOwner || user.isLastOwner}
-                  title={user.isPlatformOwner ? "Managed by the developer" : undefined}
+                  disabled={isSelf || user.isPlatformOwner || user.isLastOwner}
+                  title={
+                    isSelf
+                      ? selfTitle
+                      : user.isPlatformOwner
+                        ? "Managed by the developer"
+                        : undefined
+                  }
                   onClick={() => {
                     setDeleteConfirm("");
                     setToDelete(user);
@@ -269,6 +291,10 @@ function AdminUsersInner() {
                 >
                   Delete
                 </Button>
+              </li>
+              );
+            })}
+
               </li>
             ))}
             {users.length === 0 && (
