@@ -197,9 +197,15 @@ Deno.serve(async (req) => {
     return json({ success: true, userId, emailSent, password, actionLink })
   }
 
+  // Self-service lockout guard: no one may revoke, demote or delete themselves.
+  if (body.userId === callerId) {
+    return json({ error: 'You cannot change your own access.' }, 403)
+  }
+
   if (shielded(body.userId)) {
     return json({ error: 'This account is managed by the developer.' }, 403)
   }
+
 
   if (body.action === 'set_role') {
     if (body.role !== 'owner' && wouldRemoveLastOwner(body.userId)) {

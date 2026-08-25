@@ -33,6 +33,8 @@ import {
   type ManagedRole,
   type ManagedUser,
 } from "@/hooks/admin/useAdminUsers";
+import { useAdminAuth } from "@/hooks/admin/useAdminAuth";
+
 
 const ROLE_LABEL: Record<string, string> = {
   platform_owner: "Developer",
@@ -42,11 +44,14 @@ const ROLE_LABEL: Record<string, string> = {
 };
 
 function AdminUsersInner() {
+  const auth = useAdminAuth();
+  const currentUserId = auth.status === "authorized" ? auth.userId : null;
   const { data: users = [], isLoading, error } = useAdminUsers();
   const invite = useInviteUser();
   const setRole = useSetUserRole();
   const revoke = useRevokeAccess();
   const remove = useDeleteUser();
+
 
   const [email, setEmail] = useState("");
   const [role, setRoleValue] = useState<ManagedRole>("editor");
@@ -72,7 +77,7 @@ function AdminUsersInner() {
           setEmail("");
           toast.success(
             data.reinvited
-              ? "Account already existed — password reset link sent"
+              ? "Account already existed — reset link generated below"
               : data.emailSent
                 ? "Invitation sent"
                 : "Account created — share the credentials below",
@@ -126,7 +131,7 @@ function AdminUsersInner() {
           <div className="mt-6 rounded-md border border-line bg-sand p-4 text-sm">
             <p className="font-medium text-ink">
               {result.reinvited
-                ? `${result.email} already has an account, so a password reset link was sent instead. Their existing role was left unchanged.`
+                ? `${result.email} already has an account, so a password reset link has been generated. Copy it and send it to them directly. Their existing role was left unchanged.`
                 : result.emailSent
                   ? `An invitation email was sent to ${result.email}.`
                   : `Account created for ${result.email}. Email delivery isn't available yet, so pass these on yourself.`}
@@ -185,11 +190,19 @@ function AdminUsersInner() {
 
         {!isLoading && !error && (
           <ul className="divide-y divide-line">
-            {users.map((user) => (
+            {users.map((user) => {
+              const isSelf = Boolean(currentUserId) && user.id === currentUserId;
+              const selfTitle = "You cannot change your own access.";
+              return (
               <li key={user.id} className="flex flex-wrap items-center gap-3 px-6 py-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="truncate font-medium text-ink">{user.email}</span>
+                    {isSelf && (
+                      <Badge variant="outline" className="gap-1">
+                        <ShieldCheck className="h-3 w-3" /> You
+                      </Badge>
+                    )}
                     {user.isLastOwner && (
                       <Badge variant="outline" className="gap-1">
                         <ShieldCheck className="h-3 w-3" /> Last owner
@@ -212,7 +225,7 @@ function AdminUsersInner() {
 
                 <Select
                   value={user.role === "owner" || user.role === "editor" ? user.role : undefined}
-                  disabled={user.isPlatformOwner || user.isLastOwner || setRole.isPending}
+                  disabled={isSelf || user.isPlatformOwner || user.isLastOwner || setRole.isPending}
                   onValueChange={(v) =>
                     setRole.mutate(
                       { userId: user.id, role: v as ManagedRole },
@@ -225,7 +238,13 @@ function AdminUsersInner() {
                 >
                   <SelectTrigger
                     className="w-36"
-                    title={user.isPlatformOwner ? "Managed by the developer" : undefined}
+                    title={
+                      isSelf
+                        ? selfTitle
+                        : user.isPlatformOwner
+                          ? "Managed by the developer"
+                          : undefined
+                    }
                   >
                     <SelectValue placeholder="No access" />
                   </SelectTrigger>
@@ -238,13 +257,15 @@ function AdminUsersInner() {
                 <Button
                   variant="outline"
                   size="sm"
-                  disabled={user.isPlatformOwner || user.isLastOwner || !user.role}
+                  disabled={isSelf || user.isPlatformOwner || user.isLastOwner || !user.role}
                   title={
-                    user.isPlatformOwner
-                      ? "Managed by the developer"
-                      : user.isLastOwner
-                        ? "At least one owner account must remain"
-                        : "Remove access"
+                    isSelf
+                      ? selfTitle
+                      : user.isPlatformOwner
+                        ? "Managed by the developer"
+                        : user.isLastOwner
+                          ? "At least one owner account must remain"
+                          : "Remove access"
                   }
                   onClick={() => setToRevoke(user)}
                 >
@@ -255,8 +276,14 @@ function AdminUsersInner() {
                   variant="ghost"
                   size="sm"
                   className="text-destructive hover:text-destructive"
-                  disabled={user.isPlatformOwner || user.isLastOwner}
-                  title={user.isPlatformOwner ? "Managed by the developer" : undefined}
+                  disabled={isSelf || user.isPlatformOwner || user.isLastOwner}
+                  title={
+                    isSelf
+                      ? selfTitle
+                      : user.isPlatformOwner
+                        ? "Managed by the developer"
+                        : undefined
+                  }
                   onClick={() => {
                     setDeleteConfirm("");
                     setToDelete(user);
@@ -265,7 +292,8 @@ function AdminUsersInner() {
                   Delete
                 </Button>
               </li>
-            ))}
+              );
+            })}
             {users.length === 0 && (
               <li className="px-6 py-10 text-center text-sm text-stone">No accounts yet.</li>
             )}
