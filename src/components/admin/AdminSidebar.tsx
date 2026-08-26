@@ -109,7 +109,13 @@ export default function AdminSidebar({ email, role }: { email: string; role: Adm
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={item.match(pathname)} tooltip={item.title}>
-                      <Link to={item.url} className="flex items-center gap-2">
+                      <Link
+                        to={item.url}
+                        className="flex items-center gap-2"
+                        onClick={() => {
+                          if (isMobile) setOpenMobile(false);
+                        }}
+                      >
                         <item.icon className="h-4 w-4" />
                         <span>{item.title}</span>
                         {item.title === "Inquiries" && unreadCount > 0 && (
