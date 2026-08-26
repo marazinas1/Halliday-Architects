@@ -15,6 +15,7 @@ type Card = {
   key: string;
   title: string;
   image: string | null;
+  imageAlt: string;
   link: string;
   meta: string;
 };
@@ -29,6 +30,7 @@ const SelectedWork = () => {
     key: p.id,
     title: p.title,
     image: p.card_image_url ?? null,
+    imageAlt: p.card_image_alt,
     link: `/projects/${p.slug}`,
     meta: [
       p.location,
@@ -60,7 +62,7 @@ const SelectedWork = () => {
                   {card.image ? (
                     <img
                       src={card.image}
-                      alt={card.title}
+                      alt={card.imageAlt}
                       loading="lazy"
                       decoding="async"
                       className="block w-full aspect-[4/5] object-cover object-center"
@@ -91,7 +93,7 @@ const SelectedWork = () => {
                   {card.image ? (
                     <img
                       src={card.image}
-                      alt={card.title}
+                      alt={card.imageAlt}
                       loading="lazy"
                       decoding="async"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

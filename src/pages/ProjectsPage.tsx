@@ -127,7 +127,7 @@ const ProjectsPage = () => {
                     {p.card_image_url ? (
                       <img
                         src={p.card_image_url}
-                        alt={p.title}
+                        alt={p.card_image_alt}
                         loading="lazy"
                         decoding="async"
                         className="aspect-[4/3] w-full object-cover transition-opacity duration-500 group-hover:opacity-90"
