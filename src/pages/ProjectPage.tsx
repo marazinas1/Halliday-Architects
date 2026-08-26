@@ -26,6 +26,14 @@ type Spec = { label?: string; value?: string };
  */
 const SPANS = ["md:col-span-12", "md:col-span-6", "md:col-span-6", "md:col-span-8", "md:col-span-4"];
 const RATIOS = ["aspect-[16/9]", "aspect-[4/3]", "aspect-[4/3]", "aspect-[3/2]", "aspect-[3/4]"];
+/** Dimension hints matching each RATIOS entry — space reservation only. */
+const DIMS = [
+  { w: 1600, h: 900 },
+  { w: 1600, h: 1200 },
+  { w: 1600, h: 1200 },
+  { w: 1600, h: 1067 },
+  { w: 1200, h: 1600 },
+];
 
 const ProjectPage = () => {
   const { slug } = useParams();
@@ -84,7 +92,7 @@ const ProjectPage = () => {
     );
   }
 
-  const { project, location, heroUrl, gallery } = data;
+  const { project, location, heroUrl, heroAlt, gallery } = data;
   const features = Array.isArray(project.features) ? (project.features as string[]) : [];
   const specs = (Array.isArray(project.specs) ? project.specs : []) as Spec[];
   const meta = [
@@ -112,7 +120,7 @@ const ProjectPage = () => {
         {heroUrl && (
           <img
             src={heroUrl}
-            alt={project.title}
+            alt={heroAlt ?? project.title}
             fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover"
           />
@@ -189,6 +197,8 @@ const ProjectPage = () => {
                   <img
                     src={img.src}
                     alt={img.alt}
+                    width={DIMS[i % DIMS.length].w}
+                    height={DIMS[i % DIMS.length].h}
                     loading="lazy"
                     decoding="async"
                     className={`w-full ${RATIOS[i % RATIOS.length]} object-cover transition-opacity duration-500 group-hover:opacity-90`}

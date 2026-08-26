@@ -54,7 +54,7 @@ export const PortfolioGrid = ({ limit }: { limit?: number }) => {
               {p.card_image_url ? (
                 <img
                   src={p.card_image_url}
-                  alt={p.title}
+                  alt={p.card_image_alt}
                   className="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-90"
                   loading="lazy"
                   decoding="async"

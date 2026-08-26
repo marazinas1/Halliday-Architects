@@ -131,7 +131,7 @@ function Thumb({
       <div className="space-y-2 p-2">
         <Input
           value={alt}
-          placeholder="Alt text"
+          placeholder="Describe this photograph (optional)"
           className="h-8 text-xs"
           onChange={(e) => setAlt(e.target.value)}
           onBlur={() => alt !== (row.alt_text ?? "") && onAlt(alt)}
@@ -495,6 +495,14 @@ export default function ProjectImageManager({
             </div>
           </SortableContext>
         </DndContext>
+      )}
+
+      {rows.length > 0 && (
+        <p className="text-xs text-stone">
+          Image descriptions help people using screen readers and help Google understand your
+          photographs. Leave one blank and we will generate a basic description from the project
+          name and location.
+        </p>
       )}
     </div>
   );

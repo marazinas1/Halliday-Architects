@@ -68,6 +68,7 @@ const Index = () => {
               src={heroUrl}
               alt=""
               aria-hidden="true"
+              fetchPriority="high"
               onError={() => setHeroFailed(true)}
               className="absolute inset-0 h-full w-full object-cover"
             />

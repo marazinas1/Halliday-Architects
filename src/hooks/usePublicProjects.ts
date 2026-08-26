@@ -22,12 +22,45 @@ export type PublicProjectCard = {
   sort_order: number;
   created_at: string;
   card_image_url: string | null;
+  /** Resolved description for the card image (written alt_text or generated). */
+  card_image_alt: string;
   /** Every tag slug attached to the project or to any of its images. */
   tag_slugs: string[];
 };
 
 const publicUrl = (path: string) =>
   supabase.storage.from("project-images").getPublicUrl(path).data.publicUrl;
+
+const GENERIC_CATEGORIES = new Set(["hero", "card", "gallery"]);
+
+/** "Kitchens" -> "Kitchen". Only handles the simple English plurals we use. */
+const singularise = (word: string) => {
+  if (/ies$/i.test(word)) return word.replace(/ies$/i, "y");
+  if (/(ches|shes|sses|xes)$/i.test(word)) return word.replace(/es$/i, "");
+  if (/s$/i.test(word) && !/ss$/i.test(word)) return word.replace(/s$/i, "");
+  return word;
+};
+
+const capitalise = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
+
+/**
+ * A description built only from facts already in the database: the image's
+ * category, the project title and its location. Never invents anything about
+ * what the photograph shows. Used when no alt_text has been written.
+ */
+export const describeImage = (
+  category: string | null,
+  title: string,
+  location: string | null,
+): string => {
+  const place = location?.trim() ? `, ${location.trim()}` : "";
+  const cat = category?.trim();
+  if (!cat || GENERIC_CATEGORIES.has(cat.toLowerCase())) {
+    return capitalise(`${title}${place}`.replace(/\s+/g, " ").trim());
+  }
+  const label = singularise(cat.replace(/[_-]+/g, " ").trim());
+  return capitalise(`${label} at ${title}${place}`.replace(/\s+/g, " ").trim());
+};
 
 const formatLocation = (row: {
   location_city: string | null;
@@ -61,7 +94,7 @@ export function usePublicProjects() {
         await Promise.all([
           supabase
             .from("project_images")
-            .select("id, project_id, category, storage_path, sort_order, is_cover")
+            .select("id, project_id, category, storage_path, alt_text, sort_order, is_cover")
             .in("project_id", ids)
             .order("sort_order", { ascending: true }),
           supabase.from("project_tags").select("project_id, tags(slug)").in("project_id", ids),
@@ -93,23 +126,30 @@ export function usePublicProjects() {
           own.find((i) => i.category === "card") ??
           own.find((i) => i.category === "hero") ??
           own[0];
-        return chosen ? publicUrl(chosen.storage_path) : null;
+        return chosen ?? null;
       };
 
-      const cards = projects.map((p) => ({
+      const cards = projects.map((p) => {
+        const cover = pick(p.id);
+        const loc = formatLocation(p);
+        return {
         id: p.id,
         slug: p.slug,
         title: p.title,
         tagline: p.tagline,
         description: p.description,
-        location: formatLocation(p),
+        location: loc,
         project_type: p.project_type,
         year_completed: p.year_completed,
         sort_order: p.sort_order,
         created_at: p.created_at,
-        card_image_url: pick(p.id),
+        card_image_url: cover ? publicUrl(cover.storage_path) : null,
+        card_image_alt: cover
+          ? cover.alt_text?.trim() || describeImage(cover.category, p.title, loc)
+          : p.title,
         tag_slugs: [...(tagsByProject.get(p.id) ?? [])],
-      }));
+        };
+      });
 
       cards.sort((a, b) => {
         if (a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
@@ -147,17 +187,22 @@ export function usePublicProject(slug: string | undefined) {
       const images = imgs ?? [];
       const hero = images.find((i) => i.category === "hero") ?? images.find((i) => i.is_cover) ?? images[0];
 
+      const location = formatLocation(project);
+      const resolveAlt = (i: { alt_text: string | null; category: string | null }) =>
+        i.alt_text?.trim() || describeImage(i.category, project.title, location);
+
       return {
         project,
-        location: formatLocation(project),
+        location,
         heroUrl: hero ? publicUrl(hero.storage_path) : null,
+        heroAlt: hero ? resolveAlt(hero) : project.title,
         gallery: images
           .filter((i) => i.id !== hero?.id && i.category !== "card")
           .map(
             (i): GalleryItem => ({
               id: i.id,
               src: publicUrl(i.storage_path),
-              alt: i.alt_text ?? project.title,
+              alt: resolveAlt(i),
             }),
           ),
       };
