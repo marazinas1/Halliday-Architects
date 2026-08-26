@@ -53,6 +53,17 @@
     --input: var(--line);
     --ring: var(--ink);
 
+    /* Admin sidebar. Uses the site's own palette rather than shadcn defaults so
+       the panel matches the rest of the interface. */
+    --sidebar-background: var(--paper);
+    --sidebar-foreground: var(--ink);
+    --sidebar-primary: var(--ink);
+    --sidebar-primary-foreground: var(--paper);
+    --sidebar-accent: var(--sand);
+    --sidebar-accent-foreground: var(--ink);
+    --sidebar-border: var(--line);
+    --sidebar-ring: var(--brand);
+
     --radius: 0.5rem;
 
     /* Glass Effect */
