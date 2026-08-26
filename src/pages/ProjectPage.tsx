@@ -102,6 +102,8 @@ const ProjectPage = () => {
           title={`${project.title} | Halliday Architects`}
           description={project.tagline ?? project.description ?? project.title}
           path={`/projects/${project.slug}`}
+          type="article"
+          image={heroUrl ?? undefined}
         />
       )}
 
