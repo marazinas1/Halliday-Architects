@@ -26,7 +26,7 @@ export default function AdminShell({
               {settings.siteName} Admin
             </span>
           </header>
-          <main className="flex-1 px-6 py-8">{children}</main>
+          <main className="flex-1 px-4 py-6 md:px-6 md:py-8">{children}</main>
         </div>
       </div>
     </SidebarProvider>

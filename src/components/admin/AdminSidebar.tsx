@@ -56,7 +56,7 @@ const ROLE_LABEL: Record<AdminRole, string> = {
 export default function AdminSidebar({ email, role }: { email: string; role: AdminRole }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { state } = useSidebar();
+  const { state, isMobile, setOpenMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const owner = isOwnerRole(role);
   const { data: unreadCount = 0 } = useUnreadInquiryCount(owner);
