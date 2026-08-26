@@ -22,6 +22,8 @@ export type PublicProjectCard = {
   sort_order: number;
   created_at: string;
   card_image_url: string | null;
+  /** Resolved description for the card image (written alt_text or generated). */
+  card_image_alt: string;
   /** Every tag slug attached to the project or to any of its images. */
   tag_slugs: string[];
 };
@@ -92,7 +94,7 @@ export function usePublicProjects() {
         await Promise.all([
           supabase
             .from("project_images")
-            .select("id, project_id, category, storage_path, sort_order, is_cover")
+            .select("id, project_id, category, storage_path, alt_text, sort_order, is_cover")
             .in("project_id", ids)
             .order("sort_order", { ascending: true }),
           supabase.from("project_tags").select("project_id, tags(slug)").in("project_id", ids),
@@ -124,23 +126,30 @@ export function usePublicProjects() {
           own.find((i) => i.category === "card") ??
           own.find((i) => i.category === "hero") ??
           own[0];
-        return chosen ? publicUrl(chosen.storage_path) : null;
+        return chosen ?? null;
       };
 
-      const cards = projects.map((p) => ({
+      const cards = projects.map((p) => {
+        const cover = pick(p.id);
+        const loc = formatLocation(p);
+        return {
         id: p.id,
         slug: p.slug,
         title: p.title,
         tagline: p.tagline,
         description: p.description,
-        location: formatLocation(p),
+        location: loc,
         project_type: p.project_type,
         year_completed: p.year_completed,
         sort_order: p.sort_order,
         created_at: p.created_at,
-        card_image_url: pick(p.id),
+        card_image_url: cover ? publicUrl(cover.storage_path) : null,
+        card_image_alt: cover
+          ? cover.alt_text?.trim() || describeImage(cover.category, p.title, loc)
+          : p.title,
         tag_slugs: [...(tagsByProject.get(p.id) ?? [])],
-      }));
+        };
+      });
 
       cards.sort((a, b) => {
         if (a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
