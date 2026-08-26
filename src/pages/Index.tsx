@@ -53,6 +53,7 @@ const Index = () => {
         title="Halliday Architects | Residential Architecture in Ocean City, NJ"
         description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
         path="/"
+        image={content.heroImageUrl ?? undefined}
       />
 
       {/* Hero — split layout: copy on a white panel left, the photograph in
