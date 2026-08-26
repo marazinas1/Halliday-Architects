@@ -29,6 +29,37 @@ export type PublicProjectCard = {
 const publicUrl = (path: string) =>
   supabase.storage.from("project-images").getPublicUrl(path).data.publicUrl;
 
+const GENERIC_CATEGORIES = new Set(["hero", "card", "gallery"]);
+
+/** "Kitchens" -> "Kitchen". Only handles the simple English plurals we use. */
+const singularise = (word: string) => {
+  if (/ies$/i.test(word)) return word.replace(/ies$/i, "y");
+  if (/(ches|shes|sses|xes)$/i.test(word)) return word.replace(/es$/i, "");
+  if (/s$/i.test(word) && !/ss$/i.test(word)) return word.replace(/s$/i, "");
+  return word;
+};
+
+const capitalise = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
+
+/**
+ * A description built only from facts already in the database: the image's
+ * category, the project title and its location. Never invents anything about
+ * what the photograph shows. Used when no alt_text has been written.
+ */
+export const describeImage = (
+  category: string | null,
+  title: string,
+  location: string | null,
+): string => {
+  const place = location?.trim() ? `, ${location.trim()}` : "";
+  const cat = category?.trim();
+  if (!cat || GENERIC_CATEGORIES.has(cat.toLowerCase())) {
+    return capitalise(`${title}${place}`.replace(/\s+/g, " ").trim());
+  }
+  const label = singularise(cat.replace(/[_-]+/g, " ").trim());
+  return capitalise(`${label} at ${title}${place}`.replace(/\s+/g, " ").trim());
+};
+
 const formatLocation = (row: {
   location_city: string | null;
   location_state: string | null;
