@@ -178,17 +178,22 @@ export function usePublicProject(slug: string | undefined) {
       const images = imgs ?? [];
       const hero = images.find((i) => i.category === "hero") ?? images.find((i) => i.is_cover) ?? images[0];
 
+      const location = formatLocation(project);
+      const resolveAlt = (i: { alt_text: string | null; category: string | null }) =>
+        i.alt_text?.trim() || describeImage(i.category, project.title, location);
+
       return {
         project,
-        location: formatLocation(project),
+        location,
         heroUrl: hero ? publicUrl(hero.storage_path) : null,
+        heroAlt: hero ? resolveAlt(hero) : project.title,
         gallery: images
           .filter((i) => i.id !== hero?.id && i.category !== "card")
           .map(
             (i): GalleryItem => ({
               id: i.id,
               src: publicUrl(i.storage_path),
-              alt: i.alt_text ?? project.title,
+              alt: resolveAlt(i),
             }),
           ),
       };
