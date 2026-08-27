@@ -6,6 +6,10 @@ const ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/track-view`;
 /**
  * Fire-and-forget first-party pageview ping. No cookies, no storage,
  * admin routes are never tracked and failures are swallowed.
+ *
+ * The payload is sent as text/plain so the request stays a "simple" CORS
+ * request. A JSON content type forces a preflight, and beacons that need a
+ * preflight are silently dropped by browsers — which is why pings never landed.
  */
 export function usePageTracking() {
   const { pathname } = useLocation();
@@ -22,7 +26,7 @@ export function usePageTracking() {
     });
 
     try {
-      const blob = new Blob([payload], { type: "application/json" });
+      const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
       if (navigator.sendBeacon?.(ENDPOINT, blob)) return;
     } catch {
       /* fall through to fetch */
@@ -30,7 +34,7 @@ export function usePageTracking() {
 
     void fetch(ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
       body: payload,
       keepalive: true,
     }).catch(() => {
