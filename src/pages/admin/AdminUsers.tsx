@@ -238,7 +238,7 @@ function AdminUsersInner() {
                   }
                 >
                   <SelectTrigger
-                    className="w-36"
+                    className="w-full sm:w-36"
                     title={
                       isSelf
                         ? selfTitle
@@ -292,6 +292,7 @@ function AdminUsersInner() {
                 >
                   Delete
                 </Button>
+                </div>
               </li>
               );
             })}
