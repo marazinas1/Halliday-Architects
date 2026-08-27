@@ -69,10 +69,16 @@ Deno.serve(async (req) => {
     const userAgent = req.headers.get("user-agent") ?? "";
     if (!userAgent || BOT_PATTERN.test(userAgent)) return noContent();
 
-    const body = (await req.json().catch(() => null)) as
-      | { path?: unknown; referrer?: unknown }
-      | null;
+    // Body arrives as text/plain (simple CORS request — no preflight drop).
+    const raw = await req.text().catch(() => "");
+    let body: { path?: unknown; referrer?: unknown } | null = null;
+    try {
+      body = raw ? JSON.parse(raw) : null;
+    } catch {
+      body = null;
+    }
     if (!body) return noContent();
+
 
     const path = typeof body.path === "string" ? body.path.slice(0, 300) : "";
     if (!path.startsWith("/") || path.startsWith("/admin")) return noContent();
