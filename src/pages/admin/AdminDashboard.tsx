@@ -12,6 +12,7 @@ import AdminProtected from "@/components/admin/AdminProtected";
 import { Button } from "@/components/ui/button";
 import { isOwnerRole, useAdminAuth } from "@/hooks/admin/useAdminAuth";
 import { useUnreadInquiryCount } from "@/hooks/admin/useInquiries";
+import { useAnalytics } from "@/hooks/admin/useAnalytics";
 import {
   relativeTime,
   useContentCounts,
@@ -64,6 +65,7 @@ function AdminDashboardInner() {
   const { data: unread = 0 } = useUnreadInquiryCount(owner);
   const { data: teamCount } = useTeamCount(owner);
   const { data: activity = [] } = useRecentActivity(owner);
+  const { data: traffic } = useAnalytics(7, owner);
 
   const draftProjects = counts?.draftProjects ?? 0;
   const draftPosts = counts?.draftPosts ?? 0;
@@ -124,6 +126,24 @@ function AdminDashboardInner() {
           {owner && <Stat value={teamCount ?? 0} label="Team members" to="/admin/team" />}
         </div>
       </section>
+
+      {owner && (
+        <section>
+          <h2 className="text-[11px] uppercase tracking-[0.14em] text-stone">Traffic</h2>
+          <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
+            <Stat
+              value={Number(traffic?.totals?.views ?? 0)}
+              label="Views this week"
+              to="/admin/analytics"
+            />
+            <Stat
+              value={Number(traffic?.totals?.visitors ?? 0)}
+              label="Visitors this week"
+              to="/admin/analytics"
+            />
+          </div>
+        </section>
+      )}
 
       <section>
         <h2 className="text-[11px] uppercase tracking-[0.14em] text-stone">Recent activity</h2>

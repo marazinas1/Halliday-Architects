@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import { useFaviconFromSettings } from "@/hooks/useSiteSettings";
+import { usePageTracking } from "@/hooks/usePageTracking";
 
 // Lazy-load all non-landing pages so the initial bundle stays small.
 const AboutPage = lazy(() => import("./pages/AboutPage"));
@@ -36,6 +37,7 @@ const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
 const AdminBlogCategories = lazy(() => import("./pages/admin/AdminBlogCategories"));
 const TeamMemberPreview = lazy(() => import("./pages/admin/TeamMemberPreview"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminAnalytics = lazy(() => import("./pages/admin/AdminAnalytics"));
 
 const queryClient = new QueryClient();
 
@@ -51,6 +53,12 @@ const FaviconSync = () => {
   return null;
 };
 
+/** First-party pageview ping. Must sit inside the router. */
+const AnalyticsTracker = () => {
+  usePageTracking();
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -59,6 +67,7 @@ const App = () => (
       <BrowserRouter>
         <FaviconSync />
         <ScrollToTop />
+        <AnalyticsTracker />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -94,6 +103,7 @@ const App = () => (
             <Route path="/admin/inquiries" element={<AdminInquiries />} />
             <Route path="/admin/homepage" element={<AdminHomepage />} />
             <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
             {/* Preview routes render unsaved admin form state — no DB writes. */}
             <Route path="/admin/preview/project" element={<ProjectPage />} />
             <Route path="/admin/preview/blog" element={<BlogPostPage />} />
