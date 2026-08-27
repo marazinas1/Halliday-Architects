@@ -194,8 +194,8 @@ function AdminUsersInner() {
               const isSelf = Boolean(currentUserId) && user.id === currentUserId;
               const selfTitle = "You cannot change your own access.";
               return (
-              <li key={user.id} className="flex flex-wrap items-center gap-3 px-6 py-4">
-                <div className="min-w-0 flex-1">
+              <li key={user.id} className="flex flex-col gap-3 px-4 py-4 sm:px-6 md:flex-row md:flex-wrap md:items-center">
+                <div className="min-w-0 w-full md:flex-1">
                   <div className="flex items-center gap-2">
                     <span className="truncate font-medium text-ink">{user.email}</span>
                     {isSelf && (
@@ -223,6 +223,7 @@ function AdminUsersInner() {
                   </div>
                 </div>
 
+                <div className="flex flex-wrap items-center gap-2 md:gap-3">
                 <Select
                   value={user.role === "owner" || user.role === "editor" ? user.role : undefined}
                   disabled={isSelf || user.isPlatformOwner || user.isLastOwner || setRole.isPending}
@@ -237,7 +238,7 @@ function AdminUsersInner() {
                   }
                 >
                   <SelectTrigger
-                    className="w-36"
+                    className="w-full sm:w-36"
                     title={
                       isSelf
                         ? selfTitle
@@ -291,6 +292,7 @@ function AdminUsersInner() {
                 >
                   Delete
                 </Button>
+                </div>
               </li>
               );
             })}
