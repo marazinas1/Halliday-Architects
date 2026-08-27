@@ -172,6 +172,42 @@ export type Database = {
         }
         Relationships: []
       }
+      page_views: {
+        Row: {
+          country: string | null
+          created_at: string
+          day: string
+          device: string
+          id: string
+          path: string
+          referrer_host: string | null
+          source: string
+          visitor_hash: string
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          day?: string
+          device?: string
+          id?: string
+          path: string
+          referrer_host?: string | null
+          source?: string
+          visitor_hash: string
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          day?: string
+          device?: string
+          id?: string
+          path?: string
+          referrer_host?: string | null
+          source?: string
+          visitor_hash?: string
+        }
+        Relationships: []
+      }
       project_images: {
         Row: {
           alt_text: string | null
@@ -496,6 +532,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      analytics_summary: { Args: { _from: string; _to: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
