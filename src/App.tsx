@@ -12,6 +12,7 @@ import { usePageTracking } from "@/hooks/usePageTracking";
 // Lazy-load all non-landing pages so the initial bundle stays small.
 // Alternative homepage concept shown to the client at /home-v2. Temporary.
 const HomeV2 = lazy(() => import("./pages/HomeV2"));
+const HomeV3 = lazy(() => import("./pages/HomeV3"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
