@@ -10,6 +10,8 @@ import { useFaviconFromSettings } from "@/hooks/useSiteSettings";
 import { usePageTracking } from "@/hooks/usePageTracking";
 
 // Lazy-load all non-landing pages so the initial bundle stays small.
+// Alternative homepage concept shown to the client at /home-v2. Temporary.
+const HomeV2 = lazy(() => import("./pages/HomeV2"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
@@ -71,6 +73,8 @@ const App = () => (
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/home-v2" element={<HomeV2 />} />
+
             <Route path="/about" element={<AboutPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/services" element={<ServicesPage />} />
