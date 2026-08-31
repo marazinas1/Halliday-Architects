@@ -1,6 +1,52 @@
+import * as React from 'npm:react@18.3.1'
+import { renderAsync } from 'npm:@react-email/components@0.0.22'
+import { sendLovableEmail } from 'npm:@lovable.dev/email-js'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 import { z } from 'npm:zod@3.23.8'
+import { template as adminInviteTemplate } from '../_shared/transactional-email-templates/admin-invite.tsx'
+
+const SITE_NAME = 'Halliday Architects'
+const SENDER_DOMAIN = 'notify.hallidayarchitects.com'
+
+/**
+ * Emails the password link with our own branded template. Delivery problems
+ * must never fail the request: the link is still returned for manual handover.
+ */
+async function sendInviteEmail(
+  email: string,
+  role: string | null,
+  actionLink: string,
+  userId: string,
+): Promise<boolean> {
+  const apiKey = Deno.env.get('LOVABLE_API_KEY')
+  if (!apiKey) return false
+  try {
+    const element = React.createElement(adminInviteTemplate.component, { role, actionLink })
+    const html = await renderAsync(element)
+    const text = await renderAsync(element, { plainText: true })
+    await sendLovableEmail(
+      {
+        to: email,
+        from: `${SITE_NAME} <noreply@${SENDER_DOMAIN}>`,
+        sender_domain: SENDER_DOMAIN,
+        subject: adminInviteTemplate.subject,
+        html,
+        text,
+        purpose: 'transactional',
+        label: 'admin-invite',
+        idempotency_key: `admin-invite-${userId}-${Date.now()}`,
+        message_id: crypto.randomUUID(),
+      },
+      { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') },
+    )
+    return true
+  } catch (error) {
+    console.error('admin-invite send failed:', error instanceof Error ? error.message : error)
+    return false
+  }
+}
+
 
 // Account administration for owners. Every call re-validates the caller's JWT
 // and their role server-side; nothing here trusts a role sent by the client.
