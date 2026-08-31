@@ -5,7 +5,12 @@ import { FIRM } from "@/content/firm";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
 import BrandLogo from "@/components/BrandLogo";
-import { buildConceptPhotos, pickPhotos, type ConceptPhoto } from "@/lib/conceptPhotos";
+import {
+  arrangeConceptPhotos,
+  buildConceptPhotos,
+  pickPhotos,
+  type ConceptPhoto,
+} from "@/lib/conceptPhotos";
 
 /*
  * Home V2 — an alternative homepage concept shown to the client alongside the
@@ -42,10 +47,12 @@ const Frame = ({
   photo,
   dark,
   priority,
+  zoomOnHover,
 }: {
   photo: ConceptPhoto | undefined;
   dark?: boolean;
   priority?: boolean;
+  zoomOnHover?: boolean;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
@@ -57,7 +64,9 @@ const Frame = ({
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
         fetchPriority={priority ? "high" : undefined}
-        className="h-full w-full object-cover"
+        className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${
+          zoomOnHover ? "group-hover:scale-[1.04]" : ""
+        }`}
       />
     ) : (
       <Placeholder dark={dark} />
@@ -78,7 +87,16 @@ const HomeV2 = () => {
   const { data: projects = [] } = usePublicProjects();
 
   const hero = settings.homepage.heroImageUrl;
-  const photos = buildConceptPhotos(projects, hero, FIRM.name);
+  const projectPhotos = arrangeConceptPhotos(buildConceptPhotos(projects, null, FIRM.name), [
+    "262-bayshore-road",
+    "11605-paradise-drive",
+    "19-flamingo-road",
+    "111-anchor-rd",
+    "115-anchor-road",
+  ]);
+  const photos = hero
+    ? [{ url: hero, alt: `${FIRM.name} — residential architecture` }, ...projectPhotos]
+    : projectPhotos;
 
   const wall = pickPhotos(photos, [0, 1, 2, 3]);
   const tilePhotos = pickPhotos(photos, [4, 5, 6]);
@@ -153,7 +171,7 @@ const HomeV2 = () => {
       <div className="grid gap-[2px] md:grid-cols-3">
         {tiles.map((tile, i) => (
           <Link key={tile.to} to={tile.to} className="group relative aspect-[3/4] overflow-hidden">
-            <Frame photo={tilePhotos[i]} />
+            <Frame photo={tilePhotos[i]} zoomOnHover />
             <div
               aria-hidden
               className="absolute inset-0"
