@@ -4,6 +4,8 @@ import SEO from "@/components/SEO";
 import { FIRM } from "@/content/firm";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
+import BrandLogo from "@/components/BrandLogo";
+import { buildConceptPhotos, pickPhotos, type ConceptPhoto } from "@/lib/conceptPhotos";
 
 /*
  * Home V2 — an alternative homepage concept shown to the client alongside the
@@ -23,8 +25,6 @@ const NAV = [
 const MANIFESTO_FALLBACK =
   "Houses designed for the shore they stand on — the local vernacular, new building technology, and the way a family lives.";
 
-type Photo = { url: string | null; alt: string };
-
 /** Neutral panel used whenever a slot has no photograph behind it. */
 const Placeholder = ({ dark = false }: { dark?: boolean }) => (
   <div
@@ -43,7 +43,7 @@ const Frame = ({
   dark,
   priority,
 }: {
-  photo: Photo | undefined;
+  photo: ConceptPhoto | undefined;
   dark?: boolean;
   priority?: boolean;
 }) => (
@@ -77,17 +77,11 @@ const HomeV2 = () => {
   const { settings } = useSiteSettings();
   const { data: projects = [] } = usePublicProjects();
 
-  const fromProjects: Photo[] = projects
-    .filter((p) => p.card_image_url)
-    .map((p) => ({ url: p.card_image_url, alt: p.card_image_alt }));
-
   const hero = settings.homepage.heroImageUrl;
-  const photos: Photo[] = hero
-    ? [{ url: hero, alt: `${FIRM.name} — residential architecture` }, ...fromProjects]
-    : fromProjects;
+  const photos = buildConceptPhotos(projects, hero, FIRM.name);
 
-  const wall = [0, 1, 2, 3].map((i) => photos[i]);
-  const tilePhotos = [4, 5, 6].map((i) => photos[i] ?? photos[i - 4]);
+  const wall = pickPhotos(photos, [0, 1, 2, 3]);
+  const tilePhotos = pickPhotos(photos, [4, 5, 6]);
 
   const tiles = [
     { label: "Projects", to: "/projects" },
@@ -108,8 +102,8 @@ const HomeV2 = () => {
         {/* Nav — transparent, sitting over the first photograph. */}
         <nav className="absolute inset-x-0 top-0 z-10">
           <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-6 lg:px-8">
-            <Link to="/home-v2" className="text-[1.0625rem] font-semibold tracking-tight text-white">
-              {settings.siteName}
+            <Link to="/home-v2" className="flex items-center" aria-label={`${FIRM.name} — Home`}>
+              <BrandLogo variant="dark" className="h-9 w-auto md:h-11" />
             </Link>
             <div className="hidden gap-8 md:flex">
               {NAV.map((item) => (
@@ -177,7 +171,7 @@ const HomeV2 = () => {
 
       {/* Footer */}
       <footer className="bg-ink px-6 py-12 text-center text-white/55">
-        <b className="mb-2 block text-[0.95rem] font-semibold text-white">{FIRM.name}</b>
+        <BrandLogo variant="dark" className="mx-auto mb-4 h-10 w-auto" />
         <p className="text-[0.78rem]">
           {FIRM.address1}, {FIRM.address2} ·{" "}
           <a href={FIRM.phoneHref} className="hover:text-white">
