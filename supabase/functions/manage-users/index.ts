@@ -189,12 +189,25 @@ Deno.serve(async (req) => {
         options: { redirectTo },
       })
       if (link.error) return json({ error: link.error.message }, 400)
+      const actionLink = link.data?.properties?.action_link ?? null
+
+      // The link is also emailed with our own branded template, so a re-invite
+      // behaves like the first invite.
+      const emailSent = actionLink
+        ? await sendInviteEmail(
+            email,
+            roleByUser.get(alreadyThere.id) ?? null,
+            actionLink,
+            alreadyThere.id,
+          )
+        : false
+
       return json({
         success: true,
         userId: alreadyThere.id,
-        emailSent: false,
+        emailSent,
         password: null,
-        actionLink: link.data?.properties?.action_link ?? null,
+        actionLink,
         reinvited: true,
       })
     }
