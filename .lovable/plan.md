@@ -1,43 +1,41 @@
-# Email domain setup — deferred until domain move
+# Home V2 — an alternative homepage, shown alongside the current one
 
-## Decision
+Yes, this is straightforward. The current homepage stays exactly as it is at `/`. A second, independent page is added at `/home-v2` built 1:1 from the uploaded `halliday-concept-a.html` concept. Nothing is shared with the current homepage except the site's data, so V2 can be deleted later with a single file removal and one route line.
 
-Email sender domain setup is **deferred** until the site moves from the temporary
-subdomain `ha.stagehomy.com` to the permanent domain `hallidayarchitects.com`.
+## What the client will see at /home-v2
 
-## Why wait
+A photograph-led page, in the order of the concept:
 
-- The invitation/password-recovery **link-based flow works now without email
-  delivery**: "Resend invitation" generates a set-password link that can be handed
-  over manually, and the full set-password / recovery journey works from that link.
-- Email delivery to inboxes is a **production concern** (real invited users
-  receiving the invitation email), not needed for dev/client review on the temp
-  noindex domain.
-- Setting up now on `stagehomy.com` would mean **double configuration** later —
-  no benefit since the link flow already covers testing.
-- Setting up now on `hallidayarchitects.com` would require asking Chris for DNS
-  access mid-build — added friction for no production value.
+```text
+Nav          transparent, white text, overlaid on the first photograph
+Photo wall   full-bleed photo / split pair (2 photos) / full-bleed photo
+Manifesto    centered eyebrow "The practice" + one large light-weight statement
+Tiles        3 tall 3:4 image tiles with dark veil: Projects, About, Contact
+Footer       ink band, firm name, address and phone, centered
+```
 
-## At go-live (when moving to hallidayarchitects.com)
+The concept uses grey placeholders. Real photographs replace them:
 
-In the same coordination with Chris where DNS records for the domain move are
-added, also:
+- The four wall photographs come from the published projects (cover images, in the same sort order the homepage already uses); the hero image from site settings leads if one is set.
+- The three tiles reuse the next available project photographs.
+- If fewer photographs are available, the remaining slots fall back to the concept's neutral gradient panel so the layout never breaks.
+- The manifesto line comes from the homepage intro heading in site settings, so it stays editable; the concept's sentence is the fallback.
+- The footer facts come from `src/content/firm.ts`.
 
-1. Ask Chris to add the **NS delegation records** for the email subdomain
-   (e.g. `notify.hallidayarchitects.com` → Lovable nameservers). The exact records
-   are shown in Cloud → Emails → Set up / Manage Domains at that time — do not
-   quote them from memory.
-2. Complete the email domain setup dialog in this project.
-3. Scaffold the **auth email templates** and deploy `auth-email-hook`.
-4. Wire the configured sender domain into the existing `manage-users`
-   invitation email code (it already calls the send helper; it just needs the
-   verified domain so sends stop returning `no_matching_sender`).
-5. Verify a "Resend invitation" sends both the generated link **and** a
-   delivered email end-to-end.
+Behaviour: nav links go to the real pages, tiles link to `/projects`, `/about`, `/contact`. Mobile follows the concept's rules — the split row stacks, tiles become one column, nav links hide behind the existing mobile menu.
 
-## Current state
+## Not affected
 
-- `manage-users` Edge Function already generates set-password links and calls
-  the email send helper. It falls back to "send it manually" only because no
-  sender domain is configured yet — no code change needed until the domain exists.
-- Auth emails use Lovable default templates until custom ones are scaffolded.
+`/` and every other page keep their current design. No shared component, token or CSS rule is edited, so there is no way for V2 to change V1. `noindex` already applies site-wide on the temporary domain, so V2 will not be indexed.
+
+## Technical notes
+
+- New file `src/pages/HomeV2.tsx` — self-contained: its own nav, wall, manifesto, tiles and footer markup, all styling in Tailwind using existing tokens (`ink`, `paper`, `stone`, `line`). No edits to `GlobalNav`, `GlobalFooter`, `index.css` or `rhythm.ts`.
+- One route added in `src/App.tsx`: `/home-v2`, lazy-loaded like the other pages.
+- Data through the existing hooks only: `useSiteSettings` and `usePublicProjects`. No database, migration or admin change.
+- Images keep the existing rules: explicit width/height, `loading="lazy"` except the first wall photograph, alt text from the projects hook's `describeImage` fallback.
+- Removing V2 later: delete `src/pages/HomeV2.tsx` and its route line. Nothing else to unwind.
+
+## Verification
+
+Rendered at desktop and 390px: `/home-v2` matches the concept's proportions and order, real project photographs fill the wall and tiles, links reach the right pages, and `/` is visually unchanged.
