@@ -130,6 +130,30 @@ const HomeV2 = () => {
               <BrandLogo variant="dark" className="h-9 w-auto md:h-11" />
             </Link>
             <div className="hidden gap-8 md:flex">
+              {/* Home concepts — temporary while the client compares homepage versions. */}
+              <div className="relative group">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1 text-[0.7rem] uppercase tracking-[0.14em] text-white/90 transition-colors hover:text-white"
+                  aria-haspopup="menu"
+                >
+                  Home
+                  <ChevronDown size={13} className="transition-transform duration-300 group-hover:rotate-180" />
+                </button>
+                <div className="absolute left-0 top-full pt-3 opacity-0 invisible translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible">
+                  <div className="min-w-[11rem] bg-background border border-line shadow-sm py-2">
+                    {HOME_VERSIONS.map((v) => (
+                      <Link
+                        key={v.to}
+                        to={v.to}
+                        className="block px-4 py-2 text-[11px] tracking-[0.16em] uppercase text-stone transition-colors hover:text-ink"
+                      >
+                        {v.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
               {NAV.map((item) => (
                 <Link
                   key={item.to}
