@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Menu } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu } from "lucide-react";
 import SEO from "@/components/SEO";
 import { FIRM } from "@/content/firm";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
@@ -18,6 +18,12 @@ import {
  * footer, so nothing here can affect the live homepage. To retire this concept,
  * delete this file and its route in src/App.tsx.
  */
+
+const HOME_VERSIONS = [
+  { label: "Home V1", to: "/" },
+  { label: "Home V2", to: "/home-v2" },
+  { label: "Home V3", to: "/home-v3" },
+];
 
 const NAV = [
   { label: "Projects", to: "/projects" },
