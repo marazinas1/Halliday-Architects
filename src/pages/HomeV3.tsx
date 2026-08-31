@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import SEO from "@/components/SEO";
 import BrandLogo from "@/components/BrandLogo";
 import { FIRM } from "@/content/firm";
@@ -18,6 +18,12 @@ import {
  * and footer, so nothing here can affect the live homepage. To retire this
  * concept, delete this file and its route in src/App.tsx.
  */
+
+const HOME_VERSIONS = [
+  { label: "Home V1", to: "/" },
+  { label: "Home V2", to: "/home-v2" },
+  { label: "Home V3", to: "/home-v3" },
+];
 
 const NAV = [
   { label: "Projects", to: "/projects" },
@@ -103,6 +109,30 @@ const HomeV3 = () => {
             <BrandLogo variant="light" className="h-9 w-auto md:h-10" />
           </Link>
           <div className="hidden gap-8 md:flex">
+            {/* Home concepts — temporary while the client compares homepage versions. */}
+            <div className="relative group">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 text-[0.7rem] uppercase tracking-[0.14em] text-stone transition-colors hover:text-ink"
+                aria-haspopup="menu"
+              >
+                Home
+                <ChevronDown size={13} className="transition-transform duration-300 group-hover:rotate-180" />
+              </button>
+              <div className="absolute left-0 top-full pt-3 opacity-0 invisible translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible">
+                <div className="min-w-[11rem] bg-background border border-line shadow-sm py-2">
+                  {HOME_VERSIONS.map((v) => (
+                    <Link
+                      key={v.to}
+                      to={v.to}
+                      className="block px-4 py-2 text-[11px] tracking-[0.16em] uppercase text-stone transition-colors hover:text-ink"
+                    >
+                      {v.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
             {NAV.map((item) => (
               <Link
                 key={item.to}
