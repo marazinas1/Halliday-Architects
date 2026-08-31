@@ -46,3 +46,19 @@ export const buildConceptPhotos = (
 /** Picks photographs at the given indices, wrapping around a short pool. */
 export const pickPhotos = (pool: ConceptPhoto[], indices: number[]): (ConceptPhoto | undefined)[] =>
   indices.map((i) => (pool.length ? pool[i % pool.length] : undefined));
+
+/**
+ * Selects project photographs in a deliberate visual order, then falls back to
+ * the remaining pool. This lets each homepage concept use a distinct edit of
+ * the same client-managed photography without hard-coding image URLs.
+ */
+export const arrangeConceptPhotos = (
+  pool: ConceptPhoto[],
+  projectSlugs: string[],
+): ConceptPhoto[] => {
+  const selected = projectSlugs
+    .map((slug) => pool.find((photo) => photo.href === `/projects/${slug}`))
+    .filter((photo): photo is ConceptPhoto => Boolean(photo));
+  const remaining = pool.filter((photo) => !selected.includes(photo));
+  return [...selected, ...remaining];
+};

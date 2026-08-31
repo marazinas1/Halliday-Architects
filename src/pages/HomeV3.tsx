@@ -5,7 +5,12 @@ import BrandLogo from "@/components/BrandLogo";
 import { FIRM } from "@/content/firm";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
-import { buildConceptPhotos, pickPhotos, type ConceptPhoto } from "@/lib/conceptPhotos";
+import {
+  arrangeConceptPhotos,
+  buildConceptPhotos,
+  pickPhotos,
+  type ConceptPhoto,
+} from "@/lib/conceptPhotos";
 
 /*
  * Home V3 — the second alternative homepage concept shown to the client
@@ -34,7 +39,15 @@ const Placeholder = () => (
   />
 );
 
-const Frame = ({ photo, priority }: { photo?: ConceptPhoto; priority?: boolean }) => (
+const Frame = ({
+  photo,
+  priority,
+  zoomOnHover,
+}: {
+  photo?: ConceptPhoto;
+  priority?: boolean;
+  zoomOnHover?: boolean;
+}) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
       <img
@@ -45,18 +58,13 @@ const Frame = ({ photo, priority }: { photo?: ConceptPhoto; priority?: boolean }
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
         fetchPriority={priority ? "high" : undefined}
-        className="h-full w-full object-cover"
+        className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${
+          zoomOnHover ? "group-hover:scale-[1.02]" : ""
+        }`}
       />
     ) : (
       <Placeholder />
     )}
-    <div
-      aria-hidden
-      className="absolute inset-0"
-      style={{
-        background: "radial-gradient(120% 90% at 30% 20%, transparent 40%, rgba(0,0,0,.14) 100%)",
-      }}
-    />
   </div>
 );
 
@@ -68,7 +76,13 @@ const HomeV3 = () => {
   const { data: projects = [] } = usePublicProjects();
 
   const hero = settings.homepage.heroImageUrl;
-  const pool = buildConceptPhotos(projects, hero, FIRM.name);
+  const pool = arrangeConceptPhotos(buildConceptPhotos(projects, null, FIRM.name), [
+    "19-flamingo-road",
+    "111-anchor-rd",
+    "11605-paradise-drive",
+    "262-bayshore-road",
+    "115-anchor-road",
+  ]);
   const [heroPhoto, featured, left, right] = pickPhotos(pool, [0, 1, 2, 3]);
 
   const accreditations = "AIA member · LEED accredited · NCARB certified";
@@ -114,15 +128,12 @@ const HomeV3 = () => {
           style={{ background: "linear-gradient(to top, rgba(10,10,10,.62) 0%, transparent 38%)" }}
         />
         <div className="absolute inset-x-0 bottom-0 px-6 pb-12 text-center text-white">
-          <Link to="/home-v3" className="mb-6 inline-flex" aria-label={FIRM.name}>
-            <BrandLogo variant="dark" className="h-12 w-auto md:h-14" />
-          </Link>
-          <b className="block text-[clamp(1.25rem,3vw,1.6rem)] font-semibold tracking-tight">
+          <h1 className="text-[clamp(1.25rem,3vw,1.6rem)] font-semibold tracking-tight">
             Residential architecture in Ocean City, New Jersey
-          </b>
-          <span className="mt-2 block text-[0.9rem] text-white/80">
+          </h1>
+          <p className="mt-2 text-[0.9rem] text-white/80">
             Christopher and Shannon Halliday lead every project personally.
-          </span>
+          </p>
         </div>
       </div>
 
@@ -150,9 +161,9 @@ const HomeV3 = () => {
 
         <Link
           to={featured?.href ?? "/projects"}
-          className="relative mx-auto block aspect-[16/8] w-full max-w-[1440px]"
+          className="group relative mx-auto block aspect-[16/8] w-full max-w-[1440px] overflow-hidden"
         >
-          <Frame photo={featured} />
+          <Frame photo={featured} zoomOnHover />
         </Link>
         <p className="mx-auto mb-10 mt-3 max-w-[1440px] text-center text-[0.78rem] text-stone">
           {caption(featured)}
@@ -161,8 +172,11 @@ const HomeV3 = () => {
         <div className="mx-auto grid max-w-[1440px] gap-5 md:grid-cols-2">
           {[left, right].map((photo, i) => (
             <div key={i}>
-              <Link to={photo?.href ?? "/projects"} className="relative block aspect-square">
-                <Frame photo={photo} />
+              <Link
+                to={photo?.href ?? "/projects"}
+                className="group relative block aspect-square overflow-hidden"
+              >
+                <Frame photo={photo} zoomOnHover />
               </Link>
               <p className="mt-3 text-[0.78rem] text-stone">{caption(photo)}</p>
             </div>
