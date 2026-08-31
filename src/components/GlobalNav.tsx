@@ -1,17 +1,23 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { container } from "@/lib/rhythm";
 
 const NAV_LINKS = [
-  { label: "Home", to: "/" },
   { label: "About", to: "/about" },
   { label: "Our Team", to: "/team" },
   { label: "Services", to: "/services" },
   { label: "Projects", to: "/projects" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
+];
+
+/** Temporary: the three homepage concepts being reviewed with the client. */
+const HOME_VERSIONS = [
+  { label: "Home V1", to: "/" },
+  { label: "Home V2", to: "/home-v2" },
+  { label: "Home V3", to: "/home-v3" },
 ];
 
 const CTA_LABEL = "Start a project";
@@ -26,6 +32,8 @@ const CTA_LABEL = "Start a project";
  */
 const GlobalNav = (_props: { lightHero?: boolean }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const isHomeActive = HOME_VERSIONS.some((v) => v.to === pathname);
 
   const linkClass = (isActive: boolean) =>
     `text-[11px] tracking-[0.16em] uppercase font-medium transition-colors duration-300 ${
@@ -46,6 +54,35 @@ const GlobalNav = (_props: { lightHero?: boolean }) => {
 
           {/* Desktop */}
           <div className="hidden lg:flex items-center gap-8">
+            {/* Home concepts — temporary while the client compares homepage versions. */}
+            <div className="relative group">
+              <button
+                type="button"
+                className={`inline-flex items-center gap-1 ${linkClass(isHomeActive)}`}
+                aria-haspopup="menu"
+              >
+                Home
+                <ChevronDown size={13} className="transition-transform duration-300 group-hover:rotate-180" />
+              </button>
+              <div className="absolute left-0 top-full pt-3 opacity-0 invisible translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible">
+                <div className="min-w-[11rem] bg-background border border-line shadow-sm py-2">
+                  {HOME_VERSIONS.map((v) => (
+                    <NavLink
+                      key={v.to}
+                      to={v.to}
+                      end
+                      className={({ isActive }) =>
+                        `block px-4 py-2 text-[11px] tracking-[0.16em] uppercase transition-colors ${
+                          isActive ? "text-ink" : "text-stone hover:text-ink"
+                        }`
+                      }
+                    >
+                      {v.label}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+            </div>
             {NAV_LINKS.map((l) => (
               <NavLink
                 key={l.to}
@@ -86,6 +123,19 @@ const GlobalNav = (_props: { lightHero?: boolean }) => {
           }`}
         >
           <div className="flex flex-col gap-5 px-6 pt-6 pb-8 bg-background border-b border-line">
+            <div className="flex flex-col gap-3">
+              <span className="text-left text-sm tracking-wider uppercase text-ink">Home</span>
+              {HOME_VERSIONS.map((v) => (
+                <Link
+                  key={v.to}
+                  to={v.to}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="pl-4 text-left text-sm tracking-wider uppercase text-stone hover:text-ink transition-colors"
+                >
+                  {v.label}
+                </Link>
+              ))}
+            </div>
             {NAV_LINKS.map((l) => (
               <Link
                 key={l.to}
