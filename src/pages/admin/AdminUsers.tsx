@@ -59,11 +59,44 @@ function AdminUsersInner() {
   const [toRevoke, setToRevoke] = useState<ManagedUser | null>(null);
   const [toDelete, setToDelete] = useState<ManagedUser | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [resendingId, setResendingId] = useState<string | null>(null);
 
   const copy = (value: string, label: string) => {
     navigator.clipboard.writeText(value);
     toast.success(`${label} copied`);
   };
+
+  /**
+   * Re-sends the invitation for an account that exists but was never activated.
+   * The backend routes this through its re-invite branch, which emails the
+   * password link and still returns it for manual handover if sending fails.
+   */
+  const resendInvite = (user: ManagedUser) => {
+    const targetRole: ManagedRole =
+      user.role === "owner" || user.role === "editor" ? user.role : role;
+    setResendingId(user.id);
+    invite.mutate(
+      { email: user.email, role: targetRole },
+      {
+        onSuccess: (data) => {
+          setResendingId(null);
+          toast.success(
+            data.emailSent
+              ? `Invitation resent to ${user.email}.`
+              : `Invitation link generated for ${user.email} — send it manually.`,
+          );
+          if (data.actionLink || data.password) {
+            setResult({ ...data, email: user.email });
+          }
+        },
+        onError: (err: Error) => {
+          setResendingId(null);
+          toast.error(err.message);
+        },
+      },
+    );
+  };
+
 
   const submitInvite = (e: React.FormEvent) => {
     e.preventDefault();
