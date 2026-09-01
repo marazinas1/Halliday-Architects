@@ -56,7 +56,7 @@ const SelectedWork = () => {
         {/* Mobile: horizontal snap rail with stacked card. */}
         <div className="flex snap-x snap-mandatory overflow-x-auto no-scrollbar -mr-6 pr-6 pb-2 gap-4 md:hidden">
           {cards.map((card, i) => (
-            <Reveal key={card.key} delay={i * 100} className="w-[85%] shrink-0 snap-center">
+            <Reveal key={card.key} delay={i * 150} className="w-[85%] shrink-0 snap-center">
               <Link to={card.link} className="block">
                 <div className="flex flex-col overflow-hidden border border-line bg-paper">
                   {card.image ? (
@@ -87,7 +87,7 @@ const SelectedWork = () => {
         {/* Desktop: 2-up / 4-up grid, dark veil rising on hover. */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {cards.map((card, i) => (
-            <Reveal key={card.key} delay={i * 100}>
+            <Reveal key={card.key} delay={i * 150}>
               <Link to={card.link} className="block">
                 <div className="group relative aspect-[4/5] overflow-hidden bg-sand cursor-pointer">
                   {card.image ? (
