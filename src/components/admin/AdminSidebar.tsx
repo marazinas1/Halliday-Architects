@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home, UserCog, LayoutDashboard, Quote, BarChart3 } from "lucide-react";
+import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home, UserCog, LayoutDashboard, Quote, BarChart3, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
 import { Badge } from "@/components/ui/badge";
@@ -149,6 +149,19 @@ export default function AdminSidebar({ email, role }: { email: string; role: Adm
                 {ROLE_LABEL[role]}
               </div>
             </div>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Back to site">
+              <Link
+                to="/"
+                onClick={() => {
+                  if (isMobile) setOpenMobile(false);
+                }}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back to site</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={signOut} tooltip="Sign out">
