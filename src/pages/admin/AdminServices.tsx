@@ -23,6 +23,8 @@ import {
   useSaveService,
 } from "@/hooks/admin/useAdminServices";
 import { uploadSiteImage, SITE_IMAGES_BUCKET } from "@/lib/admin/uploadSiteImage";
+import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
+import { supabase } from "@/integrations/supabase/client";
 import { NotAnImageError } from "@/lib/images/optimizeImage";
 
 type Draft = {
@@ -65,6 +67,7 @@ function ServicesBody() {
   const removeService = useDeleteService();
   const reorder = useReorderServices();
   const { toast } = useToast();
+  const { serviceFallback } = useResolvedPageImages();
 
   const [order, setOrder] = useState<PublicService[]>([]);
   const [editing, setEditing] = useState<Draft | null>(null);
@@ -162,6 +165,13 @@ function ServicesBody() {
     }
   };
 
+  /** Public URL for the photograph currently attached to the open service. */
+  const editingUrl =
+    editing?.imageUrl ??
+    (editing?.image_bucket && editing.image_path
+      ? supabase.storage.from(editing.image_bucket).getPublicUrl(editing.image_path).data.publicUrl
+      : null);
+
   return (
     <div className="max-w-4xl">
       <div className="mb-8 flex items-start justify-between gap-4">
@@ -199,13 +209,22 @@ function ServicesBody() {
               key={service.id}
               className="flex items-center gap-3 rounded border border-line bg-card p-3"
             >
-              <div className="h-14 w-20 shrink-0 overflow-hidden rounded bg-sand">
-                {service.imageUrl ? (
-                  <img src={service.imageUrl} alt="" className="h-full w-full object-cover" />
+              <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded bg-sand">
+                {(service.imageUrl ?? serviceFallback(index).url) ? (
+                  <img
+                    src={service.imageUrl ?? serviceFallback(index).url ?? ""}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-stone">
                     <ImageIcon className="h-4 w-4" />
                   </div>
+                )}
+                {!service.imageUrl && serviceFallback(index).url && (
+                  <span className="absolute inset-x-0 bottom-0 bg-ink/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-paper">
+                    Automatic
+                  </span>
                 )}
               </div>
               <div className="min-w-0 flex-1">
@@ -291,12 +310,8 @@ function ServicesBody() {
                 <Label>Photograph</Label>
                 <div className="mt-2 flex items-center gap-3">
                   <div className="h-20 w-28 overflow-hidden rounded bg-sand">
-                    {editing.imageUrl ? (
-                      <img src={editing.imageUrl} alt="" className="h-full w-full object-cover" />
-                    ) : editing.image_path ? (
-                      <div className="flex h-full w-full items-center justify-center text-[11px] text-stone">
-                        Selected
-                      </div>
+                    {editingUrl ? (
+                      <img src={editingUrl} alt="" className="h-full w-full object-cover" />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-stone">
                         <ImageIcon className="h-4 w-4" />
@@ -347,7 +362,7 @@ function ServicesBody() {
       </Dialog>
 
       <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="flex max-h-[85vh] max-w-4xl flex-col overflow-hidden">
           <DialogHeader>
             <DialogTitle>Service photograph</DialogTitle>
           </DialogHeader>

@@ -7,6 +7,7 @@ export type LibraryImage = {
   storage_path: string;
   url: string;
   alt: string;
+  category: string;
 };
 
 export type LibraryProject = {
@@ -35,7 +36,7 @@ export function useProjectImageLibrary() {
 
       const { data: imgs, error: imgErr } = await supabase
         .from("project_images")
-        .select("id, project_id, storage_path, alt_text, sort_order")
+        .select("id, project_id, storage_path, alt_text, sort_order, category")
         .in(
           "project_id",
           rows.map((p) => p.id),
@@ -54,6 +55,7 @@ export function useProjectImageLibrary() {
               storage_path: i.storage_path,
               url: getPublicUrl(i.storage_path),
               alt: i.alt_text ?? p.title,
+              category: i.category,
             })),
         }))
         .filter((p) => p.images.length > 0);

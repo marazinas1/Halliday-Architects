@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import AdminProtected from "@/components/admin/AdminProtected";
 import PageImageSlot from "@/components/admin/PageImageSlot";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { usePageContent } from "@/hooks/usePageContent";
+import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
 import { useSavePageText } from "@/hooks/admin/usePageContentAdmin";
 import { HOMEPAGE_FALLBACKS } from "@/hooks/useSiteSettings";
 
@@ -19,25 +21,38 @@ const WALL_SLOTS = [
 ];
 
 const TILE_SLOTS = [
-  { slot: "tile_projects", label: "Projects tile" },
-  { slot: "tile_about", label: "About tile" },
-  { slot: "tile_contact", label: "Contact tile" },
+  { slot: "tile_projects", label: "Projects tile", textSlot: "tile_projects_label", fallbackLabel: "Projects" },
+  { slot: "tile_about", label: "About tile", textSlot: "tile_about_label", fallbackLabel: "About" },
+  { slot: "tile_contact", label: "Contact tile", textSlot: "tile_contact_label", fallbackLabel: "Contact" },
 ];
 
 function HomeBody() {
   const { image, copy, isLoading } = usePageContent();
+  const { resolve } = useResolvedPageImages();
   const saveText = useSavePageText();
   const { toast } = useToast();
   const [statement, setStatement] = useState("");
+  const [labels, setLabels] = useState<Record<string, string>>({});
 
   const savedStatement = copy("home", "intro_heading", "");
+  const savedLabels = TILE_SLOTS.map((t) => copy("home", t.textSlot, "")).join("|");
   useEffect(() => {
     setStatement(savedStatement);
   }, [savedStatement]);
+  useEffect(() => {
+    const next: Record<string, string> = {};
+    TILE_SLOTS.forEach((t, i) => {
+      next[t.textSlot] = savedLabels.split("|")[i] ?? "";
+    });
+    setLabels(next);
+  }, [savedLabels]);
 
   const save = async () => {
     try {
-      await saveText.mutateAsync({ page: "home", values: { intro_heading: statement } });
+      await saveText.mutateAsync({
+        page: "home",
+        values: { intro_heading: statement, ...labels },
+      });
       toast({ title: "Saved", description: "Homepage wording updated." });
     } catch (err) {
       toast({ variant: "destructive", title: "Could not save", description: (err as Error).message });
@@ -51,7 +66,8 @@ function HomeBody() {
           <h1 className="mb-1 text-2xl text-ink">Home</h1>
           <p className="text-sm text-stone">
             The photo wall, the practice statement and the three tiles at the foot of the page.
-            Any photograph left empty falls back to project photography.
+            Every panel below shows the photograph on the live page — those marked "Automatic"
+            come from project photography until you choose your own.
           </p>
         </div>
         <Button asChild variant="outline">
@@ -66,17 +82,22 @@ function HomeBody() {
         <p className="mb-1 text-sm font-medium text-ink">Photo wall</p>
         <p className="mb-4 text-xs text-stone">Four photographs, in the order they appear.</p>
         <div className="grid gap-4 sm:grid-cols-2">
-          {WALL_SLOTS.map((s) => (
-            <PageImageSlot
-              key={s.slot}
-              page="home"
-              slot={s.slot}
-              label={s.label}
-              help={s.help}
-              aspect={s.aspect}
-              current={image("home", s.slot)}
-            />
-          ))}
+          {WALL_SLOTS.map((s) => {
+            const shown = resolve("home", s.slot);
+            return (
+              <PageImageSlot
+                key={s.slot}
+                page="home"
+                slot={s.slot}
+                label={s.label}
+                help={s.help}
+                aspect={s.aspect}
+                current={image("home", s.slot)}
+                fallbackUrl={shown.source === "automatic" ? shown.url : null}
+                fallbackFrom={shown.from}
+              />
+            );
+          })}
         </div>
       </section>
 
@@ -95,7 +116,27 @@ function HomeBody() {
           placeholder={HOMEPAGE_FALLBACKS.introHeading}
           onChange={(e) => setStatement(e.target.value)}
         />
-        <div className="mt-4 flex items-center gap-3">
+
+        <p className="mb-2 mt-5 text-sm font-medium text-ink">Tile wording</p>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {TILE_SLOTS.map((t) => (
+            <div key={t.textSlot}>
+              <Label htmlFor={t.textSlot} className="text-xs text-stone">
+                {t.label}
+              </Label>
+              <Input
+                id={t.textSlot}
+                className="mt-1"
+                value={labels[t.textSlot] ?? ""}
+                disabled={isLoading}
+                placeholder={t.fallbackLabel}
+                onChange={(e) => setLabels((v) => ({ ...v, [t.textSlot]: e.target.value }))}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-5 flex items-center gap-3">
           <Button onClick={save} disabled={saveText.isPending}>
             Save wording
           </Button>
@@ -109,16 +150,21 @@ function HomeBody() {
           The three linked panels at the foot of the homepage.
         </p>
         <div className="grid gap-4 sm:grid-cols-3">
-          {TILE_SLOTS.map((s) => (
-            <PageImageSlot
-              key={s.slot}
-              page="home"
-              slot={s.slot}
-              label={s.label}
-              aspect="aspect-[3/4]"
-              current={image("home", s.slot)}
-            />
-          ))}
+          {TILE_SLOTS.map((s) => {
+            const shown = resolve("home", s.slot);
+            return (
+              <PageImageSlot
+                key={s.slot}
+                page="home"
+                slot={s.slot}
+                label={s.label}
+                aspect="aspect-[3/4]"
+                current={image("home", s.slot)}
+                fallbackUrl={shown.source === "automatic" ? shown.url : null}
+                fallbackFrom={shown.from}
+              />
+            );
+          })}
         </div>
       </section>
     </div>

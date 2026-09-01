@@ -19,14 +19,24 @@ type Props = {
 
 const ACCEPT = "image/jpeg,image/jpg,image/png,image/webp,image/avif";
 
+const CATEGORY_LABEL: Record<string, string> = {
+  hero: "Hero",
+  card: "Card",
+  gallery: "Gallery",
+};
+
 /**
  * Choose a photograph either from the project library — one project at a time,
  * selected with tabs across the top — or by uploading a standalone file.
+ *
+ * The grid scrolls inside the dialog so a long project never pushes the
+ * controls off screen.
  */
 export default function ImagePicker({ current, busy = false, progress = 0, onPick, onUpload }: Props) {
   const { data: library, isLoading } = useProjectImageLibrary();
   const [search, setSearch] = useState("");
   const [active, setActive] = useState<string | null>(null);
+  const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const term = search.trim().toLowerCase();
@@ -35,18 +45,17 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
     [library, term],
   );
 
-  const activeProject =
-    projects.find((p) => p.id === active) ?? projects[0] ?? null;
+  const activeProject = projects.find((p) => p.id === active) ?? projects[0] ?? null;
 
   return (
-    <div className="space-y-4">
-      <Tabs defaultValue="projects">
-        <TabsList>
+    <div className="flex min-h-0 flex-1 flex-col gap-4">
+      <Tabs defaultValue="projects" className="flex min-h-0 flex-1 flex-col">
+        <TabsList className="w-fit">
           <TabsTrigger value="projects">From projects</TabsTrigger>
           <TabsTrigger value="upload">Upload</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="projects" className="space-y-4 pt-4">
+        <TabsContent value="projects" className="flex min-h-0 flex-1 flex-col gap-4 pt-4">
           {isLoading ? (
             <div className="flex items-center gap-2 py-8 text-sm text-stone">
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -85,46 +94,80 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                 })}
               </div>
 
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-                {(activeProject?.images ?? []).map((img) => {
-                  const selected =
-                    current?.bucket === "project-images" && current.path === img.storage_path;
-                  return (
-                    <button
-                      key={img.id}
-                      type="button"
-                      disabled={busy}
-                      onClick={() =>
-                        onPick({ bucket: "project-images", path: img.storage_path, alt: img.alt })
-                      }
-                      className={cn(
-                        "relative aspect-[4/3] overflow-hidden rounded border transition-all",
-                        selected ? "border-ink ring-2 ring-ink" : "border-line hover:border-ink/40",
-                      )}
-                    >
-                      <img
-                        src={img.url}
-                        alt={img.alt}
-                        loading="lazy"
-                        className="h-full w-full object-cover"
-                      />
-                      {selected && (
-                        <span className="absolute right-1 top-1 rounded-full bg-ink p-1 text-paper">
-                          <Check className="h-3 w-3" />
+              {activeProject && (
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="text-sm font-medium text-ink">{activeProject.title}</p>
+                  <p className="text-xs text-stone">
+                    {activeProject.images.length} photograph
+                    {activeProject.images.length === 1 ? "" : "s"} — click one to use it
+                  </p>
+                </div>
+              )}
+
+              <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {(activeProject?.images ?? []).map((img) => {
+                    const selected =
+                      current?.bucket === "project-images" && current.path === img.storage_path;
+                    return (
+                      <button
+                        key={img.id}
+                        type="button"
+                        disabled={busy}
+                        onClick={() =>
+                          onPick({ bucket: "project-images", path: img.storage_path, alt: img.alt })
+                        }
+                        className={cn(
+                          "group relative aspect-[4/3] overflow-hidden rounded border text-left transition-all",
+                          selected ? "border-ink ring-2 ring-ink" : "border-line hover:border-ink/40",
+                        )}
+                      >
+                        <img
+                          src={img.url}
+                          alt={img.alt}
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                        />
+                        <span className="absolute left-1.5 top-1.5 rounded-full bg-paper/90 px-2 py-0.5 text-[10px] font-medium text-stone">
+                          {CATEGORY_LABEL[img.category] ?? img.category}
                         </span>
-                      )}
-                    </button>
-                  );
-                })}
+                        <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-[11px] text-white opacity-0 transition-opacity group-hover:opacity-100">
+                          <span className="line-clamp-2">{selected ? "Currently used" : img.alt}</span>
+                        </span>
+                        {selected && (
+                          <span className="absolute right-1.5 top-1.5 rounded-full bg-ink p-1 text-paper">
+                            <Check className="h-3 w-3" />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </>
           )}
         </TabsContent>
 
         <TabsContent value="upload" className="pt-4">
-          <div className="rounded border border-dashed border-line p-8 text-center">
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragging(false);
+              const file = e.dataTransfer.files?.[0];
+              if (file) onUpload(file);
+            }}
+            className={cn(
+              "rounded border border-dashed p-10 text-center transition-colors",
+              dragging ? "border-ink bg-sand" : "border-line",
+            )}
+          >
             <Upload className="mx-auto mb-3 h-5 w-5 text-stone" />
-            <p className="mb-1 text-sm text-ink">Upload a photograph</p>
+            <p className="mb-1 text-sm text-ink">Drag a photograph here, or choose a file</p>
             <p className="mb-4 text-xs text-stone">
               Resized and converted automatically. Use this for photographs that are not part of a
               project.

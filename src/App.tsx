@@ -25,8 +25,6 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
 const AdminProjectForm = lazy(() => import("./pages/admin/AdminProjectForm"));
 const AdminTags = lazy(() => import("./pages/admin/AdminTags"));
-const AdminTeam = lazy(() => import("./pages/admin/AdminTeam"));
-const AdminTestimonials = lazy(() => import("./pages/admin/AdminTestimonials"));
 const AdminTeamForm = lazy(() => import("./pages/admin/AdminTeamForm"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
@@ -94,8 +92,8 @@ const App = () => (
             <Route path="/admin/projects/new" element={<AdminProjectForm />} />
             <Route path="/admin/projects/:id/edit" element={<AdminProjectForm />} />
             <Route path="/admin/tags" element={<AdminTags />} />
-            <Route path="/admin/team" element={<AdminTeam />} />
-            <Route path="/admin/testimonials" element={<AdminTestimonials />} />
+            <Route path="/admin/team" element={<Navigate to="/admin/about?tab=team" replace />} />
+            <Route path="/admin/testimonials" element={<Navigate to="/admin/about?tab=testimonials" replace />} />
             <Route path="/admin/team/new" element={<AdminTeamForm />} />
             <Route path="/admin/team/:id/edit" element={<AdminTeamForm />} />
             <Route path="/admin/blog" element={<AdminBlog />} />

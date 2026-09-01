@@ -32,7 +32,7 @@ import {
  * Client quotes. Nothing appears on the public site until a quote is published,
  * so the section simply stays hidden while this list is empty.
  */
-function AdminTestimonialsInner() {
+export function TestimonialsManager({ embedded = false }: { embedded?: boolean }) {
   const { data: items = [], isLoading } = useAdminTestimonials();
   const save = useSaveTestimonial();
   const setPublished = useUpdateTestimonialPublished();
@@ -78,7 +78,7 @@ function AdminTestimonialsInner() {
   return (
     <div className="max-w-3xl space-y-8">
       <div>
-        <h1 className="text-2xl text-ink">Testimonials</h1>
+        <h2 className={embedded ? "text-lg font-medium text-ink" : "text-2xl text-ink"}>Testimonials</h2>
         <p className="mt-2 text-sm text-stone">
           Words from clients. Nothing shows on the website until you switch a quote to published.
         </p>
@@ -293,7 +293,7 @@ function AdminTestimonialsInner() {
 export default function AdminTestimonials() {
   return (
     <AdminProtected access="owner">
-      <AdminTestimonialsInner />
+      <TestimonialsManager />
     </AdminProtected>
   );
 }
