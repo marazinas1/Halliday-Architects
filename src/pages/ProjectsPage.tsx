@@ -86,13 +86,16 @@ const ProjectsPage = () => {
         description="Residential architecture in and around Ocean City, New Jersey — new builds, renovations, additions and interiors."
         path="/projects"
       />
-      <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
-        <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Selected work</p>
-        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Projects</h1>
-        <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
-          Residential architecture in and around Ocean City, New Jersey — new builds, renovations, additions and interiors.
-        </p>
-      </header>
+      <Reveal>
+        <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Selected work</p>
+          <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Projects</h1>
+          <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
+            Residential architecture in and around Ocean City, New Jersey — new builds, renovations, additions and interiors.
+          </p>
+        </header>
+      </Reveal>
+
 
       {(() => {
         // ProjectFilters returns null when no row offers a real choice; in
