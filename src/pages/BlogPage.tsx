@@ -1,6 +1,4 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
@@ -82,12 +80,8 @@ const BlogPage = () => {
             <div className="border-y border-line px-6 py-20 text-center md:py-24">
               <p className="text-2xl font-light text-ink">The first entries are on their way.</p>
               <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-stone">
-                The journal is being prepared. In the meantime, explore the studio’s recent work.
+                The journal is being prepared. Please check back for notes from the studio.
               </p>
-              <Link to="/contact" className="link-inline group mt-6">
-                Start a conversation
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
             </div>
           ) : (
             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
