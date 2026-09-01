@@ -7,6 +7,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import Lightbox from "@/components/projects/Lightbox";
 import PreviewBanner from "@/components/admin/PreviewBanner";
+import Reveal from "@/components/Reveal";
 import { previewPath, readPreview } from "@/lib/admin/preview";
 import {
   PROJECT_TYPE_LABELS,
@@ -157,6 +158,7 @@ const ProjectPage = () => {
       </section>
 
       {(project.client_brief || project.story || project.description) && (
+        <Reveal>
         <section className="px-6 py-24 text-center md:py-28">
           <div className="mx-auto max-w-[56rem]">
             {project.client_brief && (
@@ -181,6 +183,7 @@ const ProjectPage = () => {
             )}
           </div>
         </section>
+        </Reveal>
       )}
 
       {gallery.length > 0 && (
@@ -193,7 +196,9 @@ const ProjectPage = () => {
                 ? "grid gap-[2px] md:grid-cols-2 md:h-[56vh] md:min-h-[360px]"
                 : "grid gap-[2px] md:grid-cols-[1.45fr_1fr] md:h-[60vh] md:min-h-[380px]";
             return (
-              <div key={`${row.kind}-${rowIndex}`} className={rowClass}>
+              <Reveal key={`${row.kind}-${rowIndex}`}>
+              <div className={rowClass}>
+
                 {row.items.map((img, itemIndex) => (
                   <button
                     key={img.id}
@@ -214,12 +219,15 @@ const ProjectPage = () => {
                   </button>
                 ))}
               </div>
+              </Reveal>
+
             );
           })}
         </section>
       )}
 
       {(specs.length > 0 || features.length > 0) && (
+        <Reveal>
         <section className="bg-sand py-20 md:py-24">
           <div className={`${container.content} grid gap-14 ${specs.length > 0 && features.length > 0 ? "md:grid-cols-2 md:gap-20" : ""}`}>
             {specs.length > 0 && (
@@ -247,6 +255,7 @@ const ProjectPage = () => {
             )}
           </div>
         </section>
+        </Reveal>
       )}
 
       {next && (
