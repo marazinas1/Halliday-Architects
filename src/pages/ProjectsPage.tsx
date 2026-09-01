@@ -157,42 +157,44 @@ const ProjectsPage = () => {
                     key={row.map((project) => project.id).join("-")}
                     className={`grid w-full gap-[2px] ${rowGridClasses[rowSize]}`}
                   >
-                    {row.map((p) => (
-                      <Link
-                        key={p.id}
-                        to={`/projects/${p.slug}`}
-                        className={`group relative block overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
-                      >
-                        {p.card_image_url ? (
-                          <img
-                            src={p.card_image_url}
-                            alt={p.card_image_alt}
-                            loading="lazy"
-                            decoding="async"
-                            width={1600}
-                            height={1200}
-                            className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
-                          />
-                        ) : (
-                          <div className="h-full w-full bg-sand" />
-                        )}
-                        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-                        <div className="absolute inset-x-0 bottom-0 p-6 text-paper md:p-8">
-                          <h2 className="text-xl font-semibold leading-tight text-paper">
-                            {p.title}
-                          </h2>
-                          <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-paper/70">
-                            {[
-                              p.location,
-                              PROJECT_TYPE_LABELS[p.project_type as ProjectType] ?? null,
-                              p.year_completed ?? null,
-                            ]
-                              .filter(Boolean)
-                              .join(" · ")}
-                          </p>
-                        </div>
-                      </Link>
+                    {row.map((p, cardIndex) => (
+                      <Reveal key={p.id} delay={cardIndex * 110}>
+                        <Link
+                          to={`/projects/${p.slug}`}
+                          className={`group relative block overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
+                        >
+                          {p.card_image_url ? (
+                            <img
+                              src={p.card_image_url}
+                              alt={p.card_image_alt}
+                              loading="lazy"
+                              decoding="async"
+                              width={1600}
+                              height={1200}
+                              className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
+                            />
+                          ) : (
+                            <div className="h-full w-full bg-sand" />
+                          )}
+                          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
+                          <div className="absolute inset-x-0 bottom-0 p-6 text-paper md:p-8">
+                            <h2 className="text-xl font-semibold leading-tight text-paper">
+                              {p.title}
+                            </h2>
+                            <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-paper/70">
+                              {[
+                                p.location,
+                                PROJECT_TYPE_LABELS[p.project_type as ProjectType] ?? null,
+                                p.year_completed ?? null,
+                              ]
+                                .filter(Boolean)
+                                .join(" · ")}
+                            </p>
+                          </div>
+                        </Link>
+                      </Reveal>
                     ))}
+
                   </div>
                 );
               })}
