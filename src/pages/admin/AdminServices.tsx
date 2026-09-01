@@ -169,7 +169,7 @@ function ServicesBody() {
           <h1 className="mb-1 text-2xl text-ink">Services</h1>
           <p className="text-sm text-stone">
             Each service is a full-width band on the services page, alternating photograph and text.
-            Drag order is set with the arrows.
+            Use the arrows to change the order they appear in.
           </p>
         </div>
         <div className="flex gap-2">
