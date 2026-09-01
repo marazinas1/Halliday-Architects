@@ -255,6 +255,7 @@ const ProjectPage = () => {
             )}
           </div>
         </section>
+        </Reveal>
       )}
 
       {next && (
