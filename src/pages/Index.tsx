@@ -10,16 +10,9 @@ import {
   useSiteSettings,
   type SiteSettingsRow,
 } from "@/hooks/useSiteSettings";
-import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { usePageContent } from "@/hooks/usePageContent";
 import { readPreview } from "@/lib/admin/preview";
-import { FIRM } from "@/content/firm";
-import {
-  arrangeConceptPhotos,
-  buildConceptPhotos,
-  pickPhotos,
-  type ConceptPhoto,
-} from "@/lib/conceptPhotos";
+import { useResolvedPageImages, type ResolvedPhoto } from "@/hooks/useResolvedPageImages";
 
 const MANIFESTO_FALLBACK =
   "Houses designed for the shore they stand on — the local vernacular, new building technology, and the way a family lives.";
@@ -42,7 +35,7 @@ const PhotoFrame = ({
   priority = false,
   zoomOnHover = false,
 }: {
-  photo: ConceptPhoto | undefined;
+  photo: ResolvedPhoto | undefined;
   dark?: boolean;
   priority?: boolean;
   zoomOnHover?: boolean;
