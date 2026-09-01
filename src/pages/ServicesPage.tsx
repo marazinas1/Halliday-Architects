@@ -5,10 +5,30 @@ import CTASection from "@/components/CTASection";
 import Reveal from "@/components/Reveal";
 import { SERVICE_GROUPS } from "@/content/firm";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
+import { useServices } from "@/hooks/useServices";
+import { usePageContent } from "@/hooks/usePageContent";
 import { container } from "@/lib/rhythm";
 
 const ServicesPage = () => {
   const { data: projects = [], isLoading } = usePublicProjects();
+  const { data: services = [] } = useServices();
+  const page = usePageContent();
+
+  // The client edits these bands in the admin panel; the written-in set is the
+  // fallback for a database that has not been populated yet.
+  const bands = services.length
+    ? services.map((s) => ({
+        title: s.title,
+        body: s.body,
+        includes: s.includes,
+        imageUrl: s.imageUrl,
+      }))
+    : SERVICE_GROUPS.map((g) => ({
+        title: g.title,
+        body: g.body,
+        includes: g.includes,
+        imageUrl: null as string | null,
+      }));
 
   return (
     <main className="min-h-screen bg-background">
@@ -23,7 +43,9 @@ const ServicesPage = () => {
         <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">
           What we do
         </p>
-        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Services</h1>
+        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">
+          {page.copy("services", "heading", "Services")}
+        </h1>
         <p className="mx-auto mt-5 max-w-[52ch] text-[15px] leading-relaxed text-stone">
           A residential practice in Ocean City, New Jersey. We take a house
           from the first conversation about a site through to the questions that
@@ -32,9 +54,11 @@ const ServicesPage = () => {
       </header>
 
       <div className="flex flex-col gap-[2px]">
-        {SERVICE_GROUPS.map((group, index) => {
+        {bands.map((group, index) => {
           const project = projects[index];
-          const hasMedia = isLoading || Boolean(project?.card_image_url);
+          const imageUrl = group.imageUrl ?? project?.card_image_url ?? null;
+          const imageAlt = group.imageUrl ? group.title : project?.card_image_alt ?? group.title;
+          const hasMedia = isLoading || Boolean(imageUrl);
           const imageFirstOnDesktop = index % 2 === 0;
 
           return (
@@ -50,10 +74,10 @@ const ServicesPage = () => {
                       imageFirstOnDesktop ? "min-[900px]:order-1" : "min-[900px]:order-2"
                     }`}
                   >
-                    {project?.card_image_url ? (
+                    {imageUrl ? (
                       <img
-                        src={project.card_image_url}
-                        alt={project.card_image_alt}
+                        src={imageUrl}
+                        alt={imageAlt}
                         width={1600}
                         height={1200}
                         loading="lazy"
