@@ -5,6 +5,7 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import ProjectFilters from "@/components/projects/ProjectFilters";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useTags } from "@/hooks/admin/useTags";
 import {
@@ -112,13 +113,14 @@ const ProjectsPage = () => {
                   : "Try a different project type, or clear the filters to see all work."}
               </p>
               {projects.length > 0 && (
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
                   onClick={clear}
-                  className="mt-8 text-xs uppercase tracking-[0.16em] text-ink underline underline-offset-8"
+                  className="mt-8 h-auto rounded-none px-0 text-xs uppercase tracking-[0.16em] text-ink underline underline-offset-8"
                 >
                   Clear filters
-                </button>
+                </Button>
               )}
             </div>
           ) : (

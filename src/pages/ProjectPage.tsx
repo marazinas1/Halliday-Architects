@@ -12,15 +12,16 @@ import {
   PROJECT_TYPE_LABELS,
   usePublicProject,
   useProjectOrder,
+  type GalleryItem,
   type ProjectType,
 } from "@/hooks/usePublicProjects";
 import { container } from "@/lib/rhythm";
 
 type Spec = { label?: string; value?: string };
 
-type GalleryRow = { kind: "full" | "pair" | "split"; items: typeof import("@/hooks/usePublicProjects").GalleryItem[] };
+type GalleryRow = { kind: "full" | "pair" | "split"; items: GalleryItem[] };
 
-const buildGalleryRows = (items: typeof import("@/hooks/usePublicProjects").GalleryItem[]): GalleryRow[] => {
+const buildGalleryRows = (items: GalleryItem[]): GalleryRow[] => {
   const rows: GalleryRow[] = [];
   const pattern: GalleryRow["kind"][] = ["full", "pair", "split", "full"];
   let cursor = 0;
@@ -120,6 +121,10 @@ const ProjectPage = () => {
           <img
             src={heroUrl}
             alt={heroAlt ?? project.title}
+            width={1920}
+            height={1280}
+            loading="eager"
+            decoding="async"
             fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover"
           />

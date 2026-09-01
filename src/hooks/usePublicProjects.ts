@@ -175,10 +175,11 @@ export function usePublicProject(slug: string | undefined) {
     queryKey: ["public-project", slug],
     enabled: !!slug,
     queryFn: async () => {
+      if (!slug) return null;
       const { data: project, error } = await supabase
         .from("projects")
         .select("*")
-        .eq("slug", slug!)
+        .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
       if (error) throw error;
