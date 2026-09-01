@@ -4,6 +4,7 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PreviewBanner from "@/components/admin/PreviewBanner";
+import Reveal from "@/components/Reveal";
 import {
   resolveHomepage,
   useSiteSettings,
@@ -107,44 +108,57 @@ const Index = () => {
 
       {/* An edge-to-edge photo wall with no overlaid headline or controls. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
-        <div className="relative h-[78svh] min-h-[520px]">
-          <PhotoFrame photo={wall[0]} priority />
-        </div>
+        <Reveal>
+          <div className="relative h-[78svh] min-h-[520px]">
+            <PhotoFrame photo={wall[0]} priority />
+          </div>
+        </Reveal>
         <div className="grid gap-[2px] md:grid-cols-[1.4fr_1fr]">
-          <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
-            <PhotoFrame photo={wall[1]} />
-          </div>
-          <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
-            <PhotoFrame photo={wall[2]} />
-          </div>
+          <Reveal>
+            <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+              <PhotoFrame photo={wall[1]} />
+            </div>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+              <PhotoFrame photo={wall[2]} />
+            </div>
+          </Reveal>
         </div>
-        <div className="relative h-[78vh] min-h-[520px]">
-          <PhotoFrame photo={wall[3]} dark />
-        </div>
+        <Reveal>
+          <div className="relative h-[78vh] min-h-[520px]">
+            <PhotoFrame photo={wall[3]} dark />
+          </div>
+        </Reveal>
       </section>
 
-      <section className="px-6 py-24 text-center md:py-32">
-        <p className="text-[0.68rem] font-medium uppercase tracking-[0.2em] text-stone">The practice</p>
-        <h1 className="mx-auto mt-6 max-w-[34ch] text-[clamp(1.4rem,3vw,2.1rem)] font-light leading-[1.4] text-ink">
-          {content.introHeading || MANIFESTO_FALLBACK}
-        </h1>
-      </section>
+      <Reveal>
+        <section className="px-6 py-24 text-center md:py-32">
+          <p className="text-[0.68rem] font-medium uppercase tracking-[0.2em] text-stone">The practice</p>
+          <h1 className="mx-auto mt-6 max-w-[34ch] text-[clamp(1.4rem,3vw,2.1rem)] font-light leading-[1.4] text-ink">
+            {content.introHeading || MANIFESTO_FALLBACK}
+          </h1>
+        </section>
+      </Reveal>
 
       <section className="grid gap-[2px] md:grid-cols-3" aria-label="Explore Halliday Architects">
         {tiles.map((tile, index) => (
-          <Link key={tile.to} to={tile.to} className="group relative aspect-[3/4] overflow-hidden">
-            <PhotoFrame photo={tilePhotos[index]} zoomOnHover />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"
-            />
-            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-7 text-paper">
-              <span className="text-[0.95rem] font-medium tracking-[0.04em]">{tile.label}</span>
-              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </Link>
+          <Reveal key={tile.to} delay={index * 120}>
+            <Link to={tile.to} className="group relative block aspect-[3/4] overflow-hidden">
+              <PhotoFrame photo={tilePhotos[index]} zoomOnHover />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"
+              />
+              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-7 text-paper">
+                <span className="text-[0.95rem] font-medium tracking-[0.04em]">{tile.label}</span>
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </div>
+            </Link>
+          </Reveal>
         ))}
       </section>
+
 
       <GlobalFooter />
     </main>
