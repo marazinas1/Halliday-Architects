@@ -44,10 +44,7 @@ const ContactMap = () => {
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
 
     const el = document.createElement("div");
-    el.style.width = "12px";
-    el.style.height = "12px";
-    el.style.borderRadius = "9999px";
-    el.style.backgroundColor = "hsl(2 82% 36%)";
+    el.className = "h-3 w-3 bg-brand";
     el.setAttribute("aria-label", "Halliday Architects studio");
     new maplibregl.Marker({ element: el }).setLngLat(CENTER).addTo(map);
 
@@ -57,7 +54,7 @@ const ContactMap = () => {
   return (
     <div
       ref={ref}
-      className="w-full h-[340px] md:h-[460px] bg-sand"
+      className="h-[340px] w-full border-y border-line bg-sand md:h-[500px]"
       style={{ filter: "grayscale(70%) contrast(0.95)" }}
       aria-label="Map showing the Halliday Architects studio in Ocean City, New Jersey"
       role="img"

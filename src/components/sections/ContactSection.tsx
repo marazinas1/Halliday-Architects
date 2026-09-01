@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowRight, CheckCircle, Clock, Loader2, Mail, MapPin, Phone, Printer } from "lucide-react";
+import { ArrowRight, CheckCircle, Loader2 } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import { Button } from "@/components/ui/button";
 import { FIRM } from "@/content/firm";
 import { supabase } from "@/integrations/supabase/client";
-import { container, sectionPadding } from "@/lib/rhythm";
+import { container, gap, sectionPadding } from "@/lib/rhythm";
 
 /** Project types offered by the practice. */
 const PROJECT_TYPES = [
@@ -22,10 +23,9 @@ const TIMELINES = [
   { value: "exploring", label: "Still exploring" },
 ];
 
-const fieldStyle = { borderRadius: "4px", border: "1px solid #E0E0E0" } as const;
-const labelClass = "block text-xs font-medium uppercase mb-2 tracking-[0.1em] text-stone";
+const labelClass = "label-uppercase block mb-3";
 const inputClass =
-  "w-full h-12 px-4 bg-paper text-sm text-ink placeholder:text-stone/50 focus:border-ink focus:outline-none transition-colors";
+  "w-full h-12 rounded-none border-0 border-b border-line bg-transparent px-0 text-[15px] text-ink outline-none transition-colors placeholder:text-stone/50 focus:border-ink focus:ring-0";
 
 const formatPhone = (raw: string) => {
   const digits = raw.replace(/\D/g, "").slice(0, 10);
@@ -101,11 +101,8 @@ export const ContactForm = () => {
   // StageHomy pattern: the form is replaced by an inline confirmation card.
   if (submitted) {
     return (
-      <div className="p-12 text-center bg-paper border border-line" style={{ borderRadius: "4px" }}>
-        <div
-          className="w-16 h-16 flex items-center justify-center mx-auto mb-6 bg-sand"
-          style={{ borderRadius: "4px" }}
-        >
+      <div className="border-y border-line bg-background px-6 py-16 text-center">
+        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center bg-sand">
           <CheckCircle className="w-8 h-8 text-ink" />
         </div>
         <h3 className="heading-card mb-4">Thank you</h3>
@@ -117,7 +114,7 @@ export const ContactForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <input
         type="text"
         name="hl_ref_code"
@@ -127,37 +124,39 @@ export const ContactForm = () => {
         tabIndex={-1}
         autoComplete="new-password"
         aria-hidden="true"
-        style={{ position: "absolute", left: "-10000px", width: 1, height: 1, opacity: 0 }}
+        className="pointer-events-none absolute -left-[10000px] h-px w-px opacity-0"
       />
 
-      <div className="grid md:grid-cols-3 gap-5">
+      <div className="grid gap-8 md:grid-cols-2">
         <div>
           <label htmlFor="hl-name" className={labelClass}>Name</label>
-          <input id="hl-name" type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClass} style={fieldStyle} placeholder="Your full name" />
+          <input id="hl-name" type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClass} placeholder="Your full name" />
         </div>
         <div>
           <label htmlFor="hl-email" className={labelClass}>Email</label>
-          <input id="hl-email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} style={fieldStyle} placeholder="your@email.com" />
-        </div>
-        <div>
-          <label htmlFor="hl-phone" className={labelClass}>Phone</label>
-          <input id="hl-phone" type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })} className={inputClass} style={fieldStyle} placeholder="(555) 000-0000" />
+          <input id="hl-email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} placeholder="your@email.com" />
         </div>
       </div>
 
-      <div>
-        <label htmlFor="hl-type" className={labelClass}>Project type</label>
-        <select id="hl-type" name="projectType" required value={form.projectType} onChange={(e) => setForm({ ...form, projectType: e.target.value })} className={`${inputClass} appearance-none cursor-pointer`} style={fieldStyle}>
-          <option value="">Select a project type</option>
-          {PROJECT_TYPES.map((t) => (
-            <option key={t.value} value={t.value}>{t.label}</option>
-          ))}
-        </select>
+      <div className="grid gap-8 md:grid-cols-2">
+        <div>
+          <label htmlFor="hl-phone" className={labelClass}>Phone</label>
+          <input id="hl-phone" type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })} className={inputClass} placeholder="(555) 000-0000" />
+        </div>
+        <div>
+          <label htmlFor="hl-type" className={labelClass}>Project type</label>
+          <select id="hl-type" name="projectType" required value={form.projectType} onChange={(e) => setForm({ ...form, projectType: e.target.value })} className={`${inputClass} cursor-pointer appearance-none`}>
+            <option value="">Select a project type</option>
+            {PROJECT_TYPES.map((t) => (
+              <option key={t.value} value={t.value}>{t.label}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div>
         <label htmlFor="hl-timeline" className={labelClass}>Timeline</label>
-        <select id="hl-timeline" name="timeline" value={form.timeline} onChange={(e) => setForm({ ...form, timeline: e.target.value })} className={`${inputClass} appearance-none cursor-pointer`} style={fieldStyle}>
+        <select id="hl-timeline" name="timeline" value={form.timeline} onChange={(e) => setForm({ ...form, timeline: e.target.value })} className={`${inputClass} cursor-pointer appearance-none`}>
           <option value="">Select a timeline</option>
           {TIMELINES.map((t) => (
             <option key={t.value} value={t.value}>{t.label}</option>
@@ -167,10 +166,10 @@ export const ContactForm = () => {
 
       <div>
         <label htmlFor="hl-message" className={labelClass}>Message</label>
-        <textarea id="hl-message" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-3 min-h-[120px] bg-paper text-sm text-ink placeholder:text-stone/50 focus:border-ink focus:outline-none resize-none transition-colors" style={fieldStyle} placeholder="Tell us about your project…" />
+        <textarea id="hl-message" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="min-h-[140px] w-full resize-none rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-stone/50 focus:border-ink focus:ring-0" placeholder="Tell us about your project…" />
       </div>
 
-      <button type="submit" disabled={submitting} className="btn-primary w-full sm:w-auto group disabled:opacity-60 disabled:cursor-not-allowed">
+      <Button type="submit" disabled={submitting} className="group h-12 w-full rounded-none bg-ink px-8 text-[11px] font-medium uppercase tracking-[0.16em] text-paper hover:bg-ink/90 sm:w-auto">
         {submitting ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -182,33 +181,26 @@ export const ContactForm = () => {
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </>
         )}
-      </button>
+      </Button>
     </form>
   );
 };
 
-const InfoRow = ({
-  icon: Icon,
+const InfoBlock = ({
   label,
   children,
 }: {
-  icon: typeof Mail;
   label: string;
   children: React.ReactNode;
 }) => (
-  <div className="flex items-center gap-4">
-    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 bg-sand" style={{ borderRadius: "4px" }}>
-      <Icon className="w-5 h-5 text-ink" />
-    </div>
-    <div className="text-left">
-      <p className="text-xs uppercase font-medium mb-1 tracking-[0.15em] text-stone">{label}</p>
-      <div className="text-sm md:text-base font-medium text-ink">{children}</div>
-    </div>
+  <div className="border-t border-line pt-7">
+    <p className="label-uppercase mb-3">{label}</p>
+    <div className="text-[15px] leading-relaxed text-ink">{children}</div>
   </div>
 );
 
 const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
-  <section className={`${sectionPadding.base} section-sand`}>
+  <section className={`${sectionPadding.base} border-t border-line bg-background`}>
     <div className={container.wide}>
       {withHeading && (
         <Reveal>
@@ -223,44 +215,42 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
         </Reveal>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-        <Reveal>
+      <div className={`grid grid-cols-1 lg:grid-cols-12 ${gap.split}`}>
+        <Reveal className="lg:col-span-4">
           <div>
-            <h3 className="heading-section mb-4">{FIRM.name}</h3>
-            <p className="text-body mb-8 max-w-md">
+            <p className="label-uppercase mb-4">Studio details</p>
+            <h2 className="heading-section mb-5">{FIRM.name}</h2>
+            <p className="text-body mb-10 max-w-md">
               The studio is on West Avenue in Ocean City. Every enquiry is read and answered
               personally by one of the principals.
             </p>
-            <div className="space-y-6 md:space-y-8">
-              <InfoRow icon={MapPin} label="Studio">
+            <div className="space-y-7">
+              <InfoBlock label="Studio">
                 <span className="block">{FIRM.address1}</span>
                 <span className="block">{FIRM.address2}</span>
                 <span className="mt-1 block text-sm font-normal text-stone">
                   Mail: {FIRM.mailing1}, {FIRM.mailing2}
                 </span>
-              </InfoRow>
-              <InfoRow icon={Mail} label="Email">
+              </InfoBlock>
+              <InfoBlock label="Direct">
                 <a href={`mailto:${FIRM.email}`} className="hover:opacity-70 transition-opacity">
                   {FIRM.email}
                 </a>
-              </InfoRow>
-              <InfoRow icon={Phone} label="Phone">
-                <a href={FIRM.phoneHref} className="hover:opacity-70 transition-opacity">
+                <a href={FIRM.phoneHref} className="mt-1 block hover:opacity-70 transition-opacity">
                   {FIRM.phone}
                 </a>
-              </InfoRow>
-              <InfoRow icon={Printer} label="Fax">
-                {FIRM.fax}
-              </InfoRow>
-              <InfoRow icon={Clock} label="Response time">
-                Within one business day
-              </InfoRow>
+                <span className="mt-1 block text-sm text-stone">Fax {FIRM.fax}</span>
+              </InfoBlock>
+              <InfoBlock label="Response time">Within one business day</InfoBlock>
             </div>
           </div>
         </Reveal>
 
-        <Reveal>
-          <ContactForm />
+        <Reveal className="lg:col-span-8">
+          <div className="border-t border-ink pt-7">
+            <p className="label-uppercase mb-8">Project enquiry</p>
+            <ContactForm />
+          </div>
         </Reveal>
       </div>
     </div>
