@@ -1,54 +1,103 @@
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
-import Reveal from "@/components/Reveal";
-import SelectedWork from "@/components/sections/SelectedWork";
-import ServicesPreview from "@/components/sections/ServicesPreview";
-import ProcessSection from "@/components/sections/ProcessSection";
-import { PrincipalsGrid } from "@/components/sections/TeamSection";
-import AreasServed from "@/components/sections/AreasServed";
 import PreviewBanner from "@/components/admin/PreviewBanner";
-import { container, sectionPadding } from "@/lib/rhythm";
 import {
   resolveHomepage,
   useSiteSettings,
   type SiteSettingsRow,
 } from "@/hooks/useSiteSettings";
+import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { readPreview } from "@/lib/admin/preview";
-import { STATS, ACCREDITATIONS } from "@/content/firm";
-import Testimonials from "@/components/sections/Testimonials";
+import { FIRM } from "@/content/firm";
+import {
+  arrangeConceptPhotos,
+  buildConceptPhotos,
+  pickPhotos,
+  type ConceptPhoto,
+} from "@/lib/conceptPhotos";
 
-/*
- * Hero and introduction copy come from site_settings, edited at /admin/homepage.
- * Every field falls back to HOMEPAGE_FALLBACKS when empty, so the page never
- * renders blank.
- */
+const MANIFESTO_FALLBACK =
+  "Houses designed for the shore they stand on — the local vernacular, new building technology, and the way a family lives.";
 
-/*
- * Statistics and accreditations come from src/content/firm.ts — only claims
- * that remain publicly verifiable (Houzz figures, AIA, LEED, NCARB, licensure).
- */
+const Placeholder = ({ dark = false }: { dark?: boolean }) => (
+  <div
+    aria-hidden="true"
+    className="absolute inset-0"
+    style={{
+      background: dark
+        ? "linear-gradient(155deg,#2a2c2e 0%,#3c3e3f 50%,#26221c 100%)"
+        : "linear-gradient(155deg,#cdd2d6 0%,#e6e7e5 45%,#c9c2b4 100%)",
+    }}
+  />
+);
+
+const PhotoFrame = ({
+  photo,
+  dark = false,
+  priority = false,
+  zoomOnHover = false,
+}: {
+  photo: ConceptPhoto | undefined;
+  dark?: boolean;
+  priority?: boolean;
+  zoomOnHover?: boolean;
+}) => (
+  <div className="absolute inset-0 overflow-hidden bg-sand">
+    {photo?.url ? (
+      <img
+        src={photo.url}
+        alt={photo.alt}
+        width={2000}
+        height={1400}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
+        fetchPriority={priority ? "high" : undefined}
+        className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
+      />
+    ) : (
+      <Placeholder dark={dark} />
+    )}
+    <div
+      aria-hidden="true"
+      className="absolute inset-0"
+      style={{ background: "radial-gradient(120% 90% at 30% 20%, transparent 40%, rgba(0,0,0,.22) 100%)" }}
+    />
+  </div>
+);
 
 const Index = () => {
   const { pathname } = useLocation();
   const isPreview = pathname === "/admin/preview/homepage";
   const { settings } = useSiteSettings();
+  const { data: projects = [] } = usePublicProjects();
   const previewRow = isPreview ? readPreview<Partial<SiteSettingsRow>>("homepage") : null;
   const content = isPreview ? resolveHomepage(previewRow) : settings.homepage;
 
-  // A hero that referenced a since-deleted project image must not leave a
-  // broken frame — treat a failed load exactly like no image at all.
-  const [heroFailed, setHeroFailed] = useState(false);
-  const heroUrl = content.heroImageUrl && !heroFailed ? content.heroImageUrl : null;
+  const projectPhotos = arrangeConceptPhotos(buildConceptPhotos(projects, null, FIRM.name), [
+    "262-bayshore-road",
+    "11605-paradise-drive",
+    "19-flamingo-road",
+    "111-anchor-rd",
+    "115-anchor-road",
+  ]);
+  const photos = content.heroImageUrl
+    ? [{ url: content.heroImageUrl, alt: `${FIRM.name} — residential architecture` }, ...projectPhotos]
+    : projectPhotos;
+  const wall = pickPhotos(photos, [0, 1, 2, 3]);
+  const tilePhotos = pickPhotos(photos, [4, 5, 6]);
+  const tiles = [
+    { label: "Projects", to: "/projects" },
+    { label: "About", to: "/about" },
+    { label: "Contact", to: "/contact" },
+  ];
 
   return (
     <main className="min-h-screen bg-background">
       {isPreview && <PreviewBanner label="homepage" />}
-      <GlobalNav />
+      <GlobalNav overlayPhotoWall />
       <SEO
         title="Halliday Architects | Residential Architecture in Ocean City, NJ"
         description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
@@ -56,150 +105,46 @@ const Index = () => {
         image={content.heroImageUrl ?? undefined}
       />
 
-      {/* Hero — split layout: copy on a white panel left, the photograph in
-          the right column. On mobile the photograph stacks above the copy.
-          The image still comes from site_settings (/admin/homepage); a failed
-          or missing image leaves a plain sand panel, never a broken frame. */}
-      <section className="grid grid-cols-1 bg-background lg:grid-cols-[0.9fr_1.1fr]">
-        {/* Photograph — right column on desktop, stacked first on mobile. */}
-        <div className="relative order-first h-[320px] overflow-hidden bg-sand sm:h-[400px] lg:order-last lg:h-auto lg:min-h-[520px]">
-          {heroUrl && (
-            <img
-              src={heroUrl}
-              alt=""
+      {/* An edge-to-edge photo wall with no overlaid headline or controls. */}
+      <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
+        <div className="relative h-[78svh] min-h-[520px]">
+          <PhotoFrame photo={wall[0]} priority />
+        </div>
+        <div className="grid gap-[2px] md:grid-cols-[1.4fr_1fr]">
+          <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+            <PhotoFrame photo={wall[1]} />
+          </div>
+          <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+            <PhotoFrame photo={wall[2]} />
+          </div>
+        </div>
+        <div className="relative h-[78vh] min-h-[520px]">
+          <PhotoFrame photo={wall[3]} dark />
+        </div>
+      </section>
+
+      <section className="px-6 py-24 text-center md:py-32">
+        <p className="text-[0.68rem] font-medium uppercase tracking-[0.2em] text-stone">The practice</p>
+        <h1 className="mx-auto mt-6 max-w-[34ch] text-[clamp(1.4rem,3vw,2.1rem)] font-light leading-[1.4] text-ink">
+          {content.introHeading || MANIFESTO_FALLBACK}
+        </h1>
+      </section>
+
+      <section className="grid gap-[2px] md:grid-cols-3" aria-label="Explore Halliday Architects">
+        {tiles.map((tile, index) => (
+          <Link key={tile.to} to={tile.to} className="group relative aspect-[3/4] overflow-hidden">
+            <PhotoFrame photo={tilePhotos[index]} zoomOnHover />
+            <div
               aria-hidden="true"
-              fetchPriority="high"
-              onError={() => setHeroFailed(true)}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"
             />
-          )}
-        </div>
-
-        {/* Copy — white panel, vertically centered, left-aligned. */}
-        <div className="flex items-center">
-          <div className="w-full px-6 py-14 sm:px-10 lg:py-10 lg:pl-16 lg:pr-14 xl:py-12 xl:pl-20 animate-fade-in-up">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand">
-              Best of Houzz · Service · 2016 – 2024
-            </span>
-            <h1 className="heading-display whitespace-pre-line mt-4 max-w-[17ch] text-[1.75rem] sm:text-[2rem] lg:text-[2.1rem] xl:text-[2.3rem] text-ink">
-              {content.heroHeadline}
-            </h1>
-            <p className="text-body mt-4 max-w-[40ch]">{content.heroSubline}</p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-              <Link
-                to="/contact"
-                className="group inline-flex w-full items-center justify-center gap-2 h-12 px-8 bg-ink text-paper text-[11px] font-medium uppercase tracking-[0.16em] transition-opacity duration-300 hover:opacity-90 sm:w-auto"
-              >
-                Start a project
-                <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/projects"
-                className="inline-flex w-full items-center justify-center h-12 px-8 border border-line text-ink text-[11px] font-medium uppercase tracking-[0.16em] transition-colors duration-300 hover:bg-sand sm:w-auto"
-              >
-                View our work
-              </Link>
+            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-7 text-paper">
+              <span className="text-[0.95rem] font-medium tracking-[0.04em]">{tile.label}</span>
+              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
             </div>
-
-            {/* Statistics — a quiet strip under the buttons, separated by a
-                hairline. Figures from src/content/firm.ts (STATS). */}
-            <div className="mt-7 flex flex-wrap gap-x-12 gap-y-6 border-t border-line pt-6">
-              {STATS.map((s) => (
-                <div key={s.label} className="min-w-[86px] text-center">
-                  <span className="block text-xl font-bold leading-none text-ink lg:text-2xl">
-                    {s.figure}
-                  </span>
-                  <span className="mt-2 block text-[11px] font-medium uppercase tracking-[0.16em] text-ink">
-                    {s.label}
-                  </span>
-                  <span className="block text-[11px] text-stone">{s.detail}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+          </Link>
+        ))}
       </section>
-
-      {/* Accreditations — one quiet line below the hero. */}
-      <div className="border-y border-line">
-        <div className={`${container.wide} py-4`}>
-          <p className="text-[11px] uppercase tracking-[0.16em] text-stone">{ACCREDITATIONS}</p>
-        </div>
-      </div>
-
-      {/* ─── The practice — centered editorial statement ─── */}
-      <section className={sectionPadding.base}>
-        <div className={container.content}>
-          <Reveal>
-            <div className="text-center">
-              <p className="label-uppercase">The practice</p>
-              <p className="statement text-ink mt-6">{content.introHeading}</p>
-              <p className="text-body mt-8 max-w-[44rem] mx-auto">{content.introBody}</p>
-              <div className="below-link">
-                <Link to="/about" className="link-inline">
-                  About the practice
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <SelectedWork />
-
-      <ServicesPreview />
-
-      {/* ─── Our approach — a clean solid ink band ─── */}
-      <section className="bg-ink">
-        <div className={sectionPadding.loose}>
-          <div className={container.content}>
-            <Reveal>
-              <div className="text-center">
-                <p className="label-uppercase text-paper/60">Our approach</p>
-                <p className="statement text-paper mt-6">
-                  Every project begins with the site — its light, its exposure, and the way a
-                  family intends to live in the house.
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <ProcessSection />
-
-      {/* ─── The studio — the principals themselves ─── */}
-      <section className={sectionPadding.base}>
-        <div className={container.people}>
-          <Reveal>
-            <div className="section-head">
-              <span className="label-uppercase">The studio</span>
-              <h2 className="heading-section text-ink">Led personally by both principals</h2>
-            </div>
-          </Reveal>
-          <PrincipalsGrid portrait />
-          <Reveal>
-            <div className="below-link">
-              <Link to="/team" className="link-inline">
-                Meet the studio
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <Testimonials />
-
-      <AreasServed />
-
-
-      {/* ─── Closing call to action ─── */}
-      <CTASection
-        variant="sand"
-        eyebrow="Get in touch"
-        heading="Start a project with us"
-        description="Tell us about your site and what you have in mind, or call the studio on 609.957.6789. Every enquiry is answered personally."
-      />
 
       <GlobalFooter />
     </main>
