@@ -19,6 +19,7 @@ import { useUpdateProjectPublished } from "@/hooks/admin/useUpdateProjectPublish
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectType } from "@/hooks/usePublicProjects";
 import AdminProtected from "@/components/admin/AdminProtected";
+import SectionTabs from "@/components/admin/SectionTabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -57,6 +58,11 @@ import {
 } from "@/components/ui/table";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
+
+export const PROJECT_TABS = [
+  { label: "Projects", to: "/admin/projects", match: (p: string) => p.startsWith("/admin/projects") },
+  { label: "Tags", to: "/admin/tags", match: (p: string) => p.startsWith("/admin/tags") },
+];
 
 type ViewMode = "grid" | "table";
 type StatusFilter = "all" | "published" | "draft";
@@ -156,6 +162,7 @@ function AdminProjectsInner() {
 
   return (
     <div className="space-y-6">
+      <SectionTabs tabs={PROJECT_TABS} />
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
         <div className="min-w-0">
           <h1 className="truncate text-2xl font-semibold text-ink">Projects</h1>
