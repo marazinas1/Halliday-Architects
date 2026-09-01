@@ -74,44 +74,22 @@ const Index = () => {
   const { pathname } = useLocation();
   const isPreview = pathname === "/admin/preview/homepage";
   const { settings } = useSiteSettings();
-  const { data: projects = [] } = usePublicProjects();
   const previewRow = isPreview ? readPreview<Partial<SiteSettingsRow>>("homepage") : null;
   const content = isPreview ? resolveHomepage(previewRow) : settings.homepage;
   const page = usePageContent();
+  const { resolve } = useResolvedPageImages(content.heroImageUrl);
 
-  const projectPhotos = arrangeConceptPhotos(buildConceptPhotos(projects, null, FIRM.name), [
-    "262-bayshore-road",
-    "11605-paradise-drive",
-    "19-flamingo-road",
-    "111-anchor-rd",
-    "115-anchor-road",
-  ]);
-  const photos = content.heroImageUrl
-    ? [{ url: content.heroImageUrl, alt: `${FIRM.name} — residential architecture` }, ...projectPhotos]
-    : projectPhotos;
-
-  /** A photograph the client chose in the admin panel wins over the fallback. */
-  const chosen = (slot: string, fallback: ConceptPhoto | undefined) => {
-    const url = page.imageUrl("home", slot);
-    if (!url) return fallback;
-    const ref = page.image("home", slot);
-    return { url, alt: ref?.alt || `${FIRM.name} — residential architecture` };
-  };
-
-  const wallFallback = pickPhotos(photos, [0, 1, 2, 3]);
-  const tileFallback = pickPhotos(photos, [4, 5, 6]);
-  const wall = ["wall_1", "wall_2", "wall_3", "wall_4"].map((slot, i) =>
-    chosen(slot, wallFallback[i]),
-  );
-  const tilePhotos = ["tile_projects", "tile_about", "tile_contact"].map((slot, i) =>
-    chosen(slot, tileFallback[i]),
+  const wall = ["wall_1", "wall_2", "wall_3", "wall_4"].map((slot) => resolve("home", slot));
+  const tilePhotos = ["tile_projects", "tile_about", "tile_contact"].map((slot) =>
+    resolve("home", slot),
   );
   const statement = page.copy("home", "intro_heading", content.introHeading || MANIFESTO_FALLBACK);
   const tiles = [
-    { label: "Projects", to: "/projects" },
-    { label: "About", to: "/about" },
-    { label: "Contact", to: "/contact" },
+    { label: page.copy("home", "tile_projects_label", "Projects"), to: "/projects" },
+    { label: page.copy("home", "tile_about_label", "About"), to: "/about" },
+    { label: page.copy("home", "tile_contact_label", "Contact"), to: "/contact" },
   ];
+
 
   return (
     <main className="min-h-screen bg-background">
