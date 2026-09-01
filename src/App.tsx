@@ -30,7 +30,10 @@ const AdminTestimonials = lazy(() => import("./pages/admin/AdminTestimonials"));
 const AdminTeamForm = lazy(() => import("./pages/admin/AdminTeamForm"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
-const AdminHomepage = lazy(() => import("./pages/admin/AdminHomepage"));
+const AdminHome = lazy(() => import("./pages/admin/AdminHome"));
+const AdminAbout = lazy(() => import("./pages/admin/AdminAbout"));
+const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
+const AdminContact = lazy(() => import("./pages/admin/AdminContact"));
 const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
 const AdminBlogCategories = lazy(() => import("./pages/admin/AdminBlogCategories"));
@@ -101,7 +104,12 @@ const App = () => (
             <Route path="/admin/blog/:id/edit" element={<AdminBlogForm />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/inquiries" element={<AdminInquiries />} />
-            <Route path="/admin/homepage" element={<AdminHomepage />} />
+            <Route path="/admin/home" element={<AdminHome />} />
+            <Route path="/admin/about" element={<AdminAbout />} />
+            <Route path="/admin/services" element={<AdminServices />} />
+            <Route path="/admin/contact" element={<AdminContact />} />
+            {/* Former single "Homepage" screen. */}
+            <Route path="/admin/homepage" element={<Navigate to="/admin/home" replace />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             {/* Preview routes render unsaved admin form state — no DB writes. */}

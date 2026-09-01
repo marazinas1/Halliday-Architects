@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Tags, Home, UserCog, LayoutDashboard, Quote, BarChart3, ArrowLeft } from "lucide-react";
+import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Mail, Wrench, Home, UserCog, LayoutDashboard, BarChart3, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
 import { Badge } from "@/components/ui/badge";
@@ -28,30 +28,52 @@ type Item = {
   match: (p: string) => boolean;
 };
 
-const ITEMS: Item[] = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard, access: "staff", match: (p) => p === "/admin" },
-  { title: "Projects", url: "/admin/projects", icon: FolderOpen, access: "staff", match: (p) => p.startsWith("/admin/projects") },
-  { title: "Tags", url: "/admin/tags", icon: Tags, access: "staff", match: (p) => p.startsWith("/admin/tags") },
-  { title: "Team", url: "/admin/team", icon: Users, access: "owner", match: (p) => p.startsWith("/admin/team") },
+type Group = { label: string; items: Item[] };
+
+/**
+ * Grouped so the panel reads like the site itself: the day-to-day workspace
+ * first, then a page-by-page mirror of the public site, then configuration.
+ */
+const GROUPS: Group[] = [
   {
-    title: "Testimonials",
-    url: "/admin/testimonials",
-    icon: Quote,
-    access: "owner",
-    match: (p) => p.startsWith("/admin/testimonials"),
+    label: "Workspace",
+    items: [
+      { title: "Dashboard", url: "/admin", icon: LayoutDashboard, access: "staff", match: (p) => p === "/admin" },
+      { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, access: "owner", match: (p) => p.startsWith("/admin/inquiries") },
+      { title: "Analytics", url: "/admin/analytics", icon: BarChart3, access: "owner", match: (p) => p.startsWith("/admin/analytics") },
+      { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
+    ],
   },
-  { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
-  { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, access: "owner", match: (p) => p.startsWith("/admin/inquiries") },
-  { title: "Homepage", url: "/admin/homepage", icon: Home, access: "owner", match: (p) => p.startsWith("/admin/homepage") },
   {
-    title: "Analytics",
-    url: "/admin/analytics",
-    icon: BarChart3,
-    access: "owner",
-    match: (p) => p.startsWith("/admin/analytics"),
+    label: "The website",
+    items: [
+      { title: "Home", url: "/admin/home", icon: Home, access: "staff", match: (p) => p.startsWith("/admin/home") },
+      {
+        title: "Projects",
+        url: "/admin/projects",
+        icon: FolderOpen,
+        access: "staff",
+        match: (p) => p.startsWith("/admin/projects") || p.startsWith("/admin/tags"),
+      },
+      {
+        title: "About",
+        url: "/admin/about",
+        icon: Users,
+        access: "staff",
+        match: (p) =>
+          p.startsWith("/admin/about") || p.startsWith("/admin/team") || p.startsWith("/admin/testimonials"),
+      },
+      { title: "Services", url: "/admin/services", icon: Wrench, access: "staff", match: (p) => p.startsWith("/admin/services") },
+      { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
+      { title: "Contact", url: "/admin/contact", icon: Mail, access: "staff", match: (p) => p.startsWith("/admin/contact") },
+    ],
   },
-  { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
-  { title: "Settings", url: "/admin/settings", icon: Settings, access: "owner", match: (p) => p.startsWith("/admin/settings") },
+  {
+    label: "Settings",
+    items: [
+      { title: "Settings", url: "/admin/settings", icon: Settings, access: "owner", match: (p) => p.startsWith("/admin/settings") },
+    ],
+  },
 ];
 
 const ROLE_LABEL: Record<AdminRole, string> = {
@@ -82,62 +104,64 @@ export default function AdminSidebar({ email, role }: { email: string; role: Adm
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Manage</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {ITEMS.map((item) => {
-                const allowed = canAccess(role, item.access);
+        {GROUPS.map((group) => (
+          <SidebarGroup key={group.label}>
+            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => {
+                  const allowed = canAccess(role, item.access);
 
-                if (!allowed) {
+                  if (!allowed) {
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div>
+                              <SidebarMenuButton
+                                disabled
+                                aria-disabled="true"
+                                className="opacity-40 cursor-not-allowed"
+                              >
+                                <item.icon className="h-4 w-4" />
+                                <span>{item.title}</span>
+                              </SidebarMenuButton>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            Only owners can manage {item.title.toLowerCase()}
+                          </TooltipContent>
+                        </Tooltip>
+                      </SidebarMenuItem>
+                    );
+                  }
+
                   return (
                     <SidebarMenuItem key={item.title}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <SidebarMenuButton
-                              disabled
-                              aria-disabled="true"
-                              className="opacity-40 cursor-not-allowed"
-                            >
-                              <item.icon className="h-4 w-4" />
-                              <span>{item.title}</span>
-                            </SidebarMenuButton>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">
-                          Only owners can manage {item.title.toLowerCase()}
-                        </TooltipContent>
-                      </Tooltip>
+                      <SidebarMenuButton asChild isActive={item.match(pathname)} tooltip={item.title}>
+                        <Link
+                          to={item.url}
+                          className="flex items-center gap-2"
+                          onClick={() => {
+                            if (isMobile) setOpenMobile(false);
+                          }}
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
+                          {item.title === "Inquiries" && unreadCount > 0 && (
+                            <Badge className="ml-auto h-5 min-w-5 justify-center px-1.5 text-[11px]">
+                              {unreadCount}
+                            </Badge>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
-                }
-
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.match(pathname)} tooltip={item.title}>
-                      <Link
-                        to={item.url}
-                        className="flex items-center gap-2"
-                        onClick={() => {
-                          if (isMobile) setOpenMobile(false);
-                        }}
-                      >
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                        {item.title === "Inquiries" && unreadCount > 0 && (
-                          <Badge className="ml-auto h-5 min-w-5 justify-center px-1.5 text-[11px]">
-                            {unreadCount}
-                          </Badge>
-                        )}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter className="border-t border-line">

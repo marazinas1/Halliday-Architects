@@ -172,6 +172,66 @@ export type Database = {
         }
         Relationships: []
       }
+      page_media: {
+        Row: {
+          alt: string | null
+          bucket: string
+          created_at: string
+          id: string
+          page: string
+          path: string
+          slot: string
+          updated_at: string
+        }
+        Insert: {
+          alt?: string | null
+          bucket: string
+          created_at?: string
+          id?: string
+          page: string
+          path: string
+          slot: string
+          updated_at?: string
+        }
+        Update: {
+          alt?: string | null
+          bucket?: string
+          created_at?: string
+          id?: string
+          page?: string
+          path?: string
+          slot?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      page_text: {
+        Row: {
+          created_at: string
+          id: string
+          page: string
+          slot: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          page: string
+          slot: string
+          updated_at?: string
+          value?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          page?: string
+          slot?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
       page_views: {
         Row: {
           country: string | null
@@ -342,6 +402,48 @@ export type Database = {
           title?: string
           updated_at?: string
           year_completed?: number | null
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          body: string
+          created_at: string
+          icon: string | null
+          id: string
+          image_bucket: string | null
+          image_path: string | null
+          includes: Json
+          published: boolean
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          icon?: string | null
+          id?: string
+          image_bucket?: string | null
+          image_path?: string | null
+          includes?: Json
+          published?: boolean
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          icon?: string | null
+          id?: string
+          image_bucket?: string | null
+          image_path?: string | null
+          includes?: Json
+          published?: boolean
+          sort_order?: number
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

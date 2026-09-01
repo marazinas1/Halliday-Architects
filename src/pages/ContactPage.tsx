@@ -5,11 +5,19 @@ import ContactSection from "@/components/sections/ContactSection";
 import ContactMap from "@/components/ContactMap";
 import Reveal from "@/components/Reveal";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
+import { usePageContent } from "@/hooks/usePageContent";
 import { container } from "@/lib/rhythm";
 
 const ContactPage = () => {
   const { data: projects = [], isLoading } = usePublicProjects();
-  const cover = projects.find((project) => project.card_image_url);
+  const page = usePageContent();
+  const chosen = page.imageUrl("contact", "hero");
+  const fallback = projects.find((project) => project.card_image_url);
+  const cover = chosen
+    ? { url: chosen, alt: page.image("contact", "hero")?.alt || "Halliday Architects" }
+    : fallback?.card_image_url
+      ? { url: fallback.card_image_url, alt: fallback.card_image_alt }
+      : null;
 
   return (
     <main className="min-h-screen bg-background">
@@ -18,7 +26,7 @@ const ContactPage = () => {
         title="Contact | Halliday Architects"
         description="Get in touch with Halliday Architects — architecture practice in Ocean City, New Jersey. 609.957.6789."
         path="/contact"
-        image={cover?.card_image_url ?? undefined}
+        image={cover?.url ?? undefined}
       />
 
       <Reveal>
@@ -26,22 +34,27 @@ const ContactPage = () => {
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">
             Get in touch
           </p>
-          <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Contact</h1>
+          <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">
+            {page.copy("contact", "heading", "Contact")}
+          </h1>
           <p className="mx-auto mt-5 max-w-[48ch] text-[15px] leading-relaxed text-stone">
-            Tell us about your site and what you have in mind. Every enquiry is
-            read and answered personally by one of the principals.
+            {page.copy(
+              "contact",
+              "intro",
+              "Tell us about your site and what you have in mind. Every enquiry is read and answered personally by one of the principals.",
+            )}
           </p>
         </header>
       </Reveal>
 
-      {(isLoading || cover?.card_image_url) && (
+      {(isLoading || cover) && (
         <Reveal>
           <section className={`${container.wide} pb-16 md:pb-24`} aria-label="Halliday Architects project photography">
             <div className="h-[34vh] min-h-[260px] overflow-hidden bg-sand md:h-[48vh] md:min-h-[380px]">
-              {cover?.card_image_url ? (
+              {cover ? (
                 <img
-                  src={cover.card_image_url}
-                  alt={cover.card_image_alt}
+                  src={cover.url}
+                  alt={cover.alt}
                   width={2000}
                   height={900}
                   loading="eager"

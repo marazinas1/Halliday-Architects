@@ -11,6 +11,7 @@ import {
   type SiteSettingsRow,
 } from "@/hooks/useSiteSettings";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
+import { usePageContent } from "@/hooks/usePageContent";
 import { readPreview } from "@/lib/admin/preview";
 import { FIRM } from "@/content/firm";
 import {
@@ -76,6 +77,7 @@ const Index = () => {
   const { data: projects = [] } = usePublicProjects();
   const previewRow = isPreview ? readPreview<Partial<SiteSettingsRow>>("homepage") : null;
   const content = isPreview ? resolveHomepage(previewRow) : settings.homepage;
+  const page = usePageContent();
 
   const projectPhotos = arrangeConceptPhotos(buildConceptPhotos(projects, null, FIRM.name), [
     "262-bayshore-road",
@@ -87,8 +89,24 @@ const Index = () => {
   const photos = content.heroImageUrl
     ? [{ url: content.heroImageUrl, alt: `${FIRM.name} — residential architecture` }, ...projectPhotos]
     : projectPhotos;
-  const wall = pickPhotos(photos, [0, 1, 2, 3]);
-  const tilePhotos = pickPhotos(photos, [4, 5, 6]);
+
+  /** A photograph the client chose in the admin panel wins over the fallback. */
+  const chosen = (slot: string, fallback: ConceptPhoto | undefined) => {
+    const url = page.imageUrl("home", slot);
+    if (!url) return fallback;
+    const ref = page.image("home", slot);
+    return { url, alt: ref?.alt || `${FIRM.name} — residential architecture` };
+  };
+
+  const wallFallback = pickPhotos(photos, [0, 1, 2, 3]);
+  const tileFallback = pickPhotos(photos, [4, 5, 6]);
+  const wall = ["wall_1", "wall_2", "wall_3", "wall_4"].map((slot, i) =>
+    chosen(slot, wallFallback[i]),
+  );
+  const tilePhotos = ["tile_projects", "tile_about", "tile_contact"].map((slot, i) =>
+    chosen(slot, tileFallback[i]),
+  );
+  const statement = page.copy("home", "intro_heading", content.introHeading || MANIFESTO_FALLBACK);
   const tiles = [
     { label: "Projects", to: "/projects" },
     { label: "About", to: "/about" },
@@ -103,7 +121,7 @@ const Index = () => {
         title="Halliday Architects | Residential Architecture in Ocean City, NJ"
         description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
         path="/"
-        image={content.heroImageUrl ?? undefined}
+        image={wall[0]?.url ?? undefined}
       />
 
       {/* An edge-to-edge photo wall with no overlaid headline or controls. */}
@@ -136,7 +154,7 @@ const Index = () => {
         <section className="px-6 py-24 text-center md:py-32">
           <p className="text-[0.68rem] font-medium uppercase tracking-[0.2em] text-stone">The practice</p>
           <h1 className="mx-auto mt-6 max-w-[34ch] text-[clamp(1.4rem,3vw,2.1rem)] font-light leading-[1.4] text-ink">
-            {content.introHeading || MANIFESTO_FALLBACK}
+            {statement}
           </h1>
         </section>
       </Reveal>
