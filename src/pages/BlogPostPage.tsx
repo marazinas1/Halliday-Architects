@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
@@ -53,7 +54,8 @@ const BlogPostPage = () => {
             {isPreview && (
               <p className="text-stone mb-6">Open this from the post editor's Preview button.</p>
             )}
-            <Link to="/blog" className="label-uppercase text-ink hover:text-brand">
+            <Link to="/blog" className="link-inline group">
+              <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
               Back to the journal
             </Link>
           </div>
@@ -105,7 +107,10 @@ const BlogPostPage = () => {
           <div className={container.wide}>
             <div className="flex items-baseline justify-between mb-12">
               <h2 className="heading-card text-ink">More from the journal</h2>
-              <Link to="/blog" className="label-uppercase text-ink hover:text-brand">All entries</Link>
+              <Link to="/blog" className="link-inline group">
+                All entries
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
             </div>
             <div className={`grid grid-cols-1 md:grid-cols-3 ${gap.grid}`}>
               {recent.map((p) => (

@@ -199,7 +199,7 @@ const ProjectsPage = () => {
 
       <section className="border-t border-line bg-sand px-6 py-20 text-center">
         <p className="text-[15px] text-stone">Tell us about your site and what you have in mind.</p>
-        <Link to="/contact" className="group mt-5 inline-flex items-center gap-2 border-b border-ink pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink">
+        <Link to="/contact" className="link-inline group mt-5">
           Start a project
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>

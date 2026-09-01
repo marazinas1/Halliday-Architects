@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
@@ -83,8 +83,9 @@ const ProjectPage = () => {
           )}
           <Link
             to="/projects"
-            className="mt-8 inline-flex text-xs uppercase tracking-[0.16em] text-ink underline underline-offset-8"
+            className="link-inline group mt-8"
           >
+            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
             Back to projects
           </Link>
         </div>
@@ -134,7 +135,7 @@ const ProjectPage = () => {
           <div className={container.wide}>
             <Link
               to="/projects"
-              className="mb-7 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-paper/80 transition-colors hover:text-paper"
+              className="link-inline link-inline-inverse group mb-7"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to projects
@@ -265,7 +266,10 @@ const ProjectPage = () => {
           <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-paper">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-paper/70">Next project</p>
             <h2 className="mt-3 text-3xl font-bold text-paper md:text-4xl">{next.title}</h2>
-            <span className="mt-5 border-b border-paper/60 pb-1 text-[11px] font-medium uppercase tracking-[0.14em]">View project →</span>
+            <span className="link-inline link-inline-inverse group mt-5">
+              View project
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
           </div>
         </Link>
       )}
