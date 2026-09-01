@@ -1,65 +1,107 @@
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
-import PageHero from "@/components/PageHero";
 import CTASection from "@/components/CTASection";
 import Reveal from "@/components/Reveal";
 import { SERVICE_GROUPS } from "@/content/firm";
-import { sectionPadding } from "@/lib/rhythm";
+import { usePublicProjects } from "@/hooks/usePublicProjects";
+import { container } from "@/lib/rhythm";
 
-const ServicesPage = () => (
-  <main className="min-h-screen bg-background">
-    <GlobalNav />
-    <SEO
-      title="Services | Halliday Architects"
-      description="Architectural consultation, design, code analysis, and permit coordination from Halliday Architects in Ocean City, NJ."
-      path="/services"
-    />
-    <PageHero eyebrow="What We Do" title="Services" />
+const ServicesPage = () => {
+  const { data: projects = [], isLoading } = usePublicProjects();
 
-    <section className={`${sectionPadding.base} bg-background`}>
-      <div className="max-w-5xl mx-auto px-6 lg:px-8">
-        <Reveal>
-          <p className="text-body max-w-2xl mx-auto mb-16 text-center">
-            A residential practice in Ocean City, New Jersey. We take a house
-            from the first conversation about a site through to the questions that
-            come up during construction.
-          </p>
-        </Reveal>
+  return (
+    <main className="min-h-screen bg-background">
+      <GlobalNav />
+      <SEO
+        title="Services | Halliday Architects"
+        description="Architectural consultation, design, code analysis, and permit coordination from Halliday Architects in Ocean City, NJ."
+        path="/services"
+      />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-16">
-          {SERVICE_GROUPS.map((group) => (
+      <header className="px-6 pb-16 pt-20 text-center md:pb-20 md:pt-24">
+        <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">
+          What we do
+        </p>
+        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Services</h1>
+        <p className="mx-auto mt-5 max-w-[52ch] text-[15px] leading-relaxed text-stone">
+          A residential practice in Ocean City, New Jersey. We take a house
+          from the first conversation about a site through to the questions that
+          come up during construction.
+        </p>
+      </header>
+
+      <div className="flex flex-col gap-[2px]">
+        {SERVICE_GROUPS.map((group, index) => {
+          const project = projects[index];
+          const hasMedia = isLoading || Boolean(project?.card_image_url);
+          const imageFirstOnDesktop = index % 2 === 0;
+
+          return (
             <Reveal key={group.title}>
-              <div className="flex flex-col items-center text-center">
-                <span className="w-12 h-12 rounded-full border border-line grid place-items-center text-ink">
-                  <group.icon size={21} strokeWidth={1.5} />
-                </span>
-                <h3 className="heading-card text-ink text-lg mt-4">
-                  {group.title}
-                </h3>
-                <p className="text-body text-sm mt-4 max-w-[46ch] mx-auto">
-                  {group.body}
-                </p>
-                <div className="w-8 h-px bg-line mx-auto mt-6" />
-                <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-stone">
-                  {group.includes.join(" · ")}
-                </p>
-              </div>
+              <section
+                className={`grid min-[900px]:h-[32rem] ${
+                  hasMedia ? "min-[900px]:grid-cols-2" : "grid-cols-1"
+                }`}
+              >
+                {hasMedia && (
+                  <div
+                    className={`h-80 overflow-hidden bg-sand min-[900px]:h-full ${
+                      imageFirstOnDesktop ? "min-[900px]:order-1" : "min-[900px]:order-2"
+                    }`}
+                  >
+                    {project?.card_image_url ? (
+                      <img
+                        src={project.card_image_url}
+                        alt={project.card_image_alt}
+                        width={1600}
+                        height={1200}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-full w-full animate-pulse bg-sand" aria-hidden="true" />
+                    )}
+                  </div>
+                )}
+
+                <div
+                  className={`flex items-center py-14 min-[900px]:h-full min-[900px]:py-0 ${
+                    index % 2 === 0 ? "section-sand" : "bg-background"
+                  } ${
+                    hasMedia && imageFirstOnDesktop ? "min-[900px]:order-2" : "min-[900px]:order-1"
+                  }`}
+                >
+                  <div className={`${container.narrow} w-full`}>
+                    <h2 className="text-2xl font-semibold leading-tight text-ink md:text-3xl">
+                      {group.title}
+                    </h2>
+                    <p className="mt-5 text-[15px] leading-[1.85] text-stone">
+                      {group.body}
+                    </p>
+                    <div className="mt-8 h-px w-8 bg-line" />
+                    <p className="mt-5 text-[11px] uppercase leading-7 tracking-[0.14em] text-stone">
+                      {group.includes.join(" · ")}
+                    </p>
+                  </div>
+                </div>
+              </section>
             </Reveal>
-          ))}
-        </div>
+          );
+        })}
       </div>
-    </section>
 
-    <CTASection
-      variant="sand"
-      eyebrow="Next step"
-      heading="Start a project with us"
-      description="Tell us about your site and what you have in mind, and we will reply personally."
-    />
+      <CTASection
+        variant="sand"
+        eyebrow="Next step"
+        heading="Start a project with us"
+        description="Tell us about your site and what you have in mind, and we will reply personally."
+      />
 
-    <GlobalFooter />
-  </main>
-);
+      <GlobalFooter />
+    </main>
+  );
+};
 
 export default ServicesPage;
