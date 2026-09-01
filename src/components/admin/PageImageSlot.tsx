@@ -23,8 +23,10 @@ type Props = {
   current: MediaRef | null;
   /** Tailwind aspect class, so the panel mirrors the shape on the live page. */
   aspect?: string;
-  /** Photograph used when the client has not chosen one. */
+  /** Photograph the live page uses when the client has not chosen one. */
   fallbackUrl?: string | null;
+  /** Project the automatic photograph comes from. */
+  fallbackFrom?: string | null;
 };
 
 /**
@@ -39,6 +41,7 @@ export default function PageImageSlot({
   current,
   aspect = "aspect-[16/9]",
   fallbackUrl = null,
+  fallbackFrom = null,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -47,7 +50,10 @@ export default function PageImageSlot({
   const clearImage = useClearPageImage();
   const { toast } = useToast();
 
-  const url = mediaUrl(current) ?? fallbackUrl;
+  const chosenUrl = mediaUrl(current);
+  const url = chosenUrl ?? fallbackUrl;
+  const automatic = !chosenUrl && Boolean(fallbackUrl);
+
   const busy = uploading || setImage.isPending || clearImage.isPending;
 
   const pick = async (image: PickedImage) => {
