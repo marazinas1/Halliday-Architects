@@ -227,20 +227,21 @@
     margin-top: 3.5rem;
   }
   .link-inline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: hsl(var(--ink));
-    border-bottom: 1px solid hsl(var(--ink));
-    padding-bottom: 0.35rem;
-    transition: gap 200ms ease-out;
+    @apply inline-flex items-center gap-2 border-b border-ink pb-1 text-[11px] font-semibold uppercase text-ink;
+    letter-spacing: 0.14em;
+    transition: opacity 300ms ease-out;
   }
   .link-inline:hover {
-    gap: 0.85rem;
+    opacity: 0.72;
+  }
+  .link-inline:focus-visible {
+    @apply outline-none ring-2 ring-ink ring-offset-4 ring-offset-background;
+  }
+  .link-inline-inverse {
+    @apply border-paper text-paper;
+  }
+  .link-inline-inverse:focus-visible {
+    @apply ring-paper ring-offset-ink;
   }
 
 

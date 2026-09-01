@@ -169,7 +169,7 @@ export const ContactForm = () => {
         <textarea id="hl-message" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="min-h-[140px] w-full resize-none rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-stone/50 focus:border-ink focus:ring-0" placeholder="Tell us about your project…" />
       </div>
 
-      <Button type="submit" disabled={submitting} className="group h-12 w-full rounded-none bg-ink px-8 text-[11px] font-medium uppercase tracking-[0.16em] text-paper hover:bg-ink/90 sm:w-auto">
+      <Button type="submit" variant="ghost" disabled={submitting} className="link-inline group h-auto w-auto rounded-none bg-transparent px-0 py-1 hover:bg-transparent hover:text-ink">
         {submitting ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />

@@ -40,12 +40,10 @@ const CTASection = ({
             </p>
             <Link
               to={to}
-              className={`group mt-10 inline-flex items-center justify-center gap-3 h-12 px-8 text-[11px] font-medium uppercase tracking-[0.16em] transition-opacity duration-300 hover:opacity-90 ${
-                isInk ? "bg-paper text-ink" : "bg-ink text-paper"
-              }`}
+              className={`link-inline group mt-10 ${isInk ? "link-inline-inverse" : ""}`}
             >
               {buttonLabel}
-              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </Reveal>

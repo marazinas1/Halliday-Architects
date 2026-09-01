@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { gap } from "@/lib/rhythm";
@@ -32,8 +33,9 @@ const Empty = () => (
     <p className="text-body max-w-md mx-auto">
       Selected projects are being prepared for the new site.
     </p>
-    <Link to="/contact" className="mt-6 inline-block label-uppercase text-ink hover:text-brand">
+    <Link to="/contact" className="link-inline group mt-6">
       Get in touch
+      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
     </Link>
   </div>
 );

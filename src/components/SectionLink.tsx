@@ -16,9 +16,9 @@ const SectionLink = ({
   children?: React.ReactNode;
 }) => (
   <div className="below-link">
-    <Link to={to} className="link-inline">
+    <Link to={to} className="link-inline group">
       {label ?? children}
-      <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
     </Link>
   </div>
 );
