@@ -143,7 +143,7 @@ const Index = () => {
 
       <section className="grid gap-[2px] md:grid-cols-3" aria-label="Explore Halliday Architects">
         {tiles.map((tile, index) => (
-          <Reveal key={tile.to} delay={index * 120}>
+          <Reveal key={tile.to} delay={index * 150}>
             <Link to={tile.to} className="group relative block aspect-[3/4] overflow-hidden">
               <PhotoFrame photo={tilePhotos[index]} zoomOnHover />
               <div

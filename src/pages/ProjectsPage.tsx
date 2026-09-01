@@ -159,7 +159,7 @@ const ProjectsPage = () => {
                     className={`grid w-full gap-[2px] ${rowGridClasses[rowSize]}`}
                   >
                     {row.map((p, cardIndex) => (
-                      <Reveal key={p.id} delay={cardIndex * 110}>
+                      <Reveal key={p.id} delay={cardIndex * 150}>
                         <Link
                           to={`/projects/${p.slug}`}
                           className={`group relative block overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
