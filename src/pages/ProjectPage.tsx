@@ -158,6 +158,7 @@ const ProjectPage = () => {
       </section>
 
       {(project.client_brief || project.story || project.description) && (
+        <Reveal>
         <section className="px-6 py-24 text-center md:py-28">
           <div className="mx-auto max-w-[56rem]">
             {project.client_brief && (
@@ -194,7 +195,9 @@ const ProjectPage = () => {
                 ? "grid gap-[2px] md:grid-cols-2 md:h-[56vh] md:min-h-[360px]"
                 : "grid gap-[2px] md:grid-cols-[1.45fr_1fr] md:h-[60vh] md:min-h-[380px]";
             return (
-              <div key={`${row.kind}-${rowIndex}`} className={rowClass}>
+              <Reveal key={`${row.kind}-${rowIndex}`}>
+              <div className={rowClass}>
+
                 {row.items.map((img, itemIndex) => (
                   <button
                     key={img.id}
@@ -215,6 +218,8 @@ const ProjectPage = () => {
                   </button>
                 ))}
               </div>
+              </Reveal>
+
             );
           })}
         </section>
