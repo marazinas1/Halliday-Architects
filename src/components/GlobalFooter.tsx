@@ -4,17 +4,7 @@ import SocialLinks from "@/components/SocialLinks";
 import { ACCREDITATIONS, FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 
-const EXPLORE_LINKS = [
-  { label: "About", to: "/about" },
-  { label: "Our Team", to: "/about#studio" },
-  { label: "Services", to: "/services" },
-  { label: "Projects", to: "/projects" },
-  { label: "Blog", to: "/blog" },
-  { label: "Contact", to: "/contact" },
-];
-
 const colHeading = "text-[11px] font-medium uppercase tracking-[0.16em] text-paper/40 mb-5";
-const colLink = "block text-sm text-paper/70 hover:text-paper transition-colors mb-2 text-left";
 
 const GlobalFooter = () => {
   const location = useLocation();
@@ -40,7 +30,7 @@ const GlobalFooter = () => {
       </div>
       <div className="pt-16 pb-8">
       <div className={container.wide}>
-        <div className="grid grid-cols-1 gap-10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
+        <div className="grid grid-cols-1 gap-10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.7fr_1fr_1fr] lg:gap-16">
           {/* Brand */}
           <div>
             <button
@@ -75,15 +65,6 @@ const GlobalFooter = () => {
             </a>
           </div>
 
-          {/* Explore */}
-          <div>
-            <h4 className={colHeading}>Explore</h4>
-            {EXPLORE_LINKS.map((l) => (
-              <Link key={l.to} to={l.to} className={colLink}>
-                {l.label}
-              </Link>
-            ))}
-          </div>
         </div>
 
         <div className="border-t border-paper/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">

@@ -1,12 +1,10 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
-import PageHero from "@/components/PageHero";
 import PostCard from "@/components/blog/PostCard";
+import { Button } from "@/components/ui/button";
 import { usePublishedPosts } from "@/hooks/usePublicBlog";
 import { container, gap, sectionPadding } from "@/lib/rhythm";
 
@@ -34,28 +32,36 @@ const BlogPage = () => {
         description="Notes on residential architecture, coastal building and design detail from Halliday Architects in Ocean City, NJ."
         path="/blog"
       />
-      <PageHero eyebrow="Writing" title="Journal" />
+      <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
+        <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Ideas &amp; observations</p>
+        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Journal</h1>
+        <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
+          Notes on residential architecture, coastal living and the details that shape a home.
+        </p>
+      </header>
 
-      <section className={sectionPadding.base}>
+      <section className={posts.length === 0 && !isLoading ? "pb-20 md:pb-28" : sectionPadding.tight}>
         <div className={container.wide}>
           {categories.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-16">
-              <button
+            <div className="mb-14 flex flex-wrap justify-center gap-x-8 gap-y-3 border-y border-line py-5">
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setActive(ALL)}
-                className={`text-xs uppercase tracking-[0.14em] transition-colors ${active === ALL ? "text-ink" : "text-stone hover:text-ink"}`}
+                className={`h-auto rounded-none px-0 py-0 text-[11px] uppercase tracking-[0.16em] hover:bg-transparent ${active === ALL ? "text-ink underline underline-offset-8" : "text-stone hover:text-ink"}`}
               >
                 All
-              </button>
+              </Button>
               {categories.map(([slug, name]) => (
-                <button
+                <Button
                   key={slug}
                   type="button"
+                  variant="ghost"
                   onClick={() => setActive(slug)}
-                  className={`text-xs uppercase tracking-[0.14em] transition-colors ${active === slug ? "text-ink" : "text-stone hover:text-ink"}`}
+                  className={`h-auto rounded-none px-0 py-0 text-[11px] uppercase tracking-[0.16em] hover:bg-transparent ${active === slug ? "text-ink underline underline-offset-8" : "text-stone hover:text-ink"}`}
                 >
                   {name}
-                </button>
+                </Button>
               ))}
             </div>
           )}
@@ -64,21 +70,18 @@ const BlogPage = () => {
             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
               {Array.from({ length: 3 }).map((_, i) => (
                 <div key={i}>
-                  <div className="aspect-[4/3] w-full bg-sand" style={{ borderRadius: "4px" }} />
+                  <div className="aspect-[4/5] w-full animate-pulse rounded bg-sand" />
                   <div className="mt-5 h-3 w-1/2 bg-sand" />
                   <div className="mt-3 h-2 w-1/3 bg-sand" />
                 </div>
               ))}
             </div>
           ) : visible.length === 0 ? (
-            <div className="border border-line px-8 py-20 text-center" style={{ borderRadius: "4px" }}>
-              <p className="text-body max-w-md mx-auto">
-                The first entries are being written.
+            <div className="border-y border-line px-6 py-20 text-center md:py-24">
+              <p className="text-2xl font-light text-ink">The first entries are on their way.</p>
+              <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-stone">
+                The journal is being prepared. Please check back for notes from the studio.
               </p>
-              <Link to="/contact" className="link-inline group mt-6">
-                Get in touch
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
             </div>
           ) : (
             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
