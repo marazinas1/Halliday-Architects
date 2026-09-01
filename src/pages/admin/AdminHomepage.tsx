@@ -18,7 +18,7 @@ import { uploadSiteImage, deleteSiteImage, SITE_IMAGES_BUCKET } from "@/lib/admi
 import { NotAnImageError } from "@/lib/images/optimizeImage";
 import { openPreview } from "@/lib/admin/preview";
 
-type TextKey = "hero_headline" | "hero_subline" | "intro_heading" | "intro_body";
+type TextKey = "intro_heading";
 
 const FIELDS: {
   key: TextKey;
@@ -28,29 +28,10 @@ const FIELDS: {
   multiline?: boolean;
 }[] = [
   {
-    key: "hero_headline",
-    label: "Hero headline",
-    help: "The large line across the top of the homepage.",
-    placeholder: HOMEPAGE_FALLBACKS.heroHeadline,
-  },
-  {
-    key: "hero_subline",
-    label: "Hero subline",
-    help: "One quiet line under the headline.",
-    placeholder: HOMEPAGE_FALLBACKS.heroSubline,
-  },
-  {
     key: "intro_heading",
-    label: "Introduction heading",
-    help: "The large statement in the section below the hero.",
+    label: "Practice statement",
+    help: "The centered statement below the homepage photo wall.",
     placeholder: HOMEPAGE_FALLBACKS.introHeading,
-    multiline: true,
-  },
-  {
-    key: "intro_body",
-    label: "Introduction paragraph",
-    help: "The smaller paragraph under that statement.",
-    placeholder: HOMEPAGE_FALLBACKS.introBody,
     multiline: true,
   },
 ];
@@ -61,10 +42,7 @@ function HomepageBody() {
   const { toast } = useToast();
 
   const [text, setText] = useState<Record<TextKey, string>>({
-    hero_headline: "",
-    hero_subline: "",
     intro_heading: "",
-    intro_body: "",
   });
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -75,10 +53,7 @@ function HomepageBody() {
   useEffect(() => {
     if (!row) return;
     setText({
-      hero_headline: row.hero_headline ?? "",
-      hero_subline: row.hero_subline ?? "",
       intro_heading: row.intro_heading ?? "",
-      intro_body: row.intro_body ?? "",
     });
   }, [row]);
 
@@ -151,10 +126,7 @@ function HomepageBody() {
       await save.mutateAsync({
         id: rowId,
         patch: {
-          hero_headline: clean(text.hero_headline),
-          hero_subline: clean(text.hero_subline),
           intro_heading: clean(text.intro_heading),
-          intro_body: clean(text.intro_body),
         },
       });
       toast({ title: "Saved", description: "Homepage wording updated." });
@@ -167,10 +139,7 @@ function HomepageBody() {
     openPreview("homepage", {
       hero_image_bucket: row?.hero_image_bucket ?? null,
       hero_image_path: row?.hero_image_path ?? null,
-      hero_headline: text.hero_headline,
-      hero_subline: text.hero_subline,
       intro_heading: text.intro_heading,
-      intro_body: text.intro_body,
     });
   };
 
@@ -180,8 +149,7 @@ function HomepageBody() {
         <div>
           <h1 className="text-2xl text-ink mb-1">Homepage</h1>
           <p className="text-sm text-stone">
-            The image and wording at the top of the site. Anything left empty keeps the current
-            wording.
+            The opening photograph and practice statement. Anything left empty keeps the current wording.
           </p>
         </div>
         <Button type="button" variant="outline" onClick={handlePreview} disabled={isLoading}>
@@ -193,8 +161,7 @@ function HomepageBody() {
       <section className="border border-line rounded bg-card p-5 mb-6">
         <p className="text-sm font-medium text-ink">Hero image</p>
         <p className="text-xs text-stone mt-1 mb-4">
-          Fills the top of the homepage behind the headline. Pick one from a project, or upload a
-          photograph of your own.
+          Leads the homepage photo wall. Pick one from a project, or upload a photograph of your own.
         </p>
         <HeroImagePicker
           current={current}

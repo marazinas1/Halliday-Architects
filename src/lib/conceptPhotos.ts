@@ -1,8 +1,8 @@
 import type { PublicProjectCard } from "@/hooks/usePublicProjects";
 
 /**
- * A photograph slot used by the alternative homepage concepts (/home-v2 and
- * /home-v3). Purely presentational: it carries the image, its description and
+ * A photograph slot used by the image-led homepage. Purely presentational: it
+ * carries the image, its description and
  * the caption facts we already store for the project behind it.
  */
 export type ConceptPhoto = {
@@ -14,12 +14,12 @@ export type ConceptPhoto = {
 };
 
 /**
- * Builds an ordered pool of photographs for the concept homepages.
+ * Builds an ordered pool of photographs for the homepage.
  *
  * The homepage hero (set in /admin/homepage) leads when one exists, followed by
  * one cover photograph per published project in display order — so no project
  * repeats before every project has appeared. Slots left without a photograph
- * fall back to the concept's neutral panel.
+ * fall back to the homepage's neutral panel.
  */
 export const buildConceptPhotos = (
   projects: PublicProjectCard[],
@@ -49,8 +49,8 @@ export const pickPhotos = (pool: ConceptPhoto[], indices: number[]): (ConceptPho
 
 /**
  * Selects project photographs in a deliberate visual order, then falls back to
- * the remaining pool. This lets each homepage concept use a distinct edit of
- * the same client-managed photography without hard-coding image URLs.
+ * the remaining pool, giving the wall a deliberate edit of the same
+ * client-managed photography without hard-coding image URLs.
  */
 export const arrangeConceptPhotos = (
   pool: ConceptPhoto[],
