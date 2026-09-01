@@ -14,7 +14,7 @@ Replace only the project-card arrangement on `/projects` with full-width rows th
 
 2. **Render projects as explicit rows**
    - In `ProjectsPage`, recompute row sizes from `filtered.length`, then slice the already ordered filtered array into those rows without changing queries, ordering, or filter behavior.
-   - Make every row span the full viewport width and divide it into one, two, or three equal columns.
+   - Make every row use the available container width (`w-full`, never `100vw`) and divide it into one, two, or three equal columns, avoiding horizontal overflow from the browser scrollbar.
    - Keep the existing card markup and appearance unchanged: image, cover behavior, gradient, white title, metadata, hover treatment, accessibility, and project link.
    - Preserve the existing `2px` horizontal and vertical gutters.
 
@@ -22,7 +22,7 @@ Replace only the project-card arrangement on `/projects` with full-width rows th
    - Desktop one-card row: `66vh`, minimum `460px`.
    - Desktop two-card row: `54vh`, minimum `380px`.
    - Desktop three-card row: `42vh`, minimum `300px`.
-   - Below `1024px`, split a three-card row into three full-width rows so no cells remain empty.
+   - Below `1024px`, split a three-card row into three full-width rows so no cells remain empty; each resulting single-card row uses `54vh` with a `380px` minimum height rather than retaining the desktop three-card-row height.
    - Below `820px`, render every project as a single full-width row at `46vh`, minimum `280px`.
    - Keep every image `object-cover` and every card in a row equal in height.
 
