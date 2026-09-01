@@ -183,6 +183,7 @@ const ProjectPage = () => {
             )}
           </div>
         </section>
+        </Reveal>
       )}
 
       {gallery.length > 0 && (
@@ -226,6 +227,7 @@ const ProjectPage = () => {
       )}
 
       {(specs.length > 0 || features.length > 0) && (
+        <Reveal>
         <section className="bg-sand py-20 md:py-24">
           <div className={`${container.content} grid gap-14 ${specs.length > 0 && features.length > 0 ? "md:grid-cols-2 md:gap-20" : ""}`}>
             {specs.length > 0 && (
