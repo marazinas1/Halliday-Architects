@@ -10,8 +10,7 @@ const SocialLinks = ({ className = "" }: { className?: string }) => (
           href={social.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-10 h-10 flex items-center justify-center text-paper/60 hover:text-paper hover:bg-paper/25 hover:scale-110 hover:brightness-125 transition-all duration-300 ease-out"
-          style={{ borderRadius: "4px", backgroundColor: "rgba(255,255,255,0.1)" }}
+          className="flex h-10 w-10 items-center justify-center text-paper/60 transition-colors duration-300 ease-out hover:text-paper focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-paper/70"
           aria-label={social.name}
         >
           <Instagram size={18} />
