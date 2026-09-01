@@ -6,7 +6,7 @@ import { container } from "@/lib/rhythm";
 
 const EXPLORE_LINKS = [
   { label: "About", to: "/about" },
-  { label: "Our Team", to: "/team" },
+  { label: "Our Team", to: "/about#studio" },
   { label: "Services", to: "/services" },
   { label: "Projects", to: "/projects" },
   { label: "Blog", to: "/blog" },

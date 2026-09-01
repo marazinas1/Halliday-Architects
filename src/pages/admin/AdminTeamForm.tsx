@@ -107,7 +107,7 @@ function AdminTeamFormInner() {
 
   if (id && isLoading) return <div className="text-stone py-16 text-center">Loading…</div>;
 
-  // Previews the unsaved member exactly as the /team grid card renders it.
+  // Previews the unsaved member exactly as the About-page studio card renders it.
   const preview = () =>
     openPreview("team", {
       id: id ?? "preview",

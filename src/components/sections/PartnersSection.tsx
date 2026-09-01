@@ -20,14 +20,16 @@ const PARTNERS = [
   },
 ];
 
-const PartnersSection = () => (
-  <section className={sectionPadding.base}>
+const PartnersSection = () => {
+  if (!PARTNERS.length) return null;
+
+  return (
+  <section className={`${sectionPadding.base} border-t border-line`}>
     <div className={container.content}>
       <Reveal>
-        <div className="text-center mb-16">
-          <p className="label-uppercase mb-4">Our partners</p>
-          <h2 className="heading-section text-ink mb-6">Trusted collaborators</h2>
-          <div className="divider mx-auto" />
+        <div className="section-head">
+          <p className="label-uppercase">Who we build with</p>
+          <h2 className="heading-section leading-tight text-ink">Trusted collaborators</h2>
         </div>
       </Reveal>
 
@@ -44,7 +46,7 @@ const PartnersSection = () => (
                 <img
                   src={partner.logo}
                   alt={partner.name}
-                  className="max-h-16 w-auto object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  className="max-h-16 w-auto object-contain opacity-55 grayscale transition-[filter,opacity] duration-500 ease-out group-hover:opacity-100 group-hover:grayscale-0 motion-reduce:transition-none"
                   loading="lazy"
                   decoding="async"
                 />
@@ -59,6 +61,7 @@ const PartnersSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default PartnersSection;

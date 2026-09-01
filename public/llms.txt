@@ -10,8 +10,7 @@
 
 ## Pages
 - [Home](/): Overview of the practice, services, and featured projects.
-- [About](/about): The practice and how it works.
-- [Our Team](/team): The people behind the practice.
+- [About](/about): The practice, its principals, studio team, and how it works.
 - [Services](/services): Architectural consultation, new homes, additions and renovations, interiors and kitchens, code analysis and permits, construction administration.
 - [Projects](/projects): Portfolio of completed projects.
 - [Contact](/contact): Inquiry form, phone, email, and office address.

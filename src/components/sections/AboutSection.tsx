@@ -7,21 +7,12 @@ import { container, sectionPadding } from "@/lib/rhythm";
 const STUDIO_IMAGE: string | null = null;
 
 const AboutSection = () => {
-  // No photograph yet: render the prose as a single centred column so the
-  // page never shows an empty grey box.
   if (!STUDIO_IMAGE) {
     return (
-      <section className={`${sectionPadding.base}`}>
+      <section className={`${sectionPadding.tight} pb-20 md:pb-24`}>
         <div className={container.content}>
           <Reveal>
             <div className="text-center">
-              <p className="label-uppercase mb-4">About Us</p>
-              <h2 className="heading-section text-ink mb-6">
-                Residential architecture
-                <br />
-                in Ocean City, New Jersey
-              </h2>
-              <div className="divider mx-auto mb-8" />
               <p className="text-body mb-6">
                 Halliday Architects is a residential architecture practice in Ocean City, New Jersey,
                 led by Christopher and Shannon Halliday. Both are registered architects and LEED

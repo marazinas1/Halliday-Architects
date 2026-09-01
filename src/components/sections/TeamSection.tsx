@@ -6,40 +6,30 @@ const isPrincipal = (m: TeamMember) => m.role.toLowerCase().includes("principal"
 export const TeamCard = ({
   m,
   align = "center",
-  portrait = false,
 }: {
   m: TeamMember;
   align?: "center" | "left";
-  /** 4:5 grayscale portrait treatment, used by the homepage studio section. */
-  portrait?: boolean;
 }) => (
   <div className={align === "center" ? "text-center" : "text-left"}>
-    <div
-      className={`${portrait ? "aspect-[4/5]" : "aspect-square"} w-full mb-5 overflow-hidden bg-sand`}
-      style={{ borderRadius: "4px" }}
-    >
+    <div className="mb-5 aspect-[4/5] w-full overflow-hidden bg-sand">
       {m.photo_url ? (
         <img
           src={m.photo_url}
           alt={`${m.name}, ${m.role} at Halliday Architects`}
-          className={`w-full h-full object-cover ${portrait ? "grayscale" : ""}`}
+          width={880}
+          height={1100}
+          className="h-full w-full object-cover grayscale transition-[filter] duration-500 hover:grayscale-0 motion-reduce:transition-none"
           loading="lazy"
+          decoding="async"
         />
-      ) : (
-        <div
-          className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-accent"
-          aria-label={`Portrait placeholder for ${m.name}`}
-        >
-          <span className="text-5xl font-light text-ink/30">
-            {m.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
-          </span>
-        </div>
-      )}
+      ) : null}
     </div>
     <h3 className="heading-card text-ink text-lg mb-1">{m.name}</h3>
-    <p className="label-uppercase text-xs mb-3">
-      {m.credentials ? `${m.role} · ${m.credentials}` : m.role}
-    </p>
+    {(m.role || m.credentials) && (
+      <p className={`label-uppercase text-xs ${m.bio ? "mb-3" : ""}`}>
+        {[m.role, m.credentials].filter(Boolean).join(" · ")}
+      </p>
+    )}
     {m.bio && (
       <>
         <div className={`w-8 h-px bg-ink/20 mb-3 ${align === "center" ? "mx-auto" : ""}`} />
@@ -56,7 +46,7 @@ export const TeamGrid = () => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="aspect-square w-full bg-sand" style={{ borderRadius: "4px" }} />
+          <div key={i} className="aspect-[4/5] w-full bg-sand" />
         ))}
       </div>
     );
@@ -77,12 +67,28 @@ export const TeamGrid = () => {
 
 export default TeamGrid;
 
-/**
- * The full roster, split into two groups so the practice's structure is visible:
- * principals first (tall 4:5 grayscale portraits, side by side), then everyone
- * else under a quiet "The studio" label (square cards, three across). Used on
- * /team. TeamGrid and PrincipalsGrid are left intact for their other callers.
- */
+const CenteredRoster = ({ members }: { members: TeamMember[] }) => {
+  const rows: TeamMember[][] = [];
+  for (let index = 0; index < members.length; index += 2) {
+    rows.push(members.slice(index, index + 2));
+  }
+
+  return (
+    <div className="space-y-12 lg:space-y-14">
+      {rows.map((row) => (
+        <div key={row.map((member) => member.id).join("-")} className="flex justify-center gap-8 lg:gap-10">
+          {row.map((member) => (
+            <Reveal key={member.id} className="w-full max-w-[22rem]">
+              <TeamCard m={member} />
+            </Reveal>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/** The complete public roster, grouped by role and centred at every count. */
 export const TeamRoster = () => {
   const { data, isLoading } = useTeamMembers();
   const members = data ?? [];
@@ -91,9 +97,9 @@ export const TeamRoster = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-14 max-w-4xl mx-auto">
+      <div className="flex justify-center gap-8 lg:gap-10">
         {Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="aspect-[4/5] w-full bg-sand" style={{ borderRadius: "4px" }} />
+          <div key={i} className="aspect-[4/5] w-full max-w-[22rem] bg-background/60" />
         ))}
       </div>
     );
@@ -104,29 +110,18 @@ export const TeamRoster = () => {
   return (
     <div className="space-y-0">
       {principals.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-14 max-w-4xl mx-auto">
-          {principals.map((m) => (
-            <Reveal key={m.id}>
-              <TeamCard m={m} align="center" portrait />
-            </Reveal>
-          ))}
-        </div>
+        <CenteredRoster members={principals} />
       )}
 
       {studio.length > 0 && (
         <div className="mt-20 lg:mt-24">
           <Reveal>
-            <div className="text-center mb-16">
+            <div className="section-head">
               <span className="label-uppercase">The studio</span>
+              <h3 className="heading-section text-ink">Working alongside them</h3>
             </div>
           </Reveal>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-4xl mx-auto">
-            {studio.map((m) => (
-              <Reveal key={m.id}>
-                <TeamCard m={m} align="center" />
-              </Reveal>
-            ))}
-          </div>
+          <CenteredRoster members={studio} />
         </div>
       )}
     </div>
@@ -141,7 +136,6 @@ export const TeamRoster = () => {
  */
 export const PrincipalsGrid = ({
   centered = true,
-  portrait = false,
 }: {
   centered?: boolean;
   portrait?: boolean;
@@ -157,8 +151,7 @@ export const PrincipalsGrid = ({
         {Array.from({ length: 2 }).map((_, i) => (
           <div
             key={i}
-            className={`${portrait ? "aspect-[4/5]" : "aspect-square"} w-full bg-sand`}
-            style={{ borderRadius: "4px" }}
+            className="aspect-[4/5] w-full bg-sand"
           />
         ))}
       </div>
@@ -171,7 +164,7 @@ export const PrincipalsGrid = ({
     <div className={`grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-20 ${align}`}>
       {principals.map((m) => (
         <Reveal key={m.id}>
-          <TeamCard m={m} align={centered ? "center" : "left"} portrait={portrait} />
+          <TeamCard m={m} align={centered ? "center" : "left"} />
         </Reveal>
       ))}
     </div>
