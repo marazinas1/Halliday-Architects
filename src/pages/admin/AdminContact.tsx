@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useSavePageText } from "@/hooks/admin/usePageContentAdmin";
+import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
 
 const FALLBACK_HEADING = "Contact";
 const FALLBACK_INTRO =
@@ -17,6 +18,7 @@ const FALLBACK_INTRO =
 
 function ContactBody() {
   const { image, copy, isLoading } = usePageContent();
+  const { resolve } = useResolvedPageImages();
   const saveText = useSavePageText();
   const { toast } = useToast();
   const [values, setValues] = useState({ heading: "", intro: "" });
@@ -35,6 +37,8 @@ function ContactBody() {
       toast({ variant: "destructive", title: "Could not save", description: (err as Error).message });
     }
   };
+
+  const hero = resolve("contact", "hero");
 
   return (
     <div className="max-w-3xl">
@@ -102,6 +106,8 @@ function ContactBody() {
             label="Contact photograph"
             aspect="aspect-[2/1]"
             current={image("contact", "hero")}
+            fallbackUrl={hero.source === "automatic" ? hero.url : null}
+            fallbackFrom={hero.from}
           />
         </div>
       </section>
