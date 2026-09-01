@@ -10,10 +10,10 @@ const SocialLinks = ({ className = "" }: { className?: string }) => (
           href={social.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-10 w-10 items-center justify-center text-paper/60 transition-colors duration-300 ease-out hover:text-paper focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-paper/70"
+          className="flex h-14 w-14 items-center justify-center text-paper/60 transition-colors duration-300 ease-out hover:text-paper focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-paper/70"
           aria-label={social.name}
         >
-          <Instagram size={18} />
+          <Instagram size={54} />
         </a>
       );
     })}
