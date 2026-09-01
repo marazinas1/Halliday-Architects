@@ -32,7 +32,7 @@ const GlobalFooter = () => {
   return (
     <footer className="bg-ink text-paper pt-16 pb-8">
       <div className={container.wide}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 pb-12">
+        <div className="grid grid-cols-1 gap-10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
           {/* Brand */}
           <div>
             <button
@@ -44,6 +44,7 @@ const GlobalFooter = () => {
               <BrandLogo variant="dark" className="h-12 w-auto mb-5" />
             </button>
             <p className="text-sm text-paper/60 leading-relaxed max-w-xs">{FIRM.tagline}</p>
+            <SocialLinks className="mt-6" />
           </div>
 
           {/* Studio */}
@@ -66,7 +67,7 @@ const GlobalFooter = () => {
             </a>
           </div>
 
-          {/* Explore + social */}
+          {/* Explore */}
           <div>
             <h4 className={colHeading}>Explore</h4>
             {EXPLORE_LINKS.map((l) => (
@@ -74,7 +75,6 @@ const GlobalFooter = () => {
                 {l.label}
               </Link>
             ))}
-            <SocialLinks className="mt-6" />
           </div>
         </div>
 

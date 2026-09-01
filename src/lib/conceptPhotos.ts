@@ -1,8 +1,8 @@
 import type { PublicProjectCard } from "@/hooks/usePublicProjects";
 
 /**
- * A photograph slot used by the alternative homepage concepts (/home-v2 and
- * /home-v3). Purely presentational: it carries the image, its description and
+ * A photograph slot used by the image-led homepage. Purely presentational: it
+ * carries the image, its description and
  * the caption facts we already store for the project behind it.
  */
 export type ConceptPhoto = {
@@ -14,7 +14,7 @@ export type ConceptPhoto = {
 };
 
 /**
- * Builds an ordered pool of photographs for the concept homepages.
+ * Builds an ordered pool of photographs for the homepage.
  *
  * The homepage hero (set in /admin/homepage) leads when one exists, followed by
  * one cover photograph per published project in display order — so no project
