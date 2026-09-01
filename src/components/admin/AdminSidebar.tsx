@@ -104,62 +104,64 @@ export default function AdminSidebar({ email, role }: { email: string; role: Adm
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Manage</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {ITEMS.map((item) => {
-                const allowed = canAccess(role, item.access);
+        {GROUPS.map((group) => (
+          <SidebarGroup key={group.label}>
+            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => {
+                  const allowed = canAccess(role, item.access);
 
-                if (!allowed) {
+                  if (!allowed) {
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div>
+                              <SidebarMenuButton
+                                disabled
+                                aria-disabled="true"
+                                className="opacity-40 cursor-not-allowed"
+                              >
+                                <item.icon className="h-4 w-4" />
+                                <span>{item.title}</span>
+                              </SidebarMenuButton>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            Only owners can manage {item.title.toLowerCase()}
+                          </TooltipContent>
+                        </Tooltip>
+                      </SidebarMenuItem>
+                    );
+                  }
+
                   return (
                     <SidebarMenuItem key={item.title}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <SidebarMenuButton
-                              disabled
-                              aria-disabled="true"
-                              className="opacity-40 cursor-not-allowed"
-                            >
-                              <item.icon className="h-4 w-4" />
-                              <span>{item.title}</span>
-                            </SidebarMenuButton>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">
-                          Only owners can manage {item.title.toLowerCase()}
-                        </TooltipContent>
-                      </Tooltip>
+                      <SidebarMenuButton asChild isActive={item.match(pathname)} tooltip={item.title}>
+                        <Link
+                          to={item.url}
+                          className="flex items-center gap-2"
+                          onClick={() => {
+                            if (isMobile) setOpenMobile(false);
+                          }}
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
+                          {item.title === "Inquiries" && unreadCount > 0 && (
+                            <Badge className="ml-auto h-5 min-w-5 justify-center px-1.5 text-[11px]">
+                              {unreadCount}
+                            </Badge>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
-                }
-
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.match(pathname)} tooltip={item.title}>
-                      <Link
-                        to={item.url}
-                        className="flex items-center gap-2"
-                        onClick={() => {
-                          if (isMobile) setOpenMobile(false);
-                        }}
-                      >
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                        {item.title === "Inquiries" && unreadCount > 0 && (
-                          <Badge className="ml-auto h-5 min-w-5 justify-center px-1.5 text-[11px]">
-                            {unreadCount}
-                          </Badge>
-                        )}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter className="border-t border-line">
