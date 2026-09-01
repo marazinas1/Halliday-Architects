@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
+import CTASection from "@/components/CTASection";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { useTags } from "@/hooks/admin/useTags";
 import {
   PROJECT_TYPE_LABELS,
@@ -197,13 +197,7 @@ const ProjectsPage = () => {
           )}
       </section>
 
-      <section className="border-t border-line bg-sand px-6 py-20 text-center">
-        <p className="text-[15px] text-stone">Tell us about your site and what you have in mind.</p>
-        <Link to="/contact" className="link-inline group mt-5">
-          Start a project
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </Link>
-      </section>
+      <CTASection />
 
       <GlobalFooter />
     </main>
