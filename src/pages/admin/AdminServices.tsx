@@ -60,7 +60,7 @@ function toDraft(service: PublicService): Draft {
 }
 
 function ServicesBody() {
-  const { data: services = [], isLoading } = useAllServices();
+  const { data: services, isLoading } = useAllServices();
   const saveService = useSaveService();
   const removeService = useDeleteService();
   const reorder = useReorderServices();
@@ -73,7 +73,7 @@ function ServicesBody() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    setOrder(services);
+    if (services) setOrder(services);
   }, [services]);
 
   const move = async (index: number, direction: -1 | 1) => {
@@ -106,7 +106,7 @@ function ServicesBody() {
         published: editing.published,
         sort_order:
           editing.id
-            ? order.findIndex((s) => s.id === editing.id) + 1
+            ? Math.max(order.findIndex((s) => s.id === editing.id) + 1, 1)
             : order.length + 1,
       });
       setEditing(null);
@@ -169,7 +169,7 @@ function ServicesBody() {
           <h1 className="mb-1 text-2xl text-ink">Services</h1>
           <p className="text-sm text-stone">
             Each service is a full-width band on the services page, alternating photograph and text.
-            Drag order is set with the arrows.
+            Use the arrows to change the order they appear in.
           </p>
         </div>
         <div className="flex gap-2">

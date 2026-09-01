@@ -3,6 +3,8 @@ import { ArrowDown, ArrowUp, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import AdminProtected from "@/components/admin/AdminProtected";
+import SectionTabs from "@/components/admin/SectionTabs";
+import { PROJECT_TABS } from "@/pages/admin/AdminProjects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -44,6 +46,7 @@ function AdminTagsInner() {
 
   return (
     <div className="max-w-2xl space-y-8">
+      <SectionTabs tabs={PROJECT_TABS} />
       <div>
         <h1 className="font-serif text-2xl font-light text-ink">Tags</h1>
         <p className="mt-2 text-sm text-stone">
