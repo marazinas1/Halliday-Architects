@@ -5,7 +5,6 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
-import PageHero from "@/components/PageHero";
 import PostCard from "@/components/blog/PostCard";
 import { Button } from "@/components/ui/button";
 import { usePublishedPosts } from "@/hooks/usePublicBlog";
