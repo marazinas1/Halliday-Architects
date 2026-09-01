@@ -32,13 +32,16 @@ const BlogPage = () => {
         description="Notes on residential architecture, coastal building and design detail from Halliday Architects in Ocean City, NJ."
         path="/blog"
       />
-      <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
-        <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Ideas &amp; observations</p>
-        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Journal</h1>
-        <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
-          Notes on residential architecture, coastal living and the details that shape a home.
-        </p>
-      </header>
+      <Reveal>
+        <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Ideas &amp; observations</p>
+          <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Journal</h1>
+          <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
+            Notes on residential architecture, coastal living and the details that shape a home.
+          </p>
+        </header>
+      </Reveal>
+
 
       <section className={posts.length === 0 && !isLoading ? "pb-20 md:pb-28" : sectionPadding.tight}>
         <div className={container.wide}>

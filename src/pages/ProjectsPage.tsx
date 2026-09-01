@@ -6,6 +6,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
 import ProjectFilters from "@/components/projects/ProjectFilters";
+import Reveal from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { useTags } from "@/hooks/admin/useTags";
 import {
