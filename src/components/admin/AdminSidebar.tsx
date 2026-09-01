@@ -28,30 +28,52 @@ type Item = {
   match: (p: string) => boolean;
 };
 
-const ITEMS: Item[] = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard, access: "staff", match: (p) => p === "/admin" },
-  { title: "Projects", url: "/admin/projects", icon: FolderOpen, access: "staff", match: (p) => p.startsWith("/admin/projects") },
-  { title: "Tags", url: "/admin/tags", icon: Tags, access: "staff", match: (p) => p.startsWith("/admin/tags") },
-  { title: "Team", url: "/admin/team", icon: Users, access: "owner", match: (p) => p.startsWith("/admin/team") },
+type Group = { label: string; items: Item[] };
+
+/**
+ * Grouped so the panel reads like the site itself: the day-to-day workspace
+ * first, then a page-by-page mirror of the public site, then configuration.
+ */
+const GROUPS: Group[] = [
   {
-    title: "Testimonials",
-    url: "/admin/testimonials",
-    icon: Quote,
-    access: "owner",
-    match: (p) => p.startsWith("/admin/testimonials"),
+    label: "Workspace",
+    items: [
+      { title: "Dashboard", url: "/admin", icon: LayoutDashboard, access: "staff", match: (p) => p === "/admin" },
+      { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, access: "owner", match: (p) => p.startsWith("/admin/inquiries") },
+      { title: "Analytics", url: "/admin/analytics", icon: BarChart3, access: "owner", match: (p) => p.startsWith("/admin/analytics") },
+      { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
+    ],
   },
-  { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
-  { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, access: "owner", match: (p) => p.startsWith("/admin/inquiries") },
-  { title: "Homepage", url: "/admin/homepage", icon: Home, access: "owner", match: (p) => p.startsWith("/admin/homepage") },
   {
-    title: "Analytics",
-    url: "/admin/analytics",
-    icon: BarChart3,
-    access: "owner",
-    match: (p) => p.startsWith("/admin/analytics"),
+    label: "The website",
+    items: [
+      { title: "Home", url: "/admin/home", icon: Home, access: "staff", match: (p) => p.startsWith("/admin/home") },
+      {
+        title: "Projects",
+        url: "/admin/projects",
+        icon: FolderOpen,
+        access: "staff",
+        match: (p) => p.startsWith("/admin/projects") || p.startsWith("/admin/tags"),
+      },
+      {
+        title: "About",
+        url: "/admin/about",
+        icon: Users,
+        access: "staff",
+        match: (p) =>
+          p.startsWith("/admin/about") || p.startsWith("/admin/team") || p.startsWith("/admin/testimonials"),
+      },
+      { title: "Services", url: "/admin/services", icon: Quote, access: "staff", match: (p) => p.startsWith("/admin/services") },
+      { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
+      { title: "Contact", url: "/admin/contact", icon: Tags, access: "staff", match: (p) => p.startsWith("/admin/contact") },
+    ],
   },
-  { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
-  { title: "Settings", url: "/admin/settings", icon: Settings, access: "owner", match: (p) => p.startsWith("/admin/settings") },
+  {
+    label: "Settings",
+    items: [
+      { title: "Settings", url: "/admin/settings", icon: Settings, access: "owner", match: (p) => p.startsWith("/admin/settings") },
+    ],
+  },
 ];
 
 const ROLE_LABEL: Record<AdminRole, string> = {
