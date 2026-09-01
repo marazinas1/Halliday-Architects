@@ -81,7 +81,6 @@ export const COASTAL_NOTE =
 
 export const SOCIAL_LINKS = [
   { name: "Instagram", url: "https://www.instagram.com/hallidayarchitects/" },
-  { name: "Houzz", url: "https://www.houzz.com/pro/chris-halliday/halliday-architects" },
 ] as const;
 
 export type Service = {

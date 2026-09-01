@@ -1,5 +1,6 @@
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectType } from "@/hooks/usePublicProjects";
 import type { Tag } from "@/hooks/admin/useTags";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   types: ProjectType[];
@@ -11,12 +12,12 @@ type Props = {
   onClear: () => void;
 };
 
-const chip = (active: boolean) =>
+const tab = (active: boolean) =>
   [
-    "whitespace-nowrap border px-4 py-2 text-xs uppercase tracking-[0.14em] transition-colors duration-300",
+    "h-auto rounded-none border-0 border-b px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.16em] shadow-none transition-colors duration-300 hover:bg-transparent",
     active
-      ? "border-ink bg-ink text-paper"
-      : "border-line bg-transparent text-stone hover:border-ink hover:text-ink",
+      ? "border-ink bg-transparent text-ink"
+      : "border-transparent bg-transparent text-stone hover:border-transparent hover:text-ink",
   ].join(" ");
 
 /**
@@ -44,51 +45,49 @@ export default function ProjectFilters({
   const hasFilters = activeType !== "all" || activeTags.length > 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {showTypes && (
         <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex gap-2">
-            <button type="button" className={chip(activeType === "all")} onClick={() => onType("all")}>
-              All work
-            </button>
+          <div className="flex min-w-max justify-center gap-7 sm:min-w-0 sm:flex-wrap">
+            <Button type="button" variant="ghost" className={tab(activeType === "all")} onClick={() => onType("all")}>
+              All
+            </Button>
             {PROJECT_TYPES.filter((t) => types.includes(t)).map((t) => (
-              <button key={t} type="button" className={chip(activeType === t)} onClick={() => onType(t)}>
+              <Button key={t} type="button" variant="ghost" className={tab(activeType === t)} onClick={() => onType(t)}>
                 {PROJECT_TYPE_LABELS[t]}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
       )}
 
       {showTags && (
-        <div className="border-b border-line pb-6 mb-12">
-          <p className="label-uppercase mb-4">Filter by detail</p>
+        <div>
           <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex min-w-max justify-center gap-7 sm:min-w-0 sm:flex-wrap">
               {tags.map((tag) => {
                 const active = activeTags.includes(tag.slug);
                 return (
-                  <button
+                  <Button
                     key={tag.id}
                     type="button"
+                    variant="ghost"
                     onClick={() => onToggleTag(tag.slug)}
-                    className={chip(active)}
+                    className={tab(active)}
                   >
                     {tag.name}
-                  </button>
+                  </Button>
                 );
               })}
-              {activeTags.length > 0 && (
-                <button
+              {hasFilters && (
+                <Button
                   type="button"
+                  variant="ghost"
                   onClick={onClear}
-                  className={[
-                    "whitespace-nowrap border px-4 py-2 text-xs uppercase tracking-[0.14em] transition-colors duration-300",
-                    "border-line text-stone hover:border-ink hover:text-ink",
-                  ].join(" ")}
+                  className={tab(false)}
                 >
                   Clear
-                </button>
+                </Button>
               )}
             </div>
           </div>

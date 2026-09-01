@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,16 @@ const NAV_LINKS = [
  * and becomes solid once that wall has passed. Internal pages are always solid.
  */
 const GlobalNav = ({ overlayPhotoWall = false }: { lightHero?: boolean; overlayPhotoWall?: boolean }) => {
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isOverPhoto, setIsOverPhoto] = useState(overlayPhotoWall);
+
+  const handleHomeClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    setIsMobileMenuOpen(false);
+    if (location.pathname !== "/") return;
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     if (!overlayPhotoWall) {
@@ -56,6 +64,7 @@ const GlobalNav = ({ overlayPhotoWall = false }: { lightHero?: boolean; overlayP
         <div className="relative flex h-20 items-center justify-between">
           <Link
             to="/"
+            onClick={handleHomeClick}
             className="flex-shrink-0 flex items-center transition-opacity hover:opacity-80"
             aria-label="Halliday Architects — Home"
           >
@@ -88,7 +97,7 @@ const GlobalNav = ({ overlayPhotoWall = false }: { lightHero?: boolean; overlayP
 
       <div className={`fixed inset-0 z-[70] flex flex-col bg-background px-6 transition-opacity duration-300 md:hidden ${isMobileMenuOpen ? "visible opacity-100" : "invisible pointer-events-none opacity-0"}`} aria-hidden={!isMobileMenuOpen}>
         <div className="flex h-20 items-center justify-between">
-          <Link to="/" onClick={() => setIsMobileMenuOpen(false)} aria-label={`${FIRM.name} — Home`}>
+          <Link to="/" onClick={handleHomeClick} aria-label={`${FIRM.name} — Home`}>
             <BrandLogo variant="light" className="h-9 w-auto" />
           </Link>
           <Button type="button" variant="ghost" size="icon" className="min-h-11 min-w-11" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu">
