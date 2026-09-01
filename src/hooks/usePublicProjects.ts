@@ -162,16 +162,24 @@ export function usePublicProjects() {
 
 export type GalleryItem = { id: string; src: string; alt: string };
 
+export type ProjectOrderItem = {
+  slug: string;
+  title: string;
+  card_image_url: string | null;
+  card_image_alt: string;
+};
+
 /** Loads one published project (by slug) plus its hero and gallery images. */
 export function usePublicProject(slug: string | undefined) {
   return useQuery({
     queryKey: ["public-project", slug],
     enabled: !!slug,
     queryFn: async () => {
+      if (!slug) return null;
       const { data: project, error } = await supabase
         .from("projects")
         .select("*")
-        .eq("slug", slug!)
+        .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
       if (error) throw error;
@@ -217,12 +225,38 @@ export function useProjectOrder() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("projects")
-        .select("slug, title, sort_order, created_at")
+        .select("id, slug, title, location_city, location_state, sort_order, created_at")
         .eq("published", true)
         .order("sort_order", { ascending: true })
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data ?? [];
+      const projects = data ?? [];
+      if (!projects.length) return [];
+
+      const { data: images, error: imageError } = await supabase
+        .from("project_images")
+        .select("project_id, category, storage_path, alt_text, sort_order, is_cover")
+        .in("project_id", projects.map((project) => project.id))
+        .order("sort_order", { ascending: true });
+      if (imageError) throw imageError;
+
+      return projects.map((project): ProjectOrderItem => {
+        const own = (images ?? []).filter((image) => image.project_id === project.id);
+        const cover =
+          own.find((image) => image.is_cover) ??
+          own.find((image) => image.category === "card") ??
+          own.find((image) => image.category === "hero") ??
+          own[0];
+        const location = formatLocation(project);
+        return {
+          slug: project.slug,
+          title: project.title,
+          card_image_url: cover ? publicUrl(cover.storage_path) : null,
+          card_image_alt: cover
+            ? cover.alt_text?.trim() || describeImage(cover.category, project.title, location)
+            : project.title,
+        };
+      });
     },
   });
 }

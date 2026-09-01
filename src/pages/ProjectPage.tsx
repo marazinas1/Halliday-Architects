@@ -6,34 +6,35 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import Lightbox from "@/components/projects/Lightbox";
-import Reveal from "@/components/Reveal";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import { previewPath, readPreview } from "@/lib/admin/preview";
 import {
   PROJECT_TYPE_LABELS,
   usePublicProject,
   useProjectOrder,
+  type GalleryItem,
   type ProjectType,
 } from "@/hooks/usePublicProjects";
-import { container, sectionPadding } from "@/lib/rhythm";
+import { container } from "@/lib/rhythm";
 
 type Spec = { label?: string; value?: string };
 
-/**
- * Layout pattern for the gallery: images cycle through full, half and
- * two-thirds widths so strong photographs get room rather than sitting in a
- * uniform grid.
- */
-const SPANS = ["md:col-span-12", "md:col-span-6", "md:col-span-6", "md:col-span-8", "md:col-span-4"];
-const RATIOS = ["aspect-[16/9]", "aspect-[4/3]", "aspect-[4/3]", "aspect-[3/2]", "aspect-[3/4]"];
-/** Dimension hints matching each RATIOS entry — space reservation only. */
-const DIMS = [
-  { w: 1600, h: 900 },
-  { w: 1600, h: 1200 },
-  { w: 1600, h: 1200 },
-  { w: 1600, h: 1067 },
-  { w: 1200, h: 1600 },
-];
+type GalleryRow = { kind: "full" | "pair" | "split"; items: GalleryItem[] };
+
+const buildGalleryRows = (items: GalleryItem[]): GalleryRow[] => {
+  const rows: GalleryRow[] = [];
+  const pattern: GalleryRow["kind"][] = ["full", "pair", "split", "full"];
+  let cursor = 0;
+  let patternIndex = 0;
+  while (cursor < items.length) {
+    const kind = pattern[patternIndex % pattern.length];
+    const count = kind === "full" ? 1 : Math.min(2, items.length - cursor);
+    rows.push({ kind: count === 1 ? "full" : kind, items: items.slice(cursor, cursor + count) });
+    cursor += count;
+    patternIndex += 1;
+  }
+  return rows;
+};
 
 const ProjectPage = () => {
   const { slug } = useParams();
@@ -96,10 +97,10 @@ const ProjectPage = () => {
   const features = Array.isArray(project.features) ? (project.features as string[]) : [];
   const specs = (Array.isArray(project.specs) ? project.specs : []) as Spec[];
   const meta = [
-    location,
     PROJECT_TYPE_LABELS[project.project_type as ProjectType] ?? null,
     project.year_completed ?? null,
   ].filter(Boolean);
+  const galleryRows = buildGalleryRows(gallery);
 
   return (
     <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
@@ -115,59 +116,58 @@ const ProjectPage = () => {
         />
       )}
 
-      {/* Hero — image fading into the page on a white gradient */}
-      <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
+      <section className="relative h-[82svh] min-h-[540px] overflow-hidden bg-sand">
         {heroUrl && (
           <img
             src={heroUrl}
             alt={heroAlt ?? project.title}
+            width={1920}
+            height={1280}
+            loading="eager"
+            decoding="async"
             fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
-          <div className="container-wide animate-fade-in-up">
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 pb-10 md:pb-14">
+          <div className={container.wide}>
             <Link
               to="/projects"
-              className="mb-6 inline-flex items-center gap-2 text-sm text-body transition-colors hover:text-headline"
+              className="mb-7 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-paper/80 transition-colors hover:text-paper"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to projects
             </Link>
             {meta.length > 0 && (
-              <span className="mb-2 block text-[11px] font-medium uppercase tracking-widest text-caption">
+              <span className="block text-[11px] font-medium uppercase tracking-[0.2em] text-paper/75">
                 {meta.join(" · ")}
               </span>
             )}
             <h1
-              className="mb-4 text-4xl font-extrabold tracking-tight text-headline md:text-5xl lg:text-6xl"
-              style={{ letterSpacing: "-0.02em" }}
+              className="mt-2 text-4xl font-bold leading-none text-paper md:text-5xl lg:text-6xl"
             >
               {project.title}
             </h1>
-            {project.tagline && (
-              <p className="max-w-2xl text-lg font-light text-headline/80">{project.tagline}</p>
-            )}
+            {location && <p className="mt-3 text-base text-paper/80">{location}</p>}
+            {project.tagline && <p className="mt-3 max-w-2xl text-base font-light text-paper/75">{project.tagline}</p>}
           </div>
         </div>
       </section>
 
-      <div className="border-b border-border" />
-
       {(project.client_brief || project.story || project.description) && (
-        <section className={sectionPadding.base}>
-          <Reveal className={`${container.narrow} space-y-12`}>
+        <section className="px-6 py-24 text-center md:py-28">
+          <div className="mx-auto max-w-[56rem]">
             {project.client_brief && (
               <div>
-                <p className="mb-4 text-xs uppercase tracking-[0.18em] text-stone">The brief</p>
-                <p className="whitespace-pre-line text-lg font-light leading-relaxed text-ink">
+                <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.2em] text-stone">The brief</p>
+                <p className="mx-auto max-w-[38ch] whitespace-pre-line text-xl font-light leading-relaxed text-ink md:text-2xl">
                   {project.client_brief}
                 </p>
               </div>
             )}
             {(project.story || project.description) && (
-              <div className="space-y-6 text-base leading-[1.7] text-stone">
+              <div className={`${project.client_brief ? "mt-9" : ""} mx-auto max-w-[64ch] space-y-6 text-[15px] leading-[1.9] text-stone`}>
                 {(project.story || project.description || "")
                   .split(/\n{2,}/)
                   .filter(Boolean)
@@ -178,50 +178,57 @@ const ProjectPage = () => {
                   ))}
               </div>
             )}
-          </Reveal>
-        </section>
-      )}
-
-      {gallery.length > 0 && (
-        <section className="pb-24 md:pb-32">
-          <div className={container.wide}>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
-              {gallery.map((img, i) => (
-                <Reveal key={img.id} delay={(i % 3) * 90} className={SPANS[i % SPANS.length]}>
-                <button
-                  type="button"
-                  onClick={() => setLightbox(i)}
-                  className="group block overflow-hidden bg-sand w-full"
-                  aria-label={`Open image ${i + 1}`}
-                >
-                  <img
-                    src={img.src}
-                    alt={img.alt}
-                    width={DIMS[i % DIMS.length].w}
-                    height={DIMS[i % DIMS.length].h}
-                    loading="lazy"
-                    decoding="async"
-                    className={`w-full ${RATIOS[i % RATIOS.length]} object-cover transition-opacity duration-500 group-hover:opacity-90`}
-                  />
-                </button>
-                </Reveal>
-              ))}
-            </div>
           </div>
         </section>
       )}
 
+      {gallery.length > 0 && (
+        <section className="flex flex-col gap-[2px]">
+          {galleryRows.map((row, rowIndex) => {
+            const startIndex = galleryRows.slice(0, rowIndex).reduce((total, item) => total + item.items.length, 0);
+            const rowClass = row.kind === "full"
+              ? "grid min-h-[460px] h-[72vh]"
+              : row.kind === "pair"
+                ? "grid gap-[2px] md:grid-cols-2 md:h-[56vh] md:min-h-[360px]"
+                : "grid gap-[2px] md:grid-cols-[1.45fr_1fr] md:h-[60vh] md:min-h-[380px]";
+            return (
+              <div key={`${row.kind}-${rowIndex}`} className={rowClass}>
+                {row.items.map((img, itemIndex) => (
+                  <button
+                    key={img.id}
+                    type="button"
+                    onClick={() => setLightbox(startIndex + itemIndex)}
+                    className="group min-h-[320px] w-full overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink md:min-h-0"
+                    aria-label={`Open image ${startIndex + itemIndex + 1}`}
+                  >
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      width={1600}
+                      height={1200}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.02]"
+                    />
+                  </button>
+                ))}
+              </div>
+            );
+          })}
+        </section>
+      )}
+
       {(specs.length > 0 || features.length > 0) && (
-        <section className={`${sectionPadding.tight} bg-sand`}>
-          <Reveal className={`${container.content} grid gap-14 md:grid-cols-2`}>
+        <section className="bg-sand py-20 md:py-24">
+          <div className={`${container.content} grid gap-14 ${specs.length > 0 && features.length > 0 ? "md:grid-cols-2 md:gap-20" : ""}`}>
             {specs.length > 0 && (
               <div>
-                <p className="mb-6 text-xs uppercase tracking-[0.18em] text-stone">Details</p>
+                <p className="border-b border-line pb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Details</p>
                 <dl className="divide-y divide-line border-t border-line">
                   {specs.map((s, i) => (
                     <div key={i} className="flex justify-between gap-6 py-3 text-sm">
-                      <dt className="text-stone">{s.label}</dt>
-                      <dd className="text-right text-ink">{s.value}</dd>
+                      <dt className="font-medium text-ink">{s.label}</dt>
+                      <dd className="text-right text-stone">{s.value}</dd>
                     </div>
                   ))}
                 </dl>
@@ -229,29 +236,38 @@ const ProjectPage = () => {
             )}
             {features.length > 0 && (
               <div>
-                <p className="mb-6 text-xs uppercase tracking-[0.18em] text-stone">Features</p>
-                <ul className="space-y-3 border-t border-line pt-3 text-sm text-ink">
+                <p className="border-b border-line pb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Features</p>
+                <ul className="divide-y divide-line text-sm text-ink">
                   {features.map((f) => (
-                    <li key={f}>{f}</li>
+                    <li key={f} className="py-3">{f}</li>
                   ))}
                 </ul>
               </div>
             )}
-          </Reveal>
+          </div>
         </section>
       )}
 
       {next && (
-        <section className={sectionPadding.tight}>
-          <div className={container.wide}>
-            <Reveal><Link to={`/projects/${next.slug}`} className="group block border-t border-line pt-8">
-              <p className="text-xs uppercase tracking-[0.18em] text-stone">Next project</p>
-              <h2 className="mt-3 font-serif text-3xl font-light text-ink transition-colors duration-300 group-hover:text-brand md:text-4xl">
-                {next.title}
-              </h2>
-            </Link></Reveal>
+        <Link to={`/projects/${next.slug}`} className="group relative block h-[46vh] min-h-[320px] overflow-hidden bg-sand">
+          {next.card_image_url && (
+            <img
+              src={next.card_image_url}
+              alt={next.card_image_alt}
+              width={1600}
+              height={900}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
+            />
+          )}
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-paper">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-paper/70">Next project</p>
+            <h2 className="mt-3 text-3xl font-bold text-paper md:text-4xl">{next.title}</h2>
+            <span className="mt-5 border-b border-paper/60 pb-1 text-[11px] font-medium uppercase tracking-[0.14em]">View project →</span>
           </div>
-        </section>
+        </Link>
       )}
 
       <Lightbox items={gallery} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />

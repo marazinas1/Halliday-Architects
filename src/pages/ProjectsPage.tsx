@@ -3,18 +3,17 @@ import { Link } from "react-router-dom";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
-import PageHero from "@/components/PageHero";
-import Reveal from "@/components/Reveal";
 import ProjectFilters from "@/components/projects/ProjectFilters";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { useTags } from "@/hooks/admin/useTags";
 import {
   PROJECT_TYPE_LABELS,
   usePublicProjects,
   type ProjectType,
 } from "@/hooks/usePublicProjects";
-import { container, gap, sectionPadding } from "@/lib/rhythm";
+import { container } from "@/lib/rhythm";
 
 /** Portfolio index — image-led grid with type and tag filtering. */
 const ProjectsPage = () => {
@@ -65,7 +64,13 @@ const ProjectsPage = () => {
         description="Residential architecture in and around Ocean City, New Jersey — new builds, renovations, additions and interiors."
         path="/projects"
       />
-      <PageHero eyebrow="Selected work" title="Projects" />
+      <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
+        <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Selected work</p>
+        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Projects</h1>
+        <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
+          Residential architecture in and around Ocean City, New Jersey — new builds, renovations, additions and interiors.
+        </p>
+      </header>
 
       {(() => {
         // ProjectFilters returns null when no row offers a real choice; in
@@ -74,7 +79,7 @@ const ProjectsPage = () => {
         const showTags = tags.length > 1;
         if (!showTypes && !showTags) return null;
         return (
-          <section className={sectionPadding.tight}>
+          <section className="pb-14">
             <div className={container.wide}>
               <ProjectFilters
                 types={availableTypes}
@@ -90,17 +95,16 @@ const ProjectsPage = () => {
         );
       })()}
 
-      <section className="pb-24 md:pb-32 lg:pb-40">
-        <div className={container.wide}>
+      <section>
           {isLoading ? (
-            <div className={`grid sm:grid-cols-2 ${gap.grid}`}>
+            <div className="grid gap-[2px] sm:grid-cols-2">
               {[0, 1, 2, 3].map((i) => (
                 <div key={i} className="aspect-[4/3] w-full animate-pulse bg-sand" />
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="border border-line px-8 py-24 text-center">
-              <p className="font-serif text-2xl font-light text-ink">
+            <div className={`${container.content} px-8 py-24 text-center`}>
+              <p className="text-2xl font-light text-ink">
                 {projects.length === 0 ? "Projects are on their way." : "Nothing matches yet."}
               </p>
               <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-stone">
@@ -109,38 +113,43 @@ const ProjectsPage = () => {
                   : "Try a different project type, or clear the filters to see all work."}
               </p>
               {projects.length > 0 && (
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
                   onClick={clear}
-                  className="mt-8 text-xs uppercase tracking-[0.16em] text-ink underline underline-offset-8"
+                  className="mt-8 h-auto rounded-none px-0 text-xs uppercase tracking-[0.16em] text-ink underline underline-offset-8"
                 >
                   Clear filters
-                </button>
+                </Button>
               )}
             </div>
           ) : (
-            <div className={`grid sm:grid-cols-2 ${gap.grid}`}>
+            <div className="grid gap-[2px] sm:grid-cols-2">
               {filtered.map((p, i) => (
-                <Reveal key={p.id} delay={(i % 2) * 100}>
-                <Link to={`/projects/${p.slug}`} className="group block">
-                  <div className="overflow-hidden bg-sand">
+                <Link
+                  key={p.id}
+                  to={`/projects/${p.slug}`}
+                  className={`group relative block aspect-[4/3] overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${filtered.length % 2 === 1 && i === filtered.length - 1 ? "sm:col-span-2 sm:aspect-[21/9]" : ""}`}
+                >
                     {p.card_image_url ? (
                       <img
                         src={p.card_image_url}
                         alt={p.card_image_alt}
                         loading="lazy"
                         decoding="async"
-                        className="aspect-[4/3] w-full object-cover transition-opacity duration-500 group-hover:opacity-90"
+                        width={1600}
+                        height={1200}
+                        className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
                       />
                     ) : (
-                      <div className="aspect-[4/3] w-full bg-sand" />
+                      <div className="h-full w-full bg-sand" />
                     )}
-                  </div>
-                  <div className="mt-5">
-                    <h2 className="font-serif text-2xl font-light leading-tight text-ink">
+                  <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 text-paper md:p-8">
+                    <h2 className="text-xl font-semibold leading-tight text-paper">
                       {p.title}
                     </h2>
-                    <p className="mt-2 text-xs uppercase tracking-[0.14em] text-stone">
+                    <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-paper/70">
                       {[
                         p.location,
                         PROJECT_TYPE_LABELS[p.project_type as ProjectType] ?? null,
@@ -151,14 +160,18 @@ const ProjectsPage = () => {
                     </p>
                   </div>
                 </Link>
-                </Reveal>
               ))}
             </div>
           )}
-        </div>
       </section>
 
-      <CTASection variant="light" />
+      <section className="border-t border-line bg-sand px-6 py-20 text-center">
+        <p className="text-[15px] text-stone">Tell us about your site and what you have in mind.</p>
+        <Link to="/contact" className="group mt-5 inline-flex items-center gap-2 border-b border-ink pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink">
+          Start a project
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+      </section>
 
       <GlobalFooter />
     </main>
