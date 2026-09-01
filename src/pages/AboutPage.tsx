@@ -2,64 +2,82 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
-import PageHero from "@/components/PageHero";
 import AboutSection from "@/components/sections/AboutSection";
-import { PrincipalsGrid } from "@/components/sections/TeamSection";
+import { TeamRoster } from "@/components/sections/TeamSection";
 import Reveal from "@/components/Reveal";
-import SectionLink from "@/components/SectionLink";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ProcessSection from "@/components/sections/ProcessSection";
+import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { container, sectionPadding } from "@/lib/rhythm";
 
-const AboutPage = () => (
-  <main className="min-h-screen bg-background">
-    <GlobalNav />
-    <SEO
-      title="About | Halliday Architects"
-      description="Halliday Architects is an architecture practice in Ocean City, New Jersey, working on residential architecture along the shore."
-      path="/about"
-    />
-    <PageHero eyebrow="Our Story" title="About Halliday Architects" />
+const AboutPage = () => {
+  const { data: projects = [] } = usePublicProjects();
+  const stripProjects = projects.length >= 2 ? projects.slice(-2) : [];
 
-    <AboutSection />
+  return (
+    <main className="min-h-screen bg-background">
+      <GlobalNav />
+      <SEO
+        title="Christopher & Shannon Halliday | Architects"
+        description="Meet architects Christopher and Shannon Halliday and their Ocean City, New Jersey studio, focused on thoughtful residential architecture."
+        path="/about"
+      />
 
-    <div className="w-full h-px bg-border" />
+      <header className="px-6 pb-4 pt-20 text-center md:pt-24">
+        <p className="label-uppercase">The practice</p>
+        <h1 className="mx-auto mt-4 text-4xl font-bold leading-tight text-ink md:text-5xl">
+          Residential architecture
+          <br />
+          in Ocean City, New Jersey
+        </h1>
+      </header>
 
-    <ProcessSection
-      eyebrow="How we work"
-      heading="One practice, from the first site visit to the last"
-    />
+      <AboutSection />
 
-    <div className="w-full h-px bg-border" />
+      {stripProjects.length === 2 && (
+        <section className="grid w-full gap-[2px] md:grid-cols-[1.45fr_1fr]" aria-label="Selected project photography">
+          {stripProjects.map((project) => (
+            <div key={project.id} className="h-[46vh] min-h-[280px] overflow-hidden bg-sand md:h-[58vh] md:min-h-[380px]">
+              {project.card_image_url && (
+                <img
+                  src={project.card_image_url}
+                  alt={project.card_image_alt}
+                  width={1600}
+                  height={1200}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              )}
+            </div>
+          ))}
+        </section>
+      )}
 
-    <section className={`${sectionPadding.base} section-sand`}>
-      <div className={container.wide}>
-        <Reveal>
-          <div className="text-center mb-16">
-            <p className="label-uppercase mb-4">Leadership</p>
-            <h2 className="heading-section text-ink mb-6">Led by the principals</h2>
-            <div className="divider mx-auto mb-6" />
-            <p className="text-body max-w-2xl mx-auto">
-              Christopher and Shannon Halliday lead the practice, and every project is led
-              personally by one of them, from the first sketch through construction administration.
-            </p>
-          </div>
-        </Reveal>
-        <PrincipalsGrid />
-        <Reveal>
-          <SectionLink to="/team" label="Meet the full studio" />
-        </Reveal>
-      </div>
-    </section>
+      <ProcessSection
+        eyebrow="How we work"
+        heading="One practice, from the first site visit to the last"
+      />
 
-    <div className="w-full h-px bg-border" />
+      <section id="studio" className={`${sectionPadding.base} scroll-mt-20 border-t border-line section-sand`}>
+        <div className={container.people}>
+          <Reveal>
+            <div className="section-head">
+              <p className="label-uppercase">The studio</p>
+              <h2 className="heading-section text-ink">Led by the principals</h2>
+            </div>
+          </Reveal>
+          <TeamRoster />
+        </div>
+      </section>
 
-    <PartnersSection />
+      <PartnersSection />
 
-    <CTASection variant="light" />
+      <CTASection variant="light" />
 
       <GlobalFooter />
-  </main>
-);
+    </main>
+  );
+};
 
 export default AboutPage;

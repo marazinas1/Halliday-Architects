@@ -1,13 +1,12 @@
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import PageHero from "@/components/PageHero";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import { TeamCard } from "@/components/sections/TeamSection";
 import { readPreview } from "@/lib/admin/preview";
 import type { TeamMember } from "@/hooks/useTeamMembers";
 import { container, sectionPadding } from "@/lib/rhythm";
 
-/** Renders an unsaved team member exactly as the /team grid would. */
+/** Renders an unsaved team member in the same Studio context used on /about. */
 const TeamMemberPreview = () => {
   const member = readPreview<TeamMember>("team");
 
@@ -15,11 +14,14 @@ const TeamMemberPreview = () => {
     <main className="min-h-screen bg-background pt-9">
       <PreviewBanner label="team member" />
       <GlobalNav />
-      <PageHero eyebrow="Our Team" title="The Studio" />
-      <section className={sectionPadding.base}>
-        <div className={container.wide}>
+      <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
+        <p className="label-uppercase">The studio</p>
+        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Led by the principals</h1>
+      </header>
+      <section className={`${sectionPadding.base} section-sand`}>
+        <div className={container.people}>
           {member ? (
-            <div className="mx-auto max-w-xs">
+            <div className="mx-auto max-w-[22rem]">
               <TeamCard m={member} />
             </div>
           ) : (

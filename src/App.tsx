@@ -11,7 +11,6 @@ import { usePageTracking } from "@/hooks/usePageTracking";
 
 // Lazy-load all non-landing pages so the initial bundle stays small.
 const AboutPage = lazy(() => import("./pages/AboutPage"));
-const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
@@ -73,7 +72,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
 
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/team" element={<TeamPage />} />
+            <Route path="/team" element={<Navigate to="/about" replace />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:slug" element={<ProjectPage />} />

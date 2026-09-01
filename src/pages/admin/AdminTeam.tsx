@@ -61,6 +61,7 @@ function AdminTeamInner() {
           </Button>
         </Link>
       </div>
+      <p className="text-sm text-stone">Published team members appear in the Studio section of the About page.</p>
 
       {isLoading ? (
         <div className="text-stone py-16 text-center">Loading…</div>
