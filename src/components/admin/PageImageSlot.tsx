@@ -104,8 +104,17 @@ export default function PageImageSlot({
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-stone">
             <ImageIcon className="h-5 w-5" />
-            <span className="px-3 text-center text-[11px]">Project photography is used</span>
+            <span className="px-3 text-center text-[11px]">No photography available yet</span>
           </div>
+        )}
+        {url && (
+          <span
+            className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+              automatic ? "bg-paper/90 text-stone" : "bg-ink/90 text-paper"
+            }`}
+          >
+            {automatic ? "Automatic" : "Chosen"}
+          </span>
         )}
       </div>
 
@@ -113,15 +122,20 @@ export default function PageImageSlot({
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-ink">{label}</p>
           {help && <p className="mt-0.5 text-xs text-stone">{help}</p>}
+          {automatic && (
+            <p className="mt-0.5 text-xs text-stone">
+              {fallbackFrom ? `From ${fallbackFrom} — shown on the site now` : "Project photography is used"}
+            </p>
+          )}
         </div>
         <div className="flex shrink-0 gap-1">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button type="button" size="sm" variant="outline" disabled={busy}>
-                {current ? "Change" : "Choose"}
+                {current ? "Change" : "Choose your own"}
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-3xl">
+            <DialogContent className="flex max-h-[85vh] max-w-4xl flex-col overflow-hidden">
               <DialogHeader>
                 <DialogTitle>{label}</DialogTitle>
               </DialogHeader>
@@ -143,4 +157,5 @@ export default function PageImageSlot({
       </div>
     </div>
   );
+
 }
