@@ -4,6 +4,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import PostCard from "@/components/blog/PostCard";
+import Reveal from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { usePublishedPosts } from "@/hooks/usePublicBlog";
 import { container, gap, sectionPadding } from "@/lib/rhythm";

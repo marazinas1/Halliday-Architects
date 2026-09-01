@@ -7,6 +7,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import Lightbox from "@/components/projects/Lightbox";
 import PreviewBanner from "@/components/admin/PreviewBanner";
+import Reveal from "@/components/Reveal";
 import { previewPath, readPreview } from "@/lib/admin/preview";
 import {
   PROJECT_TYPE_LABELS,
