@@ -7,24 +7,20 @@ import { TeamRoster } from "@/components/sections/TeamSection";
 import Reveal from "@/components/Reveal";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ProcessSection from "@/components/sections/ProcessSection";
-import { usePublicProjects } from "@/hooks/usePublicProjects";
+import Testimonials from "@/components/sections/Testimonials";
 import { usePageContent } from "@/hooks/usePageContent";
+import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
 import { container, sectionPadding } from "@/lib/rhythm";
 
 const AboutPage = () => {
-  const { data: projects = [] } = usePublicProjects();
   const page = usePageContent();
-  const stripFallback = projects.length >= 2 ? projects.slice(-2) : [];
+  const { resolve } = useResolvedPageImages();
 
   // Either photograph may be chosen in the admin panel; anything left empty
   // keeps the project photography the page used before.
-  const strip = ["strip_1", "strip_2"].map((slot, i) => {
-    const url = page.imageUrl("about", slot);
-    if (url) return { url, alt: page.image("about", slot)?.alt || "Halliday Architects project" };
-    const project = stripFallback[i];
-    return project?.card_image_url
-      ? { url: project.card_image_url, alt: project.card_image_alt }
-      : null;
+  const strip = ["strip_1", "strip_2"].map((slot) => {
+    const photo = resolve("about", slot);
+    return photo.url ? { url: photo.url, alt: photo.alt } : null;
   });
   const heading = page.copy("about", "heading", "Residential architecture\nin Ocean City, New Jersey");
 
@@ -86,6 +82,8 @@ const AboutPage = () => {
           <TeamRoster />
         </div>
       </section>
+
+      <Testimonials />
 
       <PartnersSection />
 
