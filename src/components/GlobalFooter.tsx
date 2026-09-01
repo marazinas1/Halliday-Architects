@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import BrandLogo from "@/components/BrandLogo";
 import SocialLinks from "@/components/SocialLinks";
-import { FIRM } from "@/content/firm";
+import { ACCREDITATIONS, FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 
 const EXPLORE_LINKS = [
@@ -30,7 +30,15 @@ const GlobalFooter = () => {
   };
 
   return (
-    <footer className="bg-ink text-paper pt-16 pb-8">
+    <footer className="bg-ink text-paper">
+      <div className="border-b border-paper/10 border-t border-paper/10">
+        <div className={`${container.wide} py-5`}>
+          <p className="text-center text-[10px] font-medium uppercase tracking-[0.16em] text-paper/55 sm:text-[11px]">
+            {ACCREDITATIONS}
+          </p>
+        </div>
+      </div>
+      <div className="pt-16 pb-8">
       <div className={container.wide}>
         <div className="grid grid-cols-1 gap-10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
           {/* Brand */}
@@ -84,6 +92,7 @@ const GlobalFooter = () => {
             Admin
           </Link>
         </div>
+      </div>
       </div>
     </footer>
   );
