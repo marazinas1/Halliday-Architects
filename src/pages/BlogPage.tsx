@@ -90,7 +90,7 @@ const BlogPage = () => {
         </div>
       </section>
 
-      <CTASection variant="sand" />
+      <CTASection />
 
       <GlobalFooter />
     </main>

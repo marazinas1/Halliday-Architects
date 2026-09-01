@@ -73,7 +73,7 @@ const AboutPage = () => {
 
       <PartnersSection />
 
-      <CTASection variant="light" />
+      <CTASection />
 
       <GlobalFooter />
     </main>

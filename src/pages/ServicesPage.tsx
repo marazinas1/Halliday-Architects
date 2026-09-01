@@ -93,9 +93,6 @@ const ServicesPage = () => {
       </div>
 
       <CTASection
-        variant="sand"
-        eyebrow="Next step"
-        heading="Start a project with us"
         description="Tell us about your site and what you have in mind, and we will reply personally."
       />
 
