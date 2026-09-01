@@ -24,7 +24,7 @@ import {
 } from "@/hooks/admin/useAdminTeam";
 import { getTeamPhotoUrl } from "@/lib/admin/uploadTeamPhoto";
 
-function AdminTeamInner() {
+export function TeamManager({ embedded = false }: { embedded?: boolean }) {
   const { data, isLoading } = useAdminTeam();
   const updatePublished = useUpdateTeamPublished();
   const reorder = useReorderTeam();
@@ -53,7 +53,7 @@ function AdminTeamInner() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink">Team</h1>
+        <h2 className={embedded ? "text-lg font-medium text-ink" : "text-2xl font-semibold text-ink"}>Team</h2>
         <Link to="/admin/team/new">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
@@ -188,7 +188,7 @@ function AdminTeamInner() {
 export default function AdminTeam() {
   return (
     <AdminProtected access="owner">
-      <AdminTeamInner />
+      <TeamManager />
     </AdminProtected>
   );
 }
