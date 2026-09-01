@@ -76,7 +76,10 @@ const CenteredRoster = ({ members }: { members: TeamMember[] }) => {
   return (
     <div className="space-y-12 lg:space-y-14">
       {rows.map((row) => (
-        <div key={row.map((member) => member.id).join("-")} className="flex justify-center gap-8 lg:gap-10">
+        <div
+          key={row.map((member) => member.id).join("-")}
+          className="flex flex-col items-center justify-center gap-8 sm:flex-row sm:items-start lg:gap-10"
+        >
           {row.map((member) => (
             <Reveal key={member.id} className="w-full max-w-[22rem]">
               <TeamCard m={member} />
