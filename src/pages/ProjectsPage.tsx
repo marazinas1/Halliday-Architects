@@ -13,7 +13,20 @@ import {
   usePublicProjects,
   type ProjectType,
 } from "@/hooks/usePublicProjects";
+import { getProjectRowSizes } from "@/lib/projectRows";
 import { container } from "@/lib/rhythm";
+
+const rowGridClasses: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 min-[820px]:grid-cols-2",
+  3: "grid-cols-1 lg:grid-cols-3",
+};
+
+const cardHeightClasses: Record<number, string> = {
+  1: "h-[max(46vh,280px)] min-[820px]:h-[max(66vh,460px)]",
+  2: "h-[max(46vh,280px)] min-[820px]:h-[max(54vh,380px)]",
+  3: "h-[max(46vh,280px)] min-[820px]:h-[max(54vh,380px)] lg:h-[max(42vh,300px)]",
+};
 
 /** Portfolio index — image-led grid with type and tag filtering. */
 const ProjectsPage = () => {
@@ -45,6 +58,15 @@ const ProjectsPage = () => {
       }),
     [projects, activeType, activeTags],
   );
+
+  const projectRows = useMemo(() => {
+    let projectIndex = 0;
+    return getProjectRowSizes(filtered.length).map((size) => {
+      const row = filtered.slice(projectIndex, projectIndex + size);
+      projectIndex += size;
+      return row;
+    });
+  }, [filtered]);
 
   const toggleTag = (slug: string) =>
     setActiveTags((prev) =>
@@ -124,43 +146,53 @@ const ProjectsPage = () => {
               )}
             </div>
           ) : (
-            <div className="grid gap-[2px] sm:grid-cols-2">
-              {filtered.map((p, i) => (
-                <Link
-                  key={p.id}
-                  to={`/projects/${p.slug}`}
-                  className={`group relative block aspect-[4/3] overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${filtered.length % 2 === 1 && i === filtered.length - 1 ? "sm:col-span-2 sm:aspect-[21/9]" : ""}`}
-                >
-                    {p.card_image_url ? (
-                      <img
-                        src={p.card_image_url}
-                        alt={p.card_image_alt}
-                        loading="lazy"
-                        decoding="async"
-                        width={1600}
-                        height={1200}
-                        className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-sand" />
-                    )}
-                  <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-6 text-paper md:p-8">
-                    <h2 className="text-xl font-semibold leading-tight text-paper">
-                      {p.title}
-                    </h2>
-                    <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-paper/70">
-                      {[
-                        p.location,
-                        PROJECT_TYPE_LABELS[p.project_type as ProjectType] ?? null,
-                        p.year_completed ?? null,
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </p>
+            <div className="flex w-full flex-col gap-[2px]">
+              {projectRows.map((row) => {
+                const rowSize = row.length;
+                return (
+                  <div
+                    key={row.map((project) => project.id).join("-")}
+                    className={`grid w-full gap-[2px] ${rowGridClasses[rowSize]}`}
+                  >
+                    {row.map((p) => (
+                      <Link
+                        key={p.id}
+                        to={`/projects/${p.slug}`}
+                        className={`group relative block overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
+                      >
+                        {p.card_image_url ? (
+                          <img
+                            src={p.card_image_url}
+                            alt={p.card_image_alt}
+                            loading="lazy"
+                            decoding="async"
+                            width={1600}
+                            height={1200}
+                            className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
+                          />
+                        ) : (
+                          <div className="h-full w-full bg-sand" />
+                        )}
+                        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
+                        <div className="absolute inset-x-0 bottom-0 p-6 text-paper md:p-8">
+                          <h2 className="text-xl font-semibold leading-tight text-paper">
+                            {p.title}
+                          </h2>
+                          <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-paper/70">
+                            {[
+                              p.location,
+                              PROJECT_TYPE_LABELS[p.project_type as ProjectType] ?? null,
+                              p.year_completed ?? null,
+                            ]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
-                </Link>
-              ))}
+                );
+              })}
             </div>
           )}
       </section>
