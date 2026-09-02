@@ -237,16 +237,22 @@ export default function PageImageSlot({
         </div>
       </div>
 
-      {isDeveloper && (
+      {(
         <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
           <span className="flex items-center gap-1 text-[11px] text-stone">
             <Lock className="h-3 w-3" />
             Developer
           </span>
-          <Dialog open={defaultOpen} onOpenChange={setDefaultOpen}>
+          <Dialog open={isDeveloper && defaultOpen} onOpenChange={(v) => isDeveloper && setDefaultOpen(v)}>
             <DialogTrigger asChild>
-              <Button type="button" size="sm" variant="ghost" className="h-7 text-xs" disabled={busy}>
-                {pinned ? "Change default" : "Set default"}
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                className="h-7 text-xs"
+                disabled={busy || !isDeveloper}
+              >
+                Change default
               </Button>
             </DialogTrigger>
             <DialogContent className="grid h-[94dvh] max-h-[94dvh] w-[96vw] max-w-[1500px] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-4 sm:p-5">
