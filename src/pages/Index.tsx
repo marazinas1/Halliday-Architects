@@ -35,11 +35,13 @@ const PhotoFrame = ({
   dark = false,
   priority = false,
   zoomOnHover = false,
+  objectPosition = "center",
 }: {
   photo: ResolvedPhoto | undefined;
   dark?: boolean;
   priority?: boolean;
   zoomOnHover?: boolean;
+  objectPosition?: string;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
@@ -50,6 +52,7 @@ const PhotoFrame = ({
         height={1400}
         priority={priority}
         sizes="(min-width: 1024px) 50vw, 100vw"
+        style={{ objectPosition }}
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
       />
     ) : (
@@ -62,6 +65,7 @@ const PhotoFrame = ({
     />
   </div>
 );
+
 
 const Index = () => {
   const { pathname } = useLocation();
