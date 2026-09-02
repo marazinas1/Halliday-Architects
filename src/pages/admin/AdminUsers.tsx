@@ -257,6 +257,9 @@ function AdminUsersInner() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 md:gap-3">
+                {user.isPlatformOwner ? (
+                  <span className="text-xs uppercase tracking-[0.12em] text-stone">Developer</span>
+                ) : (
                 <Select
                   value={user.role === "owner" || user.role === "editor" ? user.role : undefined}
                   disabled={isSelf || user.isPlatformOwner || user.isLastOwner || setRole.isPending}
