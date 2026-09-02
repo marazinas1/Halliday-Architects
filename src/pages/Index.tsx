@@ -40,6 +40,8 @@ const PhotoFrame = ({
   sizes = "100vw",
   quality = 80,
   maxWidth,
+  width = 2000,
+  height = 1400,
 }: {
   photo: ResolvedPhoto | undefined;
   dark?: boolean;
@@ -51,14 +53,17 @@ const PhotoFrame = ({
   quality?: number;
   /** Largest variant this slot can ever use — small tiles never fetch a master. */
   maxWidth?: number;
+  /** Declared dimensions must match the slot's real aspect ratio. */
+  width?: number;
+  height?: number;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
       <ResponsiveImage
         src={photo.url}
         alt={photo.alt}
-        width={2000}
-        height={1400}
+        width={width}
+        height={height}
         priority={priority}
         // The opening hero is the one image worth extra bytes; the rest of the
         // page is capped so the first paint stays fast.
@@ -123,7 +128,7 @@ const Index = () => {
       {/* Rich gallery wall: one opening image, then three, then two. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
         <div className="relative h-[82svh] min-h-[560px] overflow-hidden">
-          <PhotoFrame photo={wall[0]} priority sizes="100vw" quality={85} />
+          <PhotoFrame photo={wall[0]} priority sizes="100vw" quality={85} width={2400} height={1600} />
           <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-paper">
             <span aria-hidden="true" className="h-10 w-px bg-paper/50" />
             <span className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-paper/75">Scroll</span>
@@ -139,6 +144,8 @@ const Index = () => {
                 sizes="(min-width: 768px) 34vw, 100vw"
                 quality={82}
                 maxWidth={2000}
+                width={1200}
+                height={900}
               />
             </div>
           ))}
@@ -152,6 +159,8 @@ const Index = () => {
                 sizes={index === 0 ? "(min-width: 768px) 58vw, 100vw" : "(min-width: 768px) 42vw, 100vw"}
                 quality={82}
                 maxWidth={index === 0 ? 2400 : 2000}
+                width={index === 0 ? 1600 : 1200}
+                height={1000}
               />
             </div>
           ))}
@@ -179,6 +188,8 @@ const Index = () => {
                 sizes="(min-width: 768px) 34vw, 100vw"
                 quality={82}
                 maxWidth={1600}
+                width={1200}
+                height={1600}
               />
 
               <div
