@@ -36,12 +36,15 @@ const PhotoFrame = ({
   priority = false,
   zoomOnHover = false,
   objectPosition = "center",
+  sizes = "100vw",
 }: {
   photo: ResolvedPhoto | undefined;
   dark?: boolean;
   priority?: boolean;
   zoomOnHover?: boolean;
   objectPosition?: string;
+  /** Real rendered width of this slot, so the browser picks the right variant. */
+  sizes?: string;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
@@ -51,7 +54,10 @@ const PhotoFrame = ({
         width={2000}
         height={1400}
         priority={priority}
-        sizes="(min-width: 1024px) 50vw, 100vw"
+        // The opening hero is the one image worth extra bytes; the rest of the
+        // page stays lazy and modest so the first paint remains fast.
+        quality={priority ? 85 : 80}
+        sizes={sizes}
         style={{ objectPosition }}
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
       />
@@ -65,6 +71,7 @@ const PhotoFrame = ({
     />
   </div>
 );
+
 
 
 const Index = () => {
