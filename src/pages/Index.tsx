@@ -37,6 +37,8 @@ const PhotoFrame = ({
   zoomOnHover = false,
   objectPosition = "center",
   sizes = "100vw",
+  quality = 80,
+  maxWidth,
 }: {
   photo: ResolvedPhoto | undefined;
   dark?: boolean;
@@ -45,6 +47,9 @@ const PhotoFrame = ({
   objectPosition?: string;
   /** Real rendered width of this slot, so the browser picks the right variant. */
   sizes?: string;
+  quality?: number;
+  /** Largest variant this slot can ever use — small tiles never fetch a master. */
+  maxWidth?: number;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
@@ -55,8 +60,10 @@ const PhotoFrame = ({
         height={1400}
         priority={priority}
         // The opening hero is the one image worth extra bytes; the rest of the
-        // page stays lazy and modest so the first paint remains fast.
-        quality={priority ? 85 : 80}
+        // page is capped so the first paint stays fast.
+        quality={quality}
+        maxWidth={maxWidth}
+        blurUp
         sizes={sizes}
         style={{ objectPosition }}
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
@@ -71,6 +78,7 @@ const PhotoFrame = ({
     />
   </div>
 );
+
 
 
 
