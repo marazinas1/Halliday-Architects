@@ -74,13 +74,8 @@ const formatLocation = (row: {
  * All published portfolio projects with a card image (explicit cover first,
  * then a card image, then the hero). Ordered by sort_order, newest first.
  */
-export function usePublicProjects() {
-  return useQuery({
-    queryKey: ["public-projects"],
-    // Home, Projects, About and Services all read this list; keep it warm so
-    // moving between them does not refetch the whole catalogue.
-    staleTime: 5 * 60_000,
-    queryFn: async (): Promise<PublicProjectCard[]> => {
+export async function fetchPublicProjects(): Promise<PublicProjectCard[]> {
+    {
       const { data: rows, error } = await supabase
         .from("projects")
         .select(
