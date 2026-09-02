@@ -56,8 +56,9 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
   const activeProject = projects.find((p) => p.id === active) ?? projects[0] ?? null;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-4">
+    <div className="flex h-[70vh] min-h-0 flex-1 flex-col gap-4">
       <Tabs defaultValue="projects" className="flex min-h-0 flex-1 flex-col">
+
         <TabsList className="w-fit">
           <TabsTrigger value="projects">From projects</TabsTrigger>
           <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
