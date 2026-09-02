@@ -68,8 +68,8 @@ function HomeBody() {
           <h1 className="mb-1 text-2xl text-ink">Home</h1>
           <p className="text-sm text-stone">
             The six-photo gallery wall, the practice statement and the three tiles at the foot of the page.
-            Every panel below shows the photograph on the live page — those marked "Automatic"
-            come from project photography until you choose your own.
+            Every panel below shows the photograph on the live page - those marked "Default"
+            are used until you choose your own.
           </p>
         </div>
         <Button asChild variant="outline">
