@@ -6,7 +6,6 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import Reveal from "@/components/Reveal";
-import ParallaxPhoto from "@/components/ParallaxPhoto";
 import {
   resolveHomepage,
   useSiteSettings,
@@ -77,7 +76,9 @@ const Index = () => {
   const page = usePageContent();
   const { resolve } = useResolvedPageImages();
 
-  const wall = ["wall_1", "wall_2", "wall_3"].map((slot) => resolve("home", slot));
+  const wall = ["wall_1", "wall_2", "wall_3", "wall_4", "wall_5", "wall_6"].map((slot) =>
+    resolve("home", slot),
+  );
   const tilePhotos = ["tile_projects", "tile_about", "tile_contact"].map((slot) =>
     resolve("home", slot),
   );
@@ -100,23 +101,30 @@ const Index = () => {
         image={wall[0]?.url ?? undefined}
       />
 
-      {/* An edge-to-edge photo wall with no overlaid headline or controls. */}
+      {/* Rich gallery wall: one opening image, then three, then two. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
-        {/* Opening photograph: fills the window, capped at 3:2 so rooflines stay in frame. */}
-        <ParallaxPhoto className="aspect-[4/5] max-h-[100svh] min-h-[520px] sm:aspect-[3/2] sm:min-h-[560px]">
+        <div className="relative h-[82svh] min-h-[560px] overflow-hidden">
           <PhotoFrame photo={wall[0]} priority />
-        </ParallaxPhoto>
-        <div className="grid gap-[2px] md:grid-cols-2">
-          <Reveal>
-            <div className="relative aspect-[4/3]">
-              <PhotoFrame photo={wall[1]} />
-            </div>
-          </Reveal>
-          <Reveal delay={150}>
-            <div className="relative aspect-[4/3]">
-              <PhotoFrame photo={wall[2]} />
-            </div>
-          </Reveal>
+          <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-paper">
+            <span aria-hidden="true" className="h-10 w-px bg-paper/50" />
+            <span className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-paper/75">Scroll</span>
+          </div>
+        </div>
+
+        <div className="grid gap-[2px] md:h-[44vh] md:min-h-[300px] md:grid-cols-3">
+          {wall.slice(1, 4).map((photo, index) => (
+            <Reveal key={`wall-row-one-${index}`} delay={index * 150} className="relative h-[32vh] md:h-full">
+              <PhotoFrame photo={photo} />
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="grid gap-[2px] md:h-[60vh] md:min-h-[400px] md:grid-cols-[1.4fr_1fr]">
+          {wall.slice(4, 6).map((photo, index) => (
+            <Reveal key={`wall-row-two-${index}`} delay={index * 150} className="relative h-[40vh] md:h-full">
+              <PhotoFrame photo={photo} />
+            </Reveal>
+          ))}
         </div>
       </section>
 
