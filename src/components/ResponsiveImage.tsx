@@ -1,6 +1,4 @@
 import type React from "react";
-import { useState } from "react";
-
 import { cn } from "@/lib/utils";
 
 /**
@@ -42,11 +40,6 @@ export function buildSrcSet(url: string, quality = 80, maxWidth?: number): strin
   return variants.length ? variants.join(", ") : null;
 }
 
-/** Tiny blurred stand-in shown while the real photograph downloads. */
-export function placeholderUrlFor(url: string): string | null {
-  return transformedUrl(url, 32, 30);
-}
-
 type Props = {
   src: string;
   alt: string;
@@ -63,8 +56,6 @@ type Props = {
   quality?: number;
   /** Largest variant worth generating for this slot. */
   maxWidth?: number;
-  /** Show a blurred low-resolution stand-in until the photograph decodes. */
-  blurUp?: boolean;
   width?: number;
   height?: number;
   style?: React.CSSProperties;
@@ -78,21 +69,17 @@ export default function ResponsiveImage({
   priority = false,
   quality = 80,
   maxWidth,
-  blurUp = false,
   width,
   height,
   style,
 }: Props) {
-  const [loaded, setLoaded] = useState(false);
   const srcSet = buildSrcSet(src, quality, maxWidth);
   const transformable = srcSet !== null;
   const candidates = widthsFor(maxWidth);
   const fallbackWidth = priority
     ? candidates[Math.min(candidates.length - 1, 3)]
     : candidates[Math.min(candidates.length - 1, 2)];
-  const placeholder = blurUp && transformable ? placeholderUrlFor(src) : null;
-
-  const image = (
+  return (
     <img
       src={transformable ? transformedUrl(src, fallbackWidth, quality)! : src}
       srcSet={srcSet ?? undefined}
@@ -103,29 +90,10 @@ export default function ResponsiveImage({
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
       fetchPriority={priority ? "high" : undefined}
-      onLoad={() => setLoaded(true)}
-      style={placeholder ? { ...style, opacity: loaded ? 1 : 0, transition: "opacity 400ms ease-out" } : style}
+      style={style}
       className={cn(className)}
     />
   );
 
-  if (!placeholder) return image;
-
-  return (
-    <>
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${placeholder})`,
-          filter: "blur(18px)",
-          transform: "scale(1.06)",
-          opacity: loaded ? 0 : 1,
-          transition: "opacity 400ms ease-out",
-        }}
-      />
-      {image}
-    </>
-  );
 }
 
