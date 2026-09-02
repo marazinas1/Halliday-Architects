@@ -11,7 +11,7 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import Testimonials from "@/components/sections/Testimonials";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
-import { container, sectionPadding } from "@/lib/rhythm";
+import { container, gutter, sectionPadding } from "@/lib/rhythm";
 
 const AboutPage = () => {
   const page = usePageContent();
