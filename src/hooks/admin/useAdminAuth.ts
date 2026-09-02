@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AdminRole = "platform_owner" | "owner" | "editor";
+export type AdminRole = "developer" | "owner" | "editor";
 /** Sections an editor may not reach. */
 export type AdminAccess = "staff" | "owner";
 
@@ -10,10 +10,10 @@ export type AdminAuthState =
   | { status: "unauthorized" }
   | { status: "authorized"; userId: string; email: string; role: AdminRole };
 
-const STAFF_ROLES: AdminRole[] = ["platform_owner", "owner", "editor"];
+const STAFF_ROLES: AdminRole[] = ["developer", "owner", "editor"];
 
 export function isOwnerRole(role: AdminRole) {
-  return role === "platform_owner" || role === "owner";
+  return role === "developer" || role === "owner";
 }
 
 export function canAccess(role: AdminRole, access: AdminAccess) {

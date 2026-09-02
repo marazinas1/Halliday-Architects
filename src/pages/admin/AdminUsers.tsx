@@ -37,7 +37,7 @@ import { useAdminAuth } from "@/hooks/admin/useAdminAuth";
 
 
 const ROLE_LABEL: Record<string, string> = {
-  platform_owner: "Developer",
+  developer: "Developer",
   owner: "Owner",
   editor: "Editor",
   admin: "Legacy admin",

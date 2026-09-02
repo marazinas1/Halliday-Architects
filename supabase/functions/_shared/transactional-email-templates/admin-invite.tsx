@@ -16,7 +16,7 @@ import {
 const SITE_NAME = 'Halliday Architects'
 
 const ROLE_LABELS: Record<string, string> = {
-  platform_owner: 'Developer',
+  developer: 'Developer',
   owner: 'Owner',
   editor: 'Editor',
 }

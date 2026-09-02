@@ -126,7 +126,7 @@ Deno.serve(async (req) => {
     .select('role')
     .eq('user_id', callerId)
   const roles = (callerRoles ?? []).map((r: { role: string }) => r.role)
-  const isPlatformOwner = roles.includes('platform_owner')
+  const isPlatformOwner = roles.includes('developer')
   const isOwner = isPlatformOwner || roles.includes('owner')
   if (!isOwner) return json({ error: 'Only owners can manage users.' }, 403)
 
@@ -138,16 +138,16 @@ Deno.serve(async (req) => {
   const { data: allRoles } = await admin.from('user_roles').select('user_id, role')
   const roleByUser = new Map<string, string>()
   for (const row of allRoles ?? []) roleByUser.set(row.user_id, row.role)
-  const platformOwnerIds = new Set(
-    (allRoles ?? []).filter((r) => r.role === 'platform_owner').map((r) => r.user_id),
+  const developerIds = new Set(
+    (allRoles ?? []).filter((r) => r.role === 'developer').map((r) => r.user_id),
   )
   const ownerIds = (allRoles ?? []).filter((r) => r.role === 'owner').map((r) => r.user_id)
 
   /**
-   * Developer (platform_owner) records are visible to everyone, so the client can
+   * Developer (developer) records are visible to everyone, so the client can
    * see who maintains the system, but only a developer may change them.
    */
-  const shielded = (userId: string) => platformOwnerIds.has(userId) && !isPlatformOwner
+  const shielded = (userId: string) => developerIds.has(userId) && !isPlatformOwner
 
   /**
    * Refuses any change that would leave the site without an owner account.
@@ -167,7 +167,7 @@ Deno.serve(async (req) => {
         createdAt: u.created_at,
         lastSignInAt: u.last_sign_in_at ?? null,
         confirmed: Boolean(u.email_confirmed_at),
-        isPlatformOwner: platformOwnerIds.has(u.id),
+        isPlatformOwner: developerIds.has(u.id),
         isLastOwner: roleByUser.get(u.id) === 'owner' && ownerIds.length <= 1,
       }))
       .sort((a, b) => a.email.localeCompare(b.email))
