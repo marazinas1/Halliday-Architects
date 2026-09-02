@@ -409,6 +409,29 @@
     }
   }
 
+  /* Subtle scroll cue: a soft dot travels down a thin line and fades. */
+  @keyframes scrollCue {
+    0% {
+      opacity: 0;
+      transform: translateY(-30%);
+    }
+    35% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(130%);
+    }
+  }
+
+  @keyframes scrollCueBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
