@@ -201,7 +201,7 @@ export default function PageImageSlot({
           <p className="truncate text-sm font-medium text-ink">{label}</p>
           {help && <p className="mt-0.5 text-xs text-stone">{help}</p>}
           {source === "default" && (
-            <p className="mt-0.5 text-xs text-stone">Default photograph — shown on the site now</p>
+            <p className="mt-0.5 text-xs text-stone">Default photograph - shown on the site now</p>
           )}
           {source === "automatic" && (
             <p className="mt-0.5 text-xs text-stone">
