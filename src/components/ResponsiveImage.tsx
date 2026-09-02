@@ -30,6 +30,12 @@ type Props = {
   sizes?: string;
   /** True for the single largest above-the-fold image. */
   priority?: boolean;
+  /**
+   * Encoder quality for the transformed variants. Full-bleed heroes justify a
+   * higher setting; images inside a grid do not, and the extra bytes would
+   * only slow the page down.
+   */
+  quality?: number;
   width?: number;
   height?: number;
   style?: React.CSSProperties;
@@ -41,16 +47,18 @@ export default function ResponsiveImage({
   className,
   sizes = "100vw",
   priority = false,
+  quality = 80,
   width,
   height,
   style,
 }: Props) {
   const variants = WIDTHS.map((w) => {
-    const url = transformedUrl(src, w);
+    const url = transformedUrl(src, w, quality);
     return url ? `${url} ${w}w` : null;
   }).filter(Boolean) as string[];
 
   const transformable = variants.length > 0;
+
 
   return (
     <img
