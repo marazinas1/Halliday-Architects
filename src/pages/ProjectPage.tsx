@@ -85,6 +85,14 @@ const ProjectPage = () => {
     return (
       <main className="min-h-screen bg-background">
         <GlobalNav />
+        {!isPreview && (
+          <SEO
+            title="Project not found | Halliday Architects"
+            description="This project is no longer available. Browse the Halliday Architects portfolio."
+            path="/projects"
+            noindex
+          />
+        )}
         <div className="py-40 text-center">
           <h1 className="font-serif text-3xl font-light text-ink">
             {isPreview ? "No preview data" : "Project not found"}
