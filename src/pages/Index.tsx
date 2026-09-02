@@ -111,7 +111,7 @@ const Index = () => {
       {/* Rich gallery wall: one opening image, then three, then two. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
         <div className="relative h-[82svh] min-h-[560px] overflow-hidden">
-          <PhotoFrame photo={wall[0]} priority />
+          <PhotoFrame photo={wall[0]} priority sizes="100vw" />
           <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-paper">
             <span aria-hidden="true" className="h-10 w-px bg-paper/50" />
             <span className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-paper/75">Scroll</span>
