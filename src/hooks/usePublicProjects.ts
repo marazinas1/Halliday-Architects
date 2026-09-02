@@ -104,7 +104,13 @@ export function usePublicProjects() {
             .or("is_cover.eq.true,category.in.(card,hero)")
             .order("sort_order", { ascending: true }),
           supabase.from("project_tags").select("project_id, tags(slug)").in("project_id", ids),
-          supabase.from("image_tags").select("image_id, tags(slug)"),
+          // Image tags come back already joined to their project, so the whole
+          // image table never has to travel to the browser.
+          supabase
+            .from("image_tags")
+            .select("tags(slug), project_images!inner(project_id)")
+            .in("project_images.project_id", ids),
+
         ]);
       if (imgErr) throw imgErr;
 
