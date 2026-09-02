@@ -149,7 +149,7 @@ const Index = () => {
         {tiles.map((tile, index) => (
           <Reveal key={tile.to} delay={index * 150}>
             <Link to={tile.to} className="group relative block aspect-[3/4] overflow-hidden">
-              <PhotoFrame photo={tilePhotos[index]} zoomOnHover />
+              <PhotoFrame photo={tilePhotos[index]} zoomOnHover sizes="(min-width: 768px) 34vw, 100vw" />
               <div
                 aria-hidden="true"
                 className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"
