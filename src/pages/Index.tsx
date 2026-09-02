@@ -119,29 +119,41 @@ const Index = () => {
       {/* Rich gallery wall: one opening image, then three, then two. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
         <div className="relative h-[82svh] min-h-[560px] overflow-hidden">
-          <PhotoFrame photo={wall[0]} priority sizes="100vw" />
+          <PhotoFrame photo={wall[0]} priority sizes="100vw" quality={85} />
           <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-paper">
             <span aria-hidden="true" className="h-10 w-px bg-paper/50" />
             <span className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-paper/75">Scroll</span>
           </div>
         </div>
 
+        {/* A third of the width each — never worth more than a 1400px master. */}
         <div className="grid gap-[2px] md:h-[44vh] md:min-h-[300px] md:grid-cols-3">
           {wall.slice(1, 4).map((photo, index) => (
-            <Reveal key={`wall-row-one-${index}`} delay={index * 150} className="relative h-[32vh] md:h-full">
-              <PhotoFrame photo={photo} sizes="(min-width: 768px) 34vw, 100vw" />
-            </Reveal>
+            <div key={`wall-row-one-${index}`} className="relative h-[32vh] md:h-full">
+              <PhotoFrame
+                photo={photo}
+                sizes="(min-width: 768px) 34vw, 100vw"
+                quality={78}
+                maxWidth={1400}
+              />
+            </div>
           ))}
         </div>
 
         <div className="grid gap-[2px] md:h-[60vh] md:min-h-[400px] md:grid-cols-[1.4fr_1fr]">
           {wall.slice(4, 6).map((photo, index) => (
-            <Reveal key={`wall-row-two-${index}`} delay={index * 150} className="relative h-[40vh] md:h-full">
-              <PhotoFrame photo={photo} sizes="(min-width: 768px) 60vw, 100vw" />
-            </Reveal>
+            <div key={`wall-row-two-${index}`} className="relative h-[40vh] md:h-full">
+              <PhotoFrame
+                photo={photo}
+                sizes={index === 0 ? "(min-width: 768px) 58vw, 100vw" : "(min-width: 768px) 42vw, 100vw"}
+                quality={80}
+                maxWidth={2000}
+              />
+            </div>
           ))}
         </div>
       </section>
+
 
 
       <Reveal>
