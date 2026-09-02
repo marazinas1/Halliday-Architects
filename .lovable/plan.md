@@ -45,6 +45,14 @@ shape so nothing shifts when the photograph lands:
   is actually coming.
 - Contact photo band: currently can vanish entirely after load if no photograph
   resolves. Decide before painting.
+- Contact map: MapLibre makes this page ~980KB (259KB gzip), more than every
+  other page combined. Load the map only when the user scrolls to it (lazy
+  import behind an IntersectionObserver), showing a static placeholder of
+  identical height until then so nothing jumps.
+- `PhotoFrame` in `Index.tsx` declares `width={2000} height={1400}` for every
+  slot, including the lower `aspect-[3/4]` upright cards. Declared dimensions
+  must match each slot's real ratio.
+
 
 ## 3. Consistency pass (the "tidy edges" question)
 
@@ -80,7 +88,12 @@ Confirmed: Contact's edges do **not** match the rest of the site.
   pages refetches team members, blog posts and individual projects every time.
   Bring them in line with the rest.
 - The project detail query selects every column, including admin-only fields.
-  Narrow it to what the page renders.
+  Narrow it to what the page renders — carefully: the `usePublicProjects` family
+  also feeds the homepage wall, the About strip and the Services bands through
+  `useResolvedPageImages`. Dropping a field used to compute `card_image_url`
+  breaks the homepage, not Projects. Keep the detail-query narrowing separate
+  from the shared list query and verify the homepage on its own afterwards.
+
 
 ## Sharpness: unchanged
 
@@ -98,7 +111,11 @@ pixels.
 - `src/lib/rhythm.ts`: add a shared `pageHeader` class so headers stop
   hand-rolling padding; apply it in Index, Projects, Services, Contact, Blog,
   About.
-- `src/pages/ContactPage.tsx`: full-bleed photo band, stable band height.
+- `src/pages/ContactPage.tsx`: full-bleed photo band, stable band height,
+  deferred MapLibre load.
+- `src/components/ContactMap.tsx`: lazy chunk + observer + placeholder.
+- `src/pages/Index.tsx`: per-slot `width`/`height` matching each aspect ratio.
+
 - `src/pages/ProjectPage.tsx`, `ServicesPage.tsx`: shape-matched skeletons.
 - `src/pages/NotFound.tsx`: rebuild with nav, footer, SEO, site tokens.
 - `src/pages/BlogPostPage.tsx`, `sections/TeamSection.tsx`,
@@ -113,5 +130,7 @@ pixels.
 ## Verification
 
 Re-measure hero paint time on Home, Projects, About and Contact before/after,
-check every page at 1440px and 390px for gutter alignment, and confirm image
-widths are unchanged at 1x and 2x.
+check every page at 1440px and 390px for gutter alignment, confirm image widths
+are unchanged at 1x and 2x, confirm the Contact bundle drops sharply and the map
+still appears on scroll, and re-check the homepage separately after the query
+narrowing.
