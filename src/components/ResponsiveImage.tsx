@@ -91,7 +91,7 @@ export default function ResponsiveImage({
       height={height}
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
-      fetchPriority={priority ? "high" : undefined}
+      {...(priority ? { fetchpriority: "high" } : {})}
       style={style}
       onClick={onClick}
       className={cn(className)}
