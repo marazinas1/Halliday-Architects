@@ -172,7 +172,7 @@ export default function PageImageSlot({
   };
 
   const badge =
-    source === "chosen" ? "Chosen" : source === "default" ? "Default" : source === "automatic" ? "Automatic" : null;
+    source === "chosen" ? "Chosen" : source === "default" || source === "automatic" ? "Default" : null;
 
   return (
     <div className="rounded border border-line bg-card p-3">
@@ -201,11 +201,11 @@ export default function PageImageSlot({
           <p className="truncate text-sm font-medium text-ink">{label}</p>
           {help && <p className="mt-0.5 text-xs text-stone">{help}</p>}
           {source === "default" && (
-            <p className="mt-0.5 text-xs text-stone">Default photograph — shown on the site now</p>
+            <p className="mt-0.5 text-xs text-stone">Default photograph - shown on the site now</p>
           )}
           {source === "automatic" && (
             <p className="mt-0.5 text-xs text-stone">
-              {fallbackFrom ? `From ${fallbackFrom} — shown on the site now` : "Project photography is used"}
+              {fallbackFrom ? `From ${fallbackFrom} - shown on the site now` : "Project photography is used"}
             </p>
           )}
         </div>

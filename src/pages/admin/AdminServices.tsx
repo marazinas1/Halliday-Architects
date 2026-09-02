@@ -223,7 +223,7 @@ function ServicesBody() {
                 )}
                 {!service.imageUrl && serviceFallback(index).url && (
                   <span className="absolute inset-x-0 bottom-0 bg-ink/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-paper">
-                    Automatic
+                    Default
                   </span>
                 )}
               </div>
