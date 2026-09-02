@@ -61,7 +61,9 @@ const ServicesPage = () => {
           const project = projects[index];
           const imageUrl = group.imageUrl ?? project?.card_image_url ?? null;
           const imageAlt = group.imageUrl ? group.title : project?.card_image_alt ?? group.title;
-          const hasMedia = isLoading || Boolean(imageUrl);
+          // Reserve image space only when an image is actually coming, so the
+          // band never collapses from two columns to one after loading.
+          const hasMedia = Boolean(imageUrl) || (isLoading && Boolean(group.imageUrl) === false);
           const imageFirstOnDesktop = index % 2 === 0;
 
           return (
