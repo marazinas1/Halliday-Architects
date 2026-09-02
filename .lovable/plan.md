@@ -88,7 +88,12 @@ Confirmed: Contact's edges do **not** match the rest of the site.
   pages refetches team members, blog posts and individual projects every time.
   Bring them in line with the rest.
 - The project detail query selects every column, including admin-only fields.
-  Narrow it to what the page renders.
+  Narrow it to what the page renders — carefully: the `usePublicProjects` family
+  also feeds the homepage wall, the About strip and the Services bands through
+  `useResolvedPageImages`. Dropping a field used to compute `card_image_url`
+  breaks the homepage, not Projects. Keep the detail-query narrowing separate
+  from the shared list query and verify the homepage on its own afterwards.
+
 
 ## Sharpness: unchanged
 
