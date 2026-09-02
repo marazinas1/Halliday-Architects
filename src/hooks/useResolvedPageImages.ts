@@ -27,7 +27,6 @@ const HOME_ORDER = [
   "wall_1",
   "wall_2",
   "wall_3",
-  "wall_4",
   "tile_projects",
   "tile_about",
   "tile_contact",

@@ -14,10 +14,9 @@ import { useSavePageText } from "@/hooks/admin/usePageContentAdmin";
 import { HOMEPAGE_FALLBACKS } from "@/hooks/useSiteSettings";
 
 const WALL_SLOTS = [
-  { slot: "wall_1", label: "Opening photograph", help: "Full width, the first thing visitors see.", aspect: "aspect-[16/9]" },
-  { slot: "wall_2", label: "Second photograph (left)", help: "The wider of the two side by side.", aspect: "aspect-[7/5]" },
-  { slot: "wall_3", label: "Third photograph (right)", help: "The narrower of the two.", aspect: "aspect-[5/4]" },
-  { slot: "wall_4", label: "Closing photograph", help: "Full width, below the pair.", aspect: "aspect-[16/9]" },
+  { slot: "wall_1", label: "Opening photograph", help: "Fills the screen on arrival. A roughly square original works best — very wide crops cut off rooflines.", aspect: "aspect-[3/2]" },
+  { slot: "wall_2", label: "Second photograph (left)", help: "Left of the pair below the opening photograph.", aspect: "aspect-[4/3]" },
+  { slot: "wall_3", label: "Third photograph (right)", help: "Right of the pair below the opening photograph.", aspect: "aspect-[4/3]" },
 ];
 
 const TILE_SLOTS = [

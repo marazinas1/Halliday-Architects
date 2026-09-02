@@ -1,3 +1,4 @@
+import type React from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -31,6 +32,7 @@ type Props = {
   priority?: boolean;
   width?: number;
   height?: number;
+  style?: React.CSSProperties;
 };
 
 export default function ResponsiveImage({
@@ -41,6 +43,7 @@ export default function ResponsiveImage({
   priority = false,
   width,
   height,
+  style,
 }: Props) {
   const variants = WIDTHS.map((w) => {
     const url = transformedUrl(src, w);
@@ -60,6 +63,7 @@ export default function ResponsiveImage({
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
       fetchPriority={priority ? "high" : undefined}
+      style={style}
       className={cn(className)}
     />
   );

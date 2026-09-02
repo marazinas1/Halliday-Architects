@@ -6,6 +6,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import Reveal from "@/components/Reveal";
+import ParallaxPhoto from "@/components/ParallaxPhoto";
 import {
   resolveHomepage,
   useSiteSettings,
@@ -35,11 +36,13 @@ const PhotoFrame = ({
   dark = false,
   priority = false,
   zoomOnHover = false,
+  objectPosition = "center",
 }: {
   photo: ResolvedPhoto | undefined;
   dark?: boolean;
   priority?: boolean;
   zoomOnHover?: boolean;
+  objectPosition?: string;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
@@ -50,6 +53,7 @@ const PhotoFrame = ({
         height={1400}
         priority={priority}
         sizes="(min-width: 1024px) 50vw, 100vw"
+        style={{ objectPosition }}
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
       />
     ) : (
@@ -63,6 +67,7 @@ const PhotoFrame = ({
   </div>
 );
 
+
 const Index = () => {
   const { pathname } = useLocation();
   const isPreview = pathname === "/admin/preview/homepage";
@@ -72,7 +77,7 @@ const Index = () => {
   const page = usePageContent();
   const { resolve } = useResolvedPageImages();
 
-  const wall = ["wall_1", "wall_2", "wall_3", "wall_4"].map((slot) => resolve("home", slot));
+  const wall = ["wall_1", "wall_2", "wall_3"].map((slot) => resolve("home", slot));
   const tilePhotos = ["tile_projects", "tile_about", "tile_contact"].map((slot) =>
     resolve("home", slot),
   );
@@ -97,29 +102,24 @@ const Index = () => {
 
       {/* An edge-to-edge photo wall with no overlaid headline or controls. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
-        <Reveal>
-          <div className="relative h-[78svh] min-h-[520px]">
-            <PhotoFrame photo={wall[0]} priority />
-          </div>
-        </Reveal>
-        <div className="grid gap-[2px] md:grid-cols-[1.4fr_1fr]">
+        {/* Opening photograph: fills the window, capped at 3:2 so rooflines stay in frame. */}
+        <ParallaxPhoto className="aspect-[4/5] max-h-[100svh] min-h-[520px] sm:aspect-[3/2] sm:min-h-[560px]">
+          <PhotoFrame photo={wall[0]} priority />
+        </ParallaxPhoto>
+        <div className="grid gap-[2px] md:grid-cols-2">
           <Reveal>
-            <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+            <div className="relative aspect-[4/3]">
               <PhotoFrame photo={wall[1]} />
             </div>
           </Reveal>
-          <Reveal delay={120}>
-            <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+          <Reveal delay={150}>
+            <div className="relative aspect-[4/3]">
               <PhotoFrame photo={wall[2]} />
             </div>
           </Reveal>
         </div>
-        <Reveal>
-          <div className="relative h-[78vh] min-h-[520px]">
-            <PhotoFrame photo={wall[3]} dark />
-          </div>
-        </Reveal>
       </section>
+
 
       <Reveal>
         <section className="px-6 py-24 text-center md:py-32">
