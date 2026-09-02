@@ -76,7 +76,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           ) : (
             <div className="flex min-h-0 flex-1 gap-5">
               {/* Project list: a column on desktop, a select on narrow screens. */}
-              <div className="hidden w-56 shrink-0 flex-col gap-2 md:flex">
+              <div className="hidden w-72 shrink-0 flex-col gap-2 md:flex">
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
