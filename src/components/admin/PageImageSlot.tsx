@@ -205,7 +205,7 @@ export default function PageImageSlot({
           )}
           {source === "automatic" && (
             <p className="mt-0.5 text-xs text-stone">
-              {fallbackFrom ? `From ${fallbackFrom} — shown on the site now` : "Project photography is used"}
+              {fallbackFrom ? `From ${fallbackFrom} - shown on the site now` : "Project photography is used"}
             </p>
           )}
         </div>
