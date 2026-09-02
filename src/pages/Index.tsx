@@ -101,29 +101,24 @@ const Index = () => {
 
       {/* An edge-to-edge photo wall with no overlaid headline or controls. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
-        <Reveal>
-          <div className="relative h-[78svh] min-h-[520px]">
-            <PhotoFrame photo={wall[0]} priority />
-          </div>
-        </Reveal>
-        <div className="grid gap-[2px] md:grid-cols-[1.4fr_1fr]">
+        {/* Opening photograph: fills the window, capped at 3:2 so rooflines stay in frame. */}
+        <ParallaxPhoto className="aspect-[4/5] max-h-[100svh] min-h-[520px] sm:aspect-[3/2] sm:min-h-[560px]">
+          <PhotoFrame photo={wall[0]} priority />
+        </ParallaxPhoto>
+        <div className="grid gap-[2px] md:grid-cols-2">
           <Reveal>
-            <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+            <div className="relative aspect-[4/3]">
               <PhotoFrame photo={wall[1]} />
             </div>
           </Reveal>
-          <Reveal delay={120}>
-            <div className="relative h-[50vh] min-h-[320px] md:h-[60vh] md:min-h-[400px]">
+          <Reveal delay={150}>
+            <div className="relative aspect-[4/3]">
               <PhotoFrame photo={wall[2]} />
             </div>
           </Reveal>
         </div>
-        <Reveal>
-          <div className="relative h-[78vh] min-h-[520px]">
-            <PhotoFrame photo={wall[3]} dark />
-          </div>
-        </Reveal>
       </section>
+
 
       <Reveal>
         <section className="px-6 py-24 text-center md:py-32">
