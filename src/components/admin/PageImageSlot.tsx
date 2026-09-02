@@ -135,8 +135,8 @@ export default function PageImageSlot({
                 {current ? "Change" : "Choose your own"}
               </Button>
             </DialogTrigger>
-            <DialogContent className="flex h-[85vh] max-h-[85vh] max-w-6xl flex-col overflow-hidden">
-              <DialogHeader>
+            <DialogContent className="flex h-[94vh] max-h-[94vh] w-[96vw] max-w-[1500px] flex-col gap-0 overflow-hidden p-4 sm:p-5">
+              <DialogHeader className="px-1 pb-3">
                 <DialogTitle>{label}</DialogTitle>
               </DialogHeader>
               <ImagePicker

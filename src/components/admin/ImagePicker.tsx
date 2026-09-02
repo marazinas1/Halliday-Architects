@@ -56,7 +56,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
   const activeProject = projects.find((p) => p.id === active) ?? projects[0] ?? null;
 
   return (
-    <div className="flex h-[70vh] min-h-0 flex-1 flex-col gap-4">
+    <div className="flex h-full min-h-0 flex-1 flex-col gap-4">
       <Tabs defaultValue="projects" className="flex min-h-0 flex-1 flex-col">
 
         <TabsList className="w-fit">
@@ -81,6 +81,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search projects"
+                  className="shrink-0"
                 />
                 <div className="min-h-0 flex-1 overflow-y-auto rounded border border-line">
                   {projects.length === 0 ? (
@@ -94,7 +95,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                           type="button"
                           onClick={() => setActive(project.id)}
                           className={cn(
-                            "flex w-full items-baseline justify-between gap-2 border-b border-line px-3 py-2 text-left text-xs transition-colors last:border-b-0",
+                            "flex w-full items-baseline justify-between gap-2 border-b border-line px-3 py-2.5 text-left text-xs transition-colors last:border-b-0",
                             isActive ? "bg-sand font-medium text-ink" : "text-stone hover:bg-sand/60 hover:text-ink",
                           )}
                         >
@@ -139,7 +140,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                 )}
 
                 <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
 
                     {(activeProject?.images ?? []).map((img) => {
                       const selected =
@@ -196,7 +197,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
             </p>
           ) : (
             <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
                 {uploaded.map((img) => {
                   const selected =
                     current?.bucket === SITE_IMAGES_BUCKET && current.path === img.path;
