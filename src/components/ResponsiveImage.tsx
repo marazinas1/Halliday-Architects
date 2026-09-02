@@ -1,4 +1,4 @@
-import type React from "react";
+import { useState, type React } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -22,6 +22,29 @@ export function transformedUrl(url: string, width: number, quality = 80): string
   return `${base}${sep}width=${width}&resize=contain&quality=${quality}`;
 }
 
+/** Candidate widths for a slot, never larger than the slot can actually use. */
+function widthsFor(maxWidth?: number) {
+  if (!maxWidth) return WIDTHS;
+  const kept = WIDTHS.filter((w) => w <= maxWidth);
+  return kept.length ? kept : [WIDTHS[0]];
+}
+
+/** `srcset` string for a slot, or null when the URL is not transformable. */
+export function buildSrcSet(url: string, quality = 80, maxWidth?: number): string | null {
+  const variants = widthsFor(maxWidth)
+    .map((w) => {
+      const v = transformedUrl(url, w, quality);
+      return v ? `${v} ${w}w` : null;
+    })
+    .filter(Boolean) as string[];
+  return variants.length ? variants.join(", ") : null;
+}
+
+/** Tiny blurred stand-in shown while the real photograph downloads. */
+export function placeholderUrlFor(url: string): string | null {
+  return transformedUrl(url, 32, 30);
+}
+
 type Props = {
   src: string;
   alt: string;
@@ -36,6 +59,10 @@ type Props = {
    * only slow the page down.
    */
   quality?: number;
+  /** Largest variant worth generating for this slot. */
+  maxWidth?: number;
+  /** Show a blurred low-resolution stand-in until the photograph decodes. */
+  blurUp?: boolean;
   width?: number;
   height?: number;
   style?: React.CSSProperties;
@@ -48,22 +75,25 @@ export default function ResponsiveImage({
   sizes = "100vw",
   priority = false,
   quality = 80,
+  maxWidth,
+  blurUp = false,
   width,
   height,
   style,
 }: Props) {
-  const variants = WIDTHS.map((w) => {
-    const url = transformedUrl(src, w, quality);
-    return url ? `${url} ${w}w` : null;
-  }).filter(Boolean) as string[];
+  const [loaded, setLoaded] = useState(false);
+  const srcSet = buildSrcSet(src, quality, maxWidth);
+  const transformable = srcSet !== null;
+  const candidates = widthsFor(maxWidth);
+  const fallbackWidth = priority
+    ? candidates[Math.min(candidates.length - 1, 3)]
+    : candidates[Math.min(candidates.length - 1, 2)];
+  const placeholder = blurUp && transformable ? placeholderUrlFor(src) : null;
 
-  const transformable = variants.length > 0;
-
-
-  return (
+  const image = (
     <img
-      src={transformable ? transformedUrl(src, priority ? 2000 : 1400, quality)! : src}
-      srcSet={transformable ? variants.join(", ") : undefined}
+      src={transformable ? transformedUrl(src, fallbackWidth, quality)! : src}
+      srcSet={srcSet ?? undefined}
       sizes={transformable ? sizes : undefined}
       alt={alt}
       width={width}
@@ -71,8 +101,29 @@ export default function ResponsiveImage({
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
       fetchPriority={priority ? "high" : undefined}
-      style={style}
+      onLoad={() => setLoaded(true)}
+      style={placeholder ? { ...style, opacity: loaded ? 1 : 0, transition: "opacity 400ms ease-out" } : style}
       className={cn(className)}
     />
   );
+
+  if (!placeholder) return image;
+
+  return (
+    <>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${placeholder})`,
+          filter: "blur(18px)",
+          transform: "scale(1.06)",
+          opacity: loaded ? 0 : 1,
+          transition: "opacity 400ms ease-out",
+        }}
+      />
+      {image}
+    </>
+  );
 }
+
