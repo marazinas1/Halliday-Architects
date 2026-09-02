@@ -525,7 +525,9 @@ export default function ProjectImageManager({
             </div>
           </SortableContext>
         </DndContext>
+        </>
       )}
+
 
       {rows.length > 0 && (
         <p className="text-xs text-stone">
