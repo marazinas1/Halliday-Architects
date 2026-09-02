@@ -13,10 +13,11 @@ import { usePublicProjects } from "@/hooks/usePublicProjects";
 export type ResolvedPhoto = {
   url: string | null;
   alt: string;
-  source: "chosen" | "automatic" | "none";
+  source: "chosen" | "default" | "automatic" | "none";
   /** Project the automatic photograph came from. */
   from?: string;
 };
+
 
 /**
  * Order in which the homepage consumes published projects. One project per
