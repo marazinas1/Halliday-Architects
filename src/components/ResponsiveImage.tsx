@@ -62,7 +62,7 @@ export default function ResponsiveImage({
 
   return (
     <img
-      src={transformable ? transformedUrl(src, 1400)! : src}
+      src={transformable ? transformedUrl(src, priority ? 2000 : 1400, quality)! : src}
       srcSet={transformable ? variants.join(", ") : undefined}
       sizes={transformable ? sizes : undefined}
       alt={alt}
