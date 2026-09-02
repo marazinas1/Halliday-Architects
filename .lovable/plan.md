@@ -25,9 +25,14 @@ Owners and editors keep working exactly as now. If they clear their own choice, 
 - Signed in as a developer, each panel gains a small extra control: "Set as default" / "Clear default", visible only to that role. Owners and editors never see it and cannot call it.
 - The defaults can be either a project photograph or an upload, using the same picker.
 
+### Defaults survive project deletion
+
+Yes. Deleting a project deletes its files from the `project-images` bucket, so a default that merely pointed at a project photograph would break. To prevent that, setting a default always **copies** the file into a separate `site-images/defaults/<page>/<slot>` location owned by the defaults layer. From then on the default is independent: the project can be deleted, renamed or unpublished and the hero and every other slot keep showing the same photograph. Only a developer clearing or replacing the default removes that copy.
+
+
 ## Technical notes
 
 - New table `public.page_media_defaults` mirroring `page_media` (page, slot, bucket, path, alt, unique on page+slot), with GRANTs, RLS: read for anon and authenticated, write restricted to `is_platform_owner(auth.uid())` (the `developer` role).
 - `usePageContent` fetches the defaults alongside `page_media`/`page_text`; `useResolvedPageImages` inserts the default between "chosen" and "automatic" and returns `source: "default"`.
 - `PageImageSlot` gains the developer-only actions and the new badge; `AdminHome`, `AdminAbout`, `AdminServices`, `AdminContact` need no logic change since they read from the shared resolver.
-- Uploads for defaults go through the existing `optimizeImage` pipeline; replacing or clearing a default deletes the file it replaced when that file was an upload (not a project photograph).
+- Uploads for defaults go through the existing `optimizeImage` pipeline. Choosing a project photograph as a default downloads it and re-uploads a copy into `site-images/defaults/...`, so the default never references `project-images`. Replacing or clearing a default deletes the copy it owned — no orphans.
