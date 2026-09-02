@@ -16,7 +16,7 @@ import {
   type ProjectType,
 } from "@/hooks/usePublicProjects";
 import { getProjectRowSizes } from "@/lib/projectRows";
-import { container } from "@/lib/rhythm";
+import { container, pageHeader } from "@/lib/rhythm";
 
 const rowGridClasses: Record<number, string> = {
   1: "grid-cols-1",
@@ -89,7 +89,7 @@ const ProjectsPage = () => {
         path="/projects"
       />
       <Reveal>
-        <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
+        <header className={pageHeader}>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Selected work</p>
           <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Projects</h1>
           <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">

@@ -7,7 +7,7 @@ import PostCard from "@/components/blog/PostCard";
 import Reveal from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { usePublishedPosts } from "@/hooks/usePublicBlog";
-import { container, gap, sectionPadding } from "@/lib/rhythm";
+import { container, gap, pageHeader, sectionPadding } from "@/lib/rhythm";
 
 const ALL = "__all__";
 
@@ -34,7 +34,7 @@ const BlogPage = () => {
         path="/blog"
       />
       <Reveal>
-        <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
+        <header className={pageHeader}>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Ideas &amp; observations</p>
           <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Journal</h1>
           <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
