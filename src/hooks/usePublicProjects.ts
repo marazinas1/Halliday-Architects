@@ -198,11 +198,16 @@ export function usePublicProject(slug: string | undefined) {
   return useQuery({
     queryKey: ["public-project", slug],
     enabled: !!slug,
+    staleTime: 5 * 60_000,
     queryFn: async () => {
       if (!slug) return null;
       const { data: project, error } = await supabase
         .from("projects")
-        .select("*")
+        // Only what the public page renders. This is the detail query alone —
+        // the shared list query above must keep its own field set.
+        .select(
+          "id, slug, title, tagline, description, story, client_brief, specs, features, project_type, year_completed, location_city, location_state",
+        )
         .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
