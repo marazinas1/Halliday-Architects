@@ -6,6 +6,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import Reveal from "@/components/Reveal";
+import ParallaxPhoto from "@/components/ParallaxPhoto";
 import {
   resolveHomepage,
   useSiteSettings,
@@ -76,7 +77,7 @@ const Index = () => {
   const page = usePageContent();
   const { resolve } = useResolvedPageImages();
 
-  const wall = ["wall_1", "wall_2", "wall_3", "wall_4"].map((slot) => resolve("home", slot));
+  const wall = ["wall_1", "wall_2", "wall_3"].map((slot) => resolve("home", slot));
   const tilePhotos = ["tile_projects", "tile_about", "tile_contact"].map((slot) =>
     resolve("home", slot),
   );
