@@ -115,7 +115,6 @@ export function usePublicProjects() {
       if (imgErr) throw imgErr;
 
       const images = imgs ?? [];
-      const imageProject = new Map(images.map((i) => [i.id, i.project_id]));
 
       const tagsByProject = new Map<string, Set<string>>();
       const addTag = (projectId: string | undefined, slug: string | undefined) => {
