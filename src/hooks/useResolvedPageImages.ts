@@ -85,6 +85,11 @@ export function useResolvedPageImages() {
     if (chosenUrl) {
       return { url: chosenUrl, alt: chosen?.alt || DEFAULT_ALT, source: "chosen" };
     }
+    const fixed = page.defaultImage(pageName, slot);
+    const fixedUrl = mediaUrl(fixed);
+    if (fixedUrl) {
+      return { url: fixedUrl, alt: fixed?.alt || DEFAULT_ALT, source: "default" };
+    }
     const fallback = fallbacks.get(`${pageName}:${slot}`);
     if (fallback?.url) {
       return {
@@ -96,6 +101,7 @@ export function useResolvedPageImages() {
     }
     return { url: null, alt: DEFAULT_ALT, source: "none" };
   };
+
 
   /**
    * Photograph a service band falls back to — one project per band, in the
