@@ -362,10 +362,11 @@ function ServicesBody() {
       </Dialog>
 
       <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
-        <DialogContent className="flex max-h-[85vh] max-w-4xl flex-col overflow-hidden">
-          <DialogHeader>
+        <DialogContent className="grid h-[100dvh] max-h-[100dvh] w-screen max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-none p-3 sm:h-[94dvh] sm:max-h-[94dvh] sm:w-[96vw] sm:max-w-[1500px] sm:rounded-lg sm:p-5">
+          <DialogHeader className="px-1 pb-3">
             <DialogTitle>Service photograph</DialogTitle>
           </DialogHeader>
+
           <ImagePicker
             current={
               editing?.image_bucket && editing.image_path
