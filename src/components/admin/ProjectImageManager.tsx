@@ -285,6 +285,26 @@ export default function ProjectImageManager({
     refresh();
   };
 
+  /**
+   * Hero and Card describe a single slot each on the public pages, so setting
+   * one demotes whichever photograph held that role before. Extra Heroes were
+   * silently ignored by the project page, which only confused the client.
+   */
+  const setCategory = async (id: string, category: ImageCategory) => {
+    if (category === "hero" || category === "card") {
+      const previous = rows.filter((r) => r.id !== id && r.category === category);
+      for (const row of previous) {
+        const { error } = await supabase
+          .from("project_images")
+          .update({ category: "gallery" })
+          .eq("id", row.id);
+        if (error) return toast.error(error.message);
+      }
+    }
+    await patch(id, { category });
+  };
+
+
   const makeCover = async (id: string) => {
     const { error } = await supabase.rpc("set_project_cover", {
       _project_id: projectId,
