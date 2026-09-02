@@ -35,7 +35,7 @@ Two delays stack up:
 
 - `src/hooks/usePageContent.ts` — persist/restore the query payload (versioned key, ~24h TTL); serve it as `initialData` so the first render has URLs.
 - `src/hooks/useResolvedPageImages.ts` — unchanged three-tier logic (chosen → developer default → automatic), it just resolves sooner.
-- `src/components/ResponsiveImage.tsx` — optional `placeholderUrl` (32px q30 variant) rendered as a blurred backdrop, plus a fade on `load`; export a helper to build the preload link.
+- `src/components/ResponsiveImage.tsx` — optional `placeholderUrl` (32px q30 variant) rendered as a blurred backdrop, plus a fade on `load`; new `maxWidth` prop that trims the srcset candidate list; export a helper to build the preload link.
 - `src/pages/Index.tsx` — preload link for `wall_1`, blur-up on all six frames, first-screen frames rendered without the reveal offset.
 
 ## Verification
