@@ -25,6 +25,11 @@ Owners and editors keep working exactly as now. If they clear their own choice, 
 - Signed in as a developer, each panel gains a small extra control: "Set as default" / "Clear default", visible only to that role. Owners and editors never see it and cannot call it.
 - The defaults can be either a project photograph or an upload, using the same picker.
 
+### Defaults survive project deletion
+
+Yes. Deleting a project deletes its files from the `project-images` bucket, so a default that merely pointed at a project photograph would break. To prevent that, setting a default always **copies** the file into a separate `site-images/defaults/<page>/<slot>` location owned by the defaults layer. From then on the default is independent: the project can be deleted, renamed or unpublished and the hero and every other slot keep showing the same photograph. Only a developer clearing or replacing the default removes that copy.
+
+
 ## Technical notes
 
 - New table `public.page_media_defaults` mirroring `page_media` (page, slot, bucket, path, alt, unique on page+slot), with GRANTs, RLS: read for anon and authenticated, write restricted to `is_platform_owner(auth.uid())` (the `developer` role).
