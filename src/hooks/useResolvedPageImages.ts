@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { FIRM } from "@/content/firm";
-import { usePageContent, type PageName } from "@/hooks/usePageContent";
+import { mediaUrl, usePageContent, type PageName } from "@/hooks/usePageContent";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
 
 /**
