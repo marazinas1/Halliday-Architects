@@ -128,6 +128,7 @@ const ProjectPage = () => {
             height={1280}
             priority
             sizes="100vw"
+            quality={85}
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}

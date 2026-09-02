@@ -36,12 +36,15 @@ const PhotoFrame = ({
   priority = false,
   zoomOnHover = false,
   objectPosition = "center",
+  sizes = "100vw",
 }: {
   photo: ResolvedPhoto | undefined;
   dark?: boolean;
   priority?: boolean;
   zoomOnHover?: boolean;
   objectPosition?: string;
+  /** Real rendered width of this slot, so the browser picks the right variant. */
+  sizes?: string;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
@@ -51,7 +54,10 @@ const PhotoFrame = ({
         width={2000}
         height={1400}
         priority={priority}
-        sizes="(min-width: 1024px) 50vw, 100vw"
+        // The opening hero is the one image worth extra bytes; the rest of the
+        // page stays lazy and modest so the first paint remains fast.
+        quality={priority ? 85 : 80}
+        sizes={sizes}
         style={{ objectPosition }}
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
       />
@@ -65,6 +71,7 @@ const PhotoFrame = ({
     />
   </div>
 );
+
 
 
 const Index = () => {
@@ -104,7 +111,7 @@ const Index = () => {
       {/* Rich gallery wall: one opening image, then three, then two. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
         <div className="relative h-[82svh] min-h-[560px] overflow-hidden">
-          <PhotoFrame photo={wall[0]} priority />
+          <PhotoFrame photo={wall[0]} priority sizes="100vw" />
           <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-paper">
             <span aria-hidden="true" className="h-10 w-px bg-paper/50" />
             <span className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-paper/75">Scroll</span>
@@ -114,7 +121,7 @@ const Index = () => {
         <div className="grid gap-[2px] md:h-[44vh] md:min-h-[300px] md:grid-cols-3">
           {wall.slice(1, 4).map((photo, index) => (
             <Reveal key={`wall-row-one-${index}`} delay={index * 150} className="relative h-[32vh] md:h-full">
-              <PhotoFrame photo={photo} />
+              <PhotoFrame photo={photo} sizes="(min-width: 768px) 34vw, 100vw" />
             </Reveal>
           ))}
         </div>
@@ -122,7 +129,7 @@ const Index = () => {
         <div className="grid gap-[2px] md:h-[60vh] md:min-h-[400px] md:grid-cols-[1.4fr_1fr]">
           {wall.slice(4, 6).map((photo, index) => (
             <Reveal key={`wall-row-two-${index}`} delay={index * 150} className="relative h-[40vh] md:h-full">
-              <PhotoFrame photo={photo} />
+              <PhotoFrame photo={photo} sizes="(min-width: 768px) 60vw, 100vw" />
             </Reveal>
           ))}
         </div>
@@ -142,7 +149,7 @@ const Index = () => {
         {tiles.map((tile, index) => (
           <Reveal key={tile.to} delay={index * 150}>
             <Link to={tile.to} className="group relative block aspect-[3/4] overflow-hidden">
-              <PhotoFrame photo={tilePhotos[index]} zoomOnHover />
+              <PhotoFrame photo={tilePhotos[index]} zoomOnHover sizes="(min-width: 768px) 34vw, 100vw" />
               <div
                 aria-hidden="true"
                 className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"

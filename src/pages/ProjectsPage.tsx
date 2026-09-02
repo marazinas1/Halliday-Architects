@@ -171,7 +171,13 @@ const ProjectsPage = () => {
                               alt={p.card_image_alt}
                               width={1600}
                               height={1200}
-                              sizes="(min-width: 1024px) 50vw, 100vw"
+                              sizes={
+                                rowSize === 1
+                                  ? "100vw"
+                                  : rowSize === 2
+                                    ? "(min-width: 768px) 50vw, 100vw"
+                                    : "(min-width: 768px) 34vw, 100vw"
+                              }
                               className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
                             />
                           ) : (
