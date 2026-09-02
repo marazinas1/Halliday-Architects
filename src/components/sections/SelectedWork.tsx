@@ -1,3 +1,4 @@
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
 import SectionLink from "@/components/SectionLink";
@@ -60,11 +61,10 @@ const SelectedWork = () => {
               <Link to={card.link} className="block">
                 <div className="flex flex-col overflow-hidden border border-line bg-paper">
                   {card.image ? (
-                    <img
+                    <ResponsiveImage
                       src={card.image}
                       alt={card.imageAlt}
-                      loading="lazy"
-                      decoding="async"
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 85vw"
                       className="block w-full aspect-[4/5] object-cover object-center"
                     />
                   ) : (
@@ -91,11 +91,10 @@ const SelectedWork = () => {
               <Link to={card.link} className="block">
                 <div className="group relative aspect-[4/5] overflow-hidden bg-sand cursor-pointer">
                   {card.image ? (
-                    <img
+                    <ResponsiveImage
                       src={card.image}
                       alt={card.imageAlt}
-                      loading="lazy"
-                      decoding="async"
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 85vw"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   ) : null}

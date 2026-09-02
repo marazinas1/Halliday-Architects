@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Mail, Wrench, Home, UserCog, LayoutDashboard, BarChart3, ArrowLeft } from "lucide-react";
+import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Mail, Wrench, Home, UserCog, LayoutDashboard, BarChart3, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
 import { Badge } from "@/components/ui/badge";
@@ -66,6 +66,8 @@ const GROUPS: Group[] = [
       { title: "Services", url: "/admin/services", icon: Wrench, access: "staff", match: (p) => p.startsWith("/admin/services") },
       { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
       { title: "Contact", url: "/admin/contact", icon: Mail, access: "staff", match: (p) => p.startsWith("/admin/contact") },
+      { title: "Photographs", url: "/admin/photographs", icon: ImageIcon, access: "staff", match: (p) => p.startsWith("/admin/photographs") },
+
     ],
   },
   {

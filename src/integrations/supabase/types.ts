@@ -451,10 +451,6 @@ export type Database = {
         Row: {
           created_at: string
           favicon_path: string | null
-          hero_headline: string | null
-          hero_image_bucket: string | null
-          hero_image_path: string | null
-          hero_subline: string | null
           id: string
           inquiry_notify_emails: string | null
           intro_body: string | null
@@ -468,10 +464,6 @@ export type Database = {
         Insert: {
           created_at?: string
           favicon_path?: string | null
-          hero_headline?: string | null
-          hero_image_bucket?: string | null
-          hero_image_path?: string | null
-          hero_subline?: string | null
           id?: string
           inquiry_notify_emails?: string | null
           intro_body?: string | null
@@ -485,10 +477,6 @@ export type Database = {
         Update: {
           created_at?: string
           favicon_path?: string | null
-          hero_headline?: string | null
-          hero_image_bucket?: string | null
-          hero_image_path?: string | null
-          hero_subline?: string | null
           id?: string
           inquiry_notify_emails?: string | null
           intro_body?: string | null

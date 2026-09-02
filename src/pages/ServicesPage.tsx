@@ -3,6 +3,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
 import Reveal from "@/components/Reveal";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { SERVICE_GROUPS } from "@/content/firm";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { useServices } from "@/hooks/useServices";
@@ -75,13 +76,12 @@ const ServicesPage = () => {
                     }`}
                   >
                     {imageUrl ? (
-                      <img
+                      <ResponsiveImage
                         src={imageUrl}
                         alt={imageAlt}
                         width={1600}
                         height={1200}
-                        loading="lazy"
-                        decoding="async"
+                        sizes="(min-width: 900px) 50vw, 100vw"
                         className="h-full w-full object-cover"
                       />
                     ) : (

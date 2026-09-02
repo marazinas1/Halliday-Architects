@@ -12,17 +12,11 @@ export const SITE_SETTINGS_KEY = ["site-settings"];
  * field falls back to one of these, so the page can never render blank.
  */
 export const HOMEPAGE_FALLBACKS = {
-  heroHeadline: "Residential architecture\nin Ocean City, New Jersey",
-  heroSubline:
-    "Christopher and Shannon Halliday lead every project personally, from the first site visit through construction.",
   introHeading:
     "We approach design as a response to the local vernacular, to new building technology, and to the way the spaces of a house work together.",
   introBody:
     "The practice has worked along the New Jersey shore since 2013, on new houses, additions and renovations. Both principals are registered architects and LEED accredited professionals, and both stay with a project from the first site visit through construction — which is also how energy performance, flood elevation and salt-air durability get resolved as part of the design rather than after it.",
 } as const;
-
-/** Buckets a hero image may live in. */
-export type HeroImageBucket = "site-images" | "project-images";
 
 export type SiteSettingsRow = {
   id: string;
@@ -30,31 +24,15 @@ export type SiteSettingsRow = {
   logo_path: string | null;
   logo_dark_path: string | null;
   favicon_path: string | null;
-  hero_image_bucket: string | null;
-  hero_image_path: string | null;
-  hero_headline: string | null;
-  hero_subline: string | null;
   intro_heading: string | null;
   intro_body: string | null;
   inquiry_notify_emails: string | null;
 };
 
 const SETTINGS_COLUMNS =
-  "id, site_name, logo_path, logo_dark_path, favicon_path, hero_image_bucket, hero_image_path, hero_headline, hero_subline, intro_heading, intro_body, inquiry_notify_emails";
-
-/** Public URL for a hero reference, whichever bucket it points at. */
-export function heroImageUrl(
-  bucket: string | null | undefined,
-  path: string | null | undefined,
-): string | null {
-  if (!bucket || !path) return null;
-  return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
-}
+  "id, site_name, logo_path, logo_dark_path, favicon_path, intro_heading, intro_body, inquiry_notify_emails";
 
 export type HomepageContent = {
-  heroImageUrl: string | null;
-  heroHeadline: string;
-  heroSubline: string;
   introHeading: string;
   introBody: string;
 };
@@ -65,13 +43,11 @@ const trimmed = (value: string | null | undefined, fallback: string) =>
 /** Resolves a settings row (or a preview payload) into homepage copy. */
 export function resolveHomepage(row: Partial<SiteSettingsRow> | null): HomepageContent {
   return {
-    heroImageUrl: heroImageUrl(row?.hero_image_bucket, row?.hero_image_path),
-    heroHeadline: trimmed(row?.hero_headline, HOMEPAGE_FALLBACKS.heroHeadline),
-    heroSubline: trimmed(row?.hero_subline, HOMEPAGE_FALLBACKS.heroSubline),
     introHeading: trimmed(row?.intro_heading, HOMEPAGE_FALLBACKS.introHeading),
     introBody: trimmed(row?.intro_body, HOMEPAGE_FALLBACKS.introBody),
   };
 }
+
 
 export type SiteSettings = {
   row: SiteSettingsRow | null;
