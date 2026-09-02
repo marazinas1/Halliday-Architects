@@ -20,6 +20,7 @@ const publicUrl = (path: string) =>
 export function usePublicGallery() {
   return useQuery({
     queryKey: ["public-gallery"],
+    staleTime: 5 * 60_000,
     queryFn: async (): Promise<GalleryBlock[]> => {
       const { data: rows, error } = await supabase
         .from("projects")

@@ -27,12 +27,9 @@ export function mediaUrl(ref: MediaRef | undefined | null): string | null {
   return supabase.storage.from(ref.bucket).getPublicUrl(ref.path).data.publicUrl;
 }
 
-export function usePageContent() {
-  const query = useQuery({
-    queryKey: PAGE_CONTENT_KEY,
-    staleTime: 60_000,
-
-    queryFn: async (): Promise<PageContent> => {
+/** Standalone fetcher so the boot script can warm this query before render. */
+export async function fetchPageContent(): Promise<PageContent> {
+    {
       const [media, defaults, text] = await Promise.all([
         supabase.from("page_media").select("page, slot, bucket, path, alt"),
         supabase.from("page_media_defaults").select("page, slot, bucket, path, alt"),
@@ -63,8 +60,14 @@ export function usePageContent() {
       }
       
       return content;
+    }
+}
 
-    },
+export function usePageContent() {
+  const query = useQuery({
+    queryKey: PAGE_CONTENT_KEY,
+    staleTime: 60_000,
+    queryFn: fetchPageContent,
   });
 
   const content = query.data ?? { media: {}, defaults: {}, text: {} };

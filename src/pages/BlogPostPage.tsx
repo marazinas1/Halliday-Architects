@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import PostBody from "@/components/blog/PostBody";
@@ -81,7 +82,17 @@ const BlogPostPage = () => {
 
       {post.cover_url ? (
         <div className="w-full h-[60vh] min-h-[380px] bg-sand overflow-hidden">
-          <img src={post.cover_url} alt="" className="w-full h-full object-cover" decoding="async" />
+          <ResponsiveImage
+            src={post.cover_url}
+            alt={post.title}
+            width={2000}
+            height={1200}
+            sizes="100vw"
+            maxWidth={2400}
+            quality={85}
+            priority
+            className="w-full h-full object-cover"
+          />
         </div>
       ) : (
         <div className="h-20" />

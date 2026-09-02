@@ -74,13 +74,8 @@ const formatLocation = (row: {
  * All published portfolio projects with a card image (explicit cover first,
  * then a card image, then the hero). Ordered by sort_order, newest first.
  */
-export function usePublicProjects() {
-  return useQuery({
-    queryKey: ["public-projects"],
-    // Home, Projects, About and Services all read this list; keep it warm so
-    // moving between them does not refetch the whole catalogue.
-    staleTime: 5 * 60_000,
-    queryFn: async (): Promise<PublicProjectCard[]> => {
+export async function fetchPublicProjects(): Promise<PublicProjectCard[]> {
+    {
       const { data: rows, error } = await supabase
         .from("projects")
         .select(
@@ -171,7 +166,21 @@ export function usePublicProjects() {
         return Date.parse(b.created_at) - Date.parse(a.created_at);
       });
       return cards;
-    },
+    }
+}
+
+/**
+ * All published portfolio projects with a card image.
+ *
+ * Home, Projects, About and Services all read this list through
+ * `useResolvedPageImages`; keep it warm so moving between them does not
+ * refetch the catalogue, and never remove a field the card image depends on.
+ */
+export function usePublicProjects() {
+  return useQuery({
+    queryKey: ["public-projects"],
+    staleTime: 5 * 60_000,
+    queryFn: fetchPublicProjects,
   });
 }
 
@@ -189,11 +198,16 @@ export function usePublicProject(slug: string | undefined) {
   return useQuery({
     queryKey: ["public-project", slug],
     enabled: !!slug,
+    staleTime: 5 * 60_000,
     queryFn: async () => {
       if (!slug) return null;
       const { data: project, error } = await supabase
         .from("projects")
-        .select("*")
+        // Only what the public page renders. This is the detail query alone —
+        // the shared list query above must keep its own field set.
+        .select(
+          "id, slug, title, tagline, description, story, client_brief, specs, features, project_type, year_completed, location_city, location_state",
+        )
         .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
@@ -237,6 +251,7 @@ export function usePublicProject(slug: string | undefined) {
 export function useProjectOrder() {
   return useQuery({
     queryKey: ["public-project-order"],
+    staleTime: 5 * 60_000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("projects")

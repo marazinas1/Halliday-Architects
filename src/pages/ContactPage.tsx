@@ -2,19 +2,19 @@ import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import SEO from "@/components/SEO";
 import ContactSection from "@/components/sections/ContactSection";
-import ContactMap from "@/components/ContactMap";
+import ContactMapSection from "@/components/ContactMapSection";
 import Reveal from "@/components/Reveal";
 import ResponsiveImage from "@/components/ResponsiveImage";
-import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
-import { container } from "@/lib/rhythm";
+import { pageHeader } from "@/lib/rhythm";
 
 const ContactPage = () => {
-  const { isLoading } = usePublicProjects();
   const page = usePageContent();
   // Shared resolver: chosen photograph → developer default → project photography.
-  const { resolve } = useResolvedPageImages();
+  // Decide before painting: while content is still loading the band keeps its
+  // space; once loaded, it either has a photograph or is never rendered.
+  const { resolve, isLoading } = useResolvedPageImages();
   const photo = resolve("contact", "hero");
   const cover = photo.url ? { url: photo.url, alt: photo.alt } : null;
 
@@ -30,7 +30,7 @@ const ContactPage = () => {
       />
 
       <Reveal>
-        <header className="px-6 pb-16 pt-20 text-center md:pb-20 md:pt-24">
+        <header className={pageHeader}>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">
             Get in touch
           </p>
@@ -49,7 +49,7 @@ const ContactPage = () => {
 
       {(isLoading || cover) && (
         <Reveal>
-          <section className={`${container.wide} pb-16 md:pb-24`} aria-label="Halliday Architects project photography">
+          <section className="w-full pb-16 md:pb-24" aria-label="Halliday Architects project photography">
             <div className="h-[34vh] min-h-[260px] overflow-hidden bg-sand md:h-[48vh] md:min-h-[380px]">
               {cover ? (
                 <ResponsiveImage
@@ -75,7 +75,7 @@ const ContactPage = () => {
 
       <ContactSection withHeading={false} />
 
-      <ContactMap />
+      <ContactMapSection />
 
       <GlobalFooter />
     </main>

@@ -6,6 +6,8 @@ interface SEOProps {
   path: string;
   image?: string;
   type?: "website" | "article";
+  /** Error/empty states that should never be indexed. */
+  noindex?: boolean;
 }
 
 /**
@@ -21,7 +23,7 @@ const SITE = (
 
 const DEFAULT_OG_IMAGE = "/og-image.jpg";
 
-const SEO = ({ title, description, path, image, type = "website" }: SEOProps) => {
+const SEO = ({ title, description, path, image, type = "website", noindex = false }: SEOProps) => {
   const url = `${SITE}${path}`;
   const raw = image || DEFAULT_OG_IMAGE;
   const imageUrl = raw.startsWith("http") ? raw : `${SITE}${raw}`;
@@ -29,6 +31,7 @@ const SEO = ({ title, description, path, image, type = "website" }: SEOProps) =>
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
+      {noindex ? <meta name="robots" content="noindex, follow" /> : null}
       <link rel="canonical" href={url} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />

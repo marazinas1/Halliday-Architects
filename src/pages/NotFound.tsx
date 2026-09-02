@@ -1,23 +1,63 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { ArrowRight } from "lucide-react";
+
+import GlobalNav from "@/components/GlobalNav";
+import GlobalFooter from "@/components/GlobalFooter";
+import SEO from "@/components/SEO";
+import Reveal from "@/components/Reveal";
+import { pageHeader } from "@/lib/rhythm";
+
+const LINKS = [
+  { to: "/projects", label: "Projects" },
+  { to: "/about", label: "About" },
+  { to: "/services", label: "Services" },
+  { to: "/contact", label: "Contact" },
+];
 
 const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    console.error("404: no route for", location.pathname);
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
-      </div>
-    </div>
+    <main className="min-h-screen bg-background">
+      <GlobalNav />
+      <SEO
+        title="Page not found | Halliday Architects"
+        description="The page you were looking for is not here. Browse the Halliday Architects portfolio instead."
+        path={location.pathname}
+        noindex
+      />
+
+      <Reveal>
+        <header className={`${pageHeader} pb-20 md:pb-28`}>
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">
+            404
+          </p>
+          <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">
+            Page not found
+          </h1>
+          <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed text-stone">
+            The page you were looking for is not here. It may have moved, or the
+            address may be slightly off.
+          </p>
+
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {LINKS.map((link) => (
+              <Link key={link.to} to={link.to} className="link-inline group">
+                {link.label}
+                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            ))}
+          </div>
+        </header>
+      </Reveal>
+
+      <GlobalFooter />
+    </main>
   );
 };
 

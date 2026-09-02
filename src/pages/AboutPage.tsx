@@ -11,7 +11,7 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import Testimonials from "@/components/sections/Testimonials";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
-import { container, sectionPadding } from "@/lib/rhythm";
+import { container, gutter, sectionPadding } from "@/lib/rhythm";
 
 const AboutPage = () => {
   const page = usePageContent();
@@ -34,12 +34,16 @@ const AboutPage = () => {
         path="/about"
       />
 
-      <header className="px-6 pb-4 pt-20 text-center md:pt-24">
-        <p className="label-uppercase">The practice</p>
-        <h1 className="mx-auto mt-4 whitespace-pre-line text-4xl font-bold leading-tight text-ink md:text-5xl">
-          {heading}
-        </h1>
-      </header>
+      <Reveal>
+        {/* Shared gutter; the tighter bottom padding is intentional — the
+            practice copy follows immediately. */}
+        <header className={`${gutter} pb-4 pt-20 text-center md:pt-24`}>
+          <p className="label-uppercase">The practice</p>
+          <h1 className="mx-auto mt-4 whitespace-pre-line text-4xl font-bold leading-tight text-ink md:text-5xl">
+            {heading}
+          </h1>
+        </header>
+      </Reveal>
 
       <AboutSection />
 

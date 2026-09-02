@@ -38,6 +38,13 @@ export const container = {
   full: `w-full ${gutter}`,
 } as const;
 
+/**
+ * Shared page-header rhythm. Every public page header uses this, so gutters and
+ * vertical spacing never drift between pages.
+ */
+export const pageHeader = `${gutter} pb-12 pt-20 text-center md:pb-14 md:pt-24` as const;
+
+
 
 /** Gaps between elements inside a section. */
 export const gap = {
@@ -58,6 +65,7 @@ export const rhythm = {
   gutter,
   gap,
   headingSpacing,
+  pageHeader,
 } as const;
 
 export default rhythm;

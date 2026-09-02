@@ -8,7 +8,7 @@ import { SERVICE_GROUPS } from "@/content/firm";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { useServices } from "@/hooks/useServices";
 import { usePageContent } from "@/hooks/usePageContent";
-import { container } from "@/lib/rhythm";
+import { container, pageHeader } from "@/lib/rhythm";
 
 const ServicesPage = () => {
   const { data: projects = [], isLoading } = usePublicProjects();
@@ -40,7 +40,8 @@ const ServicesPage = () => {
         path="/services"
       />
 
-      <header className="px-6 pb-16 pt-20 text-center md:pb-20 md:pt-24">
+      <Reveal>
+      <header className={pageHeader}>
         <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">
           What we do
         </p>
@@ -53,13 +54,18 @@ const ServicesPage = () => {
           come up during construction.
         </p>
       </header>
+      </Reveal>
 
       <div className="flex flex-col gap-[2px]">
         {bands.map((group, index) => {
           const project = projects[index];
           const imageUrl = group.imageUrl ?? project?.card_image_url ?? null;
           const imageAlt = group.imageUrl ? group.title : project?.card_image_alt ?? group.title;
-          const hasMedia = isLoading || Boolean(imageUrl);
+          // Reserve image space only when an image is actually coming, so the
+          // band never collapses from two columns to one after loading.
+          // Reserve the image column only once we know a photograph exists, so
+          // the band never collapses from two columns to one after loading.
+          const hasMedia = isLoading ? true : Boolean(imageUrl);
           const imageFirstOnDesktop = index % 2 === 0;
 
           return (

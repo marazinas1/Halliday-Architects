@@ -15,6 +15,7 @@ export type TeamMember = {
 export function useTeamMembers() {
   return useQuery({
     queryKey: ["team-members"],
+    staleTime: 5 * 60_000,
     queryFn: async (): Promise<TeamMember[]> => {
       const { data, error } = await supabase
         .from("team_members")
