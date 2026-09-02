@@ -54,6 +54,8 @@ const AboutPage = () => {
                   width={1600}
                   height={1200}
                   sizes="(min-width: 768px) 60vw, 100vw"
+                  quality={82}
+                  maxWidth={2400}
                   className="h-full w-full object-cover"
                 />
               )}
