@@ -128,7 +128,11 @@ export function usePublicProjects() {
         addTag(row.project_id, (row.tags as { slug: string } | null)?.slug);
       }
       for (const row of iTags ?? []) {
-        addTag(imageProject.get(row.image_id), (row.tags as { slug: string } | null)?.slug);
+        addTag(
+          (row.project_images as { project_id: string } | null)?.project_id,
+          (row.tags as { slug: string } | null)?.slug,
+        );
+
       }
 
       const pick = (projectId: string) => {
