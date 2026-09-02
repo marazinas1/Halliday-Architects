@@ -52,16 +52,19 @@ const ContactPage = () => {
           <section className={`${container.wide} pb-16 md:pb-24`} aria-label="Halliday Architects project photography">
             <div className="h-[34vh] min-h-[260px] overflow-hidden bg-sand md:h-[48vh] md:min-h-[380px]">
               {cover ? (
-                <img
+                <ResponsiveImage
                   src={cover.url}
                   alt={cover.alt}
                   width={2000}
                   height={900}
+                  sizes="100vw"
+                  maxWidth={2400}
+                  quality={85}
                   loading="eager"
-                  decoding="async"
-                  fetchPriority="high"
+                  priority
                   className="h-full w-full object-cover"
                 />
+
               ) : (
                 <div className="h-full w-full animate-pulse bg-sand" aria-hidden="true" />
               )}
