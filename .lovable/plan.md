@@ -111,7 +111,11 @@ pixels.
 - `src/lib/rhythm.ts`: add a shared `pageHeader` class so headers stop
   hand-rolling padding; apply it in Index, Projects, Services, Contact, Blog,
   About.
-- `src/pages/ContactPage.tsx`: full-bleed photo band, stable band height.
+- `src/pages/ContactPage.tsx`: full-bleed photo band, stable band height,
+  deferred MapLibre load.
+- `src/components/ContactMap.tsx`: lazy chunk + observer + placeholder.
+- `src/pages/Index.tsx`: per-slot `width`/`height` matching each aspect ratio.
+
 - `src/pages/ProjectPage.tsx`, `ServicesPage.tsx`: shape-matched skeletons.
 - `src/pages/NotFound.tsx`: rebuild with nav, footer, SEO, site tokens.
 - `src/pages/BlogPostPage.tsx`, `sections/TeamSection.tsx`,
