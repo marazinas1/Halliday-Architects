@@ -37,7 +37,7 @@ import { useAdminAuth } from "@/hooks/admin/useAdminAuth";
 
 
 const ROLE_LABEL: Record<string, string> = {
-  platform_owner: "Developer",
+  developer: "Developer",
   owner: "Owner",
   editor: "Editor",
   admin: "Legacy admin",
@@ -257,6 +257,9 @@ function AdminUsersInner() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 md:gap-3">
+                {user.isPlatformOwner ? (
+                  <span className="text-xs uppercase tracking-[0.12em] text-stone">Developer</span>
+                ) : (
                 <Select
                   value={user.role === "owner" || user.role === "editor" ? user.role : undefined}
                   disabled={isSelf || user.isPlatformOwner || user.isLastOwner || setRole.isPending}
@@ -287,6 +290,7 @@ function AdminUsersInner() {
                     <SelectItem value="owner">Owner</SelectItem>
                   </SelectContent>
                 </Select>
+                )}
 
                 {!user.confirmed && !isSelf && (
                   <Button

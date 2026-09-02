@@ -77,7 +77,7 @@ const GROUPS: Group[] = [
 ];
 
 const ROLE_LABEL: Record<AdminRole, string> = {
-  platform_owner: "Developer",
+  developer: "Developer",
   owner: "Owner",
   editor: "Editor",
 };
