@@ -19,13 +19,23 @@ Two delays stack up:
 
 4. **Don't animate photographs that are on screen at load.** The two gallery rows use `Reveal`, which starts at `opacity-0`; on a refresh mid-page that adds to the perceived emptiness. Above-the-fold wall images render visible immediately; reveal stays for content further down.
 
-5. **Keep the quality balance.** No change to hero resolution or quality — the perceived slowness is the round trip and the missing preload, not the bytes. Grid images stay lazy and q80.
+5. **Weight each photograph by how big it actually is.** The six wall images are not equal, so they should not be delivered equally:
+
+   | Slot | Rendered size | Delivery |
+   |---|---|---|
+   | Hero (`wall_1`) | full screen | highest priority, quality 85, variants up to 3000 px, `sizes=100vw`, eager + preloaded |
+   | Row of three (`wall_2–4`) | ~1/3 width | quality 78, variants capped at 1400 px, `sizes=34vw`, lazy |
+   | Row of two (`wall_5–6`) | ~60% / 40% width | quality 80, variants capped at 2000 px, `sizes` matched to each column, lazy |
+   | Three bottom tiles | ~1/3 width, 3:4 | quality 75, capped at 1200 px, lazy |
+
+   This is done by giving `ResponsiveImage` a `maxWidth` prop so a small slot never generates or downloads a 2400/3000 px candidate. Net effect: the one large photograph stays as sharp as possible while the rest of the page weighs a fraction of what it does now.
+
 
 ## Technical notes
 
 - `src/hooks/usePageContent.ts` — persist/restore the query payload (versioned key, ~24h TTL); serve it as `initialData` so the first render has URLs.
 - `src/hooks/useResolvedPageImages.ts` — unchanged three-tier logic (chosen → developer default → automatic), it just resolves sooner.
-- `src/components/ResponsiveImage.tsx` — optional `placeholderUrl` (32px q30 variant) rendered as a blurred backdrop, plus a fade on `load`; export a helper to build the preload link.
+- `src/components/ResponsiveImage.tsx` — optional `placeholderUrl` (32px q30 variant) rendered as a blurred backdrop, plus a fade on `load`; new `maxWidth` prop that trims the srcset candidate list; export a helper to build the preload link.
 - `src/pages/Index.tsx` — preload link for `wall_1`, blur-up on all six frames, first-screen frames rendered without the reveal offset.
 
 ## Verification
