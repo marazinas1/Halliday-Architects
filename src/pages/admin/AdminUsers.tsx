@@ -241,9 +241,14 @@ function AdminUsersInner() {
                         <ShieldCheck className="h-3 w-3" /> Last owner
                       </Badge>
                     )}
-                    {user.isPlatformOwner && (
+                    {user.isPlatformOwner ? (
                       <Badge variant="outline" className="gap-1">
                         <ShieldCheck className="h-3 w-3" /> Developer
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="gap-1">
+                        <ShieldCheck className="h-3 w-3" />{" "}
+                        {user.role ? ROLE_LABEL[user.role] ?? user.role : "No access"}
                       </Badge>
                     )}
                     {!user.confirmed && <Badge variant="outline">Invited</Badge>}
