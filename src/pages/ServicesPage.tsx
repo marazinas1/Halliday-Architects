@@ -63,7 +63,9 @@ const ServicesPage = () => {
           const imageAlt = group.imageUrl ? group.title : project?.card_image_alt ?? group.title;
           // Reserve image space only when an image is actually coming, so the
           // band never collapses from two columns to one after loading.
-          const hasMedia = Boolean(imageUrl) || (isLoading && Boolean(group.imageUrl) === false);
+          // Reserve the image column only once we know a photograph exists, so
+          // the band never collapses from two columns to one after loading.
+          const hasMedia = isLoading ? true : Boolean(imageUrl);
           const imageFirstOnDesktop = index % 2 === 0;
 
           return (
