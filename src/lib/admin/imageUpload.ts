@@ -15,7 +15,7 @@ export const IMAGE_CATEGORY_LABELS: Record<ImageCategory, string> = {
 const BUCKET = "project-images";
 
 /**
- * Optimises with the shared `project` preset (2400px WebP, EXIF stripped) and
+ * Optimises with the shared `project` preset (3000px WebP, EXIF stripped) and
  * uploads. `onProgress` reports 0-100 while the file is processed.
  */
 export async function uploadImage(params: {
