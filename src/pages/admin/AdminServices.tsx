@@ -174,7 +174,7 @@ function ServicesBody() {
 
   return (
     <div className="max-w-4xl">
-      <div className="mb-8 flex items-start justify-between gap-4">
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h1 className="mb-1 text-2xl text-ink">Services</h1>
           <p className="text-sm text-stone">
