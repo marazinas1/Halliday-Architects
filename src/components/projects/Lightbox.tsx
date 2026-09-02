@@ -1,3 +1,4 @@
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { useCallback, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { GalleryItem } from "@/hooks/usePublicProjects";
@@ -85,9 +86,13 @@ export default function Lightbox({ items, index, onClose, onIndex }: Props) {
         </>
       )}
 
-      <img
+      <ResponsiveImage
         src={item.src}
         alt={item.alt}
+        priority
+        sizes="92vw"
+        quality={88}
+        maxWidth={3000}
         onClick={(e) => e.stopPropagation()}
         className="max-h-[88vh] max-w-[92vw] object-contain"
       />
