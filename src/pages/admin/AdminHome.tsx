@@ -14,9 +14,12 @@ import { useSavePageText } from "@/hooks/admin/usePageContentAdmin";
 import { HOMEPAGE_FALLBACKS } from "@/hooks/useSiteSettings";
 
 const WALL_SLOTS = [
-  { slot: "wall_1", label: "Opening photograph", help: "Fills the screen on arrival. A roughly square original works best — very wide crops cut off rooflines.", aspect: "aspect-[3/2]" },
-  { slot: "wall_2", label: "Second photograph (left)", help: "Left of the pair below the opening photograph.", aspect: "aspect-[4/3]" },
-  { slot: "wall_3", label: "Third photograph (right)", help: "Right of the pair below the opening photograph.", aspect: "aspect-[4/3]" },
+  { slot: "wall_1", label: "Opening photograph", help: "The large opening image with the scroll marker.", aspect: "aspect-[16/9]" },
+  { slot: "wall_2", label: "Second photograph", help: "Left image in the three-photo row.", aspect: "aspect-[4/3]" },
+  { slot: "wall_3", label: "Third photograph", help: "Centre image in the three-photo row.", aspect: "aspect-[4/3]" },
+  { slot: "wall_4", label: "Fourth photograph", help: "Right image in the three-photo row.", aspect: "aspect-[4/3]" },
+  { slot: "wall_5", label: "Fifth photograph", help: "Wide image on the left of the final row.", aspect: "aspect-[7/3]" },
+  { slot: "wall_6", label: "Sixth photograph", help: "Image on the right of the final row.", aspect: "aspect-[5/3]" },
 ];
 
 const TILE_SLOTS = [
@@ -64,7 +67,7 @@ function HomeBody() {
         <div>
           <h1 className="mb-1 text-2xl text-ink">Home</h1>
           <p className="text-sm text-stone">
-            The photo wall, the practice statement and the three tiles at the foot of the page.
+            The six-photo gallery wall, the practice statement and the three tiles at the foot of the page.
             Every panel below shows the photograph on the live page — those marked "Automatic"
             come from project photography until you choose your own.
           </p>
@@ -79,7 +82,7 @@ function HomeBody() {
 
       <section className="mb-8">
         <p className="mb-1 text-sm font-medium text-ink">Photo wall</p>
-        <p className="mb-4 text-xs text-stone">Four photographs, in the order they appear.</p>
+        <p className="mb-4 text-xs text-stone">Six photographs in a 1 → 3 → 2 sequence, in the order they appear.</p>
         <div className="grid gap-4 sm:grid-cols-2">
           {WALL_SLOTS.map((s) => {
             const shown = resolve("home", s.slot);
