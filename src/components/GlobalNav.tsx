@@ -7,6 +7,7 @@ import { FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 
 const NAV_LINKS = [
+  { label: "Home", to: "/" },
   { label: "Projects", to: "/projects" },
   { label: "About", to: "/about" },
   { label: "Services", to: "/services" },
@@ -72,11 +73,13 @@ const GlobalNav = ({ overlayPhotoWall = false }: { lightHero?: boolean; overlayP
             <BrandLogo variant={isOverPhoto ? "dark" : "light"} className="h-9 w-auto md:h-11" />
           </Link>
 
-          <div className="hidden items-center gap-9 md:flex">
+          <div className="hidden items-center gap-8 md:flex">
             {NAV_LINKS.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
+                end={l.to === "/"}
+                onClick={l.to === "/" ? handleHomeClick : undefined}
                 className={({ isActive }) => linkClass(isActive)}
               >
                 {l.label}
@@ -107,7 +110,7 @@ const GlobalNav = ({ overlayPhotoWall = false }: { lightHero?: boolean; overlayP
         </div>
         <div className="mt-8 flex flex-col">
           {NAV_LINKS.map((link) => (
-            <NavLink key={link.to} to={link.to} onClick={() => setIsMobileMenuOpen(false)} className="border-b border-line py-4 text-2xl font-semibold text-ink">
+            <NavLink key={link.to} to={link.to} end={link.to === "/"} onClick={link.to === "/" ? handleHomeClick : () => setIsMobileMenuOpen(false)} className="border-b border-line py-4 text-2xl font-semibold text-ink">
               {link.label}
             </NavLink>
           ))}
