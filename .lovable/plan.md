@@ -64,11 +64,13 @@ Fix: narrow the query so the cost stops growing with the archive.
 
 ## Verification after the change
 
-Re-measure `/`, `/projects`, `/about` and a project detail page at 1440px in both 1x and 2x, and report before/after totals plus the largest variant fetched per page. Target: `/projects` under ~600 KB at 1x and no card requesting a variant wider than its cap.
+Re-measure `/`, `/projects`, `/about` and a project detail page at 1440px in both 1x and 2x. Two checks, and sharpness is the one that must pass: every slot must receive a variant at least as wide as its rendered size at 2x, and screenshots of the homepage tiles compared side by side against today. Weight is reported second, as information — no cap is lowered to hit a byte target.
 
 ## Technical detail
 
+- `src/pages/Index.tsx`: raise the tile and wall caps as listed above (960 → 1600, 1400 → 2000, quality 75/78 → 82).
 - `src/pages/ProjectsPage.tsx`, `src/pages/ProjectPage.tsx`, `src/pages/AboutPage.tsx`, `src/pages/ServicesPage.tsx`, `src/components/blog/PostCard.tsx`: add `maxWidth` and `quality` per slot.
-- Lightbox component used by `ProjectPage`: render through `ResponsiveImage` with `maxWidth={2400} quality={85}` if it currently uses a raw `<img>`.
+- Lightbox component used by `ProjectPage`: render through `ResponsiveImage` with `maxWidth={3000} quality={88}` if it currently uses a raw `<img>`.
 - `src/hooks/usePublicProjects.ts`: narrow `project_images` select and add `.in("category", [...])`; filter `image_tags` by `image_id`; add `staleTime: 5 * 60_000`.
+
 - No database migration, no change to stored files.
