@@ -77,6 +77,9 @@ const formatLocation = (row: {
 export function usePublicProjects() {
   return useQuery({
     queryKey: ["public-projects"],
+    // Home, Projects, About and Services all read this list; keep it warm so
+    // moving between them does not refetch the whole catalogue.
+    staleTime: 5 * 60_000,
     queryFn: async (): Promise<PublicProjectCard[]> => {
       const { data: rows, error } = await supabase
         .from("projects")
@@ -94,8 +97,11 @@ export function usePublicProjects() {
         await Promise.all([
           supabase
             .from("project_images")
+            // Only cover candidates — gallery photography is fetched by the
+            // project page itself, so this payload stays flat as the archive grows.
             .select("id, project_id, category, storage_path, alt_text, sort_order, is_cover")
             .in("project_id", ids)
+            .or("is_cover.eq.true,category.in.(card,hero)")
             .order("sort_order", { ascending: true }),
           supabase.from("project_tags").select("project_id, tags(slug)").in("project_id", ids),
           supabase.from("image_tags").select("image_id, tags(slug)"),
