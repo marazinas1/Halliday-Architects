@@ -509,7 +509,7 @@ export default function ProjectImageManager({
                     setSelected((s) => (v ? [...s, row.id] : s.filter((x) => x !== row.id)))
                   }
                   onCover={() => void makeCover(row.id)}
-                  onCategory={(c) => void patch(row.id, { category: c })}
+                  onCategory={(c) => void setCategory(row.id, c)}
                   onAlt={(v) => void patch(row.id, { alt_text: v || null })}
                   onDelete={() => void removeImage(row)}
                 />
