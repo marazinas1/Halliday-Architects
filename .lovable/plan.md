@@ -45,6 +45,14 @@ shape so nothing shifts when the photograph lands:
   is actually coming.
 - Contact photo band: currently can vanish entirely after load if no photograph
   resolves. Decide before painting.
+- Contact map: MapLibre makes this page ~980KB (259KB gzip), more than every
+  other page combined. Load the map only when the user scrolls to it (lazy
+  import behind an IntersectionObserver), showing a static placeholder of
+  identical height until then so nothing jumps.
+- `PhotoFrame` in `Index.tsx` declares `width={2000} height={1400}` for every
+  slot, including the lower `aspect-[3/4]` upright cards. Declared dimensions
+  must match each slot's real ratio.
+
 
 ## 3. Consistency pass (the "tidy edges" question)
 
