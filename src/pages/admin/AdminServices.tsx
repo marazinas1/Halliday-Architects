@@ -207,34 +207,36 @@ function ServicesBody() {
           {order.map((service, index) => (
             <li
               key={service.id}
-              className="flex items-center gap-3 rounded border border-line bg-card p-3"
+              className="flex flex-col gap-3 rounded border border-line bg-card p-3 sm:flex-row sm:items-center"
             >
-              <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded bg-sand">
-                {(service.imageUrl ?? serviceFallback(index).url) ? (
-                  <img
-                    src={service.imageUrl ?? serviceFallback(index).url ?? ""}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-stone">
-                    <ImageIcon className="h-4 w-4" />
-                  </div>
-                )}
-                {!service.imageUrl && serviceFallback(index).url && (
-                  <span className="absolute inset-x-0 bottom-0 bg-ink/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-paper">
-                    Default
-                  </span>
-                )}
+              <div className="flex min-w-0 flex-1 items-center gap-3">
+                <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded bg-sand">
+                  {(service.imageUrl ?? serviceFallback(index).url) ? (
+                    <img
+                      src={service.imageUrl ?? serviceFallback(index).url ?? ""}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-stone">
+                      <ImageIcon className="h-4 w-4" />
+                    </div>
+                  )}
+                  {!service.imageUrl && serviceFallback(index).url && (
+                    <span className="absolute inset-x-0 bottom-0 bg-ink/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-paper">
+                      Default
+                    </span>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-ink sm:truncate">{service.title}</p>
+                  <p className="truncate text-xs text-stone">
+                    {service.published ? "Published" : "Hidden"}
+                    {service.includes.length ? ` · ${service.includes.join(" · ")}` : ""}
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-ink">{service.title}</p>
-                <p className="truncate text-xs text-stone">
-                  {service.published ? "Published" : "Hidden"}
-                  {service.includes.length ? ` · ${service.includes.join(" · ")}` : ""}
-                </p>
-              </div>
-              <div className="flex shrink-0 items-center gap-1">
+              <div className="flex shrink-0 items-center justify-end gap-1 border-t border-line pt-2 sm:border-t-0 sm:pt-0">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -262,6 +264,7 @@ function ServicesBody() {
               </div>
             </li>
           ))}
+
         </ul>
       )}
 
