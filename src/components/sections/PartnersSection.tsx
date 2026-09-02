@@ -45,7 +45,9 @@ const PartnersSection = () => {
               <div className="mb-8 flex h-20 items-center justify-center">
                 <img
                   src={partner.logo}
-                  alt={partner.name}
+                  alt={`${partner.name} logo`}
+                  width={320}
+                  height={64}
                   className="max-h-16 w-auto object-contain opacity-55 grayscale transition-[filter,opacity] duration-500 ease-out group-hover:opacity-100 group-hover:grayscale-0 motion-reduce:transition-none"
                   loading="lazy"
                   decoding="async"
