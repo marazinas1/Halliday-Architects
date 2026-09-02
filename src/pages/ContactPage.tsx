@@ -52,7 +52,7 @@ const ContactPage = () => {
           {/* Full-bleed band, matched to the map's proportions — edge to edge,
               no side gutters anywhere on the site. */}
           <section className="w-full pb-16 md:pb-24" aria-label="Halliday Architects project photography">
-            <div className="h-[420px] overflow-hidden bg-sand md:h-[600px]">
+            <div className="h-[380px] overflow-hidden bg-sand md:h-[560px]">
               {cover ? (
                 <ResponsiveImage
                   src={cover.url}
