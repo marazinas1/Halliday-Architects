@@ -115,7 +115,7 @@ export const TeamRoster = () => {
   return (
     <div className="space-y-0">
       {principals.length > 0 && (
-        <CenteredRoster members={principals} />
+        <CenteredRoster members={[...principals].reverse()} />
       )}
 
       {studio.length > 0 && (
