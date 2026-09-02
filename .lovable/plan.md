@@ -1,35 +1,35 @@
-# Picker clarity, automatic-photo control, and sharper photography
+# Role rename, simpler resolver, better picker, sharper photography
 
-## Answers first
+Four steps, done in this order.
 
-**Where do the photographs live?** In the projects module. Each project owns its photographs in `project_images` (managed on the project edit screen), and the picker reads them through the project image library. There is no separate media library today.
+## Step 1 — Rename `platform_owner` to `developer`
 
-**What happens to a photograph I upload in the picker?** It does *not* join a project. It goes into the `site-images` bucket under `homepage/`, and is referenced only by the slot you uploaded it into. So it is invisible everywhere else — no way to reuse it, no way to clean it up. That is a gap worth closing (see part 3).
+Isolated, small, first, so everything after it is written against the correct value.
 
-**Where is the "automatic" assignment decided?** In code, not in the database — a shared resolver picks a project photograph per slot, using a fixed order of five leading projects for the homepage, the last two projects for the About strip, and one project per Services band. Nobody can change it from the admin panel right now.
+- Migration: add `developer` to the `app_role` enum, `UPDATE public.user_roles SET role = 'developer' WHERE role = 'platform_owner'`, then rewrite the bodies of `is_platform_owner()`, `is_admin()`, `is_owner()`, `is_staff()` and `guard_user_roles()` to compare against `'developer'`. Function names stay as they are.
+- Code: `AdminRole` type and `STAFF_ROLES` / `isOwnerRole` in `useAdminAuth`, the `ROLE_LABEL` entries in `AdminSidebar` and `AdminUsers`, the role check in the `manage-users` edge function, and the label in the admin invite email template.
+- Verification: sign in, confirm the sidebar still shows "Developer", the Users screen still lists everyone, and a role change on a non-developer account still succeeds.
 
-**How are uploads compressed?** Every admin upload runs through one shared pipeline: resize to the preset's longest edge, convert to WebP, strip EXIF. Current presets: project photography 2400px / ~1MB / quality 0.82, homepage hero 2560px / ~1.2MB. That 0.82 quality on a wide full-bleed image is what you are seeing as "not sharp" on a Retina screen — a 2400px file shown across a 1470pt Retina viewport is being asked for roughly 2940 real pixels.
+## Step 2 — Simplify the automatic-photograph resolver
 
-## 1. Picker: make the project strip readable
+No new screen, no new table.
 
-- Give the dialog a proper height and a wider max width, with the project strip pinned above its own scroll area.
-- Replace the thin scrolling tab strip with a visible **project list** — a left column inside the dialog on desktop (name + photograph count), and a full-width dropdown/select on narrow screens. Nothing gets hidden under a scrollbar.
-- Keep the search field, filtering that list.
-- Selected project name and count stay above the grid.
+- `useResolvedPageImages` drops `HOME_PRIORITY_SLUGS` entirely and takes published projects in `sort_order` — the same order the Projects list already shows and the client already controls by reordering.
+- Homepage wall and tiles consume the first N published projects in that order; the About strip keeps taking the last two; each Services band takes one project by index.
+- Remove the hero dependency: `site_settings.hero_image_bucket`, `hero_image_path`, `hero_headline` and `hero_subline` are V1 leftovers that currently jump the queue into `wall_1`. Drop them from the resolver, from `useSiteSettings`, from the admin settings/home screens that still write them, and from the columns once nothing reads them. One source per photograph.
+- Verification: reorder a project in the admin list and confirm the homepage wall order follows it.
 
-## 2. Who controls the automatic photographs
+## Step 3 — Picker and photograph library
 
-Introduce an admin screen, **Website → Automatic photography**, visible only to the platform owner role (your account) — hidden from owners and editors. It lists every slot on Home, About, Services and Contact and lets you set which project each slot draws from when nobody has chosen a photograph. Stored in a small settings table so the resolver reads it instead of hardcoded slugs; where nothing is set, the current code order remains the default.
+**Picker.** Give the dialog a proper height and a wider max width. Replace the thin scrolling tab strip with a visible project list — a left column on desktop (name + photograph count), a full-width select on narrow screens. The search field filters that list. Selected project name and count stay above the grid, which scrolls on its own.
 
-I would not add a separate `developer` role — the existing `platform_owner` role already means exactly "you, not the client", and adding a fourth role means auditing every policy again. Say the word if you want a real `developer` role instead.
+**Photograph library.** New admin screen, Website → Photographs: everything uploaded through a picker (the `site-images` bucket), listed with thumbnail, upload date and which slots use it, with delete for unused files. The picker gains a third tab, "Uploaded", so a standalone photograph can be reused instead of uploaded twice.
 
-## 3. Uploaded (non-project) photographs get a home
+## Step 4 — Photograph quality
 
-Add **Website → Photograph library**: everything uploaded through a picker, listed with its thumbnail, upload date and which slots use it, with delete for unused files. The picker gains a third tab, "Uploaded", so a photograph uploaded once can be reused on another page instead of being uploaded again.
+**First, verify what the plan supports.** Before building anything, request a transformed URL (`/render/image/public/...?width=800`) against a real object and read the response. Only if it returns a resized image do we use five variants; if it 4xx's, we fall back to generating two sizes at upload time (full + 1400px) and using those in the `srcset`.
 
-## 4. Sharper photography without a slow site
-
-Raise the presets and serve the right size per screen:
+Presets raised:
 
 | Preset | Now | Proposed |
 |---|---|---|
@@ -38,19 +38,17 @@ Raise the presets and serve the right size per screen:
 | Blog cover | 1800px, q0.82 | 2000px, q0.86 |
 | Headshots, body, logos | unchanged | unchanged |
 
-Bigger source files alone would slow the site, so they are paired with:
+Paired with a shared `ResponsiveImage` component: `srcset` + `sizes`, explicit `width`/`height`, `fetchpriority="high"` and a preload on the single hero image, lazy loading everywhere below the fold.
 
-- **Responsive delivery** — request 800/1200/1600/2400/3200px variants from storage image transformation and hand the browser a `srcset` + `sizes`, so a phone downloads ~200KB and a 5K display gets the full file. If transformation is not available on the current plan, the fallback is generating two sizes at upload time (full + 1400px) and using those in the `srcset`.
-- Explicit `width`/`height` on every image (no layout shift), `fetchpriority="high"` + preload on the one hero image, lazy loading everywhere below the fold.
+**Standard to hold:** LCP under 2.5s on a mid-range phone, hero under ~400KB over the wire after variant selection, full homepage under ~2MB.
 
-**The standard to hold:** LCP under 2.5s on a mid-range phone, hero image over the wire under ~400KB after responsive selection, full homepage under ~2MB. Architecture and photography sites (BIG, Snøhetta, Dezeen) all run 2× density source files with responsive `srcset` — the sharpness comes from serving the right variant, not from sending one huge file to everyone.
+**Verification is a real measurement, not a claim:** load the homepage in a headless browser at a mobile viewport and at 1440px, capture every image request with its transferred size, and report the totals plus the measured LCP. If a target is missed, the step is not done.
 
-Existing photographs stay as they are; they were already encoded at the old settings. If you want them re-done at the new quality, that is a separate re-upload pass from the originals — tell me and I will script it.
+Existing photographs stay at their current encoding — they were compressed at the old settings. Re-doing them means re-uploading from the originals; say the word and I will script that as a separate pass.
 
 ## Technical notes
 
-- `ImagePicker` restructured (project list column + dropdown, uploaded tab); `DialogContent` sized with its own scroll region.
-- New table for slot → project defaults, admin-gated to `is_platform_owner()`; `useResolvedPageImages` reads it with the current hardcoded order as fallback.
-- New admin route `/admin/automatic-photography` and `/admin/photograph-library`, both behind a platform-owner guard in the sidebar and the route.
-- `IMAGE_PRESETS` values updated; new `ResponsiveImage` component centralising `srcset`/`sizes`/dimensions, adopted on Home, Projects, About, Services and Blog.
-- Verification: side-by-side of a homepage photograph before/after at 2× zoom, plus a network check that the mobile viewport pulls the small variant.
+- Step 1 is its own migration; nothing else ships with it.
+- Step 2 touches `useResolvedPageImages`, `useSiteSettings`, `AdminHome`, `AdminSettings`, and a follow-up migration dropping the four `site_settings` hero columns.
+- Step 3 touches `ImagePicker`, `PageImageSlot` dialog sizing, a new `useSiteImageLibrary` hook and a new admin route.
+- Step 4 touches `IMAGE_PRESETS`, a new `ResponsiveImage`, and its adoption on Home, Projects, About, Services and Blog.
