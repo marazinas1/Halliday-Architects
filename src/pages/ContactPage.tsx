@@ -5,16 +5,16 @@ import ContactSection from "@/components/sections/ContactSection";
 import ContactMapSection from "@/components/ContactMapSection";
 import Reveal from "@/components/Reveal";
 import ResponsiveImage from "@/components/ResponsiveImage";
-import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
 import { pageHeader } from "@/lib/rhythm";
 
 const ContactPage = () => {
-  const { isLoading } = usePublicProjects();
   const page = usePageContent();
   // Shared resolver: chosen photograph → developer default → project photography.
-  const { resolve } = useResolvedPageImages();
+  // Decide before painting: while content is still loading the band keeps its
+  // space; once loaded, it either has a photograph or is never rendered.
+  const { resolve, isLoading } = useResolvedPageImages();
   const photo = resolve("contact", "hero");
   const cover = photo.url ? { url: photo.url, alt: photo.alt } : null;
 
