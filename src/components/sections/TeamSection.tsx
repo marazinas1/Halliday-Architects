@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { useTeamMembers, type TeamMember } from "@/hooks/useTeamMembers";
 
 const isPrincipal = (m: TeamMember) => m.role.toLowerCase().includes("principal");
@@ -13,14 +14,15 @@ export const TeamCard = ({
   <div className={align === "center" ? "text-center" : "text-left"}>
     <div className="mb-5 aspect-[4/5] w-full overflow-hidden bg-sand">
       {m.photo_url ? (
-        <img
+        <ResponsiveImage
           src={m.photo_url}
           alt={`${m.name}, ${m.role} at Halliday Architects`}
           width={880}
           height={1100}
+          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+          maxWidth={1400}
+          quality={82}
           className="h-full w-full object-cover grayscale transition-[filter] duration-500 hover:grayscale-0 motion-reduce:transition-none"
-          loading="lazy"
-          decoding="async"
         />
       ) : null}
     </div>
