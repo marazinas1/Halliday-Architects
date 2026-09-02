@@ -22,6 +22,36 @@ export type PageContent = {
 
 const keyOf = (page: string, slot: string) => `${page}:${slot}`;
 
+/**
+ * The photographs on the public pages are chosen in the database, so a cold
+ * page load cannot render an image until that round trip finishes. Keeping the
+ * last payload in localStorage lets the very first frame know which
+ * photographs to request — the network answer then simply confirms or corrects
+ * it.
+ */
+const CACHE_KEY = "ha:page-content:v1";
+const CACHE_TTL = 24 * 60 * 60 * 1000;
+
+function readCache(): PageContent | undefined {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return undefined;
+    const parsed = JSON.parse(raw) as { at: number; content: PageContent };
+    if (!parsed?.content || Date.now() - parsed.at > CACHE_TTL) return undefined;
+    return parsed.content;
+  } catch {
+    return undefined;
+  }
+}
+
+function writeCache(content: PageContent) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), content }));
+  } catch {
+    /* storage full or unavailable — the cache is an optimisation only */
+  }
+}
+
 export function mediaUrl(ref: MediaRef | undefined | null): string | null {
   if (!ref) return null;
   return supabase.storage.from(ref.bucket).getPublicUrl(ref.path).data.publicUrl;
@@ -31,6 +61,8 @@ export function usePageContent() {
   const query = useQuery({
     queryKey: PAGE_CONTENT_KEY,
     staleTime: 60_000,
+    initialData: readCache,
+    initialDataUpdatedAt: 0,
     queryFn: async (): Promise<PageContent> => {
       const [media, defaults, text] = await Promise.all([
         supabase.from("page_media").select("page, slot, bucket, path, alt"),
@@ -40,6 +72,7 @@ export function usePageContent() {
       if (media.error) throw media.error;
       if (defaults.error) throw defaults.error;
       if (text.error) throw text.error;
+
 
       const content: PageContent = { media: {}, defaults: {}, text: {} };
       for (const row of media.data ?? []) {
