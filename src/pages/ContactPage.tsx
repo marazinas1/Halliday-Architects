@@ -60,7 +60,6 @@ const ContactPage = () => {
                   sizes="100vw"
                   maxWidth={2400}
                   quality={85}
-                  loading="eager"
                   priority
                   className="h-full w-full object-cover"
                 />
