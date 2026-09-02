@@ -370,8 +370,10 @@ export default function ProjectImageManager({
         <ImagePlus className="h-5 w-5 text-stone/70" />
         <p className="text-sm text-ink">Drag images here, or click to choose files</p>
         <p className="text-xs text-stone">
-          Resized to 2400px and converted to WebP automatically.
+          Large photographs are resized and converted to WebP automatically, then delivered at the
+          right size for each screen.
         </p>
+
       </div>
 
       {pending.length > 0 && (
