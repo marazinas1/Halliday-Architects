@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import ResponsiveImage, { buildSrcSet } from "@/components/ResponsiveImage";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { Link, useLocation } from "react-router-dom";
 
 import { ArrowRight } from "lucide-react";
@@ -65,7 +64,7 @@ const PhotoFrame = ({
         // page is capped so the first paint stays fast.
         quality={quality}
         maxWidth={maxWidth}
-        blurUp
+
         sizes={sizes}
         style={{ objectPosition }}
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
@@ -106,27 +105,6 @@ const Index = () => {
     { label: page.copy("home", "tile_contact_label", "Contact"), to: "/contact" },
   ];
 
-  // Queue the opening photograph at the highest priority as soon as its URL is
-  // known, instead of waiting for React to paint the <img>.
-  const heroUrl = wall[0]?.url ?? null;
-  useEffect(() => {
-    if (!heroUrl) return;
-    const srcSet = buildSrcSet(heroUrl, 85);
-    const link = document.createElement("link");
-    link.rel = "preload";
-    link.as = "image";
-    link.setAttribute("fetchpriority", "high");
-    if (srcSet) {
-      link.setAttribute("imagesrcset", srcSet);
-      link.setAttribute("imagesizes", "100vw");
-    } else {
-      link.href = heroUrl;
-    }
-    document.head.appendChild(link);
-    return () => {
-      link.remove();
-    };
-  }, [heroUrl]);
 
 
 
