@@ -1,5 +1,7 @@
-import ResponsiveImage from "@/components/ResponsiveImage";
+import { useEffect } from "react";
+import ResponsiveImage, { buildSrcSet } from "@/components/ResponsiveImage";
 import { Link, useLocation } from "react-router-dom";
+
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
@@ -37,6 +39,8 @@ const PhotoFrame = ({
   zoomOnHover = false,
   objectPosition = "center",
   sizes = "100vw",
+  quality = 80,
+  maxWidth,
 }: {
   photo: ResolvedPhoto | undefined;
   dark?: boolean;
@@ -45,6 +49,9 @@ const PhotoFrame = ({
   objectPosition?: string;
   /** Real rendered width of this slot, so the browser picks the right variant. */
   sizes?: string;
+  quality?: number;
+  /** Largest variant this slot can ever use — small tiles never fetch a master. */
+  maxWidth?: number;
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
@@ -55,8 +62,10 @@ const PhotoFrame = ({
         height={1400}
         priority={priority}
         // The opening hero is the one image worth extra bytes; the rest of the
-        // page stays lazy and modest so the first paint remains fast.
-        quality={priority ? 85 : 80}
+        // page is capped so the first paint stays fast.
+        quality={quality}
+        maxWidth={maxWidth}
+        blurUp
         sizes={sizes}
         style={{ objectPosition }}
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
@@ -71,6 +80,7 @@ const PhotoFrame = ({
     />
   </div>
 );
+
 
 
 
@@ -96,6 +106,30 @@ const Index = () => {
     { label: page.copy("home", "tile_contact_label", "Contact"), to: "/contact" },
   ];
 
+  // Queue the opening photograph at the highest priority as soon as its URL is
+  // known, instead of waiting for React to paint the <img>.
+  const heroUrl = wall[0]?.url ?? null;
+  useEffect(() => {
+    if (!heroUrl) return;
+    const srcSet = buildSrcSet(heroUrl, 85);
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.setAttribute("fetchpriority", "high");
+    if (srcSet) {
+      link.setAttribute("imagesrcset", srcSet);
+      link.setAttribute("imagesizes", "100vw");
+    } else {
+      link.href = heroUrl;
+    }
+    document.head.appendChild(link);
+    return () => {
+      link.remove();
+    };
+  }, [heroUrl]);
+
+
+
 
   return (
     <main className="min-h-screen bg-background">
@@ -111,29 +145,41 @@ const Index = () => {
       {/* Rich gallery wall: one opening image, then three, then two. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
         <div className="relative h-[82svh] min-h-[560px] overflow-hidden">
-          <PhotoFrame photo={wall[0]} priority sizes="100vw" />
+          <PhotoFrame photo={wall[0]} priority sizes="100vw" quality={85} />
           <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-paper">
             <span aria-hidden="true" className="h-10 w-px bg-paper/50" />
             <span className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-paper/75">Scroll</span>
           </div>
         </div>
 
+        {/* A third of the width each — never worth more than a 1400px master. */}
         <div className="grid gap-[2px] md:h-[44vh] md:min-h-[300px] md:grid-cols-3">
           {wall.slice(1, 4).map((photo, index) => (
-            <Reveal key={`wall-row-one-${index}`} delay={index * 150} className="relative h-[32vh] md:h-full">
-              <PhotoFrame photo={photo} sizes="(min-width: 768px) 34vw, 100vw" />
-            </Reveal>
+            <div key={`wall-row-one-${index}`} className="relative h-[32vh] md:h-full">
+              <PhotoFrame
+                photo={photo}
+                sizes="(min-width: 768px) 34vw, 100vw"
+                quality={78}
+                maxWidth={1400}
+              />
+            </div>
           ))}
         </div>
 
         <div className="grid gap-[2px] md:h-[60vh] md:min-h-[400px] md:grid-cols-[1.4fr_1fr]">
           {wall.slice(4, 6).map((photo, index) => (
-            <Reveal key={`wall-row-two-${index}`} delay={index * 150} className="relative h-[40vh] md:h-full">
-              <PhotoFrame photo={photo} sizes="(min-width: 768px) 60vw, 100vw" />
-            </Reveal>
+            <div key={`wall-row-two-${index}`} className="relative h-[40vh] md:h-full">
+              <PhotoFrame
+                photo={photo}
+                sizes={index === 0 ? "(min-width: 768px) 58vw, 100vw" : "(min-width: 768px) 42vw, 100vw"}
+                quality={80}
+                maxWidth={2000}
+              />
+            </div>
           ))}
         </div>
       </section>
+
 
 
       <Reveal>
@@ -149,7 +195,14 @@ const Index = () => {
         {tiles.map((tile, index) => (
           <Reveal key={tile.to} delay={index * 150}>
             <Link to={tile.to} className="group relative block aspect-[3/4] overflow-hidden">
-              <PhotoFrame photo={tilePhotos[index]} zoomOnHover sizes="(min-width: 768px) 34vw, 100vw" />
+              <PhotoFrame
+                photo={tilePhotos[index]}
+                zoomOnHover
+                sizes="(min-width: 768px) 34vw, 100vw"
+                quality={75}
+                maxWidth={960}
+              />
+
               <div
                 aria-hidden="true"
                 className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"
