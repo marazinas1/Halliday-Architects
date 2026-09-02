@@ -205,6 +205,39 @@ export type Database = {
         }
         Relationships: []
       }
+      page_media_defaults: {
+        Row: {
+          alt: string | null
+          bucket: string
+          created_at: string
+          id: string
+          page: string
+          path: string
+          slot: string
+          updated_at: string
+        }
+        Insert: {
+          alt?: string | null
+          bucket: string
+          created_at?: string
+          id?: string
+          page: string
+          path: string
+          slot: string
+          updated_at?: string
+        }
+        Update: {
+          alt?: string | null
+          bucket?: string
+          created_at?: string
+          id?: string
+          page?: string
+          path?: string
+          slot?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       page_text: {
         Row: {
           created_at: string

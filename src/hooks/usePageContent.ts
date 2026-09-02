@@ -16,6 +16,7 @@ export type MediaRef = { bucket: string; path: string; alt: string | null };
 
 export type PageContent = {
   media: Record<string, MediaRef>;
+  defaults: Record<string, MediaRef>;
   text: Record<string, string>;
 };
 
@@ -31,16 +32,25 @@ export function usePageContent() {
     queryKey: PAGE_CONTENT_KEY,
     staleTime: 60_000,
     queryFn: async (): Promise<PageContent> => {
-      const [media, text] = await Promise.all([
+      const [media, defaults, text] = await Promise.all([
         supabase.from("page_media").select("page, slot, bucket, path, alt"),
+        supabase.from("page_media_defaults").select("page, slot, bucket, path, alt"),
         supabase.from("page_text").select("page, slot, value"),
       ]);
       if (media.error) throw media.error;
+      if (defaults.error) throw defaults.error;
       if (text.error) throw text.error;
 
-      const content: PageContent = { media: {}, text: {} };
+      const content: PageContent = { media: {}, defaults: {}, text: {} };
       for (const row of media.data ?? []) {
         content.media[keyOf(row.page, row.slot)] = {
+          bucket: row.bucket,
+          path: row.path,
+          alt: row.alt,
+        };
+      }
+      for (const row of defaults.data ?? []) {
+        content.defaults[keyOf(row.page, row.slot)] = {
           bucket: row.bucket,
           path: row.path,
           alt: row.alt,
@@ -53,7 +63,7 @@ export function usePageContent() {
     },
   });
 
-  const content = query.data ?? { media: {}, text: {} };
+  const content = query.data ?? { media: {}, defaults: {}, text: {} };
 
   return {
     isLoading: query.isLoading,
@@ -65,6 +75,10 @@ export function usePageContent() {
     imageUrl(page: PageName, slot: string): string | null {
       return mediaUrl(content.media[keyOf(page, slot)]);
     },
+    /** Developer-set default for a slot, used when nothing has been chosen. */
+    defaultImage(page: PageName, slot: string): MediaRef | null {
+      return content.defaults[keyOf(page, slot)] ?? null;
+    },
     /** Copy for a slot, falling back to the wording written into the code. */
     copy(page: PageName, slot: string, fallback: string): string {
       const value = content.text[keyOf(page, slot)];
@@ -72,3 +86,4 @@ export function usePageContent() {
     },
   };
 }
+
