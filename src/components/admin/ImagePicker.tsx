@@ -139,7 +139,8 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                 )}
 
                 <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:grid-cols-4">
+
                     {(activeProject?.images ?? []).map((img) => {
                       const selected =
                         current?.bucket === "project-images" && current.path === img.storage_path;
