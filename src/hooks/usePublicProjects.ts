@@ -166,7 +166,21 @@ export async function fetchPublicProjects(): Promise<PublicProjectCard[]> {
         return Date.parse(b.created_at) - Date.parse(a.created_at);
       });
       return cards;
-    },
+    }
+}
+
+/**
+ * All published portfolio projects with a card image.
+ *
+ * Home, Projects, About and Services all read this list through
+ * `useResolvedPageImages`; keep it warm so moving between them does not
+ * refetch the catalogue, and never remove a field the card image depends on.
+ */
+export function usePublicProjects() {
+  return useQuery({
+    queryKey: ["public-projects"],
+    staleTime: 5 * 60_000,
+    queryFn: fetchPublicProjects,
   });
 }
 
