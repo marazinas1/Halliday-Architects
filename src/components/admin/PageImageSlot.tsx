@@ -274,7 +274,7 @@ export default function PageImageSlot({
               size="sm"
               variant="ghost"
               className="h-7 text-xs text-stone"
-              disabled={busy}
+              disabled={busy || !isDeveloper}
               onClick={removeDefault}
             >
               Clear default
