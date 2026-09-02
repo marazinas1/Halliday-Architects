@@ -14,20 +14,32 @@
 
 That is inside the healthy 1–2 MB range. Nothing is oversized in absolute terms.
 
-**But there are two real problems, and one of them gets worse with every project you add.**
+**Governing rule for everything below: sharpness first.** Every slot gets a ceiling equal to its real rendered width at 2x pixel density — never less. That is the point where a photograph is indistinguishable from the master on a retina screen; below it, it goes soft. We only remove bytes that are genuinely invisible.
 
-## Problem 1 — small cards fetch large files on retina screens
+## Problem 0 — the homepage tiles are currently too soft (regression, fix first)
 
-Cards on `/projects`, the project gallery and the "next project" band pass a `sizes` hint but no ceiling. On your screen (2x pixel density) a one-third-width card therefore requests a **2000px** variant. Measured: two cards on `/projects` pulled 316 KB and 313 KB each — for tiles a few hundred pixels wide.
+The homepage caps went below the retina requirement: the three bottom tiles are capped at 960px while rendering ~460px wide (920px needed at 2x, and they are 3:4 portrait so the real need is higher), and the three-across wall row is capped at 1400px at quality 78. That is why they look blurry.
 
-Fix: cap each slot at the largest variant it can actually use, exactly as the homepage already does.
+Corrected homepage caps:
 
-- Projects grid: full-width row max 2000px, half-width 1600px, third-width 1200px; quality 76
-- Project page gallery: max 1600px, quality 78
-- Lightbox (the enlarged view): max 2400px, quality 85 — this is where the big file belongs
-- "Next project" band and About/Services bands: max 2000px, quality 78
+- Hero: 3000px, quality 85 (unchanged)
+- Wall row of three: 2000px, quality 82
+- Wall row of two: 2400px / 2000px, quality 82
+- Projects / About / Contact tiles: 1600px, quality 82
 
-Result: the grid stays visually identical while its weight drops by roughly half, and clicking a project still shows the full-resolution photograph.
+## Problem 1 — large cards fetch oversized files elsewhere
+
+Cards on `/projects`, the project gallery and the "next project" band pass a `sizes` hint but no ceiling at all, so a third-width tile can request a 2400–3000px master. Measured: two cards on `/projects` pulled 316 KB and 313 KB each.
+
+Fix: give them the same retina-correct ceilings — enough to stay sharp, no more.
+
+- Projects grid: full-width row 2400px, half-width 2000px, third-width 1600px; quality 82
+- Project page gallery: 2000px, quality 82
+- Lightbox (the enlarged view): 3000px, quality 88 — full quality where it is looked at closely
+- "Next project" band and About/Services bands: 2400px, quality 82
+
+Result: nothing on screen gets softer than it is today — the homepage tiles get visibly sharper — while the oversized fetches on the project pages come down.
+
 
 ## Problem 2 — every page downloads the whole image catalogue
 
@@ -52,11 +64,13 @@ Fix: narrow the query so the cost stops growing with the archive.
 
 ## Verification after the change
 
-Re-measure `/`, `/projects`, `/about` and a project detail page at 1440px in both 1x and 2x, and report before/after totals plus the largest variant fetched per page. Target: `/projects` under ~600 KB at 1x and no card requesting a variant wider than its cap.
+Re-measure `/`, `/projects`, `/about` and a project detail page at 1440px in both 1x and 2x. Two checks, and sharpness is the one that must pass: every slot must receive a variant at least as wide as its rendered size at 2x, and screenshots of the homepage tiles compared side by side against today. Weight is reported second, as information — no cap is lowered to hit a byte target.
 
 ## Technical detail
 
+- `src/pages/Index.tsx`: raise the tile and wall caps as listed above (960 → 1600, 1400 → 2000, quality 75/78 → 82).
 - `src/pages/ProjectsPage.tsx`, `src/pages/ProjectPage.tsx`, `src/pages/AboutPage.tsx`, `src/pages/ServicesPage.tsx`, `src/components/blog/PostCard.tsx`: add `maxWidth` and `quality` per slot.
-- Lightbox component used by `ProjectPage`: render through `ResponsiveImage` with `maxWidth={2400} quality={85}` if it currently uses a raw `<img>`.
+- Lightbox component used by `ProjectPage`: render through `ResponsiveImage` with `maxWidth={3000} quality={88}` if it currently uses a raw `<img>`.
 - `src/hooks/usePublicProjects.ts`: narrow `project_images` select and add `.in("category", [...])`; filter `image_tags` by `image_id`; add `staleTime: 5 * 60_000`.
+
 - No database migration, no change to stored files.
