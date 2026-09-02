@@ -121,7 +121,7 @@ const Index = () => {
         <div className="grid gap-[2px] md:h-[44vh] md:min-h-[300px] md:grid-cols-3">
           {wall.slice(1, 4).map((photo, index) => (
             <Reveal key={`wall-row-one-${index}`} delay={index * 150} className="relative h-[32vh] md:h-full">
-              <PhotoFrame photo={photo} />
+              <PhotoFrame photo={photo} sizes="(min-width: 768px) 34vw, 100vw" />
             </Reveal>
           ))}
         </div>
