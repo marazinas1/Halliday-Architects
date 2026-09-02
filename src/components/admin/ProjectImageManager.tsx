@@ -468,7 +468,7 @@ export default function ProjectImageManager({
             onChange={async (e) => {
               const c = e.target.value as ImageCategory;
               if (!c) return;
-              for (const id of selected) await patch(id, { category: c });
+              for (const id of selected) await setCategory(id, c);
               e.target.value = "";
             }}
           >
