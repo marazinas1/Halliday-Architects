@@ -59,6 +59,7 @@ type Props = {
   width?: number;
   height?: number;
   style?: React.CSSProperties;
+  onClick?: React.MouseEventHandler<HTMLImageElement>;
 };
 
 export default function ResponsiveImage({
@@ -72,6 +73,7 @@ export default function ResponsiveImage({
   width,
   height,
   style,
+  onClick,
 }: Props) {
   const srcSet = buildSrcSet(src, quality, maxWidth);
   const transformable = srcSet !== null;
@@ -91,6 +93,7 @@ export default function ResponsiveImage({
       decoding={priority ? "sync" : "async"}
       fetchPriority={priority ? "high" : undefined}
       style={style}
+      onClick={onClick}
       className={cn(className)}
     />
   );
