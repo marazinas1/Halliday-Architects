@@ -16,16 +16,20 @@ Every photograph on the homepage is rendered through one shared frame component 
 
 Because `sizes` is the only thing the browser uses to choose from the variant list, an understated value silently downgrades the image no matter how large the master is.
 
-## The fix
+## The fix — maximum sharpness, controlled weight
+
+The goal is the sharpest possible homepage without a slow first load. That means: correct size hints so no image is ever upscaled, a higher ceiling for the hero only, and everything below the fold left lazy and light.
 
 1. Give the photo frame a per-slot `sizes` value instead of one hard-coded string:
    - hero: `100vw`
    - three-across row: `(min-width: 768px) 33vw, 100vw`
    - two-across row: `(min-width: 768px) 58vw, 100vw`
    - the three bottom tiles: `(min-width: 768px) 33vw, 100vw`
-2. Add a 3000 px entry to the responsive variant list so the master's full resolution is reachable on large, high-density displays (currently the list stops at 2800).
-3. Raise the transformation quality for the hero-scale variants from 80 to 85 — at hero size the difference is visible and the file stays reasonable.
-4. Apply the same per-slot `sizes` correction to the other full-bleed photography that uses the same component (project hero, About strip, Services bands, Contact hero), since they inherit the identical wrong hint.
+2. Add a 3000 px entry to the variant list so the master's full resolution is reachable on large, high-density displays (currently it stops at 2800).
+3. Quality tuned per role rather than one flat number: hero variants at 85, the smaller homepage images at 80, everything else unchanged. At hero scale 85 is visibly cleaner; below the fold it would only add weight.
+4. Keep the load fast: only the hero is eager and high-priority — every other photograph stays lazy, so the first paint downloads one large image, not six. Expected hero payload on a 2x desktop is roughly 900 KB - 1.2 MB, which is normal for a full-bleed architectural hero and arrives while the rest of the page is still lazy.
+5. Apply the same per-slot `sizes` correction to the other full-bleed photography using the same component (project hero, About strip, Services bands, Contact hero), which inherits the identical wrong hint.
+
 
 ## Verification
 
