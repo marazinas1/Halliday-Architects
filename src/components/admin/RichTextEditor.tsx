@@ -148,7 +148,7 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
       }}
       onDrop={onDrop}
     >
-      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1 border-b border-line px-2 py-1.5 bg-sand/80 backdrop-blur">
+      <div className="sticky top-0 z-10 flex flex-nowrap items-center gap-1 overflow-x-auto sm:flex-wrap border-b border-line px-2 py-1.5 bg-sand/80 backdrop-blur">
         <ToolbarButton label="Heading 2" active={editor.isActive("heading", { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
           <Heading2 className="h-4 w-4" />
         </ToolbarButton>
