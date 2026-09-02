@@ -56,8 +56,9 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
   const activeProject = projects.find((p) => p.id === active) ?? projects[0] ?? null;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-4">
+    <div className="flex h-[70vh] min-h-0 flex-1 flex-col gap-4">
       <Tabs defaultValue="projects" className="flex min-h-0 flex-1 flex-col">
+
         <TabsList className="w-fit">
           <TabsTrigger value="projects">From projects</TabsTrigger>
           <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
@@ -75,7 +76,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           ) : (
             <div className="flex min-h-0 flex-1 gap-5">
               {/* Project list: a column on desktop, a select on narrow screens. */}
-              <div className="hidden w-56 shrink-0 flex-col gap-2 md:flex">
+              <div className="hidden w-72 shrink-0 flex-col gap-2 md:flex">
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -138,7 +139,8 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                 )}
 
                 <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:grid-cols-4">
+
                     {(activeProject?.images ?? []).map((img) => {
                       const selected =
                         current?.bucket === "project-images" && current.path === img.storage_path;
@@ -194,7 +196,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
             </p>
           ) : (
             <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:grid-cols-4">
                 {uploaded.map((img) => {
                   const selected =
                     current?.bucket === SITE_IMAGES_BUCKET && current.path === img.path;

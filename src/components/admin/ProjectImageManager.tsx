@@ -285,6 +285,26 @@ export default function ProjectImageManager({
     refresh();
   };
 
+  /**
+   * Hero and Card describe a single slot each on the public pages, so setting
+   * one demotes whichever photograph held that role before. Extra Heroes were
+   * silently ignored by the project page, which only confused the client.
+   */
+  const setCategory = async (id: string, category: ImageCategory) => {
+    if (category === "hero" || category === "card") {
+      const previous = rows.filter((r) => r.id !== id && r.category === category);
+      for (const row of previous) {
+        const { error } = await supabase
+          .from("project_images")
+          .update({ category: "gallery" })
+          .eq("id", row.id);
+        if (error) return toast.error(error.message);
+      }
+    }
+    await patch(id, { category });
+  };
+
+
   const makeCover = async (id: string) => {
     const { error } = await supabase.rpc("set_project_cover", {
       _project_id: projectId,
@@ -370,8 +390,10 @@ export default function ProjectImageManager({
         <ImagePlus className="h-5 w-5 text-stone/70" />
         <p className="text-sm text-ink">Drag images here, or click to choose files</p>
         <p className="text-xs text-stone">
-          Resized to 2400px and converted to WebP automatically.
+          Large photographs are resized and converted to WebP automatically, then delivered at the
+          right size for each screen.
         </p>
+
       </div>
 
       {pending.length > 0 && (
@@ -446,7 +468,7 @@ export default function ProjectImageManager({
             onChange={async (e) => {
               const c = e.target.value as ImageCategory;
               if (!c) return;
-              for (const id of selected) await patch(id, { category: c });
+              for (const id of selected) await setCategory(id, c);
               e.target.value = "";
             }}
           >
@@ -475,6 +497,14 @@ export default function ProjectImageManager({
       ) : rows.length === 0 ? (
         <p className="text-sm text-stone">No images yet.</p>
       ) : (
+        <>
+        <p className="text-xs text-stone">
+          The star marks the cover — the photograph used on the projects grid and the homepage; only
+          one per project. Hero is the wide photograph at the top of the project page, Card is the
+          shot used on its grid card, and Gallery is everything else. Setting a new Hero or Card
+          moves the previous one back to Gallery.
+        </p>
+
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
           <SortableContext items={rows.map((r) => r.id)} strategy={rectSortingStrategy}>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -487,7 +517,7 @@ export default function ProjectImageManager({
                     setSelected((s) => (v ? [...s, row.id] : s.filter((x) => x !== row.id)))
                   }
                   onCover={() => void makeCover(row.id)}
-                  onCategory={(c) => void patch(row.id, { category: c })}
+                  onCategory={(c) => void setCategory(row.id, c)}
                   onAlt={(v) => void patch(row.id, { alt_text: v || null })}
                   onDelete={() => void removeImage(row)}
                 />
@@ -495,7 +525,9 @@ export default function ProjectImageManager({
             </div>
           </SortableContext>
         </DndContext>
+        </>
       )}
+
 
       {rows.length > 0 && (
         <p className="text-xs text-stone">
