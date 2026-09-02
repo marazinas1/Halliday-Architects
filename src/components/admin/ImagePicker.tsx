@@ -113,36 +113,43 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
               </div>
 
               <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-3">
-                <div className="md:hidden">
-                  <Select
-                    value={activeProject?.id ?? undefined}
-                    onValueChange={(value) => setActive(value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Choose a project" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {(library ?? []).map((project) => (
-                        <SelectItem key={project.id} value={project.id}>
-                          {project.title} ({project.images.length})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-2">
+                  <div className="md:hidden">
+                    <Select
+                      value={activeProject?.id ?? undefined}
+                      onValueChange={(value) => setActive(value)}
+                    >
+                      <SelectTrigger className="h-11 text-base">
+                        <SelectValue placeholder="Choose a project" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {(library ?? []).map((project) => (
+                          <SelectItem key={project.id} value={project.id}>
+                            {project.title} ({project.images.length})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {activeProject && (
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="hidden text-sm font-medium text-ink md:block">
+                        {activeProject.title}
+                      </p>
+                      <p className="text-xs text-stone">
+                        {activeProject.images.length} photograph
+                        {activeProject.images.length === 1 ? "" : "s"}
+                        <span className="hidden md:inline"> — click one to use it</span>
+                        <span className="md:hidden"> — tap one to use it</span>
+                      </p>
+                    </div>
+                  )}
                 </div>
 
-                {activeProject && (
-                  <div className="flex items-baseline justify-between gap-3">
-                    <p className="text-sm font-medium text-ink">{activeProject.title}</p>
-                    <p className="text-xs text-stone">
-                      {activeProject.images.length} photograph
-                      {activeProject.images.length === 1 ? "" : "s"} — click one to use it
-                    </p>
-                  </div>
-                )}
+                <div className="min-h-0 overflow-y-auto overscroll-contain pr-1">
+                  <div className="grid grid-cols-2 auto-rows-[minmax(8rem,1fr)] gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
 
-                <div className="min-h-0 overflow-y-auto pr-1">
-                  <div className="grid min-h-full grid-cols-2 auto-rows-[minmax(8rem,1fr)] gap-4 sm:grid-cols-3 xl:grid-cols-4">
 
                     {(activeProject?.images ?? []).map((img) => {
                       const selected =

@@ -174,7 +174,7 @@ function ServicesBody() {
 
   return (
     <div className="max-w-4xl">
-      <div className="mb-8 flex items-start justify-between gap-4">
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h1 className="mb-1 text-2xl text-ink">Services</h1>
           <p className="text-sm text-stone">
@@ -207,34 +207,36 @@ function ServicesBody() {
           {order.map((service, index) => (
             <li
               key={service.id}
-              className="flex items-center gap-3 rounded border border-line bg-card p-3"
+              className="flex flex-col gap-3 rounded border border-line bg-card p-3 sm:flex-row sm:items-center"
             >
-              <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded bg-sand">
-                {(service.imageUrl ?? serviceFallback(index).url) ? (
-                  <img
-                    src={service.imageUrl ?? serviceFallback(index).url ?? ""}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-stone">
-                    <ImageIcon className="h-4 w-4" />
-                  </div>
-                )}
-                {!service.imageUrl && serviceFallback(index).url && (
-                  <span className="absolute inset-x-0 bottom-0 bg-ink/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-paper">
-                    Default
-                  </span>
-                )}
+              <div className="flex min-w-0 flex-1 items-center gap-3">
+                <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded bg-sand">
+                  {(service.imageUrl ?? serviceFallback(index).url) ? (
+                    <img
+                      src={service.imageUrl ?? serviceFallback(index).url ?? ""}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-stone">
+                      <ImageIcon className="h-4 w-4" />
+                    </div>
+                  )}
+                  {!service.imageUrl && serviceFallback(index).url && (
+                    <span className="absolute inset-x-0 bottom-0 bg-ink/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-paper">
+                      Default
+                    </span>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-ink sm:truncate">{service.title}</p>
+                  <p className="truncate text-xs text-stone">
+                    {service.published ? "Published" : "Hidden"}
+                    {service.includes.length ? ` · ${service.includes.join(" · ")}` : ""}
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-ink">{service.title}</p>
-                <p className="truncate text-xs text-stone">
-                  {service.published ? "Published" : "Hidden"}
-                  {service.includes.length ? ` · ${service.includes.join(" · ")}` : ""}
-                </p>
-              </div>
-              <div className="flex shrink-0 items-center gap-1">
+              <div className="flex shrink-0 items-center justify-end gap-1 border-t border-line pt-2 sm:border-t-0 sm:pt-0">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -262,6 +264,7 @@ function ServicesBody() {
               </div>
             </li>
           ))}
+
         </ul>
       )}
 
@@ -362,10 +365,11 @@ function ServicesBody() {
       </Dialog>
 
       <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
-        <DialogContent className="flex max-h-[85vh] max-w-4xl flex-col overflow-hidden">
-          <DialogHeader>
+        <DialogContent className="grid h-[100dvh] max-h-[100dvh] w-screen max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-none p-3 sm:h-[94dvh] sm:max-h-[94dvh] sm:w-[96vw] sm:max-w-[1500px] sm:rounded-lg sm:p-5">
+          <DialogHeader className="px-1 pb-3">
             <DialogTitle>Service photograph</DialogTitle>
           </DialogHeader>
+
           <ImagePicker
             current={
               editing?.image_bucket && editing.image_path

@@ -76,8 +76,8 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
           </Link>
         </div>
       ) : (
-        <div className="bg-card rounded-lg border border-line overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="bg-card rounded-lg border border-line overflow-x-auto">
+          <table className="w-full min-w-[680px] text-sm">
             <thead className="bg-sand text-stone text-xs uppercase tracking-wider">
               <tr>
                 <th className="text-left px-4 py-3 w-20">Photo</th>

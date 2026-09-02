@@ -163,7 +163,7 @@ function AdminProjectsInner() {
   return (
     <div className="space-y-6">
       <SectionTabs tabs={PROJECT_TABS} />
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+      <header className="flex flex-col gap-3 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-4">
         <div className="min-w-0">
           <h1 className="truncate text-2xl font-semibold text-ink">Projects</h1>
           <p className="text-sm text-stone">

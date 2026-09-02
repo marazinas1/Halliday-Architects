@@ -48,7 +48,7 @@ function AssetSlot({
 
   return (
     <div className="border border-line rounded bg-card p-5">
-      <div className="flex items-start justify-between gap-4 mb-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4 mb-4">
         <div>
           <p className="text-sm font-medium text-ink">{label}</p>
           <p className="text-xs text-stone mt-1">{help}</p>
