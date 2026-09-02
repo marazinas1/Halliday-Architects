@@ -65,7 +65,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           <TabsTrigger value="upload">Upload</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="projects" className="flex min-h-0 flex-1 flex-col gap-4 pt-4">
+        <TabsContent value="projects" className="mt-0 flex h-0 min-h-0 flex-1 flex-col pt-4">
           {isLoading ? (
             <div className="flex items-center gap-2 py-8 text-sm text-stone">
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -74,16 +74,16 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           ) : (library ?? []).length === 0 ? (
             <p className="py-6 text-sm text-stone">No published project photography yet.</p>
           ) : (
-            <div className="flex min-h-0 flex-1 gap-5">
+            <div className="flex h-full min-h-0 flex-1 gap-5">
               {/* Project list: a column on desktop, a select on narrow screens. */}
-              <div className="hidden w-72 shrink-0 flex-col gap-2 md:flex">
+              <div className="hidden h-full w-72 shrink-0 flex-col gap-2 md:flex">
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search projects"
                   className="shrink-0"
                 />
-                <div className="min-h-0 flex-1 overflow-y-auto rounded border border-line">
+                <div className="h-0 min-h-0 flex-1 overflow-y-auto rounded border border-line">
                   {projects.length === 0 ? (
                     <p className="p-3 text-xs text-stone">No project matches that.</p>
                   ) : (
@@ -110,7 +110,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                 </div>
               </div>
 
-              <div className="flex min-h-0 flex-1 flex-col gap-3">
+              <div className="flex h-full min-h-0 flex-1 flex-col gap-3">
                 <div className="md:hidden">
                   <Select
                     value={activeProject?.id ?? undefined}
@@ -139,8 +139,8 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                   </div>
                 )}
 
-                <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                <div className="h-0 min-h-0 flex-1 pr-1">
+                  <div className="grid h-full min-h-0 grid-cols-2 auto-rows-fr gap-4 sm:grid-cols-3 xl:grid-cols-4">
 
                     {(activeProject?.images ?? []).map((img) => {
                       const selected =
@@ -154,7 +154,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                             onPick({ bucket: "project-images", path: img.storage_path, alt: img.alt })
                           }
                           className={cn(
-                            "group relative aspect-[4/3] overflow-hidden rounded border text-left transition-all",
+                            "group relative min-h-0 overflow-hidden rounded border text-left transition-all",
                             selected ? "border-ink ring-2 ring-ink" : "border-line hover:border-ink/40",
                           )}
                         >
