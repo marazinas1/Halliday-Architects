@@ -56,8 +56,8 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
   const activeProject = projects.find((p) => p.id === active) ?? projects[0] ?? null;
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col gap-4">
-      <Tabs defaultValue="projects" className="flex min-h-0 flex-1 flex-col">
+    <div className="h-full min-h-0 overflow-hidden">
+      <Tabs defaultValue="projects" className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)]">
 
         <TabsList className="w-fit">
           <TabsTrigger value="projects">From projects</TabsTrigger>
@@ -65,7 +65,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           <TabsTrigger value="upload">Upload</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="projects" className="mt-0 flex h-0 min-h-0 flex-1 flex-col pt-4">
+        <TabsContent value="projects" className="mt-0 min-h-0 overflow-hidden pt-4 data-[state=active]:flex data-[state=active]:flex-col">
           {isLoading ? (
             <div className="flex items-center gap-2 py-8 text-sm text-stone">
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -74,43 +74,45 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           ) : (library ?? []).length === 0 ? (
             <p className="py-6 text-sm text-stone">No published project photography yet.</p>
           ) : (
-            <div className="flex h-full min-h-0 flex-1 gap-5">
+            <div className="grid h-full min-h-0 flex-1 grid-cols-1 gap-5 md:grid-cols-[18rem_minmax(0,1fr)]">
               {/* Project list: a column on desktop, a select on narrow screens. */}
-              <div className="hidden h-full w-72 shrink-0 flex-col gap-2 md:flex">
+              <div className="hidden h-full min-h-0 flex-col gap-2 md:flex">
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search projects"
                   className="shrink-0"
                 />
-                <div className="h-0 min-h-0 flex-1 overflow-y-auto rounded border border-line">
+                <div className="min-h-0 flex-1 overflow-y-auto rounded border border-line">
                   {projects.length === 0 ? (
                     <p className="p-3 text-xs text-stone">No project matches that.</p>
                   ) : (
-                    projects.map((project) => {
-                      const isActive = activeProject?.id === project.id;
-                      return (
-                        <button
-                          key={project.id}
-                          type="button"
-                          onClick={() => setActive(project.id)}
-                          className={cn(
-                            "flex w-full items-baseline justify-between gap-2 border-b border-line px-3 py-2.5 text-left text-xs transition-colors last:border-b-0",
-                            isActive ? "bg-sand font-medium text-ink" : "text-stone hover:bg-sand/60 hover:text-ink",
-                          )}
-                        >
-                          <span className="truncate">{project.title}</span>
-                          <span className="shrink-0 text-[10px] text-stone">
-                            {project.images.length}
-                          </span>
-                        </button>
-                      );
-                    })
+                    <div className="grid min-h-full auto-rows-[minmax(2.5rem,1fr)]">
+                      {projects.map((project) => {
+                        const isActive = activeProject?.id === project.id;
+                        return (
+                          <button
+                            key={project.id}
+                            type="button"
+                            onClick={() => setActive(project.id)}
+                            className={cn(
+                              "flex w-full items-center justify-between gap-2 border-b border-line px-3 py-2.5 text-left text-xs transition-colors last:border-b-0",
+                              isActive ? "bg-sand font-medium text-ink" : "text-stone hover:bg-sand/60 hover:text-ink",
+                            )}
+                          >
+                            <span className="truncate">{project.title}</span>
+                            <span className="shrink-0 text-[10px] text-stone">
+                              {project.images.length}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   )}
                 </div>
               </div>
 
-              <div className="flex h-full min-h-0 flex-1 flex-col gap-3">
+              <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-3">
                 <div className="md:hidden">
                   <Select
                     value={activeProject?.id ?? undefined}
@@ -139,8 +141,8 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                   </div>
                 )}
 
-                <div className="h-0 min-h-0 flex-1 pr-1">
-                  <div className="grid h-full min-h-0 grid-cols-2 auto-rows-fr gap-4 sm:grid-cols-3 xl:grid-cols-4">
+                <div className="min-h-0 overflow-y-auto pr-1">
+                  <div className="grid min-h-full grid-cols-2 auto-rows-[minmax(8rem,1fr)] gap-4 sm:grid-cols-3 xl:grid-cols-4">
 
                     {(activeProject?.images ?? []).map((img) => {
                       const selected =
@@ -185,7 +187,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           )}
         </TabsContent>
 
-        <TabsContent value="uploaded" className="flex min-h-0 flex-1 flex-col gap-3 pt-4">
+        <TabsContent value="uploaded" className="mt-0 min-h-0 gap-3 overflow-hidden pt-4 data-[state=active]:flex data-[state=active]:flex-col">
           {uploadsLoading ? (
             <div className="flex items-center gap-2 py-8 text-sm text-stone">
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -236,7 +238,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           )}
         </TabsContent>
 
-        <TabsContent value="upload" className="pt-4">
+        <TabsContent value="upload" className="mt-0 min-h-0 overflow-y-auto pt-4">
           <div
             onDragOver={(e) => {
               e.preventDefault();
@@ -284,7 +286,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
         </TabsContent>
       </Tabs>
 
-      {busy && <Progress value={progress} className="h-1" />}
+      {busy && <Progress value={progress} className="absolute inset-x-0 bottom-0 h-1" />}
     </div>
   );
 }
