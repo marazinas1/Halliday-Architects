@@ -1,54 +1,73 @@
-# Role rename, simpler resolver, better picker, sharper photography
+# Replace project photography with the original high-resolution files
 
-Four steps, done in this order.
+In-place replacement only. Every existing `project_images` row keeps its id, alt text, category, sort order and cover flag. Only the stored file and its path change.
 
-## Step 1 — Rename `platform_owner` to `developer`
+## How each new file is matched to an existing row
 
-Isolated, small, first, so everything after it is written against the correct value.
+Not by folder order — that is guessable and would silently mis-assign photographs. Matching is done by image content:
 
-- Migration: add `developer` to the `app_role` enum, `UPDATE public.user_roles SET role = 'developer' WHERE role = 'platform_owner'`, then rewrite the bodies of `is_platform_owner()`, `is_admin()`, `is_owner()`, `is_staff()` and `guard_user_roles()` to compare against `'developer'`. Function names stay as they are.
-- Code: `AdminRole` type and `STAFF_ROLES` / `isOwnerRole` in `useAdminAuth`, the `ROLE_LABEL` entries in `AdminSidebar` and `AdminUsers`, the role check in the `manage-users` edge function, and the label in the admin invite email template.
-- Verification: sign in, confirm the sidebar still shows "Developer", the Users screen still lists everyone, and a role change on a non-developer account still succeeds.
+1. Download every current image of a project from storage (they are the compressed versions of the very same photographs).
+2. Compute a perceptual fingerprint (dHash + aHash on a small greyscale version) for each current image and for each original file in the matching folder.
+3. Pair them with a best-match assignment (one-to-one, lowest total distance).
+4. A pair is accepted only if the distance is clearly below the threshold and clearly better than the second-best candidate. Anything ambiguous is left unmatched and shown to you separately.
 
-## Step 2 — Simplify the automatic-photograph resolver
+This is resolution- and format-independent, so a 6000px TIFF/JPG original still matches its 1400px WebP copy reliably.
 
-No new screen, no new table.
+You review the result before anything is written.
 
-- `useResolvedPageImages` drops `HOME_PRIORITY_SLUGS` entirely and takes published projects in `sort_order` — the same order the Projects list already shows and the client already controls by reordering.
-- Homepage wall and tiles consume the first N published projects in that order; the About strip keeps taking the last two; each Services band takes one project by index.
-- Remove the hero dependency: `site_settings.hero_image_bucket`, `hero_image_path`, `hero_headline` and `hero_subline` are V1 leftovers that currently jump the queue into `wall_1`. Drop them from the resolver, from `useSiteSettings`, from the admin settings/home screens that still write them, and from the columns once nothing reads them. One source per photograph.
-- Verification: reorder a project in the admin list and confirm the homepage wall order follows it.
+## Order of work
 
-## Step 3 — Picker and photograph library
+**Step 1 — 111 Anchor Rd only (16 photographs), review first**
 
-**Picker.** Give the dialog a proper height and a wider max width. Replace the thin scrolling tab strip with a visible project list — a left column on desktop (name + photograph count), a full-width select on narrow screens. The search field filters that list. Selected project name and count stay above the grid, which scrolls on its own.
+- Match all 16, then produce a review sheet (an HTML page opened in the preview or an image contact sheet) showing, side by side: current image, proposed original, filename, confidence, and the row's category / sort order / cover flag.
+- Nothing is written to storage or the database until you confirm.
 
-**Photograph library.** New admin screen, Website → Photographs: everything uploaded through a picker (the `site-images` bucket), listed with thumbnail, upload date and which slots use it, with delete for unused files. The picker gains a third tab, "Uploaded", so a standalone photograph can be reused instead of uploaded twice.
+**Step 2 — after your confirmation**
 
-## Step 4 — Photograph quality
+For each confirmed pair, in this order:
 
-**First, verify what the plan supports.** Before building anything, request a transformed URL (`/render/image/public/...?width=800`) against a real object and read the response. Only if it returns a resized image do we use five variants; if it 4xx's, we fall back to generating two sizes at upload time (full + 1400px) and using those in the `srcset`.
+1. Optimise the original: `hero` preset (3200px, q0.88) when the row has `is_cover = true`, otherwise `project` preset (3000px, q0.86). WebP, EXIF stripped.
+2. Upload to a **new** path (`<slug>/<category>/<new-uuid>.webp`) so the year-long cache on the old path can never serve a stale file.
+3. Update `project_images.storage_path` for that row.
+4. Update any `page_media` row whose bucket + path equals the old path, so manually chosen Home / About / Services / Contact slots keep pointing at the same photograph.
+5. Re-read both tables and confirm no reference to the old path remains — only then delete the old object from storage.
 
-Presets raised:
+Each project is processed as one batch and verified before the next starts. If a single file fails, that row is left untouched and reported; the rest continue.
 
-| Preset | Now | Proposed |
-|---|---|---|
-| Project photography | 2400px, q0.82, ~1MB | 3000px, q0.86, ~1.6MB |
-| Homepage hero / full-bleed | 2560px, q0.82, ~1.2MB | 3200px, q0.88, ~2.2MB |
-| Blog cover | 1800px, q0.82 | 2000px, q0.86 |
-| Headshots, body, logos | unchanged | unchanged |
+**Step 3 — remaining 11 projects**
 
-Paired with a shared `ResponsiveImage` component: `srcset` + `sizes`, explicit `width`/`height`, `fetchpriority="high"` and a preload on the single hero image, lazy loading everywhere below the fold.
+Same method, same review step but lighter: a summary per project plus the contact sheet, flagging only low-confidence or unmatched files for your eyes.
 
-**Standard to hold:** LCP under 2.5s on a mid-range phone, hero under ~400KB over the wire after variant selection, full homepage under ~2MB.
+## Scope
 
-**Verification is a real measurement, not a claim:** load the homepage in a headless browser at a mobile viewport and at 1440px, capture every image request with its transferred size, and report the totals plus the measured LCP. If a target is missed, the step is not done.
+All 12 projects currently in the database, 162 images total:
 
-Existing photographs stay at their current encoding — they were compressed at the old settings. Re-doing them means re-uploading from the originals; say the word and I will script that as a separate pass.
+111-anchor-rd (16), 115-anchor-road (9), 11605-paradise-drive (16), 122-92nd-street (17), 19-flamingo-road (18), 2200-wesley-avenue (19), 230-e-atlantic-blvd (12), 262-bayshore-road (19), 353-e-surf-road (5), 4607-5th-avenue (12), 5-barbados-road (8), 55-walnut-road (11).
+
+All are published; there are no drafts to catch.
+
+If a folder has more photographs than the project has rows, the extras are **not** imported as new rows in this task — they are listed at the end so you can decide.
+
+## Blocker to resolve first
+
+The SwissTransfer link is not reachable from the build environment — the API returns `403 Access denied` and the download page redirects to `not_found`. This is likely the link's browser/JS-only download flow or an expired transfer.
+
+Options, in order of preference:
+
+1. I retry the download through a real browser session (automated Chromium) — worth one attempt, it often clears the JS gate.
+2. You re-share the folder as a direct-download link (Dropbox share link with `?dl=1`, Google Drive, or a plain URL per zip).
+3. You upload the archive into the project so I can read it from disk.
+
+## Time, batching and link expiry
+
+- Download of the originals dominates: roughly 10–30 GB depending on file sizes, mostly network time.
+- Processing is fast: optimisation plus upload runs around 1–3 seconds per image, so 162 images is well under 15 minutes of actual work.
+- To protect against expiry, everything is downloaded **once, up front, in a single pass** into the sandbox before any processing begins. After that the link is no longer needed and can expire freely.
+- Nothing is required from you between projects except the one confirmation after 111 Anchor Rd.
 
 ## Technical notes
 
-- Step 1 is its own migration; nothing else ships with it.
-- Step 2 touches `useResolvedPageImages`, `useSiteSettings`, `AdminHome`, `AdminSettings`, and a follow-up migration dropping the four `site_settings` hero columns.
-- Step 3 touches `ImagePicker`, `PageImageSlot` dialog sizing, a new `useSiteImageLibrary` hook and a new admin route.
-- Step 4 touches `IMAGE_PRESETS`, a new `ResponsiveImage`, and its adoption on Home, Projects, About, Services and Blog.
+- Fingerprinting and matching run in a Python script in the sandbox (PIL + numpy), not in app code. No project source files change.
+- Optimisation for this batch is done server-side with the same parameters as the client presets in `src/lib/images/optimizeImage.ts` (3000/0.86 and 3200/0.88, WebP, no EXIF), since these files never pass through the browser uploader.
+- Storage writes use the `project-images` bucket; `deleteStorageObjects` semantics (verify-then-delete) are mirrored so a silently filtered delete cannot leave orphans unreported.
+- A per-project JSON log of old path → new path is kept so any step can be audited or reversed.
