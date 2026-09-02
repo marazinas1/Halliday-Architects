@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
  * display downloads the wide variant. Anything that is not a storage URL
  * (bundled assets, external images) is rendered untouched.
  */
-const WIDTHS = [640, 960, 1400, 2000, 2800];
+const WIDTHS = [640, 960, 1400, 2000, 2400, 3000];
 
 const OBJECT_MARKER = "/storage/v1/object/public/";
 const RENDER_MARKER = "/storage/v1/render/image/public/";
