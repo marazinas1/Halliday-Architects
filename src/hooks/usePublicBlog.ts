@@ -46,6 +46,7 @@ function toPost(row: Row): PublicPost {
 export function usePublishedPosts() {
   return useQuery({
     queryKey: ["public-blog"],
+    staleTime: 5 * 60_000,
     queryFn: async (): Promise<PublicPost[]> => {
       const { data, error } = await supabase
         .from("blog_posts")
@@ -62,6 +63,7 @@ export function usePublishedPosts() {
 export function usePublishedPost(slug: string | undefined) {
   return useQuery({
     queryKey: ["public-blog", slug],
+    staleTime: 5 * 60_000,
     enabled: !!slug,
     queryFn: async (): Promise<PublicPost | null> => {
       const { data, error } = await supabase

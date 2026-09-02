@@ -251,6 +251,7 @@ export function usePublicProject(slug: string | undefined) {
 export function useProjectOrder() {
   return useQuery({
     queryKey: ["public-project-order"],
+    staleTime: 5 * 60_000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("projects")
