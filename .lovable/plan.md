@@ -130,5 +130,7 @@ pixels.
 ## Verification
 
 Re-measure hero paint time on Home, Projects, About and Contact before/after,
-check every page at 1440px and 390px for gutter alignment, and confirm image
-widths are unchanged at 1x and 2x.
+check every page at 1440px and 390px for gutter alignment, confirm image widths
+are unchanged at 1x and 2x, confirm the Contact bundle drops sharply and the map
+still appears on scroll, and re-check the homepage separately after the query
+narrowing.
