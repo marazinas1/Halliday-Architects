@@ -65,6 +65,7 @@ export const rhythm = {
   gutter,
   gap,
   headingSpacing,
+  pageHeader,
 } as const;
 
 export default rhythm;
