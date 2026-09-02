@@ -197,7 +197,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
             </p>
           ) : (
             <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                 {uploaded.map((img) => {
                   const selected =
                     current?.bucket === SITE_IMAGES_BUCKET && current.path === img.path;
