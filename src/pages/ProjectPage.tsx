@@ -64,7 +64,18 @@ const ProjectPage = () => {
     return (
       <main className="min-h-screen bg-background">
         <GlobalNav />
-        <div className="py-40 text-center text-sm text-stone">Loading…</div>
+        {/* Hero-shaped skeleton: same height as the real hero, so nothing
+            jumps when the photograph lands. */}
+        <div
+          className="h-[72svh] min-h-[420px] w-full animate-pulse bg-sand"
+          aria-hidden="true"
+        />
+        <div className={`${container.wide} py-16`} aria-hidden="true">
+          <div className="h-8 w-2/3 max-w-md animate-pulse bg-sand" />
+          <div className="mt-6 h-4 w-full max-w-2xl animate-pulse bg-sand" />
+          <div className="mt-3 h-4 w-4/5 max-w-xl animate-pulse bg-sand" />
+        </div>
+        <span className="sr-only">Loading project…</span>
         <GlobalFooter />
       </main>
     );
