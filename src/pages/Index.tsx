@@ -137,8 +137,8 @@ const Index = () => {
               <PhotoFrame
                 photo={photo}
                 sizes="(min-width: 768px) 34vw, 100vw"
-                quality={78}
-                maxWidth={1400}
+                quality={82}
+                maxWidth={2000}
               />
             </div>
           ))}
@@ -150,8 +150,8 @@ const Index = () => {
               <PhotoFrame
                 photo={photo}
                 sizes={index === 0 ? "(min-width: 768px) 58vw, 100vw" : "(min-width: 768px) 42vw, 100vw"}
-                quality={80}
-                maxWidth={2000}
+                quality={82}
+                maxWidth={index === 0 ? 2400 : 2000}
               />
             </div>
           ))}
@@ -177,8 +177,8 @@ const Index = () => {
                 photo={tilePhotos[index]}
                 zoomOnHover
                 sizes="(min-width: 768px) 34vw, 100vw"
-                quality={75}
-                maxWidth={960}
+                quality={82}
+                maxWidth={1600}
               />
 
               <div

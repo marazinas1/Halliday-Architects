@@ -214,6 +214,8 @@ const ProjectPage = () => {
                       width={1600}
                       height={1200}
                       sizes="(min-width: 1024px) 50vw, 100vw"
+                      quality={82}
+                      maxWidth={2000}
                       className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.02]"
                     />
                   </button>
@@ -267,6 +269,8 @@ const ProjectPage = () => {
               width={1600}
               height={900}
               sizes="100vw"
+              quality={82}
+              maxWidth={2400}
               className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
             />
           )}

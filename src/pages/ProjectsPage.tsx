@@ -178,6 +178,8 @@ const ProjectsPage = () => {
                                     ? "(min-width: 768px) 50vw, 100vw"
                                     : "(min-width: 768px) 34vw, 100vw"
                               }
+                              quality={82}
+                              maxWidth={rowSize === 1 ? 2400 : rowSize === 2 ? 2000 : 1600}
                               className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
                             />
                           ) : (

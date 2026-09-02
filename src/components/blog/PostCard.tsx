@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import Reveal from "@/components/Reveal";
 import { formatPostDate, type PublicPost } from "@/hooks/usePublicBlog";
 
@@ -7,14 +8,15 @@ const PostCard = ({ post, delay = 0 }: { post: PublicPost; delay?: number }) => 
     <Link to={`/blog/${post.slug}`} className="group block">
       <div className="aspect-[4/5] w-full overflow-hidden rounded bg-sand">
         {post.cover_url ? (
-          <img
+          <ResponsiveImage
             src={post.cover_url}
             alt={post.title}
             width={1200}
             height={1500}
+            sizes="(min-width: 768px) 34vw, 100vw"
+            quality={82}
+            maxWidth={1600}
             className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
-            loading="lazy"
-            decoding="async"
           />
         ) : null}
       </div>
