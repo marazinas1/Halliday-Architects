@@ -104,6 +104,30 @@ const Index = () => {
     { label: page.copy("home", "tile_contact_label", "Contact"), to: "/contact" },
   ];
 
+  // Queue the opening photograph at the highest priority as soon as its URL is
+  // known, instead of waiting for React to paint the <img>.
+  const heroUrl = wall[0]?.url ?? null;
+  useEffect(() => {
+    if (!heroUrl) return;
+    const srcSet = buildSrcSet(heroUrl, 85);
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.setAttribute("fetchpriority", "high");
+    if (srcSet) {
+      link.setAttribute("imagesrcset", srcSet);
+      link.setAttribute("imagesizes", "100vw");
+    } else {
+      link.href = heroUrl;
+    }
+    document.head.appendChild(link);
+    return () => {
+      link.remove();
+    };
+  }, [heroUrl]);
+
+
+
 
   return (
     <main className="min-h-screen bg-background">
