@@ -1,9 +1,7 @@
 import { useMemo } from "react";
 import { FIRM } from "@/content/firm";
-import { arrangeConceptPhotos, buildConceptPhotos, type ConceptPhoto } from "@/lib/conceptPhotos";
 import { usePageContent, type PageName } from "@/hooks/usePageContent";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
-import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 /**
  * A single photograph as the visitor sees it.
@@ -20,7 +18,11 @@ export type ResolvedPhoto = {
   from?: string;
 };
 
-/** Order in which the homepage consumes the fallback pool. */
+/**
+ * Order in which the homepage consumes published projects. One project per
+ * slot, in the order the Projects list shows them — reorder there and the
+ * homepage follows.
+ */
 const HOME_ORDER = [
   "wall_1",
   "wall_2",
@@ -31,16 +33,9 @@ const HOME_ORDER = [
   "tile_contact",
 ];
 
-/** Projects the homepage leads with when the client has chosen nothing. */
-const HOME_PRIORITY_SLUGS = [
-  "262-bayshore-road",
-  "11605-paradise-drive",
-  "19-flamingo-road",
-  "111-anchor-rd",
-  "115-anchor-road",
-];
-
 const DEFAULT_ALT = `${FIRM.name} — residential architecture`;
+
+type PoolPhoto = { url: string; alt: string; title?: string };
 
 /**
  * Resolves every editable photograph slot on the public site.
@@ -48,52 +43,38 @@ const DEFAULT_ALT = `${FIRM.name} — residential architecture`;
  * Both the public page and its admin screen call this, so the panel and the
  * page can never disagree about which photograph is shown.
  */
-export function useResolvedPageImages(heroOverride?: string | null) {
+export function useResolvedPageImages() {
   const { data: projects = [], isLoading } = usePublicProjects();
-  const { settings } = useSiteSettings();
   const page = usePageContent();
 
-  const heroUrl = heroOverride !== undefined ? heroOverride : settings.homepage.heroImageUrl;
-
   const fallbacks = useMemo(() => {
-    const map = new Map<string, ConceptPhoto>();
+    const map = new Map<string, PoolPhoto>();
 
-    const projectPhotos = arrangeConceptPhotos(
-      buildConceptPhotos(projects, null, FIRM.name),
-      HOME_PRIORITY_SLUGS,
-    );
-    const pool = heroUrl
-      ? [{ url: heroUrl, alt: DEFAULT_ALT } as ConceptPhoto, ...projectPhotos]
-      : projectPhotos;
+    // Published projects in their display order — the same order the admin
+    // Projects list shows and the client controls by reordering.
+    const pool: PoolPhoto[] = projects
+      .filter((p) => p.card_image_url)
+      .map((p) => ({
+        url: p.card_image_url as string,
+        alt: p.card_image_alt,
+        title: p.title,
+      }));
 
     HOME_ORDER.forEach((slot, i) => {
       const photo = pool.length ? pool[i % pool.length] : undefined;
       if (photo) map.set(`home:${slot}`, photo);
     });
 
-    const strip = projects.length >= 2 ? projects.slice(-2) : [];
+    const strip = pool.length >= 2 ? pool.slice(-2) : [];
     ["strip_1", "strip_2"].forEach((slot, i) => {
-      const project = strip[i];
-      if (project?.card_image_url) {
-        map.set(`about:${slot}`, {
-          url: project.card_image_url,
-          alt: project.card_image_alt,
-          title: project.title,
-        });
-      }
+      const photo = strip[i];
+      if (photo) map.set(`about:${slot}`, photo);
     });
 
-    const contact = projects.find((p) => p.card_image_url);
-    if (contact?.card_image_url) {
-      map.set("contact:hero", {
-        url: contact.card_image_url,
-        alt: contact.card_image_alt,
-        title: contact.title,
-      });
-    }
+    if (pool[0]) map.set("contact:hero", pool[0]);
 
     return map;
-  }, [projects, heroUrl]);
+  }, [projects]);
 
   const resolve = (pageName: PageName, slot: string): ResolvedPhoto => {
     const chosen = page.image(pageName, slot);

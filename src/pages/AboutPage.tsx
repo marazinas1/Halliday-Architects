@@ -3,6 +3,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import AboutSection from "@/components/sections/AboutSection";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { TeamRoster } from "@/components/sections/TeamSection";
 import Reveal from "@/components/Reveal";
 import PartnersSection from "@/components/sections/PartnersSection";
@@ -47,13 +48,12 @@ const AboutPage = () => {
           {strip.map((photo, index) => (
             <div key={index} className="h-[46vh] min-h-[280px] overflow-hidden bg-sand md:h-[58vh] md:min-h-[380px]">
               {photo && (
-                <img
+                <ResponsiveImage
                   src={photo.url}
                   alt={photo.alt}
                   width={1600}
                   height={1200}
-                  loading="lazy"
-                  decoding="async"
+                  sizes="(min-width: 768px) 60vw, 100vw"
                   className="h-full w-full object-cover"
                 />
               )}

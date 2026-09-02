@@ -1,3 +1,4 @@
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { useMemo, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -120,14 +121,13 @@ const ProjectPage = () => {
 
       <section className="relative h-[82svh] min-h-[540px] overflow-hidden bg-sand">
         {heroUrl && (
-          <img
+          <ResponsiveImage
             src={heroUrl}
             alt={heroAlt ?? project.title}
             width={1920}
             height={1280}
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
+            priority
+            sizes="100vw"
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}
@@ -207,13 +207,12 @@ const ProjectPage = () => {
                     className="group min-h-[320px] w-full overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink md:min-h-0"
                     aria-label={`Open image ${startIndex + itemIndex + 1}`}
                   >
-                    <img
+                    <ResponsiveImage
                       src={img.src}
                       alt={img.alt}
                       width={1600}
                       height={1200}
-                      loading="lazy"
-                      decoding="async"
+                      sizes="(min-width: 1024px) 50vw, 100vw"
                       className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.02]"
                     />
                   </button>
@@ -261,13 +260,12 @@ const ProjectPage = () => {
       {next && (
         <Link to={`/projects/${next.slug}`} className="group relative block h-[46vh] min-h-[320px] overflow-hidden bg-sand">
           {next.card_image_url && (
-            <img
+            <ResponsiveImage
               src={next.card_image_url}
               alt={next.card_image_alt}
               width={1600}
               height={900}
-              loading="lazy"
-              decoding="async"
+              sizes="100vw"
               className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
             />
           )}

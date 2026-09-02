@@ -1,3 +1,4 @@
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
@@ -42,14 +43,13 @@ const PhotoFrame = ({
 }) => (
   <div className="absolute inset-0 overflow-hidden bg-sand">
     {photo?.url ? (
-      <img
+      <ResponsiveImage
         src={photo.url}
         alt={photo.alt}
         width={2000}
         height={1400}
-        loading={priority ? "eager" : "lazy"}
-        decoding={priority ? "sync" : "async"}
-        fetchPriority={priority ? "high" : undefined}
+        priority={priority}
+        sizes="(min-width: 1024px) 50vw, 100vw"
         className={`h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${zoomOnHover ? "group-hover:scale-[1.04]" : ""}`}
       />
     ) : (
@@ -70,7 +70,7 @@ const Index = () => {
   const previewRow = isPreview ? readPreview<Partial<SiteSettingsRow>>("homepage") : null;
   const content = isPreview ? resolveHomepage(previewRow) : settings.homepage;
   const page = usePageContent();
-  const { resolve } = useResolvedPageImages(content.heroImageUrl);
+  const { resolve } = useResolvedPageImages();
 
   const wall = ["wall_1", "wall_2", "wall_3", "wall_4"].map((slot) => resolve("home", slot));
   const tilePhotos = ["tile_projects", "tile_about", "tile_contact"].map((slot) =>

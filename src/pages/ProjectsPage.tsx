@@ -1,3 +1,4 @@
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -165,13 +166,12 @@ const ProjectsPage = () => {
                           className={`group relative block overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
                         >
                           {p.card_image_url ? (
-                            <img
+                            <ResponsiveImage
                               src={p.card_image_url}
                               alt={p.card_image_alt}
-                              loading="lazy"
-                              decoding="async"
                               width={1600}
                               height={1200}
+                              sizes="(min-width: 1024px) 50vw, 100vw"
                               className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.03]"
                             />
                           ) : (
