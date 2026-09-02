@@ -182,12 +182,17 @@ const Index = () => {
         {tiles.map((tile, index) => (
           <Reveal key={tile.to} delay={index * 150}>
             <Link to={tile.to} className="group relative block aspect-[3/4] overflow-hidden">
+              {/* Upright 3:4 slot fed by landscape masters: the transform fits
+                  by width, so a source only as wide as the slot arrives far too
+                  short once cropped. The declared sizes are doubled so the
+                  browser fetches a master tall enough to stay sharp on retina,
+                  and the hover zoom has headroom too. */}
               <PhotoFrame
                 photo={tilePhotos[index]}
                 zoomOnHover
-                sizes="(min-width: 768px) 34vw, 100vw"
-                quality={82}
-                maxWidth={1600}
+                sizes="(min-width: 768px) 68vw, 200vw"
+                quality={85}
+                maxWidth={3000}
                 width={1200}
                 height={1600}
               />
