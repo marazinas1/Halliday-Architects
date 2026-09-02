@@ -34,3 +34,31 @@ export async function deleteSiteImage(path: string | null | undefined): Promise<
   const { error } = await supabase.storage.from(SITE_IMAGES_BUCKET).remove([path]);
   if (error) throw error;
 }
+
+/** Where developer-set default photographs live, independent of any project. */
+export const DEFAULTS_PREFIX = "defaults";
+
+/**
+ * Copies any public photograph into the defaults area of `site-images`, so the
+ * default survives deletion of the project the photograph came from.
+ */
+export async function copyImageToDefaults(
+  sourceBucket: string,
+  sourcePath: string,
+  page: string,
+  slot: string,
+): Promise<string> {
+  const publicUrl = supabase.storage.from(sourceBucket).getPublicUrl(sourcePath).data.publicUrl;
+  const response = await fetch(publicUrl);
+  if (!response.ok) throw new Error("Could not read the source photograph.");
+  const blob = await response.blob();
+  const extension = sourcePath.split(".").pop()?.toLowerCase() || "webp";
+  const path = `${DEFAULTS_PREFIX}/${page}/${slot}-${crypto.randomUUID()}.${extension}`;
+  const { error } = await supabase.storage.from(SITE_IMAGES_BUCKET).upload(path, blob, {
+    cacheControl: "31536000",
+    contentType: blob.type || "image/webp",
+    upsert: false,
+  });
+  if (error) throw error;
+  return path;
+}
