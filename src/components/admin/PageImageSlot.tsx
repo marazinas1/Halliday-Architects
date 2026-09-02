@@ -196,7 +196,7 @@ export default function PageImageSlot({
         )}
       </div>
 
-      <div className="mt-3 flex items-start justify-between gap-3">
+      <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-ink">{label}</p>
           {help && <p className="mt-0.5 text-xs text-stone">{help}</p>}
@@ -209,14 +209,14 @@ export default function PageImageSlot({
             </p>
           )}
         </div>
-        <div className="flex shrink-0 gap-1">
+        <div className="flex shrink-0 gap-2">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button type="button" size="sm" variant="outline" disabled={busy}>
+              <Button type="button" size="sm" variant="outline" disabled={busy} className="h-10 flex-1 sm:h-9 sm:flex-none">
                 {current ? "Change" : "Choose your own"}
               </Button>
             </DialogTrigger>
-            <DialogContent className="grid h-[94dvh] max-h-[94dvh] w-[96vw] max-w-[1500px] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-4 sm:p-5">
+            <DialogContent className="grid h-[100dvh] max-h-[100dvh] w-screen max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-none p-3 sm:h-[94dvh] sm:max-h-[94dvh] sm:w-[96vw] sm:max-w-[1500px] sm:rounded-lg sm:p-5">
               <DialogHeader className="px-1 pb-3">
                 <DialogTitle>{label}</DialogTitle>
               </DialogHeader>
@@ -230,12 +230,13 @@ export default function PageImageSlot({
             </DialogContent>
           </Dialog>
           {current && (
-            <Button type="button" size="sm" variant="ghost" disabled={busy} onClick={clear}>
+            <Button type="button" size="sm" variant="ghost" disabled={busy} onClick={clear} className="h-10 w-10 shrink-0 sm:h-9 sm:w-9" aria-label={`Clear ${label}`}>
               <X className="h-4 w-4" />
             </Button>
           )}
         </div>
       </div>
+
 
       {(
         <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
