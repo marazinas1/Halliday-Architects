@@ -4,20 +4,20 @@ import SEO from "@/components/SEO";
 import ContactSection from "@/components/sections/ContactSection";
 import ContactMap from "@/components/ContactMap";
 import Reveal from "@/components/Reveal";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { usePublicProjects } from "@/hooks/usePublicProjects";
 import { usePageContent } from "@/hooks/usePageContent";
+import { useResolvedPageImages } from "@/hooks/useResolvedPageImages";
 import { container } from "@/lib/rhythm";
 
 const ContactPage = () => {
-  const { data: projects = [], isLoading } = usePublicProjects();
+  const { isLoading } = usePublicProjects();
   const page = usePageContent();
-  const chosen = page.imageUrl("contact", "hero");
-  const fallback = projects.find((project) => project.card_image_url);
-  const cover = chosen
-    ? { url: chosen, alt: page.image("contact", "hero")?.alt || "Halliday Architects" }
-    : fallback?.card_image_url
-      ? { url: fallback.card_image_url, alt: fallback.card_image_alt }
-      : null;
+  // Shared resolver: chosen photograph → developer default → project photography.
+  const { resolve } = useResolvedPageImages();
+  const photo = resolve("contact", "hero");
+  const cover = photo.url ? { url: photo.url, alt: photo.alt } : null;
+
 
   return (
     <main className="min-h-screen bg-background">
