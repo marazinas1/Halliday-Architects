@@ -92,7 +92,9 @@ export function usePageContent() {
       for (const row of text.data ?? []) {
         content.text[keyOf(row.page, row.slot)] = row.value;
       }
+      writeCache(content);
       return content;
+
     },
   });
 
