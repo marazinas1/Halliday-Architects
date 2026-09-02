@@ -497,6 +497,14 @@ export default function ProjectImageManager({
       ) : rows.length === 0 ? (
         <p className="text-sm text-stone">No images yet.</p>
       ) : (
+        <>
+        <p className="text-xs text-stone">
+          The star marks the cover — the photograph used on the projects grid and the homepage; only
+          one per project. Hero is the wide photograph at the top of the project page, Card is the
+          shot used on its grid card, and Gallery is everything else. Setting a new Hero or Card
+          moves the previous one back to Gallery.
+        </p>
+
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
           <SortableContext items={rows.map((r) => r.id)} strategy={rectSortingStrategy}>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
