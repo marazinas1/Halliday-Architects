@@ -129,9 +129,11 @@ const Index = () => {
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">
         <div className="relative h-[82svh] min-h-[560px] overflow-hidden">
           <PhotoFrame photo={wall[0]} priority sizes="100vw" quality={85} width={2400} height={1600} />
-          <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-paper">
-            <span aria-hidden="true" className="h-10 w-px bg-paper/50" />
-            <span className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-paper/75">Scroll</span>
+          <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-paper motion-reduce:hidden">
+            <span className="relative block h-12 w-px overflow-hidden bg-paper/30">
+              <span className="absolute left-0 top-0 h-3 w-px bg-paper animate-[scrollCue_2.2s_ease-in-out_infinite]" />
+            </span>
+            <span className="text-[0.62rem] font-medium uppercase tracking-[0.25em] text-paper/90 animate-[scrollCueBob_2.2s_ease-in-out_infinite]">Scroll</span>
           </div>
         </div>
 
