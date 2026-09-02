@@ -290,6 +290,7 @@ function AdminUsersInner() {
                     <SelectItem value="owner">Owner</SelectItem>
                   </SelectContent>
                 </Select>
+                )}
 
                 {!user.confirmed && !isSelf && (
                   <Button
