@@ -172,7 +172,7 @@ export default function PageImageSlot({
   };
 
   const badge =
-    source === "chosen" ? "Chosen" : source === "default" ? "Default" : source === "automatic" ? "Automatic" : null;
+    source === "chosen" ? "Chosen" : source === "default" || source === "automatic" ? "Default" : null;
 
   return (
     <div className="rounded border border-line bg-card p-3">
