@@ -256,7 +256,7 @@ export default function PageImageSlot({
                 Change default
               </Button>
             </DialogTrigger>
-            <DialogContent className="grid h-[94dvh] max-h-[94dvh] w-[96vw] max-w-[1500px] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-4 sm:p-5">
+            <DialogContent className="grid h-[100dvh] max-h-[100dvh] w-screen max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-none p-3 sm:h-[94dvh] sm:max-h-[94dvh] sm:w-[96vw] sm:max-w-[1500px] sm:rounded-lg sm:p-5">
               <DialogHeader className="px-1 pb-3">
                 <DialogTitle>Default for {label}</DialogTitle>
               </DialogHeader>
