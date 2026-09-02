@@ -76,11 +76,12 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
           ) : (
             <div className="flex min-h-0 flex-1 gap-5">
               {/* Project list: a column on desktop, a select on narrow screens. */}
-              <div className="hidden w-72 shrink-0 flex-col gap-2 md:flex">
+              <div className="hidden w-64 shrink-0 flex-col gap-2 md:flex">
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search projects"
+                  className="shrink-0"
                 />
                 <div className="min-h-0 flex-1 overflow-y-auto rounded border border-line">
                   {projects.length === 0 ? (
@@ -94,7 +95,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                           type="button"
                           onClick={() => setActive(project.id)}
                           className={cn(
-                            "flex w-full items-baseline justify-between gap-2 border-b border-line px-3 py-2 text-left text-xs transition-colors last:border-b-0",
+                            "flex w-full items-baseline justify-between gap-2 border-b border-line px-3 py-2.5 text-left text-xs transition-colors last:border-b-0",
                             isActive ? "bg-sand font-medium text-ink" : "text-stone hover:bg-sand/60 hover:text-ink",
                           )}
                         >
