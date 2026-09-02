@@ -1,5 +1,7 @@
-import ResponsiveImage from "@/components/ResponsiveImage";
+import { useEffect } from "react";
+import ResponsiveImage, { buildSrcSet } from "@/components/ResponsiveImage";
 import { Link, useLocation } from "react-router-dom";
+
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
