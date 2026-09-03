@@ -4,10 +4,19 @@ import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
 import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
 import { TAGS_KEY, fetchTags } from "@/hooks/admin/useTags";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/projects/")({
   // Fetched on the server before the HTML is sent, so the grid is in the
   // markup the browser parses rather than requested after hydration.
+  head: () =>
+    pageHead({
+      title: "Projects | Halliday Architects",
+      description:
+        "Residential architecture in and around Ocean City, New Jersey — new builds, renovations, additions and interiors.",
+      path: "/projects",
+    }),
+
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData({

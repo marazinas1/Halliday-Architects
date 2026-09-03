@@ -4,10 +4,19 @@ import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
 import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
 import { SERVICES_KEY, fetchServices } from "@/hooks/useServices";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/services")({
   // Fetched on the server before the HTML is sent, so the service bands and
   // their photography are in the markup rather than requested after hydration.
+  head: () =>
+    pageHead({
+      title: "Services | Halliday Architects",
+      description:
+        "Architectural consultation, design, code analysis, and permit coordination from Halliday Architects in Ocean City, NJ.",
+      path: "/services",
+    }),
+
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData({

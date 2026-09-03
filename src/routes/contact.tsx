@@ -3,10 +3,19 @@ import ContactPage from "@/pages/ContactPage";
 import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
 import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
   // Fetched on the server before the HTML is sent, so the hero photograph is
   // in the markup rather than requested after hydration.
+  head: () =>
+    pageHead({
+      title: "Contact | Halliday Architects",
+      description:
+        "Get in touch with Halliday Architects — architecture practice in Ocean City, New Jersey. 609.957.6789.",
+      path: "/contact",
+    }),
+
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData({

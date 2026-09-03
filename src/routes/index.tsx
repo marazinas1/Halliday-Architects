@@ -2,10 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import Index from "@/pages/Index";
 import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   // Fetched on the server before the HTML is sent, so the photographs are in
   // the markup the browser parses rather than requested after hydration.
+  head: () =>
+    pageHead({
+      title: "Halliday Architects | Residential Architecture in Ocean City, NJ",
+      description:
+        "Halliday Architects is a residential architecture practice in Ocean City, New Jersey.",
+      path: "/",
+    }),
+
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData({
