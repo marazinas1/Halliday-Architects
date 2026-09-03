@@ -243,16 +243,25 @@ export async function fetchPublicProject(slug: string | undefined) {
             }),
           ),
       };
-    },
+    }
+}
+
+/** Loads one published project (by slug) plus its hero and gallery images. */
+export function usePublicProject(slug: string | undefined) {
+  return useQuery({
+    queryKey: publicProjectKey(slug),
+    enabled: !!slug,
+    staleTime: 5 * 60_000,
+    queryFn: () => fetchPublicProject(slug),
   });
 }
 
-/** Published projects in display order — used for "next project" navigation. */
-export function useProjectOrder() {
-  return useQuery({
-    queryKey: ["public-project-order"],
-    staleTime: 5 * 60_000,
-    queryFn: async () => {
+export const PROJECT_ORDER_KEY = ["public-project-order"] as const;
+
+/** Standalone fetcher so the route loader can prime this query on the server. */
+export async function fetchProjectOrder(): Promise<ProjectOrderItem[]> {
+    {
+
       const { data, error } = await supabase
         .from("projects")
         .select("id, slug, title, location_city, location_state, sort_order, created_at")
