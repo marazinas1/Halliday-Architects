@@ -20,6 +20,7 @@ const ScrollToTop = () => {
       return () => window.cancelAnimationFrame(frame);
     }
     window.scrollTo(0, 0);
+    return undefined;
   }, [pathname, hash]);
   return null;
 };

@@ -266,7 +266,7 @@ function AdminUsersInner() {
                   <span className="text-xs uppercase tracking-[0.12em] text-stone">Developer</span>
                 ) : (
                 <Select
-                  value={user.role === "owner" || user.role === "editor" ? user.role : undefined}
+                  {...(user.role === "owner" || user.role === "editor" ? { value: user.role } : {})}
                   disabled={isSelf || user.isPlatformOwner || user.isLastOwner || setRole.isPending}
                   onValueChange={(v) =>
                     setRole.mutate(

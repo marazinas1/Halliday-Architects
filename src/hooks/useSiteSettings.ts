@@ -130,7 +130,7 @@ export function useFaviconFromSettings() {
     }
     return () => {
       links.forEach((l, i) => {
-        l.href = previous[i];
+        l.href = previous[i] ?? l.href;
       });
     };
   }, [href]);

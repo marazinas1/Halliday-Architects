@@ -4,10 +4,10 @@ interface SEOProps {
   title: string;
   description: string;
   path: string;
-  image?: string;
-  type?: "website" | "article";
+  image?: string | undefined;
+  type?: "website" | "article" | undefined;
   /** Error/empty states that should never be indexed. */
-  noindex?: boolean;
+  noindex?: boolean | undefined;
 }
 
 /**
@@ -16,7 +16,7 @@ interface SEOProps {
  * Falls back to the browser origin, then to relative URLs.
  */
 const SITE = (
-  import.meta.env.VITE_SITE_URL ||
+  import.meta.env["VITE_SITE_URL"] ||
   (typeof window !== "undefined" ? window.location.origin : "") ||
   ""
 ).replace(/\/+$/, "");

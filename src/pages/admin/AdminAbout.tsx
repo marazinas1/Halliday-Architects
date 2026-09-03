@@ -59,7 +59,13 @@ function AboutBody() {
 
   useEffect(() => {
     const [heading, process_heading, intro_1, intro_2, intro_3] = saved.split("␟");
-    setValues({ heading, process_heading, intro_1, intro_2, intro_3 });
+    setValues({
+      heading: heading ?? "",
+      process_heading: process_heading ?? "",
+      intro_1: intro_1 ?? "",
+      intro_2: intro_2 ?? "",
+      intro_3: intro_3 ?? "",
+    });
   }, [saved]);
 
   const save = async () => {
@@ -115,7 +121,7 @@ function AboutBody() {
             <Textarea
               id="heading"
               rows={2}
-              value={values.heading ?? ""}
+              value={values["heading"] ?? ""}
               disabled={isLoading}
               placeholder={FALLBACK_HEADING}
               onChange={(e) => setValues((v) => ({ ...v, heading: e.target.value }))}
@@ -147,7 +153,7 @@ function AboutBody() {
             <Input
               id="process"
               className="mt-2"
-              value={values.process_heading ?? ""}
+              value={values["process_heading"] ?? ""}
               disabled={isLoading}
               placeholder={FALLBACK_PROCESS}
               onChange={(e) => setValues((v) => ({ ...v, process_heading: e.target.value }))}

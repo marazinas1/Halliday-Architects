@@ -25,7 +25,9 @@ export default function SpecsEditor({
 }) {
   const update = (i: number, patch: Partial<SpecItem>) => {
     const next = [...value];
-    next[i] = { ...next[i], ...patch };
+    const current = next[i];
+    if (!current) return;
+    next[i] = { ...current, ...patch };
     onChange(next);
   };
   const remove = (i: number) => onChange(value.filter((_, idx) => idx !== i));

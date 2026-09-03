@@ -40,7 +40,7 @@ function AdminTagsInner() {
     const target = index + dir;
     if (target < 0 || target >= tags.length) return;
     const ids = tags.map((t) => t.id);
-    [ids[index], ids[target]] = [ids[target], ids[index]];
+    [ids[index], ids[target]] = [ids[target]!, ids[index]!];
     reorder.mutate(ids, { onError: (e) => toast.error(e.message) });
   };
 

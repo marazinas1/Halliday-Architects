@@ -12,7 +12,7 @@ export function getProjectRowSizes(projectCount: number): number[] {
   const rows: number[] = [];
 
   while (remaining > 0) {
-    const nextSize = PROJECT_ROW_CYCLE[cycleIndex % PROJECT_ROW_CYCLE.length];
+    const nextSize = PROJECT_ROW_CYCLE[cycleIndex % PROJECT_ROW_CYCLE.length]!;
 
     if (remaining < nextSize) {
       rows.push(remaining);

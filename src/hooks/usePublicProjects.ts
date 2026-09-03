@@ -41,7 +41,7 @@ const singularise = (word: string) => {
   return word;
 };
 
-const capitalise = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
+const capitalise = (s: string) => (s ? s[0]!.toUpperCase() + s.slice(1) : s);
 
 /**
  * A description built only from facts already in the database: the image's

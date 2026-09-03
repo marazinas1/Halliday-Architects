@@ -57,7 +57,7 @@ export function extractBodyImagePaths(html: string | null | undefined): string[]
   const re = /\/storage\/v1\/object\/public\/blog-images\/([^"'\s?)]+)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(html))) {
-    found.add(decodeURIComponent(m[1]));
+    found.add(decodeURIComponent(m[1]!));
   }
   return [...found];
 }

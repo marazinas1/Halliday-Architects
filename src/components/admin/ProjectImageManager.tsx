@@ -225,9 +225,11 @@ export default function ProjectImageManager({
     let order = rows.length ? Math.max(...rows.map((r) => r.sort_order)) + 1 : 0;
     for (let i = 0; i < images.length; i++) {
       const entry = entries[i];
+      const file = images[i];
+      if (!entry || !file) continue;
       try {
         const { storage_path } = await uploadImage({
-          file: images[i],
+          file,
           category: "gallery",
           slug,
           onProgress: (percent) =>
@@ -281,7 +283,10 @@ export default function ProjectImageManager({
 
   const patch = async (id: string, values: Partial<Row>) => {
     const { error } = await supabase.from("project_images").update(values).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     refresh();
   };
 
@@ -298,7 +303,10 @@ export default function ProjectImageManager({
           .from("project_images")
           .update({ category: "gallery" })
           .eq("id", row.id);
-        if (error) return toast.error(error.message);
+        if (error) {
+      toast.error(error.message);
+      return;
+    }
       }
     }
     await patch(id, { category });
@@ -310,13 +318,19 @@ export default function ProjectImageManager({
       _project_id: projectId,
       _image_id: id,
     });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     refresh();
   };
 
   const removeImage = async (row: Row) => {
     const { error } = await supabase.from("project_images").delete().eq("id", row.id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     try {
       await deleteStorageObjects([row.storage_path]);
     } catch (e) {

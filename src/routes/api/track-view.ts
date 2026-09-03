@@ -1,7 +1,7 @@
 // First-party pageview beacon — ported from the track-view edge function.
 // Same-origin now (the beacon posts to /api/track-view on the app domain),
 // so no CORS handling is needed; the origin check stays as defence in depth.
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
 
 const ALLOWED_HOSTS = [
@@ -57,8 +57,10 @@ async function sha256(value: string): Promise<string> {
 
 const noContent = () => new Response(null, { status: 204 });
 
-export const ServerRoute = createServerFileRoute("/api/track-view").methods((api) => ({
-  POST: api.handler(async ({ request }) => {
+export const Route = createFileRoute("/api/track-view")({
+  server: {
+    handlers: {
+      POST: async ({ request }: { request: Request }) => {
     try {
       if (!originAllowed(request)) return noContent();
 
@@ -123,7 +125,9 @@ export const ServerRoute = createServerFileRoute("/api/track-view").methods((api
       console.error("track-view error:", err instanceof Error ? err.message : String(err));
     }
 
-    // Always silent — tracking must never affect the public site.
-    return noContent();
-  }),
-}));
+        // Always silent — tracking must never affect the public site.
+        return noContent();
+      },
+    },
+  },
+});

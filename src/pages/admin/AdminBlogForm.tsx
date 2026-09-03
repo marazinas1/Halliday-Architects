@@ -155,13 +155,22 @@ function AdminBlogFormInner() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return toast.error("A title is required");
-    if (!isValidSlug(slug)) return toast.error("The URL slug is not valid");
-    if (slugFree === false) return toast.error("That URL slug is already used by another post");
+    if (!title.trim()) {
+      toast.error("A title is required");
+      return;
+    }
+    if (!isValidSlug(slug)) {
+      toast.error("The URL slug is not valid");
+      return;
+    }
+    if (slugFree === false) {
+      toast.error("That URL slug is already used by another post");
+      return;
+    }
 
     save.mutate(
       {
-        id,
+        ...(id ? { id } : {}),
         title: title.trim(),
         slug,
         excerpt: excerpt.trim() || null,

@@ -38,7 +38,7 @@ function AssetSlot({
   help: string;
   url: string | null;
   hasUpload: boolean;
-  dark?: boolean;
+  dark?: boolean | undefined;
   busy: boolean;
   progress: number;
   onPick: (file: File) => void;
