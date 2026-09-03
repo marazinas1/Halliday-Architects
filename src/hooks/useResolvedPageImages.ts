@@ -15,7 +15,7 @@ export type ResolvedPhoto = {
   alt: string;
   source: "chosen" | "default" | "automatic" | "none";
   /** Project the automatic photograph came from. */
-  from?: string;
+  from?: string | undefined;
 };
 
 

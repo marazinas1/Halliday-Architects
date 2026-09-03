@@ -116,7 +116,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                 <div className="space-y-2">
                   <div className="md:hidden">
                     <Select
-                      value={activeProject?.id ?? undefined}
+                      {...(activeProject?.id ? { value: activeProject.id } : {})}
                       onValueChange={(value) => setActive(value)}
                     >
                       <SelectTrigger className="h-11 text-base">

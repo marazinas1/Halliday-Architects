@@ -86,7 +86,7 @@ function AdminTeamFormInner() {
       Math.max(0, ...(allMembers ?? []).map((m) => m.sort_order)) + 1;
     save.mutate(
       {
-        id,
+        ...(id ? { id } : {}),
         name: name.trim(),
         role: role.trim(),
         credentials: credentials.trim() || null,

@@ -29,7 +29,7 @@ const buildGalleryRows = (items: GalleryItem[]): GalleryRow[] => {
   let cursor = 0;
   let patternIndex = 0;
   while (cursor < items.length) {
-    const kind = pattern[patternIndex % pattern.length];
+    const kind = pattern[patternIndex % pattern.length]!;
     const count = kind === "full" ? 1 : Math.min(2, items.length - cursor);
     rows.push({ kind: count === 1 ? "full" : kind, items: items.slice(cursor, cursor + count) });
     cursor += count;

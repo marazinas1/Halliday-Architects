@@ -89,7 +89,7 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
 
   const setLink = useCallback(() => {
     if (!editor) return;
-    const previous = editor.getAttributes("link").href as string | undefined;
+    const previous = editor.getAttributes("link")["href"] as string | undefined;
     const url = window.prompt("Link URL", previous ?? "https://");
     if (url === null) return;
     if (url.trim() === "") {

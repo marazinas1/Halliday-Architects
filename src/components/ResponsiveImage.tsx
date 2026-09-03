@@ -23,10 +23,10 @@ export function transformedUrl(url: string, width: number, quality = 80): string
 }
 
 /** Candidate widths for a slot, never larger than the slot can actually use. */
-function widthsFor(maxWidth?: number) {
+function widthsFor(maxWidth?: number): readonly number[] {
   if (!maxWidth) return WIDTHS;
   const kept = WIDTHS.filter((w) => w <= maxWidth);
-  return kept.length ? kept : [WIDTHS[0]];
+  return kept.length ? kept : [WIDTHS[0]!];
 }
 
 /** `srcset` string for a slot, or null when the URL is not transformable. */
@@ -43,23 +43,23 @@ export function buildSrcSet(url: string, quality = 80, maxWidth?: number): strin
 type Props = {
   src: string;
   alt: string;
-  className?: string;
+  className?: string | undefined;
   /** CSS `sizes`, e.g. "(min-width: 1024px) 50vw, 100vw". */
-  sizes?: string;
+  sizes?: string | undefined;
   /** True for the single largest above-the-fold image. */
-  priority?: boolean;
+  priority?: boolean | undefined;
   /**
    * Encoder quality for the transformed variants. Full-bleed heroes justify a
    * higher setting; images inside a grid do not, and the extra bytes would
    * only slow the page down.
    */
-  quality?: number;
+  quality?: number | undefined;
   /** Largest variant worth generating for this slot. */
-  maxWidth?: number;
-  width?: number;
-  height?: number;
-  style?: React.CSSProperties;
-  onClick?: React.MouseEventHandler<HTMLImageElement>;
+  maxWidth?: number | undefined;
+  width?: number | undefined;
+  height?: number | undefined;
+  style?: React.CSSProperties | undefined;
+  onClick?: React.MouseEventHandler<HTMLImageElement> | undefined;
 };
 
 export default function ResponsiveImage({
@@ -79,8 +79,8 @@ export default function ResponsiveImage({
   const transformable = srcSet !== null;
   const candidates = widthsFor(maxWidth);
   const fallbackWidth = priority
-    ? candidates[Math.min(candidates.length - 1, 3)]
-    : candidates[Math.min(candidates.length - 1, 2)];
+    ? candidates[Math.min(candidates.length - 1, 3)]!
+    : candidates[Math.min(candidates.length - 1, 2)]!;
   return (
     <img
       src={transformable ? transformedUrl(src, fallbackWidth, quality)! : src}
@@ -91,7 +91,7 @@ export default function ResponsiveImage({
       height={height}
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
-      {...(priority ? { fetchpriority: "high" } : {})}
+      {...(priority ? { fetchPriority: "high" } : {})}
       style={style}
       onClick={onClick}
       className={cn(className)}

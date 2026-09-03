@@ -99,23 +99,23 @@ function AdminProjectFormInner() {
     if (!data) return;
     const p = data.project as Record<string, unknown>;
     setForm({
-      slug: (p.slug as string) ?? "",
-      title: (p.title as string) ?? "",
-      headline: (p.headline as string) ?? "",
-      tagline: (p.tagline as string) ?? "",
-      description: (p.description as string) ?? "",
-      location_city: (p.location_city as string) ?? "",
-      location_state: (p.location_state as string) ?? "",
-      project_type: (PROJECT_TYPES as readonly string[]).includes(p.project_type as string)
-        ? (p.project_type as ProjectType)
+      slug: (p["slug"] as string) ?? "",
+      title: (p["title"] as string) ?? "",
+      headline: (p["headline"] as string) ?? "",
+      tagline: (p["tagline"] as string) ?? "",
+      description: (p["description"] as string) ?? "",
+      location_city: (p["location_city"] as string) ?? "",
+      location_state: (p["location_state"] as string) ?? "",
+      project_type: (PROJECT_TYPES as readonly string[]).includes(p["project_type"] as string)
+        ? (p["project_type"] as ProjectType)
         : "new_build",
-      year_completed: p.year_completed != null ? String(p.year_completed) : "",
-      client_brief: (p.client_brief as string) ?? "",
-      story: (p.story as string) ?? "",
-      sort_order: (p.sort_order as number) ?? 0,
-      published: (p.published as boolean) ?? false,
-      specs: asArray<SpecItem>(p.specs),
-      features: asArray<string>(p.features),
+      year_completed: p["year_completed"] != null ? String(p["year_completed"]) : "",
+      client_brief: (p["client_brief"] as string) ?? "",
+      story: (p["story"] as string) ?? "",
+      sort_order: (p["sort_order"] as number) ?? 0,
+      published: (p["published"] as boolean) ?? false,
+      specs: asArray<SpecItem>(p["specs"]),
+      features: asArray<string>(p["features"]),
     });
   }, [data]);
 
@@ -123,9 +123,18 @@ function AdminProjectFormInner() {
     setForm((f) => ({ ...f, [key]: value }));
 
   const save = async () => {
-    if (!form.title.trim()) return toast.error("Project name is required");
-    if (!isValidSlug(form.slug)) return toast.error("Slug is invalid");
-    if (slugAvailable.data === false) return toast.error("Slug is already in use");
+    if (!form.title.trim()) {
+      toast.error("Project name is required");
+      return;
+    }
+    if (!isValidSlug(form.slug)) {
+      toast.error("Slug is invalid");
+      return;
+    }
+    if (slugAvailable.data === false) {
+      toast.error("Slug is already in use");
+      return;
+    }
 
     setSaving(true);
     try {

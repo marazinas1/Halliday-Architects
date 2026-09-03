@@ -25,14 +25,14 @@ type Props = {
   page: PageName;
   slot: string;
   label: string;
-  help?: string;
+  help?: string | undefined;
   current: MediaRef | null;
   /** Tailwind aspect class, so the panel mirrors the shape on the live page. */
-  aspect?: string;
+  aspect?: string | undefined;
   /** Photograph the live page uses when the client has not chosen one. */
-  fallbackUrl?: string | null;
+  fallbackUrl?: string | null | undefined;
   /** Project the automatic photograph comes from. */
-  fallbackFrom?: string | null;
+  fallbackFrom?: string | null | undefined;
 };
 
 /**

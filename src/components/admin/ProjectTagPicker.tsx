@@ -28,7 +28,10 @@ export default function ProjectTagPicker({ projectId }: { projectId: string }) {
           .delete()
           .eq("project_id", projectId)
           .eq("tag_id", tagId);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     qc.invalidateQueries({ queryKey: ["project-tags", projectId] });
     qc.invalidateQueries({ queryKey: ["public-projects"] });
   };

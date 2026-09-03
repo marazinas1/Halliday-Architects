@@ -83,7 +83,7 @@ function ServicesBody() {
     const next = [...order];
     const target = index + direction;
     if (target < 0 || target >= next.length) return;
-    [next[index], next[target]] = [next[target], next[index]];
+    [next[index], next[target]] = [next[target]!, next[index]!];
     setOrder(next);
     try {
       await reorder.mutateAsync(next);
@@ -100,7 +100,7 @@ function ServicesBody() {
     }
     try {
       await saveService.mutateAsync({
-        id: editing.id,
+        ...(editing.id ? { id: editing.id } : {}),
         title: editing.title,
         body: editing.body,
         includes: editing.includes,
