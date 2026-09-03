@@ -11,26 +11,31 @@ export type TeamMember = {
   photo_url: string | null;
 };
 
+export const TEAM_MEMBERS_KEY = ["team-members"];
+
+/** Shared fetcher so route loaders and the hook agree exactly. */
+export async function fetchTeamMembers(): Promise<TeamMember[]> {
+  const { data, error } = await supabase
+    .from("team_members")
+    .select("id, name, role, credentials, bio, photo_path")
+    .eq("published", true)
+    .order("sort_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map((m) => ({
+    id: m.id,
+    name: m.name,
+    role: m.role,
+    credentials: m.credentials,
+    bio: m.bio,
+    photo_url: m.photo_path ? getTeamPhotoUrl(m.photo_path) : null,
+  }));
+}
+
 /** Published team members for the public site, in display order. */
 export function useTeamMembers() {
   return useQuery({
-    queryKey: ["team-members"],
+    queryKey: TEAM_MEMBERS_KEY,
     staleTime: 5 * 60_000,
-    queryFn: async (): Promise<TeamMember[]> => {
-      const { data, error } = await supabase
-        .from("team_members")
-        .select("id, name, role, credentials, bio, photo_path")
-        .eq("published", true)
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      return (data ?? []).map((m) => ({
-        id: m.id,
-        name: m.name,
-        role: m.role,
-        credentials: m.credentials,
-        bio: m.bio,
-        photo_url: m.photo_path ? getTeamPhotoUrl(m.photo_path) : null,
-      }));
-    },
+    queryFn: fetchTeamMembers,
   });
 }

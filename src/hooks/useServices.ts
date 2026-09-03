@@ -32,20 +32,23 @@ function normalise(row: any): PublicService {
   };
 }
 
+/** Shared fetcher so route loaders and the hook agree exactly. */
+export async function fetchServices(): Promise<PublicService[]> {
+  const { data, error } = await supabase
+    .from("services")
+    .select(SELECT)
+    .eq("published", true)
+    .order("sort_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map(normalise);
+}
+
 /** Published service bands, in the order the client arranged them. */
 export function useServices() {
   return useQuery({
     queryKey: SERVICES_KEY,
     staleTime: 60_000,
-    queryFn: async (): Promise<PublicService[]> => {
-      const { data, error } = await supabase
-        .from("services")
-        .select(SELECT)
-        .eq("published", true)
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      return (data ?? []).map(normalise);
-    },
+    queryFn: fetchServices,
   });
 }
 
