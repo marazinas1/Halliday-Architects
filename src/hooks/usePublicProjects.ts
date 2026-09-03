@@ -193,13 +193,13 @@ export type ProjectOrderItem = {
   card_image_alt: string;
 };
 
-/** Loads one published project (by slug) plus its hero and gallery images. */
-export function usePublicProject(slug: string | undefined) {
-  return useQuery({
-    queryKey: ["public-project", slug],
-    enabled: !!slug,
-    staleTime: 5 * 60_000,
-    queryFn: async () => {
+/** Cache key for one project — shared by the route loader and the hook. */
+export const publicProjectKey = (slug: string | undefined) => ["public-project", slug] as const;
+
+/** Standalone fetcher so the route loader can prime this query on the server. */
+export async function fetchPublicProject(slug: string | undefined) {
+    {
+
       if (!slug) return null;
       const { data: project, error } = await supabase
         .from("projects")
