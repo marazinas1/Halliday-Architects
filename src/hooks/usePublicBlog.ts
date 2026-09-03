@@ -43,38 +43,48 @@ function toPost(row: Row): PublicPost {
   };
 }
 
+export const PUBLIC_BLOG_KEY = ["public-blog"];
+
+/** Key a single post shares between its route loader and its hook. */
+export const publicPostKey = (slug: string) => ["public-blog", slug];
+
+/** Shared fetchers so route loaders and hooks agree exactly. */
+export async function fetchPublishedPosts(): Promise<PublicPost[]> {
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(SELECT)
+    .eq("published", true)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return ((data ?? []) as unknown as Row[]).map(toPost);
+}
+
+export async function fetchPublishedPost(slug: string): Promise<PublicPost | null> {
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(SELECT)
+    .eq("slug", slug)
+    .eq("published", true)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? toPost(data as unknown as Row) : null;
+}
+
 export function usePublishedPosts() {
   return useQuery({
-    queryKey: ["public-blog"],
+    queryKey: PUBLIC_BLOG_KEY,
     staleTime: 5 * 60_000,
-    queryFn: async (): Promise<PublicPost[]> => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select(SELECT)
-        .eq("published", true)
-        .order("published_at", { ascending: false, nullsFirst: false })
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return ((data ?? []) as unknown as Row[]).map(toPost);
-    },
+    queryFn: fetchPublishedPosts,
   });
 }
 
 export function usePublishedPost(slug: string | undefined) {
   return useQuery({
-    queryKey: ["public-blog", slug],
+    queryKey: publicPostKey(slug ?? ""),
     staleTime: 5 * 60_000,
     enabled: !!slug,
-    queryFn: async (): Promise<PublicPost | null> => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select(SELECT)
-        .eq("slug", slug!)
-        .eq("published", true)
-        .maybeSingle();
-      if (error) throw error;
-      return data ? toPost(data as unknown as Row) : null;
-    },
+    queryFn: () => fetchPublishedPost(slug!),
   });
 }
 
