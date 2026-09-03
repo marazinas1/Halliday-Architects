@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import ServicesPage from "@/pages/ServicesPage";
 import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
+import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
 import { SERVICES_KEY, fetchServices } from "@/hooks/useServices";
 
 export const Route = createFileRoute("/services")({
@@ -22,6 +23,11 @@ export const Route = createFileRoute("/services")({
       context.queryClient.ensureQueryData({
         queryKey: SERVICES_KEY,
         queryFn: fetchServices,
+        staleTime: 60_000,
+      }),
+      context.queryClient.ensureQueryData({
+        queryKey: SITE_SETTINGS_KEY,
+        queryFn: fetchSiteSettings,
         staleTime: 60_000,
       }),
     ]);

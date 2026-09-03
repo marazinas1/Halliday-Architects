@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import AboutPage from "@/pages/AboutPage";
 import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
+import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
 import { TEAM_MEMBERS_KEY, fetchTeamMembers } from "@/hooks/useTeamMembers";
 import { TESTIMONIALS_KEY, fetchTestimonials } from "@/hooks/useTestimonials";
 
@@ -28,6 +29,11 @@ export const Route = createFileRoute("/about")({
       context.queryClient.ensureQueryData({
         queryKey: TESTIMONIALS_KEY,
         queryFn: fetchTestimonials,
+        staleTime: 60_000,
+      }),
+      context.queryClient.ensureQueryData({
+        queryKey: SITE_SETTINGS_KEY,
+        queryFn: fetchSiteSettings,
         staleTime: 60_000,
       }),
     ]);

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import ContactPage from "@/pages/ContactPage";
 import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
+import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
 
 export const Route = createFileRoute("/contact")({
   // Fetched on the server before the HTML is sent, so the hero photograph is
@@ -17,6 +18,11 @@ export const Route = createFileRoute("/contact")({
         queryKey: ["public-projects"],
         queryFn: fetchPublicProjects,
         staleTime: 5 * 60_000,
+      }),
+      context.queryClient.ensureQueryData({
+        queryKey: SITE_SETTINGS_KEY,
+        queryFn: fetchSiteSettings,
+        staleTime: 60_000,
       }),
     ]);
   },
