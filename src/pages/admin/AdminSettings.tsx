@@ -47,7 +47,7 @@ function AssetSlot({
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="border border-line rounded bg-card p-5">
+    <div className="border border-line rounded-sm bg-card p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4 mb-4">
         <div>
           <p className="text-sm font-medium text-ink">{label}</p>
@@ -66,7 +66,7 @@ function AssetSlot({
       </div>
 
       <div
-        className={`h-24 rounded flex items-center justify-center px-6 ${dark ? "bg-ink" : "bg-sand"}`}
+        className={`h-24 rounded-sm flex items-center justify-center px-6 ${dark ? "bg-ink" : "bg-sand"}`}
       >
         {url ? (
           <img src={url} alt={label} className="max-h-14 w-auto" />
@@ -181,7 +181,7 @@ function SettingsBody() {
         Branding used across the public site, the admin and the sign-in screen.
       </p>
 
-      <div className="border border-line rounded bg-card p-5 mb-6">
+      <div className="border border-line rounded-sm bg-card p-5 mb-6">
         <Label htmlFor="site-name" className="text-sm font-medium text-ink">
           Site name
         </Label>
@@ -198,7 +198,7 @@ function SettingsBody() {
         </div>
       </div>
 
-      <div className="border border-line rounded bg-card p-5 mb-6">
+      <div className="border border-line rounded-sm bg-card p-5 mb-6">
         <Label htmlFor="notify-emails" className="text-sm font-medium text-ink">
           Inquiry notifications
         </Label>
@@ -238,10 +238,10 @@ function SettingsBody() {
       <div className="mt-10">
         <p className="text-sm font-medium text-ink mb-3">Preview</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded border border-line bg-paper h-32 flex items-center justify-center">
+          <div className="rounded-sm border border-line bg-paper h-32 flex items-center justify-center">
             <img src={urlFor("logo_path") ?? FALLBACK_LOGO} alt="Logo on light" className="max-h-12 w-auto" />
           </div>
-          <div className="rounded border border-line bg-ink h-32 flex items-center justify-center">
+          <div className="rounded-sm border border-line bg-ink h-32 flex items-center justify-center">
             <img
               src={urlFor("logo_dark_path") ?? urlFor("logo_path") ?? FALLBACK_LOGO}
               alt="Logo on dark"

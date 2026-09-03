@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { supabase } from "@/integrations/supabase/client";
 import AuthSplit from "@/components/brand/AuthSplit";
 import AuthCard from "@/components/brand/AuthCard";
@@ -102,7 +102,7 @@ const AdminLogin = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-input rounded text-ink focus:outline-none focus:ring-1 focus:ring-ink transition"
+              className="w-full px-4 py-3 bg-background border border-input rounded-sm text-ink focus:outline-hidden focus:ring-1 focus:ring-ink transition"
             />
           </div>
 
@@ -120,7 +120,7 @@ const AdminLogin = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-input rounded text-ink focus:outline-none focus:ring-1 focus:ring-ink transition"
+              className="w-full px-4 py-3 bg-background border border-input rounded-sm text-ink focus:outline-hidden focus:ring-1 focus:ring-ink transition"
             />
           </div>
 
@@ -135,7 +135,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded hover:bg-ink/90 transition disabled:opacity-60"
+            className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded-sm hover:bg-ink/90 transition disabled:opacity-60"
           >
             {loading ? "Signing In…" : "Sign In"}
           </button>

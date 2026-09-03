@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import ResponsiveImage from "@/components/ResponsiveImage";
 import Reveal from "@/components/Reveal";
 import { formatPostDate, type PublicPost } from "@/hooks/usePublicBlog";
@@ -6,7 +6,7 @@ import { formatPostDate, type PublicPost } from "@/hooks/usePublicBlog";
 const PostCard = ({ post, delay = 0 }: { post: PublicPost; delay?: number }) => (
   <Reveal delay={delay}>
     <Link to={`/blog/${post.slug}`} className="group block">
-      <div className="aspect-[4/5] w-full overflow-hidden rounded bg-sand">
+      <div className="aspect-[4/5] w-full overflow-hidden rounded-sm bg-sand">
         {post.cover_url ? (
           <ResponsiveImage
             src={post.cover_url}

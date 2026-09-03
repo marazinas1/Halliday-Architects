@@ -25,7 +25,7 @@ const TIMELINES = [
 
 const labelClass = "label-uppercase block mb-3";
 const inputClass =
-  "w-full h-12 rounded-none border-0 border-b border-line bg-transparent px-0 text-[15px] text-ink outline-none transition-colors placeholder:text-stone/50 focus:border-ink focus:ring-0";
+  "w-full h-12 rounded-none border-0 border-b border-line bg-transparent px-0 text-[15px] text-ink outline-hidden transition-colors placeholder:text-stone/50 focus:border-ink focus:ring-0";
 
 const formatPhone = (raw: string) => {
   const digits = raw.replace(/\D/g, "").slice(0, 10);
@@ -166,7 +166,7 @@ export const ContactForm = () => {
 
       <div>
         <label htmlFor="hl-message" className={labelClass}>Message</label>
-        <textarea id="hl-message" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="min-h-[140px] w-full resize-none rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-stone/50 focus:border-ink focus:ring-0" placeholder="Tell us about your project…" />
+        <textarea id="hl-message" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="min-h-[140px] w-full resize-none rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[15px] text-ink outline-hidden transition-colors placeholder:text-stone/50 focus:border-ink focus:ring-0" placeholder="Tell us about your project…" />
       </div>
 
       <Button type="submit" variant="ghost" disabled={submitting} className="link-inline group h-auto w-auto rounded-none bg-transparent px-0 py-1 hover:bg-transparent hover:text-ink">

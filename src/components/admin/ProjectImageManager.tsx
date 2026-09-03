@@ -372,7 +372,7 @@ export default function ProjectImageManager({
           void handleFiles(Array.from(e.dataTransfer.files ?? []));
         }}
         className={cn(
-          "flex cursor-pointer flex-col items-center justify-center gap-3 border border-dashed px-6 py-12 text-center outline-none transition-colors",
+          "flex cursor-pointer flex-col items-center justify-center gap-3 border border-dashed px-6 py-12 text-center outline-hidden transition-colors",
           dragOver ? "border-ink/60 bg-sand" : "border-line/80 bg-sand/40 hover:border-stone/60",
         )}
       >

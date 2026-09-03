@@ -47,14 +47,14 @@ export default function AdminPhotographs() {
           <Loader2 className="h-4 w-4 animate-spin" /> Loading…
         </div>
       ) : images.length === 0 ? (
-        <p className="rounded border border-line bg-card p-6 text-sm text-stone">
+        <p className="rounded-sm border border-line bg-card p-6 text-sm text-stone">
           Nothing uploaded yet. Anything you upload from a page's "Choose your own" panel appears
           here.
         </p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {images.map((image) => (
-            <div key={image.path} className="overflow-hidden rounded border border-line bg-card">
+            <div key={image.path} className="overflow-hidden rounded-sm border border-line bg-card">
               <div className="aspect-[4/3] bg-sand">
                 <img
                   src={image.url}

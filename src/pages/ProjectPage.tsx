@@ -1,6 +1,6 @@
 import ResponsiveImage from "@/components/ResponsiveImage";
 import { useMemo, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "@/lib/router-compat";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import GlobalNav from "@/components/GlobalNav";
@@ -224,7 +224,7 @@ const ProjectPage = () => {
                     key={img.id}
                     type="button"
                     onClick={() => setLightbox(startIndex + itemIndex)}
-                    className="group min-h-[320px] w-full overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink md:min-h-0"
+                    className="group min-h-[320px] w-full overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink md:min-h-0"
                     aria-label={`Open image ${startIndex + itemIndex + 1}`}
                   >
                     <ResponsiveImage

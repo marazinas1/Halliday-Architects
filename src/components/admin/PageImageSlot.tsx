@@ -175,8 +175,8 @@ export default function PageImageSlot({
     source === "chosen" ? "Chosen" : source === "default" || source === "automatic" ? "Default" : null;
 
   return (
-    <div className="rounded border border-line bg-card p-3">
-      <div className={`relative overflow-hidden rounded bg-sand ${aspect}`}>
+    <div className="rounded-sm border border-line bg-card p-3">
+      <div className={`relative overflow-hidden rounded-sm bg-sand ${aspect}`}>
         {url ? (
           <img src={url} alt={label} className="h-full w-full object-cover" loading="lazy" />
         ) : (

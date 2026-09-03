@@ -74,7 +74,7 @@ const BlogPage = () => {
             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gap.grid}`}>
               {Array.from({ length: 3 }).map((_, i) => (
                 <div key={i}>
-                  <div className="aspect-[4/5] w-full animate-pulse rounded bg-sand" />
+                  <div className="aspect-[4/5] w-full animate-pulse rounded-sm bg-sand" />
                   <div className="mt-5 h-3 w-1/2 bg-sand" />
                   <div className="mt-3 h-2 w-1/3 bg-sand" />
                 </div>

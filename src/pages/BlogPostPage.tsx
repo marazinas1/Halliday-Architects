@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "@/lib/router-compat";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import ResponsiveImage from "@/components/ResponsiveImage";

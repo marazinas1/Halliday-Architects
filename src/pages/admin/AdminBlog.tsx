@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Plus, Pencil, Trash2, FileText, Tags } from "lucide-react";
 import AdminProtected from "@/components/admin/AdminProtected";
 import { Button } from "@/components/ui/button";
@@ -87,7 +87,7 @@ function AdminBlogInner() {
               {rows.map((row) => (
                 <tr key={row.id} className="hover:bg-sand">
                   <td className="px-4 py-3">
-                    <div className="w-16 h-12 rounded bg-sand flex items-center justify-center overflow-hidden">
+                    <div className="w-16 h-12 rounded-sm bg-sand flex items-center justify-center overflow-hidden">
                       {row.cover_path ? (
                         <img src={getBlogImageUrl(row.cover_path)} alt="" className="w-full h-full object-cover" loading="lazy" />
                       ) : (

@@ -1,6 +1,6 @@
 import ResponsiveImage from "@/components/ResponsiveImage";
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
@@ -163,7 +163,7 @@ const ProjectsPage = () => {
                       <Reveal key={p.id} delay={cardIndex * 150}>
                         <Link
                           to={`/projects/${p.slug}`}
-                          className={`group relative block overflow-hidden bg-sand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
+                          className={`group relative block overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
                         >
                           {p.card_image_url ? (
                             <ResponsiveImage

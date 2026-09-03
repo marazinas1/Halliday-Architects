@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import { supabase } from "@/integrations/supabase/client";
 import AuthSplit from "@/components/brand/AuthSplit";
 import AuthCard from "@/components/brand/AuthCard";
 import BrandLogo from "@/components/BrandLogo";
 
 const inputClass =
-  "w-full px-4 py-3 bg-background border border-input rounded text-ink focus:outline-none focus:ring-1 focus:ring-ink transition";
+  "w-full px-4 py-3 bg-background border border-input rounded-sm text-ink focus:outline-hidden focus:ring-1 focus:ring-ink transition";
 const labelClass = "block text-xs tracking-[0.2em] uppercase text-stone";
 
 type ReadyState = "waiting" | "ready" | "expired";
@@ -148,7 +148,7 @@ const AdminSetPassword = () => {
             </p>
             <Link
               to="/admin/login"
-              className="inline-flex items-center justify-center w-full px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded hover:bg-ink/90 transition"
+              className="inline-flex items-center justify-center w-full px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded-sm hover:bg-ink/90 transition"
             >
               Go to sign in
             </Link>
@@ -196,7 +196,7 @@ const AdminSetPassword = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded hover:bg-ink/90 transition disabled:opacity-60"
+              className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded-sm hover:bg-ink/90 transition disabled:opacity-60"
             >
               {loading ? "Saving…" : "Save Password"}
             </button>

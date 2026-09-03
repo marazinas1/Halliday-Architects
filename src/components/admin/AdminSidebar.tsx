@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "@/lib/router-compat";
 import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Mail, Wrench, Home, UserCog, LayoutDashboard, BarChart3, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
