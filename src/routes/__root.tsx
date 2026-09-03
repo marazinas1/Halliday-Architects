@@ -7,7 +7,6 @@ import {
   createRootRouteWithContext,
   useRouter,
 } from "@tanstack/react-router";
-import { HelmetProvider } from "react-helmet-async";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -130,7 +129,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -141,7 +139,6 @@ function RootComponent() {
             <Outlet />
           </Suspense>
         </TooltipProvider>
-      </HelmetProvider>
     </QueryClientProvider>
   );
 }
