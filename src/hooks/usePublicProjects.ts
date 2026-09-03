@@ -296,6 +296,15 @@ export async function fetchProjectOrder(): Promise<ProjectOrderItem[]> {
             : project.title,
         };
       });
-    },
+    }
+}
+
+/** Published projects in display order — used for "next project" navigation. */
+export function useProjectOrder() {
+  return useQuery({
+    queryKey: PROJECT_ORDER_KEY,
+    staleTime: 5 * 60_000,
+    queryFn: fetchProjectOrder,
   });
 }
+
