@@ -1,6 +1,5 @@
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import SEO from "@/components/SEO";
 import ContactSection from "@/components/sections/ContactSection";
 import ContactMapSection from "@/components/ContactMapSection";
 import Reveal from "@/components/Reveal";
@@ -22,12 +21,6 @@ const ContactPage = () => {
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
-      <SEO
-        title="Contact | Halliday Architects"
-        description="Get in touch with Halliday Architects — architecture practice in Ocean City, New Jersey. 609.957.6789."
-        path="/contact"
-        image={cover?.url ?? undefined}
-      />
 
       <Reveal>
         <header className={pageHeader}>

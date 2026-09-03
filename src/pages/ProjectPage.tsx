@@ -5,7 +5,6 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import SEO from "@/components/SEO";
 import Lightbox from "@/components/projects/Lightbox";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import Reveal from "@/components/Reveal";
@@ -86,12 +85,6 @@ const ProjectPage = () => {
       <main className="min-h-screen bg-background">
         <GlobalNav />
         {!isPreview && (
-          <SEO
-            title="Project not found | Halliday Architects"
-            description="This project is no longer available. Browse the Halliday Architects portfolio."
-            path="/projects"
-            noindex
-          />
         )}
         <div className="py-40 text-center">
           <h1 className="font-serif text-3xl font-light text-ink">
@@ -129,13 +122,6 @@ const ProjectPage = () => {
       {isPreview && <PreviewBanner label="project page" />}
       <GlobalNav />
       {!isPreview && (
-        <SEO
-          title={`${project.title} | Halliday Architects`}
-          description={project.tagline ?? project.description ?? project.title}
-          path={`/projects/${project.slug}`}
-          type="article"
-          image={heroUrl ?? undefined}
-        />
       )}
 
       <section className="relative h-[82svh] min-h-[540px] overflow-hidden bg-sand">

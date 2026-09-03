@@ -1,7 +1,6 @@
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
-import SEO from "@/components/SEO";
 import AboutSection from "@/components/sections/AboutSection";
 import ResponsiveImage from "@/components/ResponsiveImage";
 import { TeamRoster } from "@/components/sections/TeamSection";
@@ -28,11 +27,6 @@ const AboutPage = () => {
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
-      <SEO
-        title="Christopher & Shannon Halliday | Architects"
-        description="Meet architects Christopher and Shannon Halliday and their Ocean City, New Jersey studio, focused on thoughtful residential architecture."
-        path="/about"
-      />
 
       <Reveal>
         {/* Shared gutter; the tighter bottom padding is intentional — the
