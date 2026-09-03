@@ -16,9 +16,16 @@ import {
   type GalleryItem,
   type ProjectType,
 } from "@/hooks/usePublicProjects";
+import { getProjectRowSizes } from "@/lib/projectRows";
 import { container } from "@/lib/rhythm";
 
 type Spec = { label?: string; value?: string };
+
+const galleryGridClasses: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 min-[820px]:grid-cols-2",
+  3: "grid-cols-1 lg:grid-cols-3",
+};
 
 const ProjectPage = () => {
   const { slug } = useParams();
@@ -105,6 +112,13 @@ const ProjectPage = () => {
     project.year_completed ?? null,
   ].filter(Boolean);
   const galleryOffset = heroUrl ? 1 : 0;
+  let galleryIndex = 0;
+  const galleryRows = getProjectRowSizes(gallery.length).map((size) => {
+    const startIndex = galleryIndex;
+    const items = gallery.slice(galleryIndex, galleryIndex + size);
+    galleryIndex += size;
+    return { items, startIndex };
+  });
 
   return (
     <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
@@ -189,28 +203,47 @@ const ProjectPage = () => {
       )}
 
       {gallery.length > 0 && (
-        <section className="grid grid-cols-1 gap-[2px] md:grid-cols-2">
-          {gallery.map((img, imageIndex) => (
-            <Reveal key={img.id} delay={(imageIndex % 2) * 150}>
-              <button
-                type="button"
-                onClick={() => setLightbox(galleryOffset + imageIndex)}
-                className="group aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink"
-                aria-label={`Open image ${imageIndex + 1}`}
+        <section className="flex w-full flex-col gap-[2px]">
+          {galleryRows.map((row) => {
+            const rowSize = row.items.length;
+            return (
+              <div
+                key={row.items.map((image) => image.id).join("-")}
+                className={`grid w-full gap-[2px] ${galleryGridClasses[rowSize]}`}
               >
-                <ResponsiveImage
-                  src={img.src}
-                  alt={img.alt}
-                  width={1600}
-                  height={1200}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  quality={82}
-                  maxWidth={2000}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.02]"
-                />
-              </button>
-            </Reveal>
-          ))}
+                {row.items.map((img, itemIndex) => {
+                  const imageIndex = row.startIndex + itemIndex;
+                  return (
+                    <Reveal key={img.id} delay={itemIndex * 150}>
+                      <button
+                        type="button"
+                        onClick={() => setLightbox(galleryOffset + imageIndex)}
+                        className="group aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink"
+                        aria-label={`Open image ${imageIndex + 1}`}
+                      >
+                        <ResponsiveImage
+                          src={img.src}
+                          alt={img.alt}
+                          width={1600}
+                          height={1200}
+                          sizes={
+                            rowSize === 1
+                              ? "100vw"
+                              : rowSize === 2
+                                ? "(min-width: 820px) 50vw, 100vw"
+                                : "(min-width: 1024px) 34vw, 100vw"
+                          }
+                          quality={82}
+                          maxWidth={rowSize === 1 ? 2400 : rowSize === 2 ? 2000 : 1600}
+                          className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.02]"
+                        />
+                      </button>
+                    </Reveal>
+                  );
+                })}
+              </div>
+            );
+          })}
         </section>
       )}
 
