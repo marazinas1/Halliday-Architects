@@ -20,9 +20,12 @@ export async function fetchTags(): Promise<Tag[]> {
 export function useTags() {
   return useQuery({
     queryKey: TAGS_KEY,
+    // Matches the loader, so the server-primed list is not refetched on mount.
+    staleTime: 60_000,
     queryFn: fetchTags,
   });
 }
+
 
 
 const invalidate = (qc: ReturnType<typeof useQueryClient>) => {
