@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import ProjectsPage from "@/pages/ProjectsPage";
 import { PAGE_CONTENT_KEY, fetchPageContent } from "@/hooks/usePageContent";
 import { fetchPublicProjects } from "@/hooks/usePublicProjects";
+import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
+import { TAGS_KEY, fetchTags } from "@/hooks/admin/useTags";
 
 export const Route = createFileRoute("/projects/")({
   // Fetched on the server before the HTML is sent, so the grid is in the
@@ -18,8 +20,18 @@ export const Route = createFileRoute("/projects/")({
         queryFn: fetchPublicProjects,
         staleTime: 5 * 60_000,
       }),
+      context.queryClient.ensureQueryData({
+        queryKey: SITE_SETTINGS_KEY,
+        queryFn: fetchSiteSettings,
+        staleTime: 60_000,
+      }),
+      context.queryClient.ensureQueryData({
+        queryKey: TAGS_KEY,
+        queryFn: fetchTags,
+      }),
     ]);
   },
+
   component: ProjectsPage,
   errorComponent: ({ error }) => (
     <div role="alert" className="mx-auto max-w-2xl px-6 py-32 text-center">
