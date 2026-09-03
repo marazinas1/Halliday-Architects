@@ -19,11 +19,10 @@ import { prefetchBootData } from "@/lib/queryClient";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
 
-// ported from main.tsx — fire the content queries before React mounts, so
-// photograph URLs are known as early as possible on the client.
-if (typeof window !== "undefined") {
-  void prefetchBootData();
-}
+// ported from main.tsx — fire the content queries as soon as the app is
+// interactive. This must NOT run before hydration: warming the cache mid-race
+// made the client's first render differ from the server's HTML, which React
+// reports as a hydration mismatch. RootComponent kicks it off in an effect.
 
 const STRUCTURED_DATA = JSON.stringify({
   "@context": "https://schema.org",
@@ -121,6 +120,13 @@ const AnalyticsTracker = () => {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  // Warm the shared content queries right after hydration completes, so the
+  // first client render still matches the server-rendered HTML exactly.
+  useEffect(() => {
+    void prefetchBootData();
+  }, []);
+
 
   return (
     <QueryClientProvider client={queryClient}>
