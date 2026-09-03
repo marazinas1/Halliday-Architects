@@ -1,0 +1,623 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap");
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Halliday Architects design system — StageHomy direction.
+ * Ported 1:1 from the Classic project's src/index.css + tailwind.config.ts.
+ *
+ * The @theme inline block maps the runtime HSL custom properties defined in
+ * :root below to Tailwind utility classes (bg-paper, text-ink, border-line…).
+ */
+
+@theme inline {
+  /* Typography — Urbanist everywhere */
+  --font-sans: "Urbanist", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Urbanist", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  /* Type scale (from tailwind.config.ts fontSize) */
+  --text-display: clamp(2.5rem, 5.5vw, 3.75rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-h1: clamp(2.25rem, 4.5vw, 3.75rem);
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(1.875rem, 3.2vw, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.02em;
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.25;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.7;
+  --text-body-base: 1rem;
+  --text-body-base--line-height: 1.65;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.6;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.2em;
+
+  /* Radii */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Core palette */
+  --color-paper: hsl(var(--paper));
+  --color-sand: hsl(var(--sand));
+  --color-ink: hsl(var(--ink));
+  --color-stone: hsl(var(--stone));
+  --color-line: hsl(var(--line));
+  /* Brand red — links, active states and small markers only. */
+  --color-brand: hsl(var(--brand));
+  --color-headline: hsl(var(--text-headline));
+  --color-body: hsl(var(--text-body));
+  --color-caption: hsl(var(--text-caption));
+
+  /* Semantic surfaces */
+  --color-background: hsl(var(--background));
+  --color-background-sand: hsl(var(--background-sand));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-border-subtle: hsl(var(--border-subtle));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-ring-offset-background: hsl(var(--background));
+
+  /* Admin sidebar */
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-elegant: var(--shadow-elegant);
+
+  /* Motion — the site's ease-out curve replaces Tailwind's default */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Radix accordion */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+:root {
+  /* ── Palette ────────────────────────────────────────────────
+     paper #FBFAF8 · sand #F1EEE9 · ink #1C1B19
+     stone #55534E · line #E3E0DA · brand red #A81611          */
+  --paper: 0 0% 100%;
+  --sand: 0 0% 97.6%;
+  --ink: 0 0% 8%;
+  --stone: 0 0% 35%;
+  --line: 0 0% 90%;
+  --brand: 2 82% 36%;
+
+  /* StageHomy text tokens */
+  --text-headline: 0 0% 8%;
+  --text-body: 0 0% 35%;
+  --text-caption: 0 0% 38%;
+
+  /* Semantic surfaces */
+  --background: var(--paper);
+  --background-sand: var(--sand);
+  --foreground: var(--ink);
+
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+
+  --secondary: var(--sand);
+  --secondary-foreground: var(--ink);
+
+  --muted: var(--sand);
+  --muted-foreground: 0 0% 45%;
+
+  --accent: var(--sand);
+  --accent-foreground: var(--ink);
+
+  --destructive: 2 82% 36%;
+  --destructive-foreground: var(--paper);
+
+  /* Borders */
+  --border: var(--line);
+  --border-subtle: 0 0% 94%;
+  --input: var(--line);
+  --ring: var(--ink);
+
+  /* Admin sidebar. Uses the site's own palette rather than shadcn defaults so
+     the panel matches the rest of the interface. */
+  --sidebar-background: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ink);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: var(--sand);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--brand);
+
+  --radius: 0.5rem;
+
+  /* Glass Effect */
+  --glass-bg: 40 27% 98% / 0.85;
+  --glass-border: 40 14% 87% / 0.6;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 hsl(40 6% 10% / 0.04);
+  --shadow-md: 0 4px 6px -1px hsl(40 6% 10% / 0.05), 0 2px 4px -2px hsl(40 6% 10% / 0.05);
+  --shadow-lg: 0 10px 15px -3px hsl(40 6% 10% / 0.07), 0 4px 6px -4px hsl(40 6% 10% / 0.05);
+  --shadow-elegant: 0 24px 48px -20px hsl(40 6% 10% / 0.16);
+
+  /* Motion — opacity and small translations only */
+  --motion-fast: 400ms;
+  --motion-base: 500ms;
+  --motion-slow: 600ms;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: hsl(var(--text-headline));
+  }
+
+  p {
+    @apply font-sans;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  a {
+    @apply transition-colors;
+    transition-duration: var(--motion-fast);
+    transition-timing-function: var(--motion-ease);
+  }
+}
+
+@layer components {
+  /* Glassmorphism Navigation */
+  .glass-nav {
+    @apply backdrop-blur-xl border-b;
+    background: hsl(var(--glass-bg));
+    border-color: hsl(var(--glass-border));
+  }
+
+  /* Elegant Button Styles */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 h-11 text-sm font-medium rounded-sm;
+    @apply bg-primary text-primary-foreground;
+    @apply transition-colors hover:bg-primary/90;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 h-11 text-sm font-medium rounded-sm;
+    @apply border border-input bg-background text-headline;
+    @apply transition-all duration-300 hover:bg-headline hover:text-background;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 h-10 text-sm font-medium rounded-sm;
+    @apply text-headline bg-transparent transition-colors hover:bg-secondary;
+  }
+
+  /* Section styling */
+  .section-padding {
+    @apply py-24 md:py-32;
+  }
+
+  .section-sand {
+    background-color: hsl(var(--background-sand));
+  }
+
+  /* Typography — StageHomy scale */
+  .heading-display {
+    font-size: clamp(2rem, 3.6vw, 3.15rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: hsl(var(--text-headline));
+  }
+
+  .heading-section {
+    font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: hsl(var(--text-headline));
+  }
+
+  .heading-card {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: hsl(var(--text-headline));
+  }
+
+  /* Editorial statement — a large light sentence on either surface.
+     Size, weight, leading and tracking only; each usage keeps its own colour. */
+  .statement {
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .text-body {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.75;
+    color: hsl(var(--text-body));
+  }
+
+  .text-small {
+    @apply text-sm;
+    color: hsl(var(--text-body));
+  }
+
+  .label-uppercase {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: hsl(var(--text-caption));
+  }
+
+  /* Centered section header — the single alignment system for every band. */
+  .section-head {
+    @apply text-center;
+    margin-bottom: 3.5rem;
+  }
+  .section-head .label-uppercase {
+    @apply block;
+    margin-bottom: 1rem;
+  }
+
+  /* The link that sits centered below a grid. */
+  .below-link {
+    @apply text-center;
+    margin-top: 3.5rem;
+  }
+  .link-inline {
+    @apply inline-flex items-center gap-2 border-b border-ink pb-1 text-[11px] font-semibold uppercase text-ink;
+    letter-spacing: 0.14em;
+    transition: opacity 300ms ease-out;
+  }
+  .link-inline:hover {
+    opacity: 0.72;
+  }
+  .link-inline:focus-visible {
+    @apply outline-hidden ring-2 ring-ink ring-offset-4 ring-offset-background;
+  }
+  .link-inline-inverse {
+    @apply border-paper text-paper;
+  }
+  .link-inline-inverse:focus-visible {
+    @apply ring-paper ring-offset-ink;
+  }
+
+  /* Unified page header hero */
+  .page-hero {
+    @apply py-12 md:py-16;
+  }
+  .page-hero-content {
+    @apply max-w-4xl mx-auto text-center;
+  }
+  .page-hero-label {
+    @apply text-[11px] font-medium uppercase tracking-widest text-caption mb-4 block;
+  }
+  .page-hero-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold text-headline mb-6 tracking-tight;
+    letter-spacing: -0.02em;
+  }
+  .page-hero-description {
+    @apply text-lg text-body max-w-2xl mx-auto font-normal leading-relaxed;
+  }
+
+  /* Divider */
+  .divider {
+    @apply w-16 h-px bg-border;
+  }
+
+  /* Blog post body — shared by the public post, the admin preview and the
+     editor surface, so writing matches reading. */
+  .post-body {
+    @apply text-body-base;
+    color: hsl(var(--stone));
+  }
+  .post-body > * + * {
+    @apply mt-6;
+  }
+  .post-body h2 {
+    @apply text-2xl font-extrabold tracking-tight mt-14;
+    color: hsl(var(--ink));
+  }
+  .post-body h3 {
+    @apply text-xl font-extrabold tracking-tight mt-10;
+    color: hsl(var(--ink));
+  }
+  .post-body strong {
+    @apply font-medium;
+    color: hsl(var(--ink));
+  }
+  .post-body a {
+    color: hsl(var(--brand));
+    @apply underline underline-offset-4 decoration-1;
+  }
+  .post-body ul {
+    @apply list-disc pl-5 space-y-2;
+  }
+  .post-body ol {
+    @apply list-decimal pl-5 space-y-2;
+  }
+  .post-body blockquote {
+    @apply border-l pl-6 text-xl font-light italic my-10;
+    border-color: hsl(var(--brand));
+    color: hsl(var(--ink));
+  }
+  .post-body img {
+    @apply w-full my-12;
+    border-radius: 4px;
+  }
+  /* On the public post, images break wider than the reading measure. */
+  @media (min-width: 1024px) {
+    .post-body--editorial img {
+      width: calc(100% + 8rem);
+      max-width: none;
+      margin-left: -4rem;
+    }
+  }
+  .post-body hr {
+    @apply my-12;
+    border-color: hsl(var(--line));
+  }
+
+  /* Image overlay gradient */
+  .hero-overlay {
+    background: linear-gradient(
+      to right,
+      hsl(0 0% 0% / 0.5) 0%,
+      hsl(0 0% 0% / 0.3) 50%,
+      hsl(0 0% 0% / 0.1) 100%
+    );
+  }
+
+  /* Form inputs */
+  .input-elegant {
+    @apply w-full px-4 py-3 text-sm;
+    @apply bg-transparent border border-border;
+    @apply transition-all duration-200;
+    @apply focus:outline-hidden focus:border-ink focus:ring-1 focus:ring-ink/20;
+    @apply placeholder:text-stone/50;
+    border-radius: 4px;
+  }
+
+  /* Cards */
+  .card-elegant {
+    @apply bg-card border border-border-subtle;
+    @apply transition-all duration-300;
+    @apply hover:border-border hover:shadow-sm;
+    border-radius: 4px;
+  }
+
+  /* Lightbox overlay */
+  .lightbox-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+    background: hsl(0 0% 0% / 0.95);
+  }
+
+  /* Hide platform branding for white-label appearance */
+  [data-lovable-badge],
+  [class*="lovable-badge"],
+  a[href*="lovable.dev"]:not([href*="docs.lovable.dev"]),
+  div[class*="lovable"],
+  #lovable-badge,
+  .lovable-badge {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
+@layer utilities {
+  /* Motion: opacity fades and small translations only. 400–600ms, ease-out. */
+  .animate-fade-in {
+    animation: fadeIn var(--motion-base) var(--motion-ease) forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp var(--motion-slow) var(--motion-ease) forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideIn var(--motion-base) var(--motion-ease) forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Subtle scroll cue: a soft dot travels down a thin line and fades. */
+  @keyframes scrollCue {
+    0% {
+      opacity: 0;
+      transform: translateY(-30%);
+    }
+    35% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(130%);
+    }
+  }
+
+  @keyframes scrollCueBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Restrained hover states — 400–600ms ease-out, no shadows or effects. */
+  .link-underline {
+    position: relative;
+    transition: color var(--motion-base, 500ms) var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.25em;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-color: hsl(var(--brand));
+    transition: transform 500ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .link-underline:hover {
+    color: hsl(var(--brand));
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+
+  .img-hover-scale {
+    transition: transform 600ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .group:hover .img-hover-scale {
+    transform: scale(1.04);
+  }
+
+  /* Architectural drawing notation numerals. */
+  .numeral {
+    @apply font-light leading-none;
+    color: hsl(var(--stone) / 0.35);
+  }
+}
+
+@layer utilities {
+  /* StageHomy layout helpers */
+  .container-wide {
+    @apply max-w-[1440px] mx-auto px-6 lg:px-8;
+  }
+  .bg-subtle {
+    background-color: hsl(var(--sand));
+  }
+  .text-headline {
+    color: hsl(var(--text-headline));
+  }
+  .text-caption {
+    color: hsl(var(--text-caption));
+  }
+  /* Hide scrollbars on mobile horizontal rails */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
