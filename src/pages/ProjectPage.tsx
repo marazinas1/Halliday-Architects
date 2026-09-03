@@ -84,8 +84,6 @@ const ProjectPage = () => {
     return (
       <main className="min-h-screen bg-background">
         <GlobalNav />
-        {!isPreview && (
-        )}
         <div className="py-40 text-center">
           <h1 className="font-serif text-3xl font-light text-ink">
             {isPreview ? "No preview data" : "Project not found"}
@@ -121,8 +119,6 @@ const ProjectPage = () => {
     <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
       {isPreview && <PreviewBanner label="project page" />}
       <GlobalNav />
-      {!isPreview && (
-      )}
 
       <section className="relative h-[82svh] min-h-[540px] overflow-hidden bg-sand">
         {heroUrl && (

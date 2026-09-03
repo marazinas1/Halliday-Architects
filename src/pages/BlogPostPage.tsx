@@ -68,8 +68,6 @@ const BlogPostPage = () => {
     <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
       {isPreview && <PreviewBanner label="journal entry" />}
       <GlobalNav lightHero={!post.cover_url} />
-      {!isPreview && (
-      )}
 
       {post.cover_url ? (
         <div className="w-full h-[60vh] min-h-[380px] bg-sand overflow-hidden">
