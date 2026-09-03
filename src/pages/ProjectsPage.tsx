@@ -23,12 +23,6 @@ const rowGridClasses: Record<number, string> = {
   3: "grid-cols-1 lg:grid-cols-3",
 };
 
-const cardHeightClasses: Record<number, string> = {
-  1: "h-[max(46vh,280px)] min-[820px]:h-[max(66vh,460px)]",
-  2: "h-[max(46vh,280px)] min-[820px]:h-[max(54vh,380px)]",
-  3: "h-[max(46vh,280px)] min-[820px]:h-[max(54vh,380px)] lg:h-[max(42vh,300px)]",
-};
-
 /** Portfolio index — image-led grid with type and tag filtering. */
 const ProjectsPage = () => {
   const { data: projects = [], isLoading } = usePublicProjects();
@@ -157,7 +151,7 @@ const ProjectsPage = () => {
                       <Reveal key={p.id} delay={cardIndex * 150}>
                         <Link
                           to={`/projects/${p.slug}`}
-                          className={`group relative block overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink ${cardHeightClasses[rowSize]}`}
+                          className="group relative block aspect-[4/3] overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink"
                         >
                           {p.card_image_url ? (
                             <ResponsiveImage
@@ -169,8 +163,8 @@ const ProjectsPage = () => {
                                 rowSize === 1
                                   ? "100vw"
                                   : rowSize === 2
-                                    ? "(min-width: 768px) 50vw, 100vw"
-                                    : "(min-width: 768px) 34vw, 100vw"
+                                    ? "(min-width: 820px) 50vw, 100vw"
+                                    : "(min-width: 1024px) 34vw, 100vw"
                               }
                               quality={82}
                               maxWidth={rowSize === 1 ? 2400 : rowSize === 2 ? 2000 : 1600}
