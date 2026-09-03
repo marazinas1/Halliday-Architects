@@ -1,5 +1,5 @@
 import ResponsiveImage from "@/components/ResponsiveImage";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "@/lib/router-compat";
 
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";

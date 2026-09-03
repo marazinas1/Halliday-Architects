@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import ResponsiveImage from "@/components/ResponsiveImage";
 import Reveal from "@/components/Reveal";
 import { formatPostDate, type PublicPost } from "@/hooks/usePublicBlog";

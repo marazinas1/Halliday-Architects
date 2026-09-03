@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "@/lib/router-compat";
 import AdminProtected from "@/components/admin/AdminProtected";
 import PageImageSlot from "@/components/admin/PageImageSlot";
 import SectionTabs from "@/components/admin/SectionTabs";

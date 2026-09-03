@@ -1,5 +1,5 @@
 import ResponsiveImage from "@/components/ResponsiveImage";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import Reveal from "@/components/Reveal";
 import SectionLink from "@/components/SectionLink";
 import {

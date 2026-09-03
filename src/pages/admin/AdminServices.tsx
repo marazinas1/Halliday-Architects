@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUp, ExternalLink, ImageIcon, Loader2, Plus, Trash2, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import AdminProtected from "@/components/admin/AdminProtected";
 import ImagePicker, { type PickedImage } from "@/components/admin/ImagePicker";
 import StringListEditor from "@/components/admin/StringListEditor";

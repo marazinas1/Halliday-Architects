@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate } from "@/lib/router-compat";
 import { ShieldAlert } from "lucide-react";
 import { useAdminAuth, canAccess, type AdminAccess } from "@/hooks/admin/useAdminAuth";
 import AdminShell from "./AdminShell";

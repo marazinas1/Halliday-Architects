@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@/lib/router-compat";
 
 const ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/track-view`;
 
