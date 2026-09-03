@@ -4,20 +4,26 @@ import { slugify } from "@/lib/admin/slug";
 
 export type Tag = { id: string; name: string; slug: string; sort_order: number };
 
+export const TAGS_KEY = ["tags"] as const;
+
+/** Standalone fetcher so route loaders can prime this query on the server. */
+export async function fetchTags(): Promise<Tag[]> {
+  const { data, error } = await supabase
+    .from("tags")
+    .select("id, name, slug, sort_order")
+    .order("sort_order", { ascending: true })
+    .order("name", { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
 export function useTags() {
   return useQuery({
-    queryKey: ["tags"],
-    queryFn: async (): Promise<Tag[]> => {
-      const { data, error } = await supabase
-        .from("tags")
-        .select("id, name, slug, sort_order")
-        .order("sort_order", { ascending: true })
-        .order("name", { ascending: true });
-      if (error) throw error;
-      return data ?? [];
-    },
+    queryKey: TAGS_KEY,
+    queryFn: fetchTags,
   });
 }
+
 
 const invalidate = (qc: ReturnType<typeof useQueryClient>) => {
   qc.invalidateQueries({ queryKey: ["tags"] });
