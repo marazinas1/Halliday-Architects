@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import SEO from "@/components/SEO";
 import Reveal from "@/components/Reveal";
 import { pageHeader } from "@/lib/rhythm";
 
@@ -25,12 +24,6 @@ const NotFound = () => {
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
-      <SEO
-        title="Page not found | Halliday Architects"
-        description="The page you were looking for is not here. Browse the Halliday Architects portfolio instead."
-        path={location.pathname}
-        noindex
-      />
 
       <Reveal>
         <header className={`${pageHeader} pb-20 md:pb-28`}>

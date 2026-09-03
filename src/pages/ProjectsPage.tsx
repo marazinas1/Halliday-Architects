@@ -4,7 +4,6 @@ import { Link } from "@/lib/router-compat";
 
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import Reveal from "@/components/Reveal";
@@ -83,11 +82,6 @@ const ProjectsPage = () => {
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
-      <SEO
-        title="Projects | Halliday Architects"
-        description="Residential architecture in and around Ocean City, New Jersey — new builds, renovations, additions and interiors."
-        path="/projects"
-      />
       <Reveal>
         <header className={pageHeader}>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Selected work</p>

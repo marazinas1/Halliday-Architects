@@ -4,7 +4,6 @@ import { Link, useLocation } from "@/lib/router-compat";
 import { ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import SEO from "@/components/SEO";
 import PreviewBanner from "@/components/admin/PreviewBanner";
 import Reveal from "@/components/Reveal";
 import {
@@ -118,12 +117,6 @@ const Index = () => {
     <main className="min-h-screen bg-background">
       {isPreview && <PreviewBanner label="homepage" />}
       <GlobalNav overlayPhotoWall />
-      <SEO
-        title="Halliday Architects | Residential Architecture in Ocean City, NJ"
-        description="Halliday Architects is a residential architecture practice in Ocean City, New Jersey."
-        path="/"
-        image={wall[0]?.url ?? undefined}
-      />
 
       {/* Rich gallery wall: one opening image, then three, then two. */}
       <section id="home-photo-wall" className="flex flex-col gap-[2px]" aria-label="Selected residential architecture">

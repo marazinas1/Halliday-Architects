@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
 import CTASection from "@/components/CTASection";
-import SEO from "@/components/SEO";
 import PostCard from "@/components/blog/PostCard";
 import Reveal from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
@@ -28,11 +27,6 @@ const BlogPage = () => {
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
-      <SEO
-        title="Journal | Halliday Architects"
-        description="Notes on residential architecture, coastal building and design detail from Halliday Architects in Ocean City, NJ."
-        path="/blog"
-      />
       <Reveal>
         <header className={pageHeader}>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone">Ideas &amp; observations</p>

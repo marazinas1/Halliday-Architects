@@ -1,6 +1,5 @@
 import GlobalNav from "@/components/GlobalNav";
 import GlobalFooter from "@/components/GlobalFooter";
-import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
 import Reveal from "@/components/Reveal";
 import ResponsiveImage from "@/components/ResponsiveImage";
@@ -34,11 +33,6 @@ const ServicesPage = () => {
   return (
     <main className="min-h-screen bg-background">
       <GlobalNav />
-      <SEO
-        title="Services | Halliday Architects"
-        description="Architectural consultation, design, code analysis, and permit coordination from Halliday Architects in Ocean City, NJ."
-        path="/services"
-      />
 
       <Reveal>
       <header className={pageHeader}>

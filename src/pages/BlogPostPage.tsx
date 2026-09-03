@@ -4,7 +4,6 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import GlobalNav from "@/components/GlobalNav";
 import ResponsiveImage from "@/components/ResponsiveImage";
 import GlobalFooter from "@/components/GlobalFooter";
-import SEO from "@/components/SEO";
 import PostBody from "@/components/blog/PostBody";
 import PostCard from "@/components/blog/PostCard";
 import PreviewBanner from "@/components/admin/PreviewBanner";
@@ -46,7 +45,6 @@ const BlogPostPage = () => {
     return (
       <main className="min-h-screen bg-background">
         <GlobalNav lightHero />
-        <SEO title="Post not found | Halliday Architects" description="This journal entry could not be found." path={`/blog/${slug ?? ""}`} />
         <section className="pt-40 pb-32">
           <div className={`${container.narrow} text-center`}>
             <h1 className="heading-section text-ink mb-6">
@@ -70,15 +68,6 @@ const BlogPostPage = () => {
     <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
       {isPreview && <PreviewBanner label="journal entry" />}
       <GlobalNav lightHero={!post.cover_url} />
-      {!isPreview && (
-      <SEO
-        title={`${post.title} | Halliday Architects`}
-        description={post.excerpt ?? `${post.title} — from the Halliday Architects journal.`}
-        path={`/blog/${post.slug}`}
-        type="article"
-        image={post.cover_url ?? undefined}
-      />
-      )}
 
       {post.cover_url ? (
         <div className="w-full h-[60vh] min-h-[380px] bg-sand overflow-hidden">

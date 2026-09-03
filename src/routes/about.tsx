@@ -5,10 +5,19 @@ import { fetchPublicProjects } from "@/hooks/usePublicProjects";
 import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
 import { TEAM_MEMBERS_KEY, fetchTeamMembers } from "@/hooks/useTeamMembers";
 import { TESTIMONIALS_KEY, fetchTestimonials } from "@/hooks/useTestimonials";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   // Fetched on the server before the HTML is sent, so the roster and the
   // photostrip are in the markup rather than requested after hydration.
+  head: () =>
+    pageHead({
+      title: "Christopher & Shannon Halliday | Architects",
+      description:
+        "Meet architects Christopher and Shannon Halliday and their Ocean City, New Jersey studio, focused on thoughtful residential architecture.",
+      path: "/about",
+    }),
+
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData({
