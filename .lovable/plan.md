@@ -1,42 +1,34 @@
-# Where the SSR migration stands, and what is left
+# Standardize project photography to 4:3
 
-## Short answer
+## Goal
 
-The migration itself is done. Phase 1 (framework swap) and Phase 2 (server-side data, page by page) both finished: home, projects, project detail, about, services, contact and journal all send real content in the first HTML response.
+Present the houses with substantially less cropping and a calmer, professional architectural-portfolio rhythm. All preview frames use one predictable 4:3 landscape ratio; opening a photograph shows its original aspect ratio without cropping.
 
-Chris's and Shannon's accounts are untouched. Both still exist as owners with their original credentials — the migration only changed how pages render, never the backend, users or roles. Nothing needs re-inviting.
+## Projects archive (`/projects`)
 
-## What is genuinely still open
+- Replace the current viewport-height card sizing with `aspect-ratio: 4 / 3` for every project card.
+- Keep the existing 1–2–3–2 row rhythm, filters, overlays, titles, hover treatment, and project links.
+- Keep `object-cover` inside the 4:3 frame so the wall remains aligned, but the wider shape will retain much more of each house than the current tall frames.
+- Update declared image dimensions and responsive `sizes` to match the real 4:3 slots, preserving sharp Retina delivery without downloading unnecessarily large files.
 
-### 1. Per-page SEO metadata is not server-rendered (the one real gap)
+## Individual project pages (`/projects/$slug`)
 
-Each page still sets its title and description through `SEO.tsx` (react-helmet-async), which only runs in the browser after JavaScript loads. So the page a crawler or a link preview sees carries the site-wide title from the root, not the page's own.
+- Change the main project hero from an 82vh crop to a responsive 4:3 frame, retaining the existing title and metadata overlay.
+- Replace the current mixed 56–72vh gallery rows with a consistent 4:3 gallery: one column on mobile and two columns on desktop, with the existing narrow separators and reveal motion.
+- Make the hero and every gallery photograph open the lightbox.
+- Include the hero in the same lightbox sequence as the gallery and preserve keyboard/arrow navigation.
+- Keep the lightbox’s current `object-contain` behavior so each opened photograph is shown at its original aspect ratio with no cropping, up to the existing high-resolution 3000px delivery.
+- Change the “Next project” photograph to 4:3 as well so every project preview follows the same standard.
 
-This is the exact problem SSR was meant to solve, and it is the last piece still running the old way. Fix: move each page's title/description/OG tags into the route's own `head()`, including the dynamic project and journal routes which take their title from the loaded record. Then remove the helmet layer.
+## Quality and scope
 
-### 2. Admin pages stay client-rendered — by design
+- No database, uploaded master, image assignment, ordering, alt text, SSR loader, filtering logic, or admin behavior changes.
+- No image re-encoding is needed; only presentation and responsive delivery declarations change.
+- Preserve the existing design system, typography, navigation, footer, gradients, and motion.
 
-Admin is behind a login; there is no SEO or first-paint case for server rendering it. It works as before. No action, just confirming it is intentional and not an oversight.
+## Verification
 
-### 3. Boot prefetch is now mostly redundant
-
-`prefetchBootData()` still fires after hydration but skips anything the server already sent, so on the converted pages it does nothing. Harmless today; worth deleting later once every page is confirmed loader-fed. Not a blocker.
-
-### 4. Launch items unrelated to SSR (still on the pre-existing checklist)
-
-- `noindex` in the root head and the blocking `robots.txt` remain in place for the preview domain — correct for now, must be lifted at go-live.
-- The email sending domain is still unverified, so inquiry notifications do not deliver.
-- The test blog post still needs removing before handover.
-
-## Recommended next step
-
-Do item 1 before you publish. It is a contained change — one `head()` per route — and publishing without it means the shared-link preview and search result for every page reads the same generic homepage title, which undercuts the reason for the migration.
-
-Items 3 and 4 can follow after you and the client have looked at the preview.
-
-## Suggested order
-
-1. Move page metadata into route `head()` and retire `SEO.tsx` / helmet.
-2. You review the preview yourself.
-3. Publish.
-4. Later, separately: remove `prefetchBootData`, then work the launch checklist.
+- Check `/projects` at desktop and mobile widths: every card is 4:3, row rhythm remains 1–2–3–2, text does not overlap, and houses are visibly less cropped.
+- Check at least two project pages containing differently shaped source photographs: hero/gallery frames remain aligned and no layout shifts occur.
+- Open the hero and several gallery images; confirm the lightbox shows the full original proportions and that mouse, keyboard, close, previous, and next controls work.
+- Confirm responsive image requests remain sharp on a 2x display and that SSR HTML, console, and build remain clean.
