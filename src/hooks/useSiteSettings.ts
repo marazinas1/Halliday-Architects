@@ -65,27 +65,31 @@ export type SiteSettings = {
 
 export const FALLBACK_LOGO = fallbackLogo;
 
+/** Standalone fetcher so route loaders can prime this query on the server. */
+export async function fetchSiteSettings(): Promise<SiteSettings> {
+  const { data, error } = await supabase
+    .from("site_settings")
+    .select(SETTINGS_COLUMNS)
+    .maybeSingle();
+  if (error) throw error;
+  const row = (data as SiteSettingsRow | null) ?? null;
+  return {
+    row,
+    siteName: row?.site_name?.trim() || FIRM.name,
+    logoUrl: row?.logo_path ? getBrandAssetUrl(row.logo_path) : fallbackLogo,
+    logoDarkUrl: row?.logo_dark_path ? getBrandAssetUrl(row.logo_dark_path) : null,
+    faviconUrl: row?.favicon_path ? getBrandAssetUrl(row.favicon_path) : null,
+    homepage: resolveHomepage(row),
+  };
+}
+
 export function useSiteSettings() {
   const query = useQuery({
     queryKey: SITE_SETTINGS_KEY,
     staleTime: 60_000,
-    queryFn: async (): Promise<SiteSettings> => {
-      const { data, error } = await supabase
-        .from("site_settings")
-        .select(SETTINGS_COLUMNS)
-        .maybeSingle();
-      if (error) throw error;
-      const row = (data as SiteSettingsRow | null) ?? null;
-      return {
-        row,
-        siteName: row?.site_name?.trim() || FIRM.name,
-        logoUrl: row?.logo_path ? getBrandAssetUrl(row.logo_path) : fallbackLogo,
-        logoDarkUrl: row?.logo_dark_path ? getBrandAssetUrl(row.logo_dark_path) : null,
-        faviconUrl: row?.favicon_path ? getBrandAssetUrl(row.favicon_path) : null,
-        homepage: resolveHomepage(row),
-      };
-    },
+    queryFn: fetchSiteSettings,
   });
+
 
   return {
     ...query,
