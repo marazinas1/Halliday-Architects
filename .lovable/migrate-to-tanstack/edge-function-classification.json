@@ -1,0 +1,6 @@
+{"functions": [
+  {"name": "track-view", "classification": "internal-only", "signal": "called from src/hooks/usePageTracking.ts via sendBeacon/fetch; custom 204 response", "outcome": "migrated"},
+  {"name": "manage-users", "classification": "internal-only", "signal": "supabase.functions.invoke in src/hooks/admin/useAdminUsers.ts; large email/admin-API surface, deferred to a follow-up turn", "outcome": "left"},
+  {"name": "notify-inquiry", "classification": "cron target", "signal": "called by leads_notify_on_insert DB trigger via net.http_post in supabase/migrations (2 files); URL is load-bearing", "outcome": "left"},
+  {"name": "sitemap", "classification": "unknown", "signal": "no internal call sites; static public/sitemap.xml is generated at build via scripts/generate-sitemap.ts", "outcome": "left"}
+]}
