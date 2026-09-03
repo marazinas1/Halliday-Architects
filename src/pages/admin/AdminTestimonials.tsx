@@ -84,7 +84,7 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
         </p>
       </div>
 
-      <form onSubmit={handleAdd} className="space-y-4 rounded border border-line bg-card p-5">
+      <form onSubmit={handleAdd} className="space-y-4 rounded-sm border border-line bg-card p-5">
         <p className="text-sm font-medium text-ink">Add a testimonial</p>
         <div>
           <Label htmlFor="quote" className="text-sm">
@@ -152,7 +152,7 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
               detailValue !== (item.author_detail ?? "");
 
             return (
-              <li key={item.id} className="rounded border border-line bg-card p-5">
+              <li key={item.id} className="rounded-sm border border-line bg-card p-5">
                 <Textarea
                   rows={3}
                   value={quoteValue}

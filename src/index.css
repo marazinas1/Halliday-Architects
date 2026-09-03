@@ -235,7 +235,7 @@
     opacity: 0.72;
   }
   .link-inline:focus-visible {
-    @apply outline-none ring-2 ring-ink ring-offset-4 ring-offset-background;
+    @apply outline-hidden ring-2 ring-ink ring-offset-4 ring-offset-background;
   }
   .link-inline-inverse {
     @apply border-paper text-paper;
@@ -336,7 +336,7 @@
     @apply w-full px-4 py-3 text-sm;
     @apply bg-transparent border border-border;
     @apply transition-all duration-200;
-    @apply focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink/20;
+    @apply focus:outline-hidden focus:border-ink focus:ring-1 focus:ring-ink/20;
     @apply placeholder:text-stone/50;
     border-radius: 4px;
   }

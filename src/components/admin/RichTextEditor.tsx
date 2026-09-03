@@ -71,7 +71,7 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
-        class: "post-body focus:outline-none px-5 py-5",
+        class: "post-body focus:outline-hidden px-5 py-5",
         style: `min-height:${minHeight}`,
       },
       handleDrop: () => false,

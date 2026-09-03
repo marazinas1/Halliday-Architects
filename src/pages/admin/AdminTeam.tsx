@@ -92,7 +92,7 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
               {rows.map((row, i) => (
                 <tr key={row.id} className="hover:bg-sand">
                   <td className="px-4 py-3">
-                    <div className="w-14 h-14 rounded bg-sand flex items-center justify-center overflow-hidden">
+                    <div className="w-14 h-14 rounded-sm bg-sand flex items-center justify-center overflow-hidden">
                       {row.photo_path ? (
                         <img
                           src={getTeamPhotoUrl(row.photo_path)}

@@ -18,7 +18,7 @@ export default function AuthCard({
         <h1 className="text-3xl text-ink">{title}</h1>
         <div className="mt-6 h-px w-12 bg-ink/20" />
       </div>
-      <div className="bg-card border border-line rounded p-8">{children}</div>
+      <div className="bg-card border border-line rounded-sm p-8">{children}</div>
     </div>
   );
 }

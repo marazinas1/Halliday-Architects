@@ -103,7 +103,7 @@ function HomeBody() {
         </div>
       </section>
 
-      <section className="mb-8 rounded border border-line bg-card p-5">
+      <section className="mb-8 rounded-sm border border-line bg-card p-5">
         <Label htmlFor="statement" className="text-sm font-medium text-ink">
           Practice statement
         </Label>

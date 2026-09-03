@@ -131,7 +131,7 @@ function AdminTeamFormInner() {
 
       <div className="bg-card border border-line rounded-lg p-6 space-y-5">
         <div className="flex items-start gap-6">
-          <div className="w-28 h-28 rounded bg-sand flex items-center justify-center overflow-hidden shrink-0">
+          <div className="w-28 h-28 rounded-sm bg-sand flex items-center justify-center overflow-hidden shrink-0">
             {photoPath ? (
               <img
                 src={getTeamPhotoUrl(photoPath)}

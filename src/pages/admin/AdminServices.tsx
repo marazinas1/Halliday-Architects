@@ -207,10 +207,10 @@ function ServicesBody() {
           {order.map((service, index) => (
             <li
               key={service.id}
-              className="flex flex-col gap-3 rounded border border-line bg-card p-3 sm:flex-row sm:items-center"
+              className="flex flex-col gap-3 rounded-sm border border-line bg-card p-3 sm:flex-row sm:items-center"
             >
               <div className="flex min-w-0 flex-1 items-center gap-3">
-                <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded bg-sand">
+                <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm bg-sand">
                   {(service.imageUrl ?? serviceFallback(index).url) ? (
                     <img
                       src={service.imageUrl ?? serviceFallback(index).url ?? ""}
@@ -312,7 +312,7 @@ function ServicesBody() {
               <div>
                 <Label>Photograph</Label>
                 <div className="mt-2 flex items-center gap-3">
-                  <div className="h-20 w-28 overflow-hidden rounded bg-sand">
+                  <div className="h-20 w-28 overflow-hidden rounded-sm bg-sand">
                     {editingUrl ? (
                       <img src={editingUrl} alt="" className="h-full w-full object-cover" />
                     ) : (

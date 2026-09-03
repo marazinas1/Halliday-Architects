@@ -73,7 +73,7 @@ export default function ImageDropzone({
           take(e.dataTransfer.files);
         }}
         className={cn(
-          "relative overflow-hidden border border-dashed transition-colors duration-300 outline-none",
+          "relative overflow-hidden border border-dashed transition-colors duration-300 outline-hidden",
           "focus-visible:ring-1 focus-visible:ring-ink/30",
           previewUrl ? "border-line" : "border-line/80 bg-sand/40",
           !uploading && "cursor-pointer hover:border-stone/60 hover:bg-sand/60",

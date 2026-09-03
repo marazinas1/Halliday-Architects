@@ -171,7 +171,7 @@ function AdminUsersInner() {
             </p>
             {result.password && (
               <div className="mt-3 flex items-center gap-2">
-                <code className="flex-1 truncate rounded bg-card px-3 py-2 text-xs">
+                <code className="flex-1 truncate rounded-sm bg-card px-3 py-2 text-xs">
                   {result.password}
                 </code>
                 <Button
@@ -186,7 +186,7 @@ function AdminUsersInner() {
             )}
             {result.actionLink && (
               <div className="mt-2 flex items-center gap-2">
-                <code className="flex-1 truncate rounded bg-card px-3 py-2 text-xs">
+                <code className="flex-1 truncate rounded-sm bg-card px-3 py-2 text-xs">
                   {result.actionLink}
                 </code>
                 <Button

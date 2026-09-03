@@ -83,7 +83,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                   placeholder="Search projects"
                   className="shrink-0"
                 />
-                <div className="min-h-0 flex-1 overflow-y-auto rounded border border-line">
+                <div className="min-h-0 flex-1 overflow-y-auto rounded-sm border border-line">
                   {projects.length === 0 ? (
                     <p className="p-3 text-xs text-stone">No project matches that.</p>
                   ) : (
@@ -163,7 +163,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                             onPick({ bucket: "project-images", path: img.storage_path, alt: img.alt })
                           }
                           className={cn(
-                            "group relative min-h-0 overflow-hidden rounded border text-left transition-all",
+                            "group relative min-h-0 overflow-hidden rounded-sm border text-left transition-all",
                             selected ? "border-ink ring-2 ring-ink" : "border-line hover:border-ink/40",
                           )}
                         >
@@ -217,7 +217,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                       disabled={busy}
                       onClick={() => onPick({ bucket: SITE_IMAGES_BUCKET, path: img.path, alt: null })}
                       className={cn(
-                        "group relative aspect-[4/3] overflow-hidden rounded border text-left transition-all",
+                        "group relative aspect-[4/3] overflow-hidden rounded-sm border text-left transition-all",
                         selected ? "border-ink ring-2 ring-ink" : "border-line hover:border-ink/40",
                       )}
                     >
@@ -259,7 +259,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
               if (file) onUpload(file);
             }}
             className={cn(
-              "rounded border border-dashed p-10 text-center transition-colors",
+              "rounded-sm border border-dashed p-10 text-center transition-colors",
               dragging ? "border-ink bg-sand" : "border-line",
             )}
           >

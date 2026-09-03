@@ -58,7 +58,7 @@ function ContactBody() {
         </Button>
       </div>
 
-      <section className="mb-8 rounded border border-line bg-card p-5">
+      <section className="mb-8 rounded-sm border border-line bg-card p-5">
         <p className="mb-4 text-sm font-medium text-ink">Wording</p>
 
         <Label htmlFor="heading" className="text-sm font-medium text-ink">
