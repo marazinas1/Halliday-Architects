@@ -214,11 +214,11 @@ const ProjectPage = () => {
                 {row.items.map((img, itemIndex) => {
                   const imageIndex = row.startIndex + itemIndex;
                   return (
-                    <Reveal key={img.id} delay={itemIndex * 150}>
+                    <Reveal key={img.id} delay={itemIndex * 150} className="h-full leading-none">
                       <button
                         type="button"
                         onClick={() => setLightbox(galleryOffset + imageIndex)}
-                        className="group aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink"
+                        className="group block aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink"
                         aria-label={`Open image ${imageIndex + 1}`}
                       >
                         <ResponsiveImage
