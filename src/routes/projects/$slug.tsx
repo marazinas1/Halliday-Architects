@@ -7,6 +7,7 @@ import {
   fetchPublicProject,
   publicProjectKey,
 } from "@/hooks/usePublicProjects";
+import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
 
 export const Route = createFileRoute("/projects/$slug")({
   // Fetched on the server before the HTML is sent. The keys here are the exact
@@ -28,9 +29,15 @@ export const Route = createFileRoute("/projects/$slug")({
         queryFn: fetchPageContent,
         staleTime: 60_000,
       }),
+      context.queryClient.ensureQueryData({
+        queryKey: SITE_SETTINGS_KEY,
+        queryFn: fetchSiteSettings,
+        staleTime: 60_000,
+      }),
     ]);
     if (!project) throw notFound();
   },
+
   component: ProjectPage,
   errorComponent: ({ error }) => (
     <div role="alert" className="mx-auto max-w-2xl px-6 py-32 text-center">
