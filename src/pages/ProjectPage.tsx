@@ -20,23 +20,6 @@ import { container } from "@/lib/rhythm";
 
 type Spec = { label?: string; value?: string };
 
-type GalleryRow = { kind: "full" | "pair" | "split"; items: GalleryItem[] };
-
-const buildGalleryRows = (items: GalleryItem[]): GalleryRow[] => {
-  const rows: GalleryRow[] = [];
-  const pattern: GalleryRow["kind"][] = ["full", "pair", "split", "full"];
-  let cursor = 0;
-  let patternIndex = 0;
-  while (cursor < items.length) {
-    const kind = pattern[patternIndex % pattern.length]!;
-    const count = kind === "full" ? 1 : Math.min(2, items.length - cursor);
-    rows.push({ kind: count === 1 ? "full" : kind, items: items.slice(cursor, cursor + count) });
-    cursor += count;
-    patternIndex += 1;
-  }
-  return rows;
-};
-
 const ProjectPage = () => {
   const { slug } = useParams();
   const routeLocation = useLocation();
@@ -51,6 +34,14 @@ const ProjectPage = () => {
   const isLoading = isPreview ? false : query.isLoading;
   const { data: order = [] } = useProjectOrder();
   const [lightbox, setLightbox] = useState<number | null>(null);
+
+  const lightboxItems = useMemo<GalleryItem[]>(() => {
+    if (!data) return [];
+    const heroItem = data.heroUrl
+      ? [{ id: `${data.project.id}-hero`, src: data.heroUrl, alt: data.heroAlt ?? data.project.title }]
+      : [];
+    return [...heroItem, ...data.gallery];
+  }, [data]);
 
   const next = useMemo(() => {
     if (isPreview || !slug || order.length < 2) return null;
@@ -113,32 +104,41 @@ const ProjectPage = () => {
     PROJECT_TYPE_LABELS[project.project_type as ProjectType] ?? null,
     project.year_completed ?? null,
   ].filter(Boolean);
-  const galleryRows = buildGalleryRows(gallery);
+  const galleryOffset = heroUrl ? 1 : 0;
 
   return (
     <main className={`min-h-screen bg-background${isPreview ? " pt-9" : ""}`}>
       {isPreview && <PreviewBanner label="project page" />}
       <GlobalNav />
 
-      <section className="relative h-[82svh] min-h-[540px] overflow-hidden bg-sand">
+      <section className="relative aspect-[4/3] w-full overflow-hidden bg-sand">
         {heroUrl && (
-          <ResponsiveImage
-            src={heroUrl}
-            alt={heroAlt ?? project.title}
-            width={1920}
-            height={1280}
-            priority
-            sizes="100vw"
-            quality={85}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <>
+            <ResponsiveImage
+              src={heroUrl}
+              alt={heroAlt ?? project.title}
+              width={2400}
+              height={1800}
+              priority
+              sizes="100vw"
+              quality={85}
+              maxWidth={3000}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <button
+              type="button"
+              onClick={() => setLightbox(0)}
+              className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-paper"
+              aria-label="Open hero image"
+            />
+          </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 pb-10 md:pb-14">
+        <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 pb-10 md:pb-14">
           <div className={container.wide}>
             <Link
               to="/projects"
-              className="link-inline link-inline-inverse group mb-7"
+              className="link-inline link-inline-inverse group pointer-events-auto mb-7"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to projects
@@ -189,43 +189,28 @@ const ProjectPage = () => {
       )}
 
       {gallery.length > 0 && (
-        <section className="flex flex-col gap-[2px]">
-          {galleryRows.map((row, rowIndex) => {
-            const startIndex = galleryRows.slice(0, rowIndex).reduce((total, item) => total + item.items.length, 0);
-            const rowClass = row.kind === "full"
-              ? "grid min-h-[460px] h-[72vh]"
-              : row.kind === "pair"
-                ? "grid gap-[2px] md:grid-cols-2 md:h-[56vh] md:min-h-[360px]"
-                : "grid gap-[2px] md:grid-cols-[1.45fr_1fr] md:h-[60vh] md:min-h-[380px]";
-            return (
-              <Reveal key={`${row.kind}-${rowIndex}`}>
-              <div className={rowClass}>
-
-                {row.items.map((img, itemIndex) => (
-                  <button
-                    key={img.id}
-                    type="button"
-                    onClick={() => setLightbox(startIndex + itemIndex)}
-                    className="group min-h-[320px] w-full overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink md:min-h-0"
-                    aria-label={`Open image ${startIndex + itemIndex + 1}`}
-                  >
-                    <ResponsiveImage
-                      src={img.src}
-                      alt={img.alt}
-                      width={1600}
-                      height={1200}
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      quality={82}
-                      maxWidth={2000}
-                      className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.02]"
-                    />
-                  </button>
-                ))}
-              </div>
-              </Reveal>
-
-            );
-          })}
+        <section className="grid grid-cols-1 gap-[2px] md:grid-cols-2">
+          {gallery.map((img, imageIndex) => (
+            <Reveal key={img.id} delay={(imageIndex % 2) * 150}>
+              <button
+                type="button"
+                onClick={() => setLightbox(galleryOffset + imageIndex)}
+                className="group aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-sand focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink"
+                aria-label={`Open image ${imageIndex + 1}`}
+              >
+                <ResponsiveImage
+                  src={img.src}
+                  alt={img.alt}
+                  width={1600}
+                  height={1200}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  quality={82}
+                  maxWidth={2000}
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-[1.02]"
+                />
+              </button>
+            </Reveal>
+          ))}
         </section>
       )}
 
@@ -262,13 +247,13 @@ const ProjectPage = () => {
       )}
 
       {next && (
-        <Link to={`/projects/${next.slug}`} className="group relative block h-[46vh] min-h-[320px] overflow-hidden bg-sand">
+        <Link to={`/projects/${next.slug}`} className="group relative block aspect-[4/3] overflow-hidden bg-sand">
           {next.card_image_url && (
             <ResponsiveImage
               src={next.card_image_url}
               alt={next.card_image_alt}
               width={1600}
-              height={900}
+              height={1200}
               sizes="100vw"
               quality={82}
               maxWidth={2400}
@@ -287,7 +272,7 @@ const ProjectPage = () => {
         </Link>
       )}
 
-      <Lightbox items={gallery} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
+      <Lightbox items={lightboxItems} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
 
       <GlobalFooter />
     </main>
