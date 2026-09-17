@@ -119,7 +119,7 @@ function AdminTeamFormInner() {
     });
 
   return (
-    <form onSubmit={submit} className="space-y-6 max-w-2xl">
+    <form onSubmit={submit} className="w-full space-y-6">
       <Link to="/admin/team" className="inline-flex items-center text-sm text-stone">
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to team

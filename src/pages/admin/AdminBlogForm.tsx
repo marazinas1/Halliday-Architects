@@ -198,7 +198,7 @@ function AdminBlogFormInner() {
   const coverUrl = coverPath ? getBlogImageUrl(coverPath) : null;
 
   return (
-    <form onSubmit={submit} className="space-y-8 max-w-4xl pb-12">
+    <form onSubmit={submit} className="w-full space-y-8 pb-12">
       <div className="sticky top-0 z-20 -mx-4 px-4 py-3 bg-paper/90 backdrop-blur border-b border-line flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <Button type="button" variant="ghost" size="sm" onClick={goBack}>

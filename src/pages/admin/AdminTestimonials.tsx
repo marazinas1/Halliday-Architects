@@ -76,7 +76,7 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
   };
 
   return (
-    <div className="max-w-3xl space-y-8">
+    <div className="w-full space-y-8">
       <div>
         <h2 className={embedded ? "text-lg font-medium text-ink" : "text-2xl text-ink"}>Testimonials</h2>
         <p className="mt-2 text-sm text-stone">

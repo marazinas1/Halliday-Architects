@@ -1,3 +1,4 @@
+import SettingsTabs from "@/components/admin/SettingsTabs";
 import { useEffect, useRef, useState } from "react";
 import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
@@ -263,7 +264,8 @@ function SettingsBody() {
   };
 
   return (
-    <div className="max-w-3xl">
+    <div className="w-full">
+      <SettingsTabs />
       <h1 className="text-2xl text-ink mb-1">Settings</h1>
       <p className="text-sm text-stone mb-8">
         Branding used across the public site, the admin and the sign-in screen.

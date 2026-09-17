@@ -45,7 +45,7 @@ function AdminTagsInner() {
   };
 
   return (
-    <div className="max-w-2xl space-y-8">
+    <div className="w-full space-y-8">
       <SectionTabs tabs={PROJECT_TABS} />
       <div>
         <h1 className="font-serif text-2xl font-light text-ink">Tags</h1>
