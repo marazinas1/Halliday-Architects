@@ -36,7 +36,7 @@ export type SiteSettingsRow = {
   email: string | null;
   instagram_url: string | null;
   office_hours: string | null;
-  maintenance_mode: boolean | null;
+  maintenance_mode: boolean;
   maintenance_message: string | null;
 };
 
