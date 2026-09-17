@@ -29,6 +29,13 @@
       "when": 1789645156281,
       "tag": "0003_notify_inquiry_route_and_role_aliases",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789645676020,
+      "tag": "0004_analytics_internal_traffic_filter_and_purge",
+      "breakpoints": true
     }
   ]
 }
