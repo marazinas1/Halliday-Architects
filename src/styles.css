@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap");
+/* Urbanist is loaded with a <link> in src/routes/__root.tsx — Tailwind v4
+   resolves @import from the filesystem, so a remote @import is not allowed. */
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
