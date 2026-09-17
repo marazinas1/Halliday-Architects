@@ -69,7 +69,16 @@ export const Route = createFileRoute("/api/track-view")({
 
       // Body arrives as text/plain (beacon-friendly).
       const raw = await request.text().catch(() => "");
-      let body: { path?: unknown; referrer?: unknown } | null = null;
+      let body:
+        | {
+            event?: unknown;
+            path?: unknown;
+            referrer?: unknown;
+            session?: unknown;
+            seconds?: unknown;
+            utm?: { source?: unknown; medium?: unknown; campaign?: unknown };
+          }
+        | null = null;
       try {
         body = raw ? JSON.parse(raw) : null;
       } catch {
@@ -80,47 +89,39 @@ export const Route = createFileRoute("/api/track-view")({
       const path = typeof body.path === "string" ? body.path.slice(0, 300) : "";
       if (!path.startsWith("/") || path.startsWith("/admin")) return noContent();
 
-      let referrerHost: string | null = null;
-      if (typeof body.referrer === "string" && body.referrer) {
-        try {
-          referrerHost = new URL(body.referrer).hostname.toLowerCase().slice(0, 200);
-        } catch {
-          referrerHost = null;
-        }
-      }
-      // Internal navigation is not an acquisition source.
-      if (
-        referrerHost &&
-        (referrerHost.includes("hallidayarchitects") || referrerHost.includes("ha.stagehomy"))
-      ) {
-        referrerHost = null;
-      }
+      const sessionIdValue =
+        typeof body.session === "string" ? body.session.slice(0, 64) : null;
 
-      const salt = process.env["ANALYTICS_SALT"] ?? "";
-      const ip =
-        request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-        request.headers.get("cf-connecting-ip") ??
-        "unknown";
-      const utcDay = new Date().toISOString().slice(0, 10);
-      // One-way, daily-rotating. The raw IP / UA are never persisted.
-      const visitorHash = await sha256(`${salt}|${utcDay}|${ip}|${userAgent}`);
-
-      const supabase = createClient(
+      const supabaseClient = createClient(
         process.env["SUPABASE_URL"] ?? "",
         process.env["SUPABASE_SERVICE_ROLE_KEY"] ?? "",
         { auth: { persistSession: false } },
       );
 
-      const { error } = await supabase.from("page_views").insert({
-        path,
-        referrer_host: referrerHost,
-        source: sourceFrom(referrerHost),
-        device: deviceFrom(userAgent),
-        country: request.headers.get("cf-ipcountry") ?? null,
-        visitor_hash: visitorHash,
-        day: utcDay,
-      });
-      if (error) console.error("track-view insert failed:", error.message);
+      // Second ping of a view: how long the visitor actually stayed.
+      if (body.event === "duration") {
+        const seconds = typeof body.seconds === "number" ? Math.min(Math.round(body.seconds), 3600) : 0;
+        if (!sessionIdValue || seconds < 1) return noContent();
+        const { data: existing } = await supabaseClient
+          .from("page_views")
+          .select("id")
+          .eq("session_id", sessionIdValue)
+          .eq("path", path)
+          .order("created_at", { ascending: false })
+          .limit(1);
+        const rowId = existing?.[0]?.id;
+        if (rowId) {
+          await supabaseClient
+            .from("page_views")
+            .update({ duration_seconds: seconds })
+            .eq("id", rowId);
+        }
+        return noContent();
+      }
+
+      const str = (value: unknown) =>
+        typeof value === "string" && value.trim() ? value.trim().slice(0, 120) : null;
+
     } catch (err) {
       console.error("track-view error:", err instanceof Error ? err.message : String(err));
     }
