@@ -21,7 +21,8 @@ const PAGE_TABS: SectionTab[] = [
 ];
 
 export default function SettingsTabs() {
-  const { role } = useAdminAuth();
-  const tabs = role && isOwnerRole(role) ? [OWNER_TAB, ...PAGE_TABS] : PAGE_TABS;
+  const auth = useAdminAuth();
+  const owner = auth.status === "authorized" && isOwnerRole(auth.role);
+  const tabs = owner ? [OWNER_TAB, ...PAGE_TABS] : PAGE_TABS;
   return <SectionTabs tabs={tabs} />;
 }
