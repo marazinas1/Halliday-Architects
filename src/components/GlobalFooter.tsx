@@ -3,12 +3,15 @@ import BrandLogo from "@/components/BrandLogo";
 import SocialLinks from "@/components/SocialLinks";
 import { ACCREDITATIONS, FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const colHeading = "text-[11px] font-medium uppercase tracking-[0.16em] text-paper/40 mb-5";
 
 const GlobalFooter = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { settings } = useSiteSettings();
+  const contact = settings.contact;
 
   const handleLogoClick = () => {
     if (location.pathname === "/") {
@@ -48,20 +51,20 @@ const GlobalFooter = () => {
           {/* Studio */}
           <div>
             <h4 className={colHeading}>Studio</h4>
-            <p className="text-sm text-paper/70 mb-1">{FIRM.address1}</p>
-            <p className="text-sm text-paper/70 mb-1">{FIRM.address2}</p>
-            <p className="text-sm text-paper/70">Monday – Friday</p>
+            <p className="text-sm text-paper/70 mb-1">{contact.addressLine1}</p>
+            <p className="text-sm text-paper/70 mb-1">{contact.addressLine2}</p>
+            <p className="text-sm text-paper/70">{contact.officeHours}</p>
           </div>
 
           {/* Contact */}
           <div>
             <h4 className={colHeading}>Contact</h4>
-            <a href={FIRM.phoneHref} className="block text-sm text-paper/70 hover:text-paper transition-colors mb-1">
-              {FIRM.phone}
+            <a href={contact.phoneHref} className="block text-sm text-paper/70 hover:text-paper transition-colors mb-1">
+              {contact.phone}
             </a>
-            <p className="text-sm text-paper/70 mb-1">Fax {FIRM.fax}</p>
-            <a href={`mailto:${FIRM.email}`} className="block text-sm text-paper/70 hover:text-paper transition-colors break-words">
-              {FIRM.email}
+            <p className="text-sm text-paper/70 mb-1">Fax {contact.fax}</p>
+            <a href={`mailto:${contact.email}`} className="block text-sm text-paper/70 hover:text-paper transition-colors break-words">
+              {contact.email}
             </a>
           </div>
 
@@ -69,9 +72,19 @@ const GlobalFooter = () => {
 
         <div className="border-t border-paper/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-paper/40">© 2026 {FIRM.name}. All rights reserved.</p>
-          <Link to="/admin" className="text-xs text-paper/30 hover:text-paper/60 transition-colors">
-            Admin
-          </Link>
+          <div className="flex items-center gap-5">
+            <a
+              href="https://www.deerva.com/?utm_source=hallidayarchitects.com&utm_medium=referral&utm_campaign=platform-badge"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-paper/30 hover:text-paper/60 transition-colors"
+            >
+              Platform developed and maintained by Deerva
+            </a>
+            <Link to="/admin" className="text-xs text-paper/30 hover:text-paper/60 transition-colors">
+              Admin
+            </Link>
+          </div>
         </div>
       </div>
       </div>

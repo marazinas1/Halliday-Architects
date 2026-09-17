@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "@/lib/router-compat";
-import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Mail, Wrench, Home, UserCog, LayoutDashboard, BarChart3, ArrowLeft, Image as ImageIcon } from "lucide-react";
+import { FolderOpen, Users, Settings, FileText, Inbox, LogOut, Mail, Wrench, Home, UserCog, LayoutDashboard, BarChart3, ArrowLeft, Image as ImageIcon, Quote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandLogo from "@/components/BrandLogo";
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +41,6 @@ const GROUPS: Group[] = [
       { title: "Dashboard", url: "/admin", icon: LayoutDashboard, access: "staff", match: (p) => p === "/admin" },
       { title: "Inquiries", url: "/admin/inquiries", icon: Inbox, access: "owner", match: (p) => p.startsWith("/admin/inquiries") },
       { title: "Analytics", url: "/admin/analytics", icon: BarChart3, access: "owner", match: (p) => p.startsWith("/admin/analytics") },
-      { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
     ],
   },
   {
@@ -61,7 +60,14 @@ const GROUPS: Group[] = [
         icon: Users,
         access: "staff",
         match: (p) =>
-          p.startsWith("/admin/about") || p.startsWith("/admin/team") || p.startsWith("/admin/testimonials"),
+          p.startsWith("/admin/about") || p.startsWith("/admin/team"),
+      },
+      {
+        title: "Testimonials",
+        url: "/admin/testimonials",
+        icon: Quote,
+        access: "staff",
+        match: (p) => p.startsWith("/admin/testimonials"),
       },
       { title: "Services", url: "/admin/services", icon: Wrench, access: "staff", match: (p) => p.startsWith("/admin/services") },
       { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
@@ -73,6 +79,7 @@ const GROUPS: Group[] = [
   {
     label: "Settings",
     items: [
+      { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
       { title: "Settings", url: "/admin/settings", icon: Settings, access: "owner", match: (p) => p.startsWith("/admin/settings") },
     ],
   },

@@ -15,6 +15,29 @@ import {
 } from "@/lib/admin/uploadBrandAsset";
 import { NotAnImageError } from "@/lib/images/optimizeImage";
 
+type ContactKey =
+  | "address_line1"
+  | "address_line2"
+  | "mailing_line1"
+  | "mailing_line2"
+  | "phone"
+  | "fax"
+  | "email"
+  | "instagram_url"
+  | "office_hours";
+
+const CONTACT_FIELDS: { key: ContactKey; label: string; placeholder: string }[] = [
+  { key: "address_line1", label: "Street address", placeholder: "728 West Avenue, Suite A" },
+  { key: "address_line2", label: "City, state and ZIP", placeholder: "Ocean City, NJ 08226" },
+  { key: "mailing_line1", label: "Mailing address", placeholder: "P.O. Box 186" },
+  { key: "mailing_line2", label: "Mailing city, state and ZIP", placeholder: "Ocean City, NJ 08226" },
+  { key: "phone", label: "Phone", placeholder: "609.957.6789" },
+  { key: "fax", label: "Fax", placeholder: "609.337.1758" },
+  { key: "email", label: "Email", placeholder: "chris@hallidayarchitects.com" },
+  { key: "instagram_url", label: "Instagram", placeholder: "https://www.instagram.com/…" },
+  { key: "office_hours", label: "Opening days", placeholder: "Monday – Friday" },
+];
+
 type SlotKey = "logo_path" | "logo_dark_path" | "favicon_path";
 
 const SLOTS: { key: SlotKey; kind: BrandAssetKind; label: string; help: string; dark?: boolean }[] = [
@@ -98,6 +121,17 @@ function SettingsBody() {
   const { toast } = useToast();
   const [siteName, setSiteName] = useState("");
   const [notifyEmails, setNotifyEmails] = useState("");
+  const [contact, setContact] = useState({
+    address_line1: "",
+    address_line2: "",
+    mailing_line1: "",
+    mailing_line2: "",
+    phone: "",
+    fax: "",
+    email: "",
+    instagram_url: "",
+    office_hours: "",
+  });
   const [busyKey, setBusyKey] = useState<SlotKey | null>(null);
   const [progress, setProgress] = useState(0);
 
@@ -105,6 +139,17 @@ function SettingsBody() {
     if (settings.row) {
       setSiteName(settings.row.site_name);
       setNotifyEmails(settings.row.inquiry_notify_emails ?? "");
+      setContact({
+        address_line1: settings.row.address_line1 ?? "",
+        address_line2: settings.row.address_line2 ?? "",
+        mailing_line1: settings.row.mailing_line1 ?? "",
+        mailing_line2: settings.row.mailing_line2 ?? "",
+        phone: settings.row.phone ?? "",
+        fax: settings.row.fax ?? "",
+        email: settings.row.email ?? "",
+        instagram_url: settings.row.instagram_url ?? "",
+        office_hours: settings.row.office_hours ?? "",
+      });
     } else if (!isLoading) {
       setSiteName(settings.siteName);
     }
@@ -164,6 +209,18 @@ function SettingsBody() {
     }
   };
 
+  const handleSaveContact = async () => {
+    try {
+      const patch = Object.fromEntries(
+        Object.entries(contact).map(([key, value]) => [key, value.trim() || null]),
+      );
+      await save.mutateAsync({ id: rowId, patch });
+      toast({ title: "Saved", description: "Business details updated." });
+    } catch (err) {
+      toast({ variant: "destructive", title: "Could not save", description: (err as Error).message });
+    }
+  };
+
   const handleSaveNotifyEmails = async () => {
     try {
       const value = notifyEmails.trim();
@@ -216,6 +273,32 @@ function SettingsBody() {
             Save
           </Button>
         </div>
+      </div>
+
+      <div className="border border-line rounded-sm bg-card p-5 mb-6">
+        <p className="text-sm font-medium text-ink">Business details</p>
+        <p className="text-xs text-stone mt-1">
+          Shown in the footer, the menu panel and on the contact page.
+        </p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {CONTACT_FIELDS.map((field) => (
+            <div key={field.key}>
+              <Label htmlFor={field.key} className="text-xs text-stone">
+                {field.label}
+              </Label>
+              <Input
+                id={field.key}
+                className="mt-1"
+                value={contact[field.key]}
+                placeholder={field.placeholder}
+                onChange={(e) => setContact((prev) => ({ ...prev, [field.key]: e.target.value }))}
+              />
+            </div>
+          ))}
+        </div>
+        <Button className="mt-4" onClick={handleSaveContact} disabled={save.isPending}>
+          Save
+        </Button>
       </div>
 
       <div className="grid gap-6">

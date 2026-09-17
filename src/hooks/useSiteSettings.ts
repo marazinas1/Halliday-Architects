@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getBrandAssetUrl } from "@/lib/admin/uploadBrandAsset";
-import { FIRM } from "@/content/firm";
+import { FIRM, SOCIAL_LINKS } from "@/content/firm";
 import fallbackLogo from "@/assets/halliday-logo.png";
 
 export const SITE_SETTINGS_KEY = ["site-settings"];
@@ -27,14 +27,37 @@ export type SiteSettingsRow = {
   intro_heading: string | null;
   intro_body: string | null;
   inquiry_notify_emails: string | null;
+  address_line1: string | null;
+  address_line2: string | null;
+  mailing_line1: string | null;
+  mailing_line2: string | null;
+  phone: string | null;
+  fax: string | null;
+  email: string | null;
+  instagram_url: string | null;
+  office_hours: string | null;
 };
 
 const SETTINGS_COLUMNS =
-  "id, site_name, logo_path, logo_dark_path, favicon_path, intro_heading, intro_body, inquiry_notify_emails";
+  "id, site_name, logo_path, logo_dark_path, favicon_path, intro_heading, intro_body, inquiry_notify_emails, address_line1, address_line2, mailing_line1, mailing_line2, phone, fax, email, instagram_url, office_hours";
 
 export type HomepageContent = {
   introHeading: string;
   introBody: string;
+};
+
+/** Business contacts. Editable in the admin; firm constants are the fallback. */
+export type ContactDetails = {
+  addressLine1: string;
+  addressLine2: string;
+  mailingLine1: string;
+  mailingLine2: string;
+  phone: string;
+  phoneHref: string;
+  fax: string;
+  email: string;
+  instagramUrl: string;
+  officeHours: string;
 };
 
 const trimmed = (value: string | null | undefined, fallback: string) =>
@@ -47,6 +70,23 @@ export function resolveHomepage(row: Partial<SiteSettingsRow> | null): HomepageC
     introBody: trimmed(row?.intro_body, HOMEPAGE_FALLBACKS.introBody),
   };
 }
+
+export function resolveContact(row: Partial<SiteSettingsRow> | null): ContactDetails {
+  const phone = trimmed(row?.phone, FIRM.phone);
+  return {
+    addressLine1: trimmed(row?.address_line1, FIRM.address1),
+    addressLine2: trimmed(row?.address_line2, FIRM.address2),
+    mailingLine1: trimmed(row?.mailing_line1, FIRM.mailing1),
+    mailingLine2: trimmed(row?.mailing_line2, FIRM.mailing2),
+    phone,
+    phoneHref: `tel:${phone.replace(/[^0-9+]/g, "")}`,
+    fax: trimmed(row?.fax, FIRM.fax),
+    email: trimmed(row?.email, FIRM.email),
+    instagramUrl: trimmed(row?.instagram_url, SOCIAL_LINKS[0].url),
+    officeHours: trimmed(row?.office_hours, "Monday – Friday"),
+  };
+}
+
 
 
 export type SiteSettings = {
@@ -61,6 +101,7 @@ export type SiteSettings = {
   logoDarkUrl: string | null;
   faviconUrl: string | null;
   homepage: HomepageContent;
+  contact: ContactDetails;
 };
 
 export const FALLBACK_LOGO = fallbackLogo;
@@ -80,6 +121,7 @@ export async function fetchSiteSettings(): Promise<SiteSettings> {
     logoDarkUrl: row?.logo_dark_path ? getBrandAssetUrl(row.logo_dark_path) : null,
     faviconUrl: row?.favicon_path ? getBrandAssetUrl(row.favicon_path) : null,
     homepage: resolveHomepage(row),
+    contact: resolveContact(row),
   };
 }
 
@@ -101,6 +143,7 @@ export function useSiteSettings() {
         logoDarkUrl: null,
         faviconUrl: null,
         homepage: resolveHomepage(null),
+        contact: resolveContact(null),
       },
   };
 }

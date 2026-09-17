@@ -4,21 +4,32 @@ import { supabase } from "@/integrations/supabase/client";
 export type AnalyticsRange = 7 | 30 | 90;
 
 export interface AnalyticsSummary {
-  totals: { views: number; visitors: number };
-  previous: { views: number; visitors: number };
+  totals: {
+    views: number;
+    visitors: number;
+    avg_duration: number;
+    sessions: number;
+    pages_per_visit: number;
+    bounce_rate: number;
+  };
+  previous: { views: number; visitors: number; avg_duration: number };
   daily: { day: string; views: number; visitors: number }[];
   top_pages: { path: string; views: number }[];
   sources: { source: string; views: number }[];
+  referrers: { referrer_host: string; views: number }[];
+  countries: { country: string; views: number }[];
   devices: { device: string; views: number }[];
   leads: number;
 }
 
 const EMPTY: AnalyticsSummary = {
-  totals: { views: 0, visitors: 0 },
-  previous: { views: 0, visitors: 0 },
+  totals: { views: 0, visitors: 0, avg_duration: 0, sessions: 0, pages_per_visit: 0, bounce_rate: 0 },
+  previous: { views: 0, visitors: 0, avg_duration: 0 },
   daily: [],
   top_pages: [],
   sources: [],
+  referrers: [],
+  countries: [],
   devices: [],
   leads: 0,
 };

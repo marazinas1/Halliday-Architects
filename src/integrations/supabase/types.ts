@@ -271,10 +271,15 @@ export type Database = {
           created_at: string
           day: string
           device: string
+          duration_seconds: number | null
           id: string
           path: string
           referrer_host: string | null
+          session_id: string | null
           source: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
           visitor_hash: string
         }
         Insert: {
@@ -282,10 +287,15 @@ export type Database = {
           created_at?: string
           day?: string
           device?: string
+          duration_seconds?: number | null
           id?: string
           path: string
           referrer_host?: string | null
+          session_id?: string | null
           source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           visitor_hash: string
         }
         Update: {
@@ -293,10 +303,15 @@ export type Database = {
           created_at?: string
           day?: string
           device?: string
+          duration_seconds?: number | null
           id?: string
           path?: string
           referrer_host?: string | null
+          session_id?: string | null
           source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           visitor_hash?: string
         }
         Relationships: []
@@ -482,40 +497,67 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          address_line1: string | null
+          address_line2: string | null
           created_at: string
+          email: string | null
           favicon_path: string | null
+          fax: string | null
           id: string
           inquiry_notify_emails: string | null
+          instagram_url: string | null
           intro_body: string | null
           intro_heading: string | null
           logo_dark_path: string | null
           logo_path: string | null
+          mailing_line1: string | null
+          mailing_line2: string | null
+          office_hours: string | null
+          phone: string | null
           singleton: boolean
           site_name: string
           updated_at: string
         }
         Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
           created_at?: string
+          email?: string | null
           favicon_path?: string | null
+          fax?: string | null
           id?: string
           inquiry_notify_emails?: string | null
+          instagram_url?: string | null
           intro_body?: string | null
           intro_heading?: string | null
           logo_dark_path?: string | null
           logo_path?: string | null
+          mailing_line1?: string | null
+          mailing_line2?: string | null
+          office_hours?: string | null
+          phone?: string | null
           singleton?: boolean
           site_name?: string
           updated_at?: string
         }
         Update: {
+          address_line1?: string | null
+          address_line2?: string | null
           created_at?: string
+          email?: string | null
           favicon_path?: string | null
+          fax?: string | null
           id?: string
           inquiry_notify_emails?: string | null
+          instagram_url?: string | null
           intro_body?: string | null
           intro_heading?: string | null
           logo_dark_path?: string | null
           logo_path?: string | null
+          mailing_line1?: string | null
+          mailing_line2?: string | null
+          office_hours?: string | null
+          phone?: string | null
           singleton?: boolean
           site_name?: string
           updated_at?: string
@@ -673,6 +715,7 @@ export type Database = {
           name: string
         }[]
       }
+      purge_old_page_views: { Args: never; Returns: undefined }
       set_project_cover: {
         Args: { _image_id: string; _project_id: string }
         Returns: undefined
