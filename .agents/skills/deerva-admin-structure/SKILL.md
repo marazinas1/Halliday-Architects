@@ -87,7 +87,35 @@ pradžios puslapio viršų, nuskrolinant net jei jau esi viršuje.
 
 Favicon tvarkomas tame pačiame tabe ir kildinamas iš to paties ženklo.
 
+## Sekcijų plotis — per visą plotį
+
+Admin panelė nėra skaitymo puslapis. Kiekvienas admin puslapis naudoja
+**visą turinio srities plotį** — jokių `max-w-3xl`, `max-w-4xl`,
+`mx-auto` salų, jokių siaurų stulpelių balto fono viduryje. Plotį riboja
+tik AdminShell `<main>` paddingas (`px-4 py-6 md:px-6 md:py-8`), ir jis
+vienodas visuose puslapiuose.
+
+Taisyklės:
+
+- Šakninis puslapio konteineris: `w-full` + vertikalus `space-y-*`.
+  Niekada `max-w-*` ant šakninio konteinerio.
+- Sąrašai, lentelės ir kortelių tinkleliai tempiasi per visą plotį;
+  tankis reguliuojamas stulpelių skaičiumi (`sm:grid-cols-2
+  lg:grid-cols-3`), ne konteinerio siaurinimu.
+- Formos taip pat per visą plotį, laukai dėliojami į gridą
+  (`grid gap-4 sm:grid-cols-2`), o ne vienas siauras stulpelis.
+- `max-w-*` leidžiamas tik trijose vietose: dialoguose/sheet'uose,
+  viešo puslapio peržiūros (preview) blokuose, kurie imituoja tikrą
+  svetainės plotį, ir pavieniame trumpame įvesties lauke, kuriam visas
+  plotis būtų absurdiškas.
+- Puslapių antraštė vienoda: `h1` + vieno sakinio paaiškinimas, tada
+  turinys. Antraštė lygiuojama su turiniu kairėje, niekada necentruota.
+
+Skirtingi pločiai skirtinguose puslapiuose yra broko požymis — perėjus
+tarp meniu punktų turinys neturi šokinėti.
+
 ## Overview puslapis
+
 
 Trys blokai, šia tvarka:
 
