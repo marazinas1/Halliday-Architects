@@ -15,6 +15,13 @@
       "when": 1789643412354,
       "tag": "0001_page_views_engagement_and_utm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789643817073,
+      "tag": "0002_site_settings_maintenance_mode",
+      "breakpoints": true
     }
   ]
 }
