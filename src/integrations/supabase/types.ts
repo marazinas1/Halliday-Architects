@@ -271,10 +271,15 @@ export type Database = {
           created_at: string
           day: string
           device: string
+          duration_seconds: number | null
           id: string
           path: string
           referrer_host: string | null
+          session_id: string | null
           source: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
           visitor_hash: string
         }
         Insert: {
@@ -282,10 +287,15 @@ export type Database = {
           created_at?: string
           day?: string
           device?: string
+          duration_seconds?: number | null
           id?: string
           path: string
           referrer_host?: string | null
+          session_id?: string | null
           source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           visitor_hash: string
         }
         Update: {
@@ -293,10 +303,15 @@ export type Database = {
           created_at?: string
           day?: string
           device?: string
+          duration_seconds?: number | null
           id?: string
           path?: string
           referrer_host?: string | null
+          session_id?: string | null
           source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           visitor_hash?: string
         }
         Relationships: []
@@ -700,6 +715,7 @@ export type Database = {
           name: string
         }[]
       }
+      purge_old_page_views: { Args: never; Returns: undefined }
       set_project_cover: {
         Args: { _image_id: string; _project_id: string }
         Returns: undefined
