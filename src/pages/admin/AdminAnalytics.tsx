@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Eye, Users, Inbox, TrendingUp, TrendingDown } from "lucide-react";
+import { Eye, Users, Inbox, TrendingUp, TrendingDown, Clock, LogOut, Layers } from "lucide-react";
 import AdminProtected from "@/components/admin/AdminProtected";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -144,6 +144,13 @@ function AnalyticsInner() {
   const totalVisitors = Number(data?.totals?.visitors ?? 0);
   const leads = Number(data?.leads ?? 0);
   const conversion = totalVisitors ? ((leads / totalVisitors) * 100).toFixed(1) : "0.0";
+  const avgDuration = Number(data?.totals?.avg_duration ?? 0);
+  const bounceRate = Number(data?.totals?.bounce_rate ?? 0);
+  const pagesPerVisit = Number(data?.totals?.pages_per_visit ?? 0);
+  const durationLabel =
+    avgDuration >= 60
+      ? `${Math.floor(avgDuration / 60)}m ${avgDuration % 60}s`
+      : `${avgDuration}s`;
 
   return (
     <div>
@@ -196,6 +203,17 @@ function AnalyticsInner() {
             />
             <StatCard label="Inquiries" value={leads} icon={Inbox} />
             <StatCard label="Conversion" value={conversion} suffix="%" icon={TrendingUp} />
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <StatCard
+              label="Average visit"
+              value={durationLabel}
+              change={percentChange(avgDuration, Number(data?.previous?.avg_duration ?? 0))}
+              icon={Clock}
+            />
+            <StatCard label="Bounce rate" value={bounceRate} suffix="%" icon={LogOut} />
+            <StatCard label="Pages per visit" value={pagesPerVisit} icon={Layers} />
           </div>
 
           <div className="mt-6 border border-line bg-card p-5">
@@ -272,6 +290,27 @@ function AnalyticsInner() {
               rows={(data?.devices ?? []).map((d) => ({
                 label: DEVICE_LABEL[d.device] ?? d.device,
                 views: Number(d.views),
+              }))}
+            />
+          </div>
+
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <BreakdownList
+              title="Countries"
+              total={totalViews}
+              empty="No countries recorded yet."
+              rows={(data?.countries ?? []).map((c) => ({
+                label: c.country,
+                views: Number(c.views),
+              }))}
+            />
+            <BreakdownList
+              title="Referring websites"
+              total={totalViews}
+              empty="No referring websites yet."
+              rows={(data?.referrers ?? []).map((r) => ({
+                label: r.referrer_host,
+                views: Number(r.views),
               }))}
             />
           </div>
