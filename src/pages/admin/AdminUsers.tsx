@@ -122,7 +122,7 @@ function AdminUsersInner() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-10">
+    <div className="w-full space-y-10">
       <header>
         <h1 className="text-3xl font-extrabold tracking-tight text-ink">Users</h1>
         <p className="mt-2 text-sm text-stone">

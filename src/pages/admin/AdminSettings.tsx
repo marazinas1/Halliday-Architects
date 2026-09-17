@@ -263,7 +263,7 @@ function SettingsBody() {
   };
 
   return (
-    <div className="max-w-3xl">
+    <div className="w-full">
       <h1 className="text-2xl text-ink mb-1">Settings</h1>
       <p className="text-sm text-stone mb-8">
         Branding used across the public site, the admin and the sign-in screen.

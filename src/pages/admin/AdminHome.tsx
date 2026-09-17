@@ -62,7 +62,7 @@ function HomeBody() {
   };
 
   return (
-    <div className="max-w-4xl">
+    <div className="w-full">
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h1 className="mb-1 text-2xl text-ink">Home</h1>

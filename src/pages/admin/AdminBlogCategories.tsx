@@ -71,7 +71,7 @@ function AdminBlogCategoriesInner() {
   };
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="w-full space-y-6">
       <div className="flex items-center gap-3">
         <Link to="/admin/blog">
           <Button variant="ghost" size="sm">
