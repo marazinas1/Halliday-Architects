@@ -714,6 +714,7 @@ export type Database = {
       is_admin: { Args: { _user_id?: string }; Returns: boolean }
       is_admin_staff: { Args: { _user_id?: string }; Returns: boolean }
       is_developer: { Args: { _user_id?: string }; Returns: boolean }
+      is_internal_referrer: { Args: { _host: string }; Returns: boolean }
       is_manager: { Args: { _user_id?: string }; Returns: boolean }
       is_owner: { Args: { _user_id?: string }; Returns: boolean }
       is_platform_owner: { Args: { _user_id?: string }; Returns: boolean }
