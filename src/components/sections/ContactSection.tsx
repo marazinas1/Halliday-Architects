@@ -226,20 +226,20 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
             </p>
             <div className="space-y-7">
               <InfoBlock label="Studio">
-                <span className="block">{FIRM.address1}</span>
-                <span className="block">{FIRM.address2}</span>
+                <span className="block">{contact.addressLine1}</span>
+                <span className="block">{contact.addressLine2}</span>
                 <span className="mt-1 block text-sm font-normal text-stone">
-                  Mail: {FIRM.mailing1}, {FIRM.mailing2}
+                  Mail: {contact.mailingLine1}, {contact.mailingLine2}
                 </span>
               </InfoBlock>
               <InfoBlock label="Direct">
-                <a href={`mailto:${FIRM.email}`} className="hover:opacity-70 transition-opacity">
-                  {FIRM.email}
+                <a href={`mailto:${contact.email}`} className="hover:opacity-70 transition-opacity">
+                  {contact.email}
                 </a>
-                <a href={FIRM.phoneHref} className="mt-1 block hover:opacity-70 transition-opacity">
-                  {FIRM.phone}
+                <a href={contact.phoneHref} className="mt-1 block hover:opacity-70 transition-opacity">
+                  {contact.phone}
                 </a>
-                <span className="mt-1 block text-sm text-stone">Fax {FIRM.fax}</span>
+                <span className="mt-1 block text-sm text-stone">Fax {contact.fax}</span>
               </InfoBlock>
               <InfoBlock label="Response time">Within one business day</InfoBlock>
             </div>

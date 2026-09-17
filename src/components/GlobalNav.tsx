@@ -116,9 +116,9 @@ const GlobalNav = ({ overlayPhotoWall = false }: { lightHero?: boolean; overlayP
           ))}
         </div>
         <div className="mt-auto pb-8 text-sm leading-relaxed text-stone">
-          <a href={FIRM.phoneHref} className="block hover:text-ink">{FIRM.phone}</a>
-          <a href={`mailto:${FIRM.email}`} className="block hover:text-ink">{FIRM.email}</a>
-          <p className="mt-3">{FIRM.address1}<br />{FIRM.address2}</p>
+          <a href={contact.phoneHref} className="block hover:text-ink">{contact.phone}</a>
+          <a href={`mailto:${contact.email}`} className="block hover:text-ink">{contact.email}</a>
+          <p className="mt-3">{contact.addressLine1}<br />{contact.addressLine2}</p>
         </div>
       </div>
     </header>
