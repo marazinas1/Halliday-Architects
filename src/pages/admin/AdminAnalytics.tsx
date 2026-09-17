@@ -25,12 +25,17 @@ const SOURCE_LABEL: Record<string, string> = {
   direct: "Direct",
   google: "Google",
   search: "Other search",
+  ai: "AI assistants",
   facebook: "Facebook",
   instagram: "Instagram",
   linkedin: "LinkedIn",
+  pinterest: "Pinterest",
+  youtube: "YouTube",
+  listing: "Listing & partner sites",
   houzz: "Houzz",
   other: "Other sites",
 };
+
 
 const DEVICE_LABEL: Record<string, string> = {
   desktop: "Desktop",
