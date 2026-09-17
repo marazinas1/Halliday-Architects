@@ -1,12 +1,18 @@
 import SectionTabs, { type SectionTab } from "@/components/admin/SectionTabs";
+import { isOwnerRole, useAdminAuth } from "@/hooks/admin/useAdminAuth";
 
 /**
- * Settings sub-navigation. First and last tabs are fixed (general business
- * settings and maintenance); the tabs between them mirror the public site,
- * one per editable page.
+ * Settings sub-navigation. The first tab holds the business details and
+ * branding; the tabs after it mirror the public site, one per editable page.
+ * Editors do not see the owner-only first tab.
  */
-export const SETTINGS_TABS: SectionTab[] = [
-  { label: "Business & appearance", to: "/admin/settings", match: (p) => p.startsWith("/admin/settings") },
+const OWNER_TAB: SectionTab = {
+  label: "Business & appearance",
+  to: "/admin/settings",
+  match: (p) => p.startsWith("/admin/settings"),
+};
+
+const PAGE_TABS: SectionTab[] = [
   { label: "Home texts", to: "/admin/home", match: (p) => p.startsWith("/admin/home") },
   { label: "About texts", to: "/admin/about", match: (p) => p.startsWith("/admin/about") || p.startsWith("/admin/team") },
   { label: "Services texts", to: "/admin/services", match: (p) => p.startsWith("/admin/services") },
@@ -15,5 +21,7 @@ export const SETTINGS_TABS: SectionTab[] = [
 ];
 
 export default function SettingsTabs() {
-  return <SectionTabs tabs={SETTINGS_TABS} />;
+  const { role } = useAdminAuth();
+  const tabs = role && isOwnerRole(role) ? [OWNER_TAB, ...PAGE_TABS] : PAGE_TABS;
+  return <SectionTabs tabs={tabs} />;
 }
