@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { Link } from "@/lib/router-compat";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import PageImageSlot from "@/components/admin/PageImageSlot";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -175,8 +175,8 @@ function HomeBody() {
 
 export default function AdminHome() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <HomeBody />
-    </AdminProtected>
+    </AdminSection>
   );
 }

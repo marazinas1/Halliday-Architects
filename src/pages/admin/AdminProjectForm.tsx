@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Trash2, Loader2, Eye } from "lucide-react";
 
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import StringListEditor from "@/components/admin/StringListEditor";
 import SpecsEditor, { SpecItem } from "@/components/admin/SpecsEditor";
 import ProjectImageManager from "@/components/admin/ProjectImageManager";
@@ -495,8 +495,8 @@ function AdminProjectFormInner() {
 
 export default function AdminProjectForm() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <AdminProjectFormInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { Eye, Users, Inbox, TrendingUp, TrendingDown, Clock, LogOut, Layers } from "lucide-react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useAnalytics, percentChange, type AnalyticsRange } from "@/hooks/admin/useAnalytics";
@@ -332,8 +332,8 @@ function AnalyticsInner() {
 
 export default function AdminAnalytics() {
   return (
-    <AdminProtected access="owner">
+    <AdminSection access="owner">
       <AnalyticsInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

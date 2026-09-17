@@ -512,6 +512,8 @@ export type Database = {
           logo_path: string | null
           mailing_line1: string | null
           mailing_line2: string | null
+          maintenance_message: string | null
+          maintenance_mode: boolean
           office_hours: string | null
           phone: string | null
           singleton: boolean
@@ -534,6 +536,8 @@ export type Database = {
           logo_path?: string | null
           mailing_line1?: string | null
           mailing_line2?: string | null
+          maintenance_message?: string | null
+          maintenance_mode?: boolean
           office_hours?: string | null
           phone?: string | null
           singleton?: boolean
@@ -556,6 +560,8 @@ export type Database = {
           logo_path?: string | null
           mailing_line1?: string | null
           mailing_line2?: string | null
+          maintenance_message?: string | null
+          maintenance_mode?: boolean
           office_hours?: string | null
           phone?: string | null
           singleton?: boolean

@@ -8,7 +8,7 @@ import {
   Plus,
   Users,
 } from "lucide-react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { isOwnerRole, useAdminAuth } from "@/hooks/admin/useAdminAuth";
 import { useUnreadInquiryCount } from "@/hooks/admin/useInquiries";
@@ -211,8 +211,8 @@ function AdminDashboardInner() {
 
 export default function AdminDashboard() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <AdminDashboardInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

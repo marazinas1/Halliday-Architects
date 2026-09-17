@@ -12,7 +12,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ScrollToTop from "@/components/ScrollToTop";
 import NotFound from "@/pages/NotFound";
-import { useFaviconFromSettings } from "@/hooks/useSiteSettings";
+import {
+  SITE_SETTINGS_KEY,
+  fetchSiteSettings,
+  useFaviconFromSettings,
+} from "@/hooks/useSiteSettings";
+import MaintenanceGate from "@/components/MaintenanceGate";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { prefetchBootData } from "@/lib/queryClient";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
@@ -41,6 +46,13 @@ const STRUCTURED_DATA = JSON.stringify({
 });
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Branding and the maintenance switch are needed by the very first render,
+  // so they are resolved on the server rather than fetched after hydration.
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData({
+      queryKey: SITE_SETTINGS_KEY,
+      queryFn: fetchSiteSettings,
+    }),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -140,7 +152,9 @@ function RootComponent() {
           <ScrollToTop />
           <AnalyticsTracker />
           <Suspense fallback={<PageFallback />}>
-            <Outlet />
+            <MaintenanceGate>
+              <Outlet />
+            </MaintenanceGate>
           </Suspense>
         </TooltipProvider>
     </QueryClientProvider>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUp, ExternalLink, ImageIcon, Loader2, Plus, Trash2, X } from "lucide-react";
 import { Link } from "@/lib/router-compat";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import ImagePicker, { type PickedImage } from "@/components/admin/ImagePicker";
 import StringListEditor from "@/components/admin/StringListEditor";
 import { Button } from "@/components/ui/button";
@@ -389,8 +389,8 @@ function ServicesBody() {
 
 export default function AdminServices() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <ServicesBody />
-    </AdminProtected>
+    </AdminSection>
   );
 }

@@ -36,10 +36,12 @@ export type SiteSettingsRow = {
   email: string | null;
   instagram_url: string | null;
   office_hours: string | null;
+  maintenance_mode: boolean;
+  maintenance_message: string | null;
 };
 
 const SETTINGS_COLUMNS =
-  "id, site_name, logo_path, logo_dark_path, favicon_path, intro_heading, intro_body, inquiry_notify_emails, address_line1, address_line2, mailing_line1, mailing_line2, phone, fax, email, instagram_url, office_hours";
+  "id, site_name, logo_path, logo_dark_path, favicon_path, intro_heading, intro_body, inquiry_notify_emails, address_line1, address_line2, mailing_line1, mailing_line2, phone, fax, email, instagram_url, office_hours, maintenance_mode, maintenance_message";
 
 export type HomepageContent = {
   introHeading: string;
@@ -68,6 +70,19 @@ export function resolveHomepage(row: Partial<SiteSettingsRow> | null): HomepageC
   return {
     introHeading: trimmed(row?.intro_heading, HOMEPAGE_FALLBACKS.introHeading),
     introBody: trimmed(row?.intro_body, HOMEPAGE_FALLBACKS.introBody),
+  };
+}
+
+export const MAINTENANCE_FALLBACK_MESSAGE =
+  "Our website is briefly offline for updates. Please check back shortly.";
+
+/** Holding-page state. Only visitors see it; signed-in staff never do. */
+export function resolveMaintenance(
+  row: Partial<SiteSettingsRow> | null,
+): { enabled: boolean; message: string } {
+  return {
+    enabled: Boolean(row?.maintenance_mode),
+    message: trimmed(row?.maintenance_message, MAINTENANCE_FALLBACK_MESSAGE),
   };
 }
 
@@ -102,6 +117,7 @@ export type SiteSettings = {
   faviconUrl: string | null;
   homepage: HomepageContent;
   contact: ContactDetails;
+  maintenance: { enabled: boolean; message: string };
 };
 
 export const FALLBACK_LOGO = fallbackLogo;
@@ -122,6 +138,7 @@ export async function fetchSiteSettings(): Promise<SiteSettings> {
     faviconUrl: row?.favicon_path ? getBrandAssetUrl(row.favicon_path) : null,
     homepage: resolveHomepage(row),
     contact: resolveContact(row),
+    maintenance: resolveMaintenance(row),
   };
 }
 
@@ -147,6 +164,7 @@ export function useSiteSettings() {
       // always re-derived rather than trusted blindly.
       homepage: data?.homepage ?? resolveHomepage(data?.row ?? null),
       contact: data?.contact ?? resolveContact(data?.row ?? null),
+      maintenance: data?.maintenance ?? resolveMaintenance(data?.row ?? null),
     } satisfies SiteSettings,
   };
 }

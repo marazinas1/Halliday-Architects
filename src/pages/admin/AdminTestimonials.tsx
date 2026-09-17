@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowDown, ArrowUp, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -292,8 +292,8 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
 
 export default function AdminTestimonials() {
   return (
-    <AdminProtected access="owner">
+    <AdminSection access="owner">
       <TestimonialsManager />
-    </AdminProtected>
+    </AdminSection>
   );
 }

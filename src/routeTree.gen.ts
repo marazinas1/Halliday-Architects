@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -64,6 +66,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -79,6 +86,11 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TeamRoute = TeamRouteImport.update({
   id: '/team',
   path: '/team',
@@ -90,84 +102,84 @@ const TestimonialsRoute = TestimonialsRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSplatRoute = AdminSplatRouteImport.update({
-  id: '/admin/$',
-  path: '/admin/$',
-  getParentRoute: () => rootRouteImport,
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminAboutRoute = AdminAboutRouteImport.update({
-  id: '/admin/about',
-  path: '/admin/about',
-  getParentRoute: () => rootRouteImport,
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
-  id: '/admin/analytics',
-  path: '/admin/analytics',
-  getParentRoute: () => rootRouteImport,
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminContactRoute = AdminContactRouteImport.update({
-  id: '/admin/contact',
-  path: '/admin/contact',
-  getParentRoute: () => rootRouteImport,
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminHomeRoute = AdminHomeRouteImport.update({
-  id: '/admin/home',
-  path: '/admin/home',
-  getParentRoute: () => rootRouteImport,
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminHomepageRoute = AdminHomepageRouteImport.update({
-  id: '/admin/homepage',
-  path: '/admin/homepage',
-  getParentRoute: () => rootRouteImport,
+  id: '/homepage',
+  path: '/homepage',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminInquiriesRoute = AdminInquiriesRouteImport.update({
-  id: '/admin/inquiries',
-  path: '/admin/inquiries',
-  getParentRoute: () => rootRouteImport,
+  id: '/inquiries',
+  path: '/inquiries',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPhotographsRoute = AdminPhotographsRouteImport.update({
-  id: '/admin/photographs',
-  path: '/admin/photographs',
-  getParentRoute: () => rootRouteImport,
+  id: '/photographs',
+  path: '/photographs',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminServicesRoute = AdminServicesRouteImport.update({
-  id: '/admin/services',
-  path: '/admin/services',
-  getParentRoute: () => rootRouteImport,
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSetPasswordRoute = AdminSetPasswordRouteImport.update({
-  id: '/admin/set-password',
-  path: '/admin/set-password',
-  getParentRoute: () => rootRouteImport,
+  id: '/set-password',
+  path: '/set-password',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/admin/settings',
-  path: '/admin/settings',
-  getParentRoute: () => rootRouteImport,
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminTagsRoute = AdminTagsRouteImport.update({
-  id: '/admin/tags',
-  path: '/admin/tags',
-  getParentRoute: () => rootRouteImport,
+  id: '/tags',
+  path: '/tags',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
-  id: '/admin/testimonials',
-  path: '/admin/testimonials',
-  getParentRoute: () => rootRouteImport,
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
-  id: '/admin/users',
-  path: '/admin/users',
-  getParentRoute: () => rootRouteImport,
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const ApiTrackViewRoute = ApiTrackViewRouteImport.update({
   id: '/api/track-view',
@@ -205,82 +217,84 @@ const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
-  id: '/admin/blog/',
-  path: '/admin/blog/',
-  getParentRoute: () => rootRouteImport,
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBlogCategoriesRoute = AdminBlogCategoriesRouteImport.update({
-  id: '/admin/blog/categories',
-  path: '/admin/blog/categories',
-  getParentRoute: () => rootRouteImport,
+  id: '/blog/categories',
+  path: '/blog/categories',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBlogNewRoute = AdminBlogNewRouteImport.update({
-  id: '/admin/blog/new',
-  path: '/admin/blog/new',
-  getParentRoute: () => rootRouteImport,
+  id: '/blog/new',
+  path: '/blog/new',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPreviewBlogRoute = AdminPreviewBlogRouteImport.update({
-  id: '/admin/preview/blog',
-  path: '/admin/preview/blog',
-  getParentRoute: () => rootRouteImport,
+  id: '/preview/blog',
+  path: '/preview/blog',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPreviewHomepageRoute = AdminPreviewHomepageRouteImport.update({
-  id: '/admin/preview/homepage',
-  path: '/admin/preview/homepage',
-  getParentRoute: () => rootRouteImport,
+  id: '/preview/homepage',
+  path: '/preview/homepage',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPreviewProjectRoute = AdminPreviewProjectRouteImport.update({
-  id: '/admin/preview/project',
-  path: '/admin/preview/project',
-  getParentRoute: () => rootRouteImport,
+  id: '/preview/project',
+  path: '/preview/project',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPreviewTeamRoute = AdminPreviewTeamRouteImport.update({
-  id: '/admin/preview/team',
-  path: '/admin/preview/team',
-  getParentRoute: () => rootRouteImport,
+  id: '/preview/team',
+  path: '/preview/team',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
-  id: '/admin/projects/',
-  path: '/admin/projects/',
-  getParentRoute: () => rootRouteImport,
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProjectsNewRoute = AdminProjectsNewRouteImport.update({
-  id: '/admin/projects/new',
-  path: '/admin/projects/new',
-  getParentRoute: () => rootRouteImport,
+  id: '/projects/new',
+  path: '/projects/new',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminTeamIndexRoute = AdminTeamIndexRouteImport.update({
-  id: '/admin/team/',
-  path: '/admin/team/',
-  getParentRoute: () => rootRouteImport,
+  id: '/team/',
+  path: '/team/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminTeamNewRoute = AdminTeamNewRouteImport.update({
-  id: '/admin/team/new',
-  path: '/admin/team/new',
-  getParentRoute: () => rootRouteImport,
+  id: '/team/new',
+  path: '/team/new',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBlogIdEditRoute = AdminBlogIdEditRouteImport.update({
-  id: '/admin/blog/$id/edit',
-  path: '/admin/blog/$id/edit',
-  getParentRoute: () => rootRouteImport,
+  id: '/blog/$id/edit',
+  path: '/blog/$id/edit',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProjectsIdEditRoute = AdminProjectsIdEditRouteImport.update({
-  id: '/admin/projects/$id/edit',
-  path: '/admin/projects/$id/edit',
-  getParentRoute: () => rootRouteImport,
+  id: '/projects/$id/edit',
+  path: '/projects/$id/edit',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminTeamIdEditRoute = AdminTeamIdEditRouteImport.update({
-  id: '/admin/team/$id/edit',
-  path: '/admin/team/$id/edit',
-  getParentRoute: () => rootRouteImport,
+  id: '/team/$id/edit',
+  path: '/team/$id/edit',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/$': typeof AdminSplatRoute
@@ -327,6 +341,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/$': typeof AdminSplatRoute
@@ -370,10 +385,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/$': typeof AdminSplatRoute
@@ -418,10 +435,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/about'
     | '/contact'
     | '/gallery'
     | '/services'
+    | '/sitemap.xml'
     | '/team'
     | '/testimonials'
     | '/admin/$'
@@ -468,6 +487,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/gallery'
     | '/services'
+    | '/sitemap.xml'
     | '/team'
     | '/testimonials'
     | '/admin/$'
@@ -510,10 +530,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/about'
     | '/contact'
     | '/gallery'
     | '/services'
+    | '/sitemap.xml'
     | '/team'
     | '/testimonials'
     | '/admin/$'
@@ -557,49 +579,21 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   GalleryRoute: typeof GalleryRoute
   ServicesRoute: typeof ServicesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeamRoute: typeof TeamRoute
   TestimonialsRoute: typeof TestimonialsRoute
-  AdminSplatRoute: typeof AdminSplatRoute
-  AdminAboutRoute: typeof AdminAboutRoute
-  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
-  AdminContactRoute: typeof AdminContactRoute
-  AdminHomeRoute: typeof AdminHomeRoute
-  AdminHomepageRoute: typeof AdminHomepageRoute
-  AdminInquiriesRoute: typeof AdminInquiriesRoute
-  AdminLoginRoute: typeof AdminLoginRoute
-  AdminPhotographsRoute: typeof AdminPhotographsRoute
-  AdminServicesRoute: typeof AdminServicesRoute
-  AdminSetPasswordRoute: typeof AdminSetPasswordRoute
-  AdminSettingsRoute: typeof AdminSettingsRoute
-  AdminTagsRoute: typeof AdminTagsRoute
-  AdminTestimonialsRoute: typeof AdminTestimonialsRoute
-  AdminUsersRoute: typeof AdminUsersRoute
   ApiTrackViewRoute: typeof ApiTrackViewRoute
   BlogSlugRoute: typeof BlogSlugRoute
   DevelopmentsSplatRoute: typeof DevelopmentsSplatRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
-  AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   DevelopmentsIndexRoute: typeof DevelopmentsIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
-  AdminBlogCategoriesRoute: typeof AdminBlogCategoriesRoute
-  AdminBlogNewRoute: typeof AdminBlogNewRoute
-  AdminPreviewBlogRoute: typeof AdminPreviewBlogRoute
-  AdminPreviewHomepageRoute: typeof AdminPreviewHomepageRoute
-  AdminPreviewProjectRoute: typeof AdminPreviewProjectRoute
-  AdminPreviewTeamRoute: typeof AdminPreviewTeamRoute
-  AdminProjectsNewRoute: typeof AdminProjectsNewRoute
-  AdminTeamNewRoute: typeof AdminTeamNewRoute
-  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
-  AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
-  AdminTeamIndexRoute: typeof AdminTeamIndexRoute
-  AdminBlogIdEditRoute: typeof AdminBlogIdEditRoute
-  AdminProjectsIdEditRoute: typeof AdminProjectsIdEditRoute
-  AdminTeamIdEditRoute: typeof AdminTeamIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -616,6 +610,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -639,6 +640,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/team': {
       id: '/team'
       path: '/team'
@@ -655,115 +663,115 @@ declare module '@tanstack/react-router' {
     }
     '/admin/': {
       id: '/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/$': {
       id: '/admin/$'
-      path: '/admin/$'
+      path: '/$'
       fullPath: '/admin/$'
       preLoaderRoute: typeof AdminSplatRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/about': {
       id: '/admin/about'
-      path: '/admin/about'
+      path: '/about'
       fullPath: '/admin/about'
       preLoaderRoute: typeof AdminAboutRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/analytics': {
       id: '/admin/analytics'
-      path: '/admin/analytics'
+      path: '/analytics'
       fullPath: '/admin/analytics'
       preLoaderRoute: typeof AdminAnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/contact': {
       id: '/admin/contact'
-      path: '/admin/contact'
+      path: '/contact'
       fullPath: '/admin/contact'
       preLoaderRoute: typeof AdminContactRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/home': {
       id: '/admin/home'
-      path: '/admin/home'
+      path: '/home'
       fullPath: '/admin/home'
       preLoaderRoute: typeof AdminHomeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/homepage': {
       id: '/admin/homepage'
-      path: '/admin/homepage'
+      path: '/homepage'
       fullPath: '/admin/homepage'
       preLoaderRoute: typeof AdminHomepageRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/inquiries': {
       id: '/admin/inquiries'
-      path: '/admin/inquiries'
+      path: '/inquiries'
       fullPath: '/admin/inquiries'
       preLoaderRoute: typeof AdminInquiriesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/login': {
       id: '/admin/login'
-      path: '/admin/login'
+      path: '/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/photographs': {
       id: '/admin/photographs'
-      path: '/admin/photographs'
+      path: '/photographs'
       fullPath: '/admin/photographs'
       preLoaderRoute: typeof AdminPhotographsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/services': {
       id: '/admin/services'
-      path: '/admin/services'
+      path: '/services'
       fullPath: '/admin/services'
       preLoaderRoute: typeof AdminServicesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/set-password': {
       id: '/admin/set-password'
-      path: '/admin/set-password'
+      path: '/set-password'
       fullPath: '/admin/set-password'
       preLoaderRoute: typeof AdminSetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/settings': {
       id: '/admin/settings'
-      path: '/admin/settings'
+      path: '/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/tags': {
       id: '/admin/tags'
-      path: '/admin/tags'
+      path: '/tags'
       fullPath: '/admin/tags'
       preLoaderRoute: typeof AdminTagsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/testimonials': {
       id: '/admin/testimonials'
-      path: '/admin/testimonials'
+      path: '/testimonials'
       fullPath: '/admin/testimonials'
       preLoaderRoute: typeof AdminTestimonialsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/users': {
       id: '/admin/users'
-      path: '/admin/users'
+      path: '/users'
       fullPath: '/admin/users'
       preLoaderRoute: typeof AdminUsersRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/api/track-view': {
       id: '/api/track-view'
@@ -816,113 +824,139 @@ declare module '@tanstack/react-router' {
     }
     '/admin/blog/': {
       id: '/admin/blog/'
-      path: '/admin/blog'
+      path: '/blog'
       fullPath: '/admin/blog/'
       preLoaderRoute: typeof AdminBlogIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/blog/categories': {
       id: '/admin/blog/categories'
-      path: '/admin/blog/categories'
+      path: '/blog/categories'
       fullPath: '/admin/blog/categories'
       preLoaderRoute: typeof AdminBlogCategoriesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/blog/new': {
       id: '/admin/blog/new'
-      path: '/admin/blog/new'
+      path: '/blog/new'
       fullPath: '/admin/blog/new'
       preLoaderRoute: typeof AdminBlogNewRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/preview/blog': {
       id: '/admin/preview/blog'
-      path: '/admin/preview/blog'
+      path: '/preview/blog'
       fullPath: '/admin/preview/blog'
       preLoaderRoute: typeof AdminPreviewBlogRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/preview/homepage': {
       id: '/admin/preview/homepage'
-      path: '/admin/preview/homepage'
+      path: '/preview/homepage'
       fullPath: '/admin/preview/homepage'
       preLoaderRoute: typeof AdminPreviewHomepageRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/preview/project': {
       id: '/admin/preview/project'
-      path: '/admin/preview/project'
+      path: '/preview/project'
       fullPath: '/admin/preview/project'
       preLoaderRoute: typeof AdminPreviewProjectRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/preview/team': {
       id: '/admin/preview/team'
-      path: '/admin/preview/team'
+      path: '/preview/team'
       fullPath: '/admin/preview/team'
       preLoaderRoute: typeof AdminPreviewTeamRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/projects/': {
       id: '/admin/projects/'
-      path: '/admin/projects'
+      path: '/projects'
       fullPath: '/admin/projects/'
       preLoaderRoute: typeof AdminProjectsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/projects/new': {
       id: '/admin/projects/new'
-      path: '/admin/projects/new'
+      path: '/projects/new'
       fullPath: '/admin/projects/new'
       preLoaderRoute: typeof AdminProjectsNewRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/team/': {
       id: '/admin/team/'
-      path: '/admin/team'
+      path: '/team'
       fullPath: '/admin/team/'
       preLoaderRoute: typeof AdminTeamIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/team/new': {
       id: '/admin/team/new'
-      path: '/admin/team/new'
+      path: '/team/new'
       fullPath: '/admin/team/new'
       preLoaderRoute: typeof AdminTeamNewRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/blog/$id/edit': {
       id: '/admin/blog/$id/edit'
-      path: '/admin/blog/$id/edit'
+      path: '/blog/$id/edit'
       fullPath: '/admin/blog/$id/edit'
       preLoaderRoute: typeof AdminBlogIdEditRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/projects/$id/edit': {
       id: '/admin/projects/$id/edit'
-      path: '/admin/projects/$id/edit'
+      path: '/projects/$id/edit'
       fullPath: '/admin/projects/$id/edit'
       preLoaderRoute: typeof AdminProjectsIdEditRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/team/$id/edit': {
       id: '/admin/team/$id/edit'
-      path: '/admin/team/$id/edit'
+      path: '/team/$id/edit'
       fullPath: '/admin/team/$id/edit'
       preLoaderRoute: typeof AdminTeamIdEditRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  ContactRoute: ContactRoute,
-  GalleryRoute: GalleryRoute,
-  ServicesRoute: ServicesRoute,
-  TeamRoute: TeamRoute,
-  TestimonialsRoute: TestimonialsRoute,
+interface AdminRouteRouteChildren {
+  AdminSplatRoute: typeof AdminSplatRoute
+  AdminAboutRoute: typeof AdminAboutRoute
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminContactRoute: typeof AdminContactRoute
+  AdminHomeRoute: typeof AdminHomeRoute
+  AdminHomepageRoute: typeof AdminHomepageRoute
+  AdminInquiriesRoute: typeof AdminInquiriesRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminPhotographsRoute: typeof AdminPhotographsRoute
+  AdminServicesRoute: typeof AdminServicesRoute
+  AdminSetPasswordRoute: typeof AdminSetPasswordRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminTagsRoute: typeof AdminTagsRoute
+  AdminTestimonialsRoute: typeof AdminTestimonialsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminBlogCategoriesRoute: typeof AdminBlogCategoriesRoute
+  AdminBlogNewRoute: typeof AdminBlogNewRoute
+  AdminPreviewBlogRoute: typeof AdminPreviewBlogRoute
+  AdminPreviewHomepageRoute: typeof AdminPreviewHomepageRoute
+  AdminPreviewProjectRoute: typeof AdminPreviewProjectRoute
+  AdminPreviewTeamRoute: typeof AdminPreviewTeamRoute
+  AdminProjectsNewRoute: typeof AdminProjectsNewRoute
+  AdminTeamNewRoute: typeof AdminTeamNewRoute
+  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
+  AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
+  AdminTeamIndexRoute: typeof AdminTeamIndexRoute
+  AdminBlogIdEditRoute: typeof AdminBlogIdEditRoute
+  AdminProjectsIdEditRoute: typeof AdminProjectsIdEditRoute
+  AdminTeamIdEditRoute: typeof AdminTeamIdEditRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminSplatRoute: AdminSplatRoute,
   AdminAboutRoute: AdminAboutRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
@@ -938,14 +972,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTagsRoute: AdminTagsRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminUsersRoute: AdminUsersRoute,
-  ApiTrackViewRoute: ApiTrackViewRoute,
-  BlogSlugRoute: BlogSlugRoute,
-  DevelopmentsSplatRoute: DevelopmentsSplatRoute,
-  ProjectsSlugRoute: ProjectsSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
-  BlogIndexRoute: BlogIndexRoute,
-  DevelopmentsIndexRoute: DevelopmentsIndexRoute,
-  ProjectsIndexRoute: ProjectsIndexRoute,
   AdminBlogCategoriesRoute: AdminBlogCategoriesRoute,
   AdminBlogNewRoute: AdminBlogNewRoute,
   AdminPreviewBlogRoute: AdminPreviewBlogRoute,
@@ -960,6 +987,29 @@ const rootRouteChildren: RootRouteChildren = {
   AdminBlogIdEditRoute: AdminBlogIdEditRoute,
   AdminProjectsIdEditRoute: AdminProjectsIdEditRoute,
   AdminTeamIdEditRoute: AdminTeamIdEditRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  GalleryRoute: GalleryRoute,
+  ServicesRoute: ServicesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TeamRoute: TeamRoute,
+  TestimonialsRoute: TestimonialsRoute,
+  ApiTrackViewRoute: ApiTrackViewRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  DevelopmentsSplatRoute: DevelopmentsSplatRoute,
+  ProjectsSlugRoute: ProjectsSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  DevelopmentsIndexRoute: DevelopmentsIndexRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Copy, Loader2, ShieldCheck, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -427,8 +427,8 @@ function AdminUsersInner() {
 
 export default function AdminUsers() {
   return (
-    <AdminProtected access="owner">
+    <AdminSection access="owner">
       <AdminUsersInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

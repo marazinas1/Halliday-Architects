@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Archive, ArchiveRestore, Mail, Phone, Search, MailOpen } from "lucide-react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -284,8 +284,8 @@ function InquiriesBody() {
 
 export default function AdminInquiries() {
   return (
-    <AdminProtected access="owner">
+    <AdminSection access="owner">
       <InquiriesBody />
-    </AdminProtected>
+    </AdminSection>
   );
 }
