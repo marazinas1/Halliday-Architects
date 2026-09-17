@@ -52,6 +52,7 @@ import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/
 import { Route as AdminProjectsNewRouteImport } from './routes/admin/projects/new'
 import { Route as AdminTeamIndexRouteImport } from './routes/admin/team/index'
 import { Route as AdminTeamNewRouteImport } from './routes/admin/team/new'
+import { Route as ApiPublicNotifyInquiryRouteImport } from './routes/api/public/notify-inquiry'
 import { Route as AdminBlogIdEditRouteImport } from './routes/admin/blog/$id.edit'
 import { Route as AdminProjectsIdEditRouteImport } from './routes/admin/projects/$id.edit'
 import { Route as AdminTeamIdEditRouteImport } from './routes/admin/team/$id.edit'
@@ -271,6 +272,11 @@ const AdminTeamNewRoute = AdminTeamNewRouteImport.update({
   path: '/team/new',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const ApiPublicNotifyInquiryRoute = ApiPublicNotifyInquiryRouteImport.update({
+  id: '/api/public/notify-inquiry',
+  path: '/api/public/notify-inquiry',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogIdEditRoute = AdminBlogIdEditRouteImport.update({
   id: '/blog/$id/edit',
   path: '/blog/$id/edit',
@@ -328,6 +334,7 @@ export interface FileRoutesByFullPath {
   '/admin/preview/team': typeof AdminPreviewTeamRoute
   '/admin/projects/new': typeof AdminProjectsNewRoute
   '/admin/team/new': typeof AdminTeamNewRoute
+  '/api/public/notify-inquiry': typeof ApiPublicNotifyInquiryRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/team/': typeof AdminTeamIndexRoute
@@ -375,6 +382,7 @@ export interface FileRoutesByTo {
   '/admin/preview/team': typeof AdminPreviewTeamRoute
   '/admin/projects/new': typeof AdminProjectsNewRoute
   '/admin/team/new': typeof AdminTeamNewRoute
+  '/api/public/notify-inquiry': typeof ApiPublicNotifyInquiryRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/team': typeof AdminTeamIndexRoute
@@ -424,6 +432,7 @@ export interface FileRoutesById {
   '/admin/preview/team': typeof AdminPreviewTeamRoute
   '/admin/projects/new': typeof AdminProjectsNewRoute
   '/admin/team/new': typeof AdminTeamNewRoute
+  '/api/public/notify-inquiry': typeof ApiPublicNotifyInquiryRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/team/': typeof AdminTeamIndexRoute
@@ -474,6 +483,7 @@ export interface FileRouteTypes {
     | '/admin/preview/team'
     | '/admin/projects/new'
     | '/admin/team/new'
+    | '/api/public/notify-inquiry'
     | '/admin/blog/'
     | '/admin/projects/'
     | '/admin/team/'
@@ -521,6 +531,7 @@ export interface FileRouteTypes {
     | '/admin/preview/team'
     | '/admin/projects/new'
     | '/admin/team/new'
+    | '/api/public/notify-inquiry'
     | '/admin/blog'
     | '/admin/projects'
     | '/admin/team'
@@ -569,6 +580,7 @@ export interface FileRouteTypes {
     | '/admin/preview/team'
     | '/admin/projects/new'
     | '/admin/team/new'
+    | '/api/public/notify-inquiry'
     | '/admin/blog/'
     | '/admin/projects/'
     | '/admin/team/'
@@ -594,6 +606,7 @@ export interface RootRouteChildren {
   BlogIndexRoute: typeof BlogIndexRoute
   DevelopmentsIndexRoute: typeof DevelopmentsIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ApiPublicNotifyInquiryRoute: typeof ApiPublicNotifyInquiryRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -899,6 +912,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTeamNewRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/api/public/notify-inquiry': {
+      id: '/api/public/notify-inquiry'
+      path: '/api/public/notify-inquiry'
+      fullPath: '/api/public/notify-inquiry'
+      preLoaderRoute: typeof ApiPublicNotifyInquiryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/$id/edit': {
       id: '/admin/blog/$id/edit'
       path: '/blog/$id/edit'
@@ -1010,6 +1030,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogIndexRoute: BlogIndexRoute,
   DevelopmentsIndexRoute: DevelopmentsIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ApiPublicNotifyInquiryRoute: ApiPublicNotifyInquiryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

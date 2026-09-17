@@ -176,7 +176,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                           <span className="absolute left-1.5 top-1.5 rounded-full bg-paper/90 px-2 py-0.5 text-[10px] font-medium text-stone">
                             {CATEGORY_LABEL[img.category] ?? img.category}
                           </span>
-                          <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-[11px] text-white opacity-0 transition-opacity group-hover:opacity-100">
+                          <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-2 text-[11px] text-paper opacity-0 transition-opacity group-hover:opacity-100">
                             <span className="line-clamp-2">{selected ? "Currently used" : img.alt}</span>
                           </span>
                           {selected && (

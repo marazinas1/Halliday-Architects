@@ -5,7 +5,7 @@ import { ACCREDITATIONS, FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-const colHeading = "text-[11px] font-medium uppercase tracking-[0.16em] text-paper/40 mb-5";
+const colHeading = "text-[11px] font-medium uppercase tracking-[0.16em] text-paper/70 mb-5";
 
 const GlobalFooter = () => {
   const location = useLocation();
@@ -50,7 +50,7 @@ const GlobalFooter = () => {
 
           {/* Studio */}
           <div>
-            <h4 className={colHeading}>Studio</h4>
+            <p className={colHeading}>Studio</p>
             <p className="text-sm text-paper/70 mb-1">{contact.addressLine1}</p>
             <p className="text-sm text-paper/70 mb-1">{contact.addressLine2}</p>
             <p className="text-sm text-paper/70">{contact.officeHours}</p>
@@ -58,7 +58,7 @@ const GlobalFooter = () => {
 
           {/* Contact */}
           <div>
-            <h4 className={colHeading}>Contact</h4>
+            <p className={colHeading}>Contact</p>
             <a href={contact.phoneHref} className="block text-sm text-paper/70 hover:text-paper transition-colors mb-1">
               {contact.phone}
             </a>
@@ -71,17 +71,17 @@ const GlobalFooter = () => {
         </div>
 
         <div className="border-t border-paper/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-paper/40">© 2026 {FIRM.name}. All rights reserved.</p>
+          <p className="text-xs text-paper/70">© 2026 {FIRM.name}. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <a
               href="https://www.deerva.com/?utm_source=hallidayarchitects.com&utm_medium=referral&utm_campaign=platform-badge"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-paper/30 hover:text-paper/60 transition-colors"
+              className="text-xs text-paper/70 hover:text-paper transition-colors"
             >
               Platform developed and maintained by Deerva
             </a>
-            <Link to="/admin" className="text-xs text-paper/30 hover:text-paper/60 transition-colors">
+            <Link to="/admin" className="text-xs text-paper/70 hover:text-paper transition-colors">
               Admin
             </Link>
           </div>

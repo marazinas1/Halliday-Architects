@@ -712,6 +712,9 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id?: string }; Returns: boolean }
+      is_admin_staff: { Args: { _user_id?: string }; Returns: boolean }
+      is_developer: { Args: { _user_id?: string }; Returns: boolean }
+      is_manager: { Args: { _user_id?: string }; Returns: boolean }
       is_owner: { Args: { _user_id?: string }; Returns: boolean }
       is_platform_owner: { Args: { _user_id?: string }; Returns: boolean }
       is_staff: { Args: { _user_id?: string }; Returns: boolean }
@@ -726,6 +729,7 @@ export type Database = {
         Args: { _image_id: string; _project_id: string }
         Returns: undefined
       }
+      verify_notify_secret: { Args: { _provided: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "platform_owner" | "owner" | "editor" | "developer"
