@@ -5,6 +5,7 @@ import BrandLogo from "@/components/BrandLogo";
 import { Button } from "@/components/ui/button";
 import { FIRM } from "@/content/firm";
 import { container } from "@/lib/rhythm";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -20,6 +21,8 @@ const NAV_LINKS = [
  * and becomes solid once that wall has passed. Internal pages are always solid.
  */
 const GlobalNav = ({ overlayPhotoWall = false }: { lightHero?: boolean; overlayPhotoWall?: boolean }) => {
+  const { settings } = useSiteSettings();
+  const contact = settings.contact;
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isOverPhoto, setIsOverPhoto] = useState(overlayPhotoWall);

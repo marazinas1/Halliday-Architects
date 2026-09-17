@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FIRM } from "@/content/firm";
 import { supabase } from "@/integrations/supabase/client";
 import { container, gap, sectionPadding } from "@/lib/rhythm";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 /** Project types offered by the practice. */
 const PROJECT_TYPES = [
@@ -199,7 +200,10 @@ const InfoBlock = ({
   </div>
 );
 
-const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
+const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => {
+  const { settings } = useSiteSettings();
+  const contact = settings.contact;
+  return (
   <section className={`${sectionPadding.base} border-t border-line bg-background`}>
     <div className={container.wide}>
       {withHeading && (
@@ -255,6 +259,7 @@ const ContactSection = ({ withHeading = true }: { withHeading?: boolean }) => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default ContactSection;
