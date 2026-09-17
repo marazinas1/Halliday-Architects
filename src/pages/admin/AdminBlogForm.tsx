@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "@/lib/router-compat";
 import { ArrowLeft, Check, ExternalLink, Eye, Loader2, Pencil } from "lucide-react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -398,8 +398,8 @@ function AdminBlogFormInner() {
 
 export default function AdminBlogForm() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <AdminBlogFormInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

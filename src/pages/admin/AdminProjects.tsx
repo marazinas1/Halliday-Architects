@@ -18,7 +18,7 @@ import { useProjects, type ProjectListItem } from "@/hooks/admin/useProjects";
 import { useUpdateProjectPublished } from "@/hooks/admin/useUpdateProjectPublished";
 import { useDeleteProject } from "@/hooks/admin/useDeleteProject";
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectType } from "@/hooks/usePublicProjects";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import SectionTabs from "@/components/admin/SectionTabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -546,8 +546,8 @@ function NoResults({ onClear }: { onClear: () => void }) {
 
 export default function AdminProjects() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <AdminProjectsInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

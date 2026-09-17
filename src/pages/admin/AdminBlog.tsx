@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { Plus, Pencil, Trash2, FileText, Tags } from "lucide-react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -153,8 +153,8 @@ function AdminBlogInner() {
 
 export default function AdminBlog() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <AdminBlogInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

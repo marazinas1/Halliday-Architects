@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -340,8 +340,8 @@ function SettingsBody() {
 
 export default function AdminSettings() {
   return (
-    <AdminProtected access="owner">
+    <AdminSection access="owner">
       <SettingsBody />
-    </AdminProtected>
+    </AdminSection>
   );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowDown, ArrowUp, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import SectionTabs from "@/components/admin/SectionTabs";
 import { PROJECT_TABS } from "@/pages/admin/AdminProjects";
 import { Button } from "@/components/ui/button";
@@ -135,8 +135,8 @@ function AdminTagsInner() {
 
 export default function AdminTags() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <AdminTagsInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { Plus, Pencil, Trash2, ArrowUp, ArrowDown, User } from "lucide-react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -187,8 +187,8 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
 
 export default function AdminTeam() {
   return (
-    <AdminProtected access="owner">
+    <AdminSection access="owner">
       <TeamManager />
-    </AdminProtected>
+    </AdminSection>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { Link } from "@/lib/router-compat";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import PageImageSlot from "@/components/admin/PageImageSlot";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -117,8 +117,8 @@ function ContactBody() {
 
 export default function AdminContact() {
   return (
-    <AdminProtected>
+    <AdminSection>
       <ContactBody />
-    </AdminProtected>
+    </AdminSection>
   );
 }

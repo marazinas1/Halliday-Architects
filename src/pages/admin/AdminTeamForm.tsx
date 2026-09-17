@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "@/lib/router-compat";
 import { ArrowLeft, Eye, User } from "lucide-react";
-import AdminProtected from "@/components/admin/AdminProtected";
+import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -218,8 +218,8 @@ function AdminTeamFormInner() {
 
 export default function AdminTeamForm() {
   return (
-    <AdminProtected access="owner">
+    <AdminSection access="owner">
       <AdminTeamFormInner />
-    </AdminProtected>
+    </AdminSection>
   );
 }
