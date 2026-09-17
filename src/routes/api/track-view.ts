@@ -35,18 +35,55 @@ function deviceFrom(ua: string): "mobile" | "tablet" | "desktop" {
   return "desktop";
 }
 
+/**
+ * Build, preview and local hosts are never real referrals. They are stored as
+ * direct traffic with no referring site, and their UTM tags are ignored.
+ */
+function isInternalHost(host: string): boolean {
+  const h = host.toLowerCase();
+  return (
+    h === "localhost" ||
+    h === "127.0.0.1" ||
+    h === "::1" ||
+    h === "lovable.dev" ||
+    h.endsWith(".lovable.dev") ||
+    h.endsWith(".lovable.app") ||
+    h.endsWith(".lovableproject.com") ||
+    h.endsWith(".webcontainer.io") ||
+    h.endsWith(".gitpod.io") ||
+    h.endsWith(".vercel.app") ||
+    h.endsWith(".netlify.app")
+  );
+}
+
 function sourceFrom(host: string | null): string {
   if (!host) return "direct";
   const h = host.toLowerCase();
+  if (isInternalHost(h)) return "direct";
+  if (h.includes("hallidayarchitects") || h.includes("ha.stagehomy")) return "direct";
+  // AI assistants
+  if (
+    h.includes("chatgpt") ||
+    h.includes("openai") ||
+    h.includes("perplexity") ||
+    h.includes("claude.ai") ||
+    h.includes("anthropic") ||
+    h.includes("gemini.google") ||
+    h.includes("copilot.microsoft")
+  )
+    return "ai";
   if (h.includes("google")) return "google";
-  if (h.includes("bing") || h.includes("duckduckgo") || h.includes("yahoo")) return "search";
+  if (h.includes("bing") || h.includes("duckduckgo") || h.includes("yahoo") || h.includes("ecosia"))
+    return "search";
   if (h.includes("facebook") || h.includes("fb.")) return "facebook";
   if (h.includes("instagram")) return "instagram";
   if (h.includes("linkedin")) return "linkedin";
-  if (h.includes("houzz")) return "houzz";
-  if (h.includes("hallidayarchitects") || h.includes("ha.stagehomy")) return "direct";
+  if (h.includes("pinterest")) return "pinterest";
+  if (h.includes("youtube")) return "youtube";
+  if (h.includes("houzz") || h.includes("architizer") || h.includes("dezeen")) return "listing";
   return "other";
 }
+
 
 async function sha256(value: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
