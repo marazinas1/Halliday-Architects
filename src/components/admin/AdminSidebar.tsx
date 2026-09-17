@@ -34,6 +34,16 @@ type Group = { label: string; items: Item[] };
  * Grouped so the panel reads like the site itself: the day-to-day workspace
  * first, then a page-by-page mirror of the public site, then configuration.
  */
+const SETTINGS_PATHS = [
+  "/admin/settings",
+  "/admin/home",
+  "/admin/about",
+  "/admin/team",
+  "/admin/services",
+  "/admin/contact",
+  "/admin/photographs",
+];
+
 const GROUPS: Group[] = [
   {
     label: "Workspace",
@@ -44,9 +54,8 @@ const GROUPS: Group[] = [
     ],
   },
   {
-    label: "The website",
+    label: "Manage",
     items: [
-      { title: "Home", url: "/admin/home", icon: Home, access: "staff", match: (p) => p.startsWith("/admin/home") },
       {
         title: "Projects",
         url: "/admin/projects",
@@ -54,14 +63,7 @@ const GROUPS: Group[] = [
         access: "staff",
         match: (p) => p.startsWith("/admin/projects") || p.startsWith("/admin/tags"),
       },
-      {
-        title: "About",
-        url: "/admin/about",
-        icon: Users,
-        access: "staff",
-        match: (p) =>
-          p.startsWith("/admin/about") || p.startsWith("/admin/team"),
-      },
+      { title: "Articles", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
       {
         title: "Testimonials",
         url: "/admin/testimonials",
@@ -69,21 +71,23 @@ const GROUPS: Group[] = [
         access: "staff",
         match: (p) => p.startsWith("/admin/testimonials"),
       },
-      { title: "Services", url: "/admin/services", icon: Wrench, access: "staff", match: (p) => p.startsWith("/admin/services") },
-      { title: "Blog", url: "/admin/blog", icon: FileText, access: "staff", match: (p) => p.startsWith("/admin/blog") },
-      { title: "Contact", url: "/admin/contact", icon: Mail, access: "staff", match: (p) => p.startsWith("/admin/contact") },
-      { title: "Photographs", url: "/admin/photographs", icon: ImageIcon, access: "staff", match: (p) => p.startsWith("/admin/photographs") },
-
     ],
   },
   {
     label: "Settings",
     items: [
       { title: "Users", url: "/admin/users", icon: UserCog, access: "owner", match: (p) => p.startsWith("/admin/users") },
-      { title: "Settings", url: "/admin/settings", icon: Settings, access: "owner", match: (p) => p.startsWith("/admin/settings") },
+      {
+        title: "Settings",
+        url: "/admin/settings",
+        icon: Settings,
+        access: "staff",
+        match: (p) => SETTINGS_PATHS.some((path) => p.startsWith(path)),
+      },
     ],
   },
 ];
+
 
 const ROLE_LABEL: Record<AdminRole, string> = {
   developer: "Developer",
