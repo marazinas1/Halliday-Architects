@@ -69,9 +69,19 @@ const GlobalFooter = () => {
 
         <div className="border-t border-paper/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-paper/40">© 2026 {FIRM.name}. All rights reserved.</p>
-          <Link to="/admin" className="text-xs text-paper/30 hover:text-paper/60 transition-colors">
-            Admin
-          </Link>
+          <div className="flex items-center gap-5">
+            <a
+              href="https://www.deerva.com/?utm_source=hallidayarchitects.com&utm_medium=referral&utm_campaign=platform-badge"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-paper/30 hover:text-paper/60 transition-colors"
+            >
+              Platform developed and maintained by Deerva
+            </a>
+            <Link to="/admin" className="text-xs text-paper/30 hover:text-paper/60 transition-colors">
+              Admin
+            </Link>
+          </div>
         </div>
       </div>
       </div>
