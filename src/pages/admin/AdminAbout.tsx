@@ -1,3 +1,4 @@
+import SettingsTabs from "@/components/admin/SettingsTabs";
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { Link, useSearchParams } from "@/lib/router-compat";
@@ -87,6 +88,7 @@ function AboutBody() {
 
   return (
     <div className="w-full">
+      <SettingsTabs />
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h1 className="mb-1 text-2xl text-ink">About</h1>
