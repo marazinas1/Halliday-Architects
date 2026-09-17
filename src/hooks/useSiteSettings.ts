@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getBrandAssetUrl } from "@/lib/admin/uploadBrandAsset";
-import { FIRM } from "@/content/firm";
+import { FIRM, SOCIAL_LINKS } from "@/content/firm";
 import fallbackLogo from "@/assets/halliday-logo.png";
 
 export const SITE_SETTINGS_KEY = ["site-settings"];
@@ -101,6 +101,7 @@ export type SiteSettings = {
   logoDarkUrl: string | null;
   faviconUrl: string | null;
   homepage: HomepageContent;
+  contact: ContactDetails;
 };
 
 export const FALLBACK_LOGO = fallbackLogo;
@@ -120,6 +121,7 @@ export async function fetchSiteSettings(): Promise<SiteSettings> {
     logoDarkUrl: row?.logo_dark_path ? getBrandAssetUrl(row.logo_dark_path) : null,
     faviconUrl: row?.favicon_path ? getBrandAssetUrl(row.favicon_path) : null,
     homepage: resolveHomepage(row),
+    contact: resolveContact(row),
   };
 }
 
@@ -141,6 +143,7 @@ export function useSiteSettings() {
         logoDarkUrl: null,
         faviconUrl: null,
         homepage: resolveHomepage(null),
+        contact: resolveContact(null),
       },
   };
 }
