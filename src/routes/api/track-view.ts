@@ -167,10 +167,13 @@ export const Route = createFileRoute("/api/track-view")({
           referrerHost = null;
         }
       }
-      // Internal navigation is not an acquisition source.
+      // Internal navigation, build/preview environments and local development
+      // are never referring websites.
       if (
         referrerHost &&
-        (referrerHost.includes("hallidayarchitects") || referrerHost.includes("ha.stagehomy"))
+        (isInternalHost(referrerHost) ||
+          referrerHost.includes("hallidayarchitects") ||
+          referrerHost.includes("ha.stagehomy"))
       ) {
         referrerHost = null;
       }
@@ -184,6 +187,13 @@ export const Route = createFileRoute("/api/track-view")({
       // One-way, daily-rotating. The raw IP / UA are never persisted.
       const visitorHash = await sha256(`${salt}|${utcDay}|${ip}|${userAgent}`);
 
+      // A UTM source pointing at a build or preview host is not a campaign.
+      const rawUtmSource = str(body.utm?.source);
+      const utmSource =
+        rawUtmSource && isInternalHost(rawUtmSource.replace(/^https?:\/\//, "").split("/")[0] ?? "")
+          ? null
+          : rawUtmSource;
+
       const { error } = await supabaseClient.from("page_views").insert({
         path,
         referrer_host: referrerHost,
@@ -193,10 +203,11 @@ export const Route = createFileRoute("/api/track-view")({
         visitor_hash: visitorHash,
         day: utcDay,
         session_id: sessionIdValue,
-        utm_source: str(body.utm?.source),
-        utm_medium: str(body.utm?.medium),
-        utm_campaign: str(body.utm?.campaign),
+        utm_source: utmSource,
+        utm_medium: utmSource ? str(body.utm?.medium) : null,
+        utm_campaign: utmSource ? str(body.utm?.campaign) : null,
       });
+
       if (error) console.error("track-view insert failed:", error.message);
 
 
