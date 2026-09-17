@@ -122,6 +122,47 @@ export const Route = createFileRoute("/api/track-view")({
       const str = (value: unknown) =>
         typeof value === "string" && value.trim() ? value.trim().slice(0, 120) : null;
 
+      let referrerHost: string | null = null;
+      if (typeof body.referrer === "string" && body.referrer) {
+        try {
+          referrerHost = new URL(body.referrer).hostname.toLowerCase().slice(0, 200);
+        } catch {
+          referrerHost = null;
+        }
+      }
+      // Internal navigation is not an acquisition source.
+      if (
+        referrerHost &&
+        (referrerHost.includes("hallidayarchitects") || referrerHost.includes("ha.stagehomy"))
+      ) {
+        referrerHost = null;
+      }
+
+      const salt = process.env["ANALYTICS_SALT"] ?? "";
+      const ip =
+        request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+        request.headers.get("cf-connecting-ip") ??
+        "unknown";
+      const utcDay = new Date().toISOString().slice(0, 10);
+      // One-way, daily-rotating. The raw IP / UA are never persisted.
+      const visitorHash = await sha256(`${salt}|${utcDay}|${ip}|${userAgent}`);
+
+      const { error } = await supabaseClient.from("page_views").insert({
+        path,
+        referrer_host: referrerHost,
+        source: sourceFrom(referrerHost),
+        device: deviceFrom(userAgent),
+        country: request.headers.get("cf-ipcountry") ?? null,
+        visitor_hash: visitorHash,
+        day: utcDay,
+        session_id: sessionIdValue,
+        utm_source: str(body.utm?.source),
+        utm_medium: str(body.utm?.medium),
+        utm_campaign: str(body.utm?.campaign),
+      });
+      if (error) console.error("track-view insert failed:", error.message);
+
+
     } catch (err) {
       console.error("track-view error:", err instanceof Error ? err.message : String(err));
     }
