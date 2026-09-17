@@ -7,7 +7,7 @@ import {
   publicPostKey,
 } from "@/hooks/usePublicBlog";
 import { SITE_SETTINGS_KEY, fetchSiteSettings } from "@/hooks/useSiteSettings";
-import { pageHead } from "@/lib/seo";
+import { articleJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/blog/$slug")({
   // Fetched on the server before the HTML is sent, using the exact same cache
@@ -39,19 +39,31 @@ export const Route = createFileRoute("/blog/$slug")({
             post.excerpt ?? `${post.title} — from the Halliday Architects journal.`,
           slug: post.slug,
           coverUrl: post.cover_url,
+          publishedAt: post.published_at,
         }
       : null;
   },
 
   head: ({ loaderData, params }) =>
     loaderData
-      ? pageHead({
-          title: `${loaderData.title} | Halliday Architects`,
-          description: loaderData.description,
-          path: `/blog/${loaderData.slug}`,
-          image: loaderData.coverUrl,
-          type: "article",
-        })
+      ? {
+          ...pageHead({
+            title: `${loaderData.title} | Halliday Architects`,
+            description: loaderData.description,
+            path: `/blog/${loaderData.slug}`,
+            image: loaderData.coverUrl,
+            type: "article",
+          }),
+          scripts: [
+            {
+              type: "application/ld+json",
+              children: articleJsonLd({
+                ...loaderData,
+                siteName: "Halliday Architects",
+              }),
+            },
+          ],
+        }
       : pageHead({
           title: "Post not found | Halliday Architects",
           description: "This journal entry could not be found.",

@@ -22,28 +22,17 @@ import { usePageTracking } from "@/hooks/usePageTracking";
 import { prefetchBootData } from "@/lib/queryClient";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
+import { FIRM } from "@/content/firm";
+import { firmJsonLd } from "@/lib/seo";
 
 // ported from main.tsx — fire the content queries as soon as the app is
 // interactive. This must NOT run before hydration: warming the cache mid-race
 // made the client's first render differ from the server's HTML, which React
 // reports as a hydration mismatch. RootComponent kicks it off in an effect.
 
-const STRUCTURED_DATA = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "ArchitecturalService",
-  name: "Halliday Architects",
-  telephone: "+1-609-957-6789",
-  faxNumber: "+1-609-337-1758",
-  email: "chris@hallidayarchitects.com",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "728 West Avenue, Suite A",
-    addressLocality: "Ocean City",
-    addressRegion: "NJ",
-    postalCode: "08226",
-    addressCountry: "US",
-  },
-});
+// Structured data is built per request from the admin-editable site
+// settings (see firmJsonLd), so phone/email changes in Settings reach the
+// schema without a code change.
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   // Branding and the maintenance switch are needed by the very first render,
@@ -53,7 +42,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       queryKey: SITE_SETTINGS_KEY,
       queryFn: fetchSiteSettings,
     }),
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
@@ -93,7 +82,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://cbngutdwgciuvpbzpmoy.supabase.co", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://cbngutdwgciuvpbzpmoy.supabase.co" },
     ],
-    scripts: [{ type: "application/ld+json", children: STRUCTURED_DATA }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: firmJsonLd({
+          siteName: loaderData?.siteName ?? FIRM.name,
+          phone: loaderData?.contact.phone ?? FIRM.phone,
+          fax: loaderData?.contact.fax ?? FIRM.fax,
+          email: loaderData?.contact.email ?? FIRM.email,
+          instagramUrl: loaderData?.contact.instagramUrl ?? "",
+          addressLine1: loaderData?.contact.addressLine1 ?? FIRM.address1,
+          addressLine2: loaderData?.contact.addressLine2 ?? FIRM.address2,
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

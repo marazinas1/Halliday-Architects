@@ -10,7 +10,7 @@
  * The site's own address. Setting VITE_SITE_URL is the single step needed when
  * the site moves to its own domain — nothing else here hard-codes a host.
  */
-const SITE = (
+export const SITE = (
   (import.meta.env["VITE_SITE_URL"] as string | undefined) || "https://ha.stagehomy.com"
 ).replace(/\/+$/, "");
 
@@ -60,4 +60,81 @@ export function pageHead({
     meta,
     links: [{ rel: "canonical", href: url }],
   };
+}
+
+/**
+ * Firm JSON-LD (Organization + ArchitecturalService). Contact fields come
+ * from the admin-editable site settings; the address lines are parsed back
+ * into schema fields, falling back to the firm constants.
+ */
+export interface FirmJsonLdInput {
+  siteName: string;
+  phone: string;
+  fax: string;
+  email: string;
+  instagramUrl: string;
+  addressLine1: string;
+  addressLine2: string;
+}
+
+export function firmJsonLd(firm: FirmJsonLdInput): string {
+  const match = firm.addressLine2.match(/^(.+?),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
+  const address = {
+    "@type": "PostalAddress",
+    streetAddress: firm.addressLine1,
+    addressLocality: match?.[1] ?? "Ocean City",
+    addressRegion: match?.[2] ?? "NJ",
+    postalCode: match?.[3] ?? "08226",
+    addressCountry: "US",
+  };
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE}/#organization`,
+        name: firm.siteName,
+        url: SITE,
+        email: firm.email,
+        sameAs: firm.instagramUrl ? [firm.instagramUrl] : [],
+      },
+      {
+        "@type": "ArchitecturalService",
+        "@id": `${SITE}/#practice`,
+        name: firm.siteName,
+        url: SITE,
+        telephone: firm.phone.replace(/[^0-9+]/g, ""),
+        faxNumber: firm.fax.replace(/[^0-9+]/g, ""),
+        email: firm.email,
+        address,
+        parentOrganization: { "@id": `${SITE}/#organization` },
+      },
+    ],
+  });
+}
+
+/** Article JSON-LD for a published journal entry. */
+export interface ArticleJsonLdInput {
+  title: string;
+  description: string;
+  slug: string;
+  coverUrl: string | null;
+  publishedAt: string | null;
+  siteName: string;
+}
+
+export function articleJsonLd(post: ArticleJsonLdInput): string {
+  const url = `${SITE}/blog/${post.slug}`;
+  const image = post.coverUrl?.startsWith("http") ? post.coverUrl : `${SITE}${post.coverUrl ?? ""}`;
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    mainEntityOfPage: url,
+    ...(post.coverUrl ? { image: [image] } : {}),
+    ...(post.publishedAt ? { datePublished: post.publishedAt } : {}),
+    author: { "@id": `${SITE}/#organization` },
+    publisher: { "@id": `${SITE}/#organization` },
+  });
 }
