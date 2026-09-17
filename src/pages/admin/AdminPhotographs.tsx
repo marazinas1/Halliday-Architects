@@ -1,3 +1,4 @@
+import SettingsTabs from "@/components/admin/SettingsTabs";
 import { Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -33,7 +34,8 @@ export default function AdminPhotographs() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
+      <SettingsTabs />
       <div>
         <h1 className="text-2xl font-semibold text-ink">Photographs</h1>
         <p className="mt-1 text-sm text-stone">
