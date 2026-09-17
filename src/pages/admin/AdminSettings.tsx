@@ -5,7 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { useSiteSettings, FALLBACK_LOGO } from "@/hooks/useSiteSettings";
+import { Switch } from "@/components/ui/switch";
+import {
+  useSiteSettings,
+  FALLBACK_LOGO,
+  MAINTENANCE_FALLBACK_MESSAGE,
+} from "@/hooks/useSiteSettings";
 import { useSaveSiteSettings } from "@/hooks/admin/useSiteSettingsAdmin";
 import {
   uploadBrandAsset,
