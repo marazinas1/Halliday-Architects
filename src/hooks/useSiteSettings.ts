@@ -133,18 +133,21 @@ export function useSiteSettings() {
   });
 
 
+  const data = query.data;
+
   return {
     ...query,
-    settings:
-      query.data ?? {
-        row: null,
-        siteName: FIRM.name,
-        logoUrl: fallbackLogo,
-        logoDarkUrl: null,
-        faviconUrl: null,
-        homepage: resolveHomepage(null),
-        contact: resolveContact(null),
-      },
+    settings: {
+      row: data?.row ?? null,
+      siteName: data?.siteName ?? FIRM.name,
+      logoUrl: data?.logoUrl ?? fallbackLogo,
+      logoDarkUrl: data?.logoDarkUrl ?? null,
+      faviconUrl: data?.faviconUrl ?? null,
+      // Cached payloads from an older build can lack these, so they are
+      // always re-derived rather than trusted blindly.
+      homepage: data?.homepage ?? resolveHomepage(data?.row ?? null),
+      contact: data?.contact ?? resolveContact(data?.row ?? null),
+    } satisfies SiteSettings,
   };
 }
 
