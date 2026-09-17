@@ -132,6 +132,7 @@ function SettingsBody() {
     instagram_url: "",
     office_hours: "",
   });
+  const [maintenance, setMaintenance] = useState({ enabled: false, message: "" });
   const [busyKey, setBusyKey] = useState<SlotKey | null>(null);
   const [progress, setProgress] = useState(0);
 
@@ -149,6 +150,10 @@ function SettingsBody() {
         email: settings.row.email ?? "",
         instagram_url: settings.row.instagram_url ?? "",
         office_hours: settings.row.office_hours ?? "",
+      });
+      setMaintenance({
+        enabled: Boolean(settings.row.maintenance_mode),
+        message: settings.row.maintenance_message ?? "",
       });
     } else if (!isLoading) {
       setSiteName(settings.siteName);
@@ -216,6 +221,27 @@ function SettingsBody() {
       );
       await save.mutateAsync({ id: rowId, patch });
       toast({ title: "Saved", description: "Business details updated." });
+    } catch (err) {
+      toast({ variant: "destructive", title: "Could not save", description: (err as Error).message });
+    }
+  };
+
+  const handleSaveMaintenance = async (next: { enabled: boolean; message: string }) => {
+    setMaintenance(next);
+    try {
+      await save.mutateAsync({
+        id: rowId,
+        patch: {
+          maintenance_mode: next.enabled,
+          maintenance_message: next.message.trim() || null,
+        },
+      });
+      toast({
+        title: next.enabled ? "Maintenance mode on" : "Maintenance mode off",
+        description: next.enabled
+          ? "Visitors now see a holding page. You and your team still see the site."
+          : "The site is open to visitors again.",
+      });
     } catch (err) {
       toast({ variant: "destructive", title: "Could not save", description: (err as Error).message });
     }
@@ -299,6 +325,45 @@ function SettingsBody() {
         <Button className="mt-4" onClick={handleSaveContact} disabled={save.isPending}>
           Save
         </Button>
+      </div>
+
+      <div className="border border-line rounded-sm bg-card p-5 mb-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-ink">Maintenance mode</p>
+            <p className="text-xs text-stone mt-1">
+              Visitors see a short holding page instead of the site. You and your team keep full
+              access while signed in.
+            </p>
+          </div>
+          <Switch
+            checked={maintenance.enabled}
+            onCheckedChange={(checked) =>
+              handleSaveMaintenance({ ...maintenance, enabled: checked })
+            }
+            aria-label="Maintenance mode"
+          />
+        </div>
+        <div className="mt-4">
+          <Label htmlFor="maintenance-message" className="text-xs text-stone">
+            Message shown to visitors
+          </Label>
+          <div className="flex gap-3 mt-1">
+            <Input
+              id="maintenance-message"
+              value={maintenance.message}
+              placeholder={MAINTENANCE_FALLBACK_MESSAGE}
+              onChange={(e) => setMaintenance((prev) => ({ ...prev, message: e.target.value }))}
+            />
+            <Button
+              variant="outline"
+              onClick={() => handleSaveMaintenance(maintenance)}
+              disabled={save.isPending}
+            >
+              Save
+            </Button>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-6">
