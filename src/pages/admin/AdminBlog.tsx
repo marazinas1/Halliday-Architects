@@ -77,6 +77,7 @@ function AdminBlogInner() {
           </Link>
         </div>
       ) : (
+        <>
         <div className="space-y-3 md:hidden">
           {rows.map((row) => (
             <article key={row.id} className="overflow-hidden rounded-lg border border-border bg-card">
@@ -179,6 +180,7 @@ function AdminBlogInner() {
             </tbody>
           </table>
         </div>
+        </>
       )}
 
       <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && setPendingDelete(null)}>

@@ -59,7 +59,7 @@ export default function SectionTabs({ tabs, value, onChange }: Props) {
   return (
     <>
       <div className="mb-6 sm:hidden">
-        <Select value={mobileValue} onValueChange={changeMobileTab}>
+        <Select {...(mobileValue ? { value: mobileValue } : {})} onValueChange={changeMobileTab}>
           <SelectTrigger className="h-11 w-full text-base" aria-label="Choose admin section">
             <SelectValue placeholder="Choose section" />
           </SelectTrigger>

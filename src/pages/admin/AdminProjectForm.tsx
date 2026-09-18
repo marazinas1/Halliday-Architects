@@ -475,7 +475,7 @@ function AdminProjectFormInner() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle className="text-base">Images</CardTitle>
         </CardHeader>

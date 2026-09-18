@@ -77,6 +77,7 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
           </Link>
         </div>
       ) : (
+        <>
         <div className="space-y-3 md:hidden">
           {rows.map((row, i) => (
             <article key={row.id} className="overflow-hidden rounded-lg border border-border bg-card">
@@ -211,6 +212,7 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
             </tbody>
           </table>
         </div>
+        </>
       )}
 
       <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && setPendingDelete(null)}>
