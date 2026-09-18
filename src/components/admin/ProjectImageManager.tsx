@@ -425,8 +425,8 @@ export default function ProjectImageManager({
       )}
 
       {selected.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border border-border bg-muted/60 px-3 py-2">
-          <span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
+         <div className="grid grid-cols-2 items-center gap-2 border border-border bg-muted/60 px-3 py-2 sm:flex sm:flex-wrap">
+           <span className="col-span-2 text-xs uppercase tracking-[0.14em] text-muted-foreground sm:col-span-1">
             {selected.length} selected
           </span>
           <Popover>
@@ -475,9 +475,9 @@ export default function ProjectImageManager({
               </div>
             </PopoverContent>
           </Popover>
-          <select
+           <select
             aria-label="Set category for selected"
-            className="h-8 border border-border bg-background px-2 text-xs"
+             className="h-9 min-w-0 border border-border bg-background px-2 text-xs"
             defaultValue=""
             onChange={async (e) => {
               const c = e.target.value as ImageCategory;

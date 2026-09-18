@@ -59,13 +59,13 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
     <div className="h-full min-h-0 overflow-hidden">
       <Tabs defaultValue="projects" className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)]">
 
-        <TabsList className="w-fit">
+        <TabsList className="grid w-full grid-cols-3 sm:w-fit">
           <TabsTrigger value="projects">From projects</TabsTrigger>
           <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
           <TabsTrigger value="upload">Upload</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="projects" className="mt-0 min-h-0 overflow-hidden pt-4 data-[state=active]:flex data-[state=active]:flex-col">
+        <TabsContent value="projects" className="mt-0 min-h-0 overflow-hidden pt-3 sm:pt-4 data-[state=active]:flex data-[state=active]:flex-col">
           {isLoading ? (
             <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -112,8 +112,8 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                 </div>
               </div>
 
-              <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-3">
-                <div className="space-y-2">
+              <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-2 sm:gap-3">
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
                   <div className="md:hidden">
                     <Select
                       {...(activeProject?.id ? { value: activeProject.id } : {})}
@@ -137,18 +137,17 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                       <p className="hidden text-sm font-medium text-foreground md:block">
                         {activeProject.title}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                       <p className="whitespace-nowrap text-xs text-muted-foreground">
                         {activeProject.images.length} photograph
                         {activeProject.images.length === 1 ? "" : "s"}
                         <span className="hidden md:inline"> — click one to use it</span>
-                        <span className="md:hidden"> — tap one to use it</span>
                       </p>
                     </div>
                   )}
                 </div>
 
                 <div className="min-h-0 overflow-y-auto overscroll-contain pr-1">
-                  <div className="grid grid-cols-2 auto-rows-[minmax(8rem,1fr)] gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+                   <div className="grid auto-rows-[minmax(7rem,1fr)] grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
 
 
                     {(activeProject?.images ?? []).map((img) => {

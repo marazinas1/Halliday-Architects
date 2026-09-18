@@ -200,8 +200,8 @@ function AdminTeamFormInner() {
         </div>
       </div>
 
-       <div className="grid gap-3 sm:flex">
-        <Button type="submit" disabled={save.isPending || uploading}>
+       <div className="grid grid-cols-2 gap-3 sm:flex">
+         <Button className="col-span-2 sm:col-span-1" type="submit" disabled={save.isPending || uploading}>
           {save.isPending ? "Saving…" : "Save"}
         </Button>
         <Button type="button" variant="outline" onClick={preview} disabled={uploading}>
