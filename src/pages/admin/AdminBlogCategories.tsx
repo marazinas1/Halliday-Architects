@@ -79,7 +79,12 @@ function AdminBlogCategoriesInner() {
             Blog
           </Button>
         </Link>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Categories</h1>
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Categories</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Groups used to file articles. Deleting a category never deletes its articles.
+          </p>
+        </div>
       </div>
 
       <div className="bg-card rounded-lg border border-border p-4 flex items-end gap-3">

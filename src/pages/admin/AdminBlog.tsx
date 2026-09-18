@@ -40,9 +40,14 @@ function AdminBlogInner() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Blog</h1>
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Articles</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Journal entries. A post only appears on the website once it is published.
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
           <Link to="/admin/blog/categories">
             <Button variant="outline">
               <Tags className="w-4 h-4 mr-2" />
@@ -110,9 +115,9 @@ function AdminBlogInner() {
                         onCheckedChange={(checked) => setPublished.mutate({ post: row, published: checked })}
                         aria-label={`Publish ${row.title}`}
                       />
-                      <span className={`text-xs ${row.published ? "text-foreground" : "text-muted-foreground"}`}>
-                        {row.published ? "Live" : "Draft"}
-                      </span>
+                      <Badge variant={row.published ? "success" : "muted"}>
+                        {row.published ? "Published" : "Draft"}
+                      </Badge>
                     </div>
                   </td>
                   <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
