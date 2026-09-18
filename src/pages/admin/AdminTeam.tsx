@@ -137,12 +137,18 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <Switch
-                      checked={row.published}
-                      onCheckedChange={(checked) =>
-                        updatePublished.mutate({ id: row.id, published: checked })
-                      }
-                    />
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={row.published}
+                        onCheckedChange={(checked) =>
+                          updatePublished.mutate({ id: row.id, published: checked })
+                        }
+                        aria-label={`Show ${row.name} on the site`}
+                      />
+                      <Badge variant={row.published ? "success" : "muted"}>
+                        {row.published ? "Shown" : "Hidden"}
+                      </Badge>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
                     <Link to={`/admin/team/${row.id}/edit`} className="inline-block">

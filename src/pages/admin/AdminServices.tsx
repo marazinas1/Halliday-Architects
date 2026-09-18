@@ -231,11 +231,17 @@ function ServicesBody() {
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-foreground sm:truncate">{service.title}</p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {service.published ? "Published" : "Hidden"}
-                    {service.includes.length ? ` · ${service.includes.join(" · ")}` : ""}
-                  </p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-sm font-medium text-foreground sm:truncate">{service.title}</p>
+                    <Badge variant={service.published ? "success" : "muted"}>
+                      {service.published ? "Published" : "Hidden"}
+                    </Badge>
+                  </div>
+                  {service.includes.length > 0 && (
+                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                      {service.includes.join(" · ")}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="flex shrink-0 items-center justify-end gap-1 border-t border-border pt-2 sm:border-t-0 sm:pt-0">
