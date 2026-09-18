@@ -6,6 +6,7 @@ import AdminSection from "@/components/admin/AdminSection";
 import ImagePicker, { type PickedImage } from "@/components/admin/ImagePicker";
 import StringListEditor from "@/components/admin/StringListEditor";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
