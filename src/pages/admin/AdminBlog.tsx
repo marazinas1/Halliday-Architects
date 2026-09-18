@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2, FileText, Tags } from "lucide-react";
 import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
