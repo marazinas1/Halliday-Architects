@@ -72,7 +72,7 @@ function AdminBlogCategoriesInner() {
 
   return (
     <div className="w-full space-y-6">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
         <Link to="/admin/blog">
           <Button variant="ghost" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -87,7 +87,7 @@ function AdminBlogCategoriesInner() {
         </div>
       </div>
 
-      <div className="bg-card rounded-lg border border-border p-4 flex items-end gap-3">
+      <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 sm:flex-row sm:items-end">
         <div className="flex-1">
           <label className="text-xs uppercase tracking-wider text-muted-foreground" htmlFor="new-category">
             New category
@@ -101,7 +101,7 @@ function AdminBlogCategoriesInner() {
             className="mt-1"
           />
         </div>
-        <Button onClick={add} disabled={save.isPending || !newName.trim()}>
+        <Button className="w-full sm:w-auto" onClick={add} disabled={save.isPending || !newName.trim()}>
           <Plus className="w-4 h-4 mr-2" />
           Add
         </Button>
@@ -116,8 +116,8 @@ function AdminBlogCategoriesInner() {
       ) : (
         <div className="bg-card rounded-lg border border-border divide-y divide-border">
           {rows.map((row, i) => (
-            <div key={row.id} className="flex items-center gap-3 px-4 py-3">
-              <div className="flex items-center gap-1">
+            <div key={row.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:flex">
+              <div className="order-2 flex items-center gap-1 sm:order-none">
                 <Button variant="outline" size="icon" className="h-7 w-7" disabled={i === 0 || reorder.isPending} onClick={() => move(i, -1)} aria-label={`Move ${row.name} up`}>
                   <ArrowUp className="w-3.5 h-3.5" />
                 </Button>
@@ -138,15 +138,15 @@ function AdminBlogCategoriesInner() {
                 </>
               ) : (
                 <>
-                  <div className="flex-1">
+                  <div className="order-1 min-w-0 sm:flex-1">
                     <div className="text-foreground font-medium">{row.name}</div>
                     <div className="text-xs text-muted-foreground">{row.slug}</div>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => { setEditingId(row.id); setEditingName(row.name); }}>
+                   <Button className="order-3 sm:order-none" variant="outline" size="sm" onClick={() => { setEditingId(row.id); setEditingName(row.name); }}>
                     <Pencil className="w-4 h-4 mr-2" />
                     Rename
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => setPendingDelete(row)} aria-label={`Delete ${row.name}`}>
+                   <Button className="order-4 sm:order-none" variant="outline" size="sm" onClick={() => setPendingDelete(row)} aria-label={`Delete ${row.name}`}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </>

@@ -56,7 +56,7 @@ function AdminTagsInner() {
       </div>
 
       <form
-        className="flex gap-2"
+         className="flex flex-col gap-2 sm:flex-row"
         onSubmit={(e) => {
           e.preventDefault();
           create.mutate(name, {
@@ -83,7 +83,7 @@ function AdminTagsInner() {
       ) : (
         <ul className="divide-y divide-border border border-border">
           {tags.map((tag, i) => (
-            <li key={tag.id} className="flex items-center gap-2 px-3 py-2">
+             <li key={tag.id} className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] items-center gap-1.5 px-3 py-2 sm:gap-2">
               <Input
                 className="h-9 flex-1"
                 value={edits[tag.id] ?? tag.name}
