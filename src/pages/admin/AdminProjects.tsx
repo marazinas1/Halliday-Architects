@@ -12,6 +12,7 @@ import {
   List as ListIcon,
   MapPin,
   CalendarDays,
+  SlidersHorizontal,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useProjects, type ProjectListItem } from "@/hooks/admin/useProjects";
@@ -57,6 +58,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 export const PROJECT_TABS = [
@@ -86,6 +88,7 @@ function AdminProjectsInner() {
     initialStatus === "draft" || initialStatus === "published" ? initialStatus : "all",
   );
   const [sort, setSort] = useState<SortKey>("default");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [toDelete, setToDelete] = useState<{ id: string; title: string } | null>(null);
 
   useEffect(() => {
@@ -129,6 +132,7 @@ function AdminProjectsInner() {
     setTypeFilter("all");
     setStatusFilter("all");
   };
+  const activeFilterCount = Number(typeFilter !== "all") + Number(statusFilter !== "all") + Number(sort !== "default");
 
   const copyLink = async (slug: string) => {
     try {
@@ -163,7 +167,7 @@ function AdminProjectsInner() {
   return (
     <div className="space-y-6">
       <SectionTabs tabs={PROJECT_TABS} />
-      <header className="flex flex-col gap-3 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-4">
+      <header className="flex flex-col gap-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground truncate">Projects</h1>
           <p className="text-sm text-muted-foreground">
@@ -174,7 +178,7 @@ function AdminProjectsInner() {
             </span>
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link to="/admin/projects/new">
             <Plus className="h-4 w-4" />
             <span className="hidden sm:inline">Add new project</span>
@@ -192,8 +196,37 @@ function AdminProjectsInner() {
             className="pl-9"
           />
         </div>
+        <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
+          <SheetTrigger asChild>
+            <Button type="button" variant="outline" className="w-full justify-between sm:hidden">
+              <span className="inline-flex items-center gap-2"><SlidersHorizontal className="h-4 w-4" /> Filters</span>
+              {activeFilterCount > 0 && <Badge variant="secondary">{activeFilterCount}</Badge>}
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto">
+            <SheetHeader><SheetTitle>Project filters</SheetTitle></SheetHeader>
+            <div className="mt-6 grid gap-4">
+              <Select value={typeFilter} onValueChange={setTypeFilter}>
+                <SelectTrigger className="w-full"><SelectValue placeholder="Type" /></SelectTrigger>
+                <SelectContent><SelectItem value="all">All types</SelectItem>{PROJECT_TYPES.map((t) => <SelectItem key={t} value={t}>{PROJECT_TYPE_LABELS[t]}</SelectItem>)}</SelectContent>
+              </Select>
+              <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
+                <SelectTrigger className="w-full"><SelectValue placeholder="Status" /></SelectTrigger>
+                <SelectContent><SelectItem value="all">All statuses</SelectItem><SelectItem value="published">Published</SelectItem><SelectItem value="draft">Draft</SelectItem></SelectContent>
+              </Select>
+              <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
+                <SelectTrigger className="w-full"><SelectValue placeholder="Sort" /></SelectTrigger>
+                <SelectContent><SelectItem value="default">Default order</SelectItem><SelectItem value="title-asc">Title A–Z</SelectItem><SelectItem value="newest">Recently updated</SelectItem><SelectItem value="year-desc">Year completed ↓</SelectItem></SelectContent>
+              </Select>
+              <div className="grid grid-cols-2 gap-2">
+                <Button type="button" variant="outline" onClick={clearFilters}>Clear</Button>
+                <Button type="button" onClick={() => setFiltersOpen(false)}>Show projects</Button>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
         <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="w-full sm:w-[170px]">
+          <SelectTrigger className="hidden w-full sm:flex sm:w-[170px]">
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
@@ -206,7 +239,7 @@ function AdminProjectsInner() {
           </SelectContent>
         </Select>
         <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
-          <SelectTrigger className="w-full sm:w-[150px]">
+          <SelectTrigger className="hidden w-full sm:flex sm:w-[150px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -216,7 +249,7 @@ function AdminProjectsInner() {
           </SelectContent>
         </Select>
         <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-          <SelectTrigger className="w-full sm:w-[190px]">
+          <SelectTrigger className="hidden w-full sm:flex sm:w-[190px]">
             <SelectValue placeholder="Sort" />
           </SelectTrigger>
           <SelectContent>
@@ -230,7 +263,7 @@ function AdminProjectsInner() {
           type="single"
           value={view}
           onValueChange={(v) => v && setView(v as ViewMode)}
-          className="sm:ml-auto"
+          className="hidden sm:ml-auto sm:flex"
           variant="outline"
         >
           <ToggleGroupItem value="grid" aria-label="Card view">
@@ -248,7 +281,19 @@ function AdminProjectsInner() {
         <EmptyState />
       ) : filtered.length === 0 ? (
         <NoResults onClear={clearFilters} />
-      ) : view === "grid" ? (
+      ) : (
+        <>
+        <div className="sm:hidden">
+          <GridView
+            items={filtered}
+            onDelete={setToDelete}
+            onCopy={copyLink}
+            onTogglePublished={onTogglePublished}
+            homepageIds={homepageIds}
+          />
+        </div>
+        <div className="hidden sm:block">
+        {view === "grid" ? (
         <GridView
           items={filtered}
           onDelete={setToDelete}
@@ -256,7 +301,7 @@ function AdminProjectsInner() {
           onTogglePublished={onTogglePublished}
           homepageIds={homepageIds}
         />
-      ) : (
+        ) : (
         <TableView
           items={filtered}
           onDelete={setToDelete}
@@ -264,6 +309,9 @@ function AdminProjectsInner() {
           onTogglePublished={onTogglePublished}
           homepageIds={homepageIds}
         />
+        )}
+        </div>
+        </>
       )}
 
       <AlertDialog open={!!toDelete} onOpenChange={(o) => !o && setToDelete(null)}>

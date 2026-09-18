@@ -53,10 +53,10 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className={embedded ? "text-lg font-medium text-foreground" : "text-2xl font-semibold text-foreground"}>Team</h2>
-        <Link to="/admin/team/new">
-          <Button>
+        <Link to="/admin/team/new" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">
             <Plus className="w-4 h-4 mr-2" />
             Add Team Member
           </Button>
@@ -77,7 +77,46 @@ export function TeamManager({ embedded = false }: { embedded?: boolean }) {
           </Link>
         </div>
       ) : (
-        <div className="bg-card rounded-lg border border-border overflow-x-auto">
+        <div className="space-y-3 md:hidden">
+          {rows.map((row, i) => (
+            <article key={row.id} className="overflow-hidden rounded-lg border border-border bg-card">
+              <div className="flex min-w-0 gap-3 p-4">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-muted">
+                  {row.photo_path ? (
+                    <img src={getTeamPhotoUrl(row.photo_path)} alt="" className="h-full w-full object-cover" loading="lazy" />
+                  ) : (
+                    <User className="h-5 w-5 text-muted-foreground/60" />
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="break-words font-medium text-foreground">{row.name}</h3>
+                    <Badge variant={row.published ? "success" : "muted"}>
+                      {row.published ? "Shown" : "Hidden"}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-foreground/80">{row.role}</p>
+                  {row.credentials && <p className="text-xs text-muted-foreground">{row.credentials}</p>}
+                </div>
+              </div>
+              <div className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-1 border-t border-border p-2">
+                <Button variant="ghost" size="icon" disabled={i === 0 || reorder.isPending} onClick={() => move(i, -1)} aria-label={`Move ${row.name} up`}>
+                  <ArrowUp className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="icon" disabled={i === rows.length - 1 || reorder.isPending} onClick={() => move(i, 1)} aria-label={`Move ${row.name} down`}>
+                  <ArrowDown className="h-4 w-4" />
+                </Button>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to={`/admin/team/${row.id}/edit`}><Pencil className="h-4 w-4" /> Edit</Link>
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => setPendingDelete(row)} aria-label={`Delete ${row.name}`}>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="hidden overflow-x-auto rounded-lg border border-border bg-card md:block">
           <table className="w-full min-w-[680px] text-sm">
             <thead className="bg-muted text-muted-foreground text-xs uppercase tracking-wider">
               <tr>

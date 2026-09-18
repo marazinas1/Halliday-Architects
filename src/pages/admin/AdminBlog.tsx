@@ -48,7 +48,7 @@ function AdminBlogInner() {
             Journal entries. A post only appears on the website once it is published.
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0">
           <Link to="/admin/blog/categories">
             <Button variant="outline">
               <Tags className="w-4 h-4 mr-2" />
@@ -77,7 +77,49 @@ function AdminBlogInner() {
           </Link>
         </div>
       ) : (
-        <div className="bg-card rounded-lg border border-border overflow-x-auto">
+        <div className="space-y-3 md:hidden">
+          {rows.map((row) => (
+            <article key={row.id} className="overflow-hidden rounded-lg border border-border bg-card">
+              <div className="flex min-w-0 gap-3 p-4">
+                <div className="flex h-16 w-20 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-muted">
+                  {row.cover_path ? (
+                    <img src={getBlogImageUrl(row.cover_path)} alt="" className="h-full w-full object-cover" loading="lazy" />
+                  ) : (
+                    <FileText className="h-4 w-4 text-muted-foreground/60" />
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="min-w-0 break-words font-medium text-foreground">{row.title}</h2>
+                    <Badge variant={row.published ? "success" : "muted"}>
+                      {row.published ? "Published" : "Draft"}
+                    </Badge>
+                  </div>
+                  <p className="truncate text-xs text-muted-foreground">/blog/{row.slug}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    {categoryName(row.category_id)} · {formatPostDate(row.published_at ?? row.created_at)}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 border-t border-border p-3">
+                <Switch
+                  checked={row.published}
+                  onCheckedChange={(checked) => setPublished.mutate({ post: row, published: checked })}
+                  aria-label={`Publish ${row.title}`}
+                />
+                <Button asChild variant="outline" className="w-full">
+                  <Link to={`/admin/blog/${row.id}/edit`}>
+                    <Pencil className="h-4 w-4" /> Edit
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => setPendingDelete(row)} aria-label={`Delete ${row.title}`}>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="hidden overflow-x-auto rounded-lg border border-border bg-card md:block">
           <table className="w-full min-w-[780px] text-sm">
             <thead className="bg-muted text-muted-foreground text-xs uppercase tracking-wider">
               <tr>
