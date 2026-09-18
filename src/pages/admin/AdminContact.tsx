@@ -52,7 +52,7 @@ function ContactBody() {
             arrive in the inbox.
           </p>
         </div>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="w-full sm:w-auto">
           <Link to="/contact" target="_blank" rel="noreferrer">
             <ExternalLink className="mr-2 h-4 w-4" />
             View page
@@ -88,7 +88,7 @@ function ContactBody() {
           onChange={(e) => setValues((v) => ({ ...v, intro: e.target.value }))}
         />
 
-        <div className="mt-5 flex items-center gap-3">
+        <div className="mt-5 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
           <Button onClick={save} disabled={saveText.isPending}>
             Save wording
           </Button>
@@ -101,7 +101,7 @@ function ContactBody() {
         <p className="mb-4 text-xs text-muted-foreground">
           Sits between the introduction and the form. Falls back to project photography.
         </p>
-        <div className="max-w-md">
+        <div className="w-full sm:max-w-md">
           <PageImageSlot
             page="contact"
             slot="hero"

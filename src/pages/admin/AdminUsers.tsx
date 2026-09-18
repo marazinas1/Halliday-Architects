@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Loader2, ShieldCheck, UserPlus } from "lucide-react";
+import { Copy, Loader2, MoreVertical, ShieldCheck, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 
 import AdminSection from "@/components/admin/AdminSection";
@@ -34,6 +34,12 @@ import {
   type ManagedUser,
 } from "@/hooks/admin/useAdminUsers";
 import { useAdminAuth } from "@/hooks/admin/useAdminAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 
 const ROLE_LABEL: Record<string, string> = {
@@ -229,7 +235,7 @@ function AdminUsersInner() {
               return (
               <li key={user.id} className="flex flex-col gap-3 px-4 py-4 sm:px-6 md:flex-row md:flex-wrap md:items-center">
                 <div className="min-w-0 w-full md:flex-1">
-                  <div className="flex items-center gap-2">
+                   <div className="flex flex-wrap items-center gap-2">
                     <span className="truncate font-medium text-foreground">{user.email}</span>
                     {isSelf && (
                       <Badge variant="outline" className="gap-1">
@@ -261,7 +267,7 @@ function AdminUsersInner() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 md:gap-3">
+                <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:flex md:w-auto md:flex-wrap md:gap-3">
                 {user.isPlatformOwner ? (
                   <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">Developer</span>
                 ) : (
@@ -299,6 +305,7 @@ function AdminUsersInner() {
 
                 {!user.confirmed && !isSelf && (
                   <Button
+                    className="hidden md:inline-flex"
                     variant="outline"
                     size="sm"
                     disabled={invite.isPending && resendingId === user.id}
@@ -316,6 +323,7 @@ function AdminUsersInner() {
 
 
                 <Button
+                  className="hidden md:inline-flex"
                   variant="outline"
                   size="sm"
                   disabled={isSelf || user.isPlatformOwner || user.isLastOwner || !user.role}
@@ -336,7 +344,7 @@ function AdminUsersInner() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-destructive hover:text-destructive"
+                  className="hidden text-destructive hover:text-destructive md:inline-flex"
                   disabled={isSelf || user.isPlatformOwner || user.isLastOwner}
                   title={
                     isSelf
@@ -352,6 +360,28 @@ function AdminUsersInner() {
                 >
                   Delete
                 </Button>
+                {!user.isPlatformOwner && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button type="button" variant="outline" size="icon" className="md:hidden" aria-label={`More actions for ${user.email}`}>
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {!user.confirmed && !isSelf && (
+                        <DropdownMenuItem disabled={invite.isPending && resendingId === user.id} onClick={() => resendInvite(user)}>
+                          Resend invitation
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem disabled={isSelf || user.isLastOwner || !user.role} onClick={() => setToRevoke(user)}>
+                        Remove access
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive focus:text-destructive" disabled={isSelf || user.isLastOwner} onClick={() => { setDeleteConfirm(""); setToDelete(user); }}>
+                        Delete account
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
                 </div>
               </li>
               );
