@@ -79,12 +79,12 @@ function AdminBlogCategoriesInner() {
             Blog
           </Button>
         </Link>
-        <h1 className="text-2xl font-semibold text-ink">Categories</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Categories</h1>
       </div>
 
-      <div className="bg-card rounded-lg border border-line p-4 flex items-end gap-3">
+      <div className="bg-card rounded-lg border border-border p-4 flex items-end gap-3">
         <div className="flex-1">
-          <label className="text-xs uppercase tracking-wider text-stone" htmlFor="new-category">
+          <label className="text-xs uppercase tracking-wider text-muted-foreground" htmlFor="new-category">
             New category
           </label>
           <Input
@@ -103,13 +103,13 @@ function AdminBlogCategoriesInner() {
       </div>
 
       {isLoading ? (
-        <div className="text-stone py-16 text-center">Loading…</div>
+        <div className="text-muted-foreground py-16 text-center">Loading…</div>
       ) : rows.length === 0 ? (
-        <div className="text-center py-16 bg-card rounded-lg border border-line text-stone">
+        <div className="text-center py-16 bg-card rounded-lg border border-border text-muted-foreground">
           No categories yet. Posts can still be published without one.
         </div>
       ) : (
-        <div className="bg-card rounded-lg border border-line divide-y divide-line">
+        <div className="bg-card rounded-lg border border-border divide-y divide-border">
           {rows.map((row, i) => (
             <div key={row.id} className="flex items-center gap-3 px-4 py-3">
               <div className="flex items-center gap-1">
@@ -134,8 +134,8 @@ function AdminBlogCategoriesInner() {
               ) : (
                 <>
                   <div className="flex-1">
-                    <div className="text-ink font-medium">{row.name}</div>
-                    <div className="text-xs text-stone">{row.slug}</div>
+                    <div className="text-foreground font-medium">{row.name}</div>
+                    <div className="text-xs text-muted-foreground">{row.slug}</div>
                   </div>
                   <Button variant="outline" size="sm" onClick={() => { setEditingId(row.id); setEditingName(row.name); }}>
                     <Pencil className="w-4 h-4 mr-2" />

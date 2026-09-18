@@ -135,7 +135,7 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
     <div
       className={cn(
         "relative border rounded-md bg-card overflow-hidden transition-colors duration-300",
-        dragOver ? "border-ink/60" : "border-line",
+        dragOver ? "border-primary/60" : "border-border",
       )}
       onDragOver={(e) => {
         if (!Array.from(e.dataTransfer.types ?? []).includes("Files")) return;
@@ -148,14 +148,14 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
       }}
       onDrop={onDrop}
     >
-      <div className="sticky top-0 z-10 flex flex-nowrap items-center gap-1 overflow-x-auto [&>*]:shrink-0 sm:flex-wrap border-b border-line px-2 py-1.5 bg-sand/80 backdrop-blur">
+      <div className="sticky top-0 z-10 flex flex-nowrap items-center gap-1 overflow-x-auto [&>*]:shrink-0 sm:flex-wrap border-b border-border px-2 py-1.5 bg-muted/80 backdrop-blur">
         <ToolbarButton label="Heading 2" active={editor.isActive("heading", { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
           <Heading2 className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton label="Heading 3" active={editor.isActive("heading", { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
           <Heading3 className="h-4 w-4" />
         </ToolbarButton>
-        <span className="w-px h-5 bg-line mx-1" />
+        <span className="w-px h-5 bg-border mx-1" />
         <ToolbarButton label="Bold" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}>
           <Bold className="h-4 w-4" />
         </ToolbarButton>
@@ -165,7 +165,7 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
         <ToolbarButton label="Link" active={editor.isActive("link")} onClick={setLink}>
           <Link2 className="h-4 w-4" />
         </ToolbarButton>
-        <span className="w-px h-5 bg-line mx-1" />
+        <span className="w-px h-5 bg-border mx-1" />
         <ToolbarButton label="Bullet list" active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()}>
           <List className="h-4 w-4" />
         </ToolbarButton>
@@ -175,7 +175,7 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
         <ToolbarButton label="Quote" active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()}>
           <Quote className="h-4 w-4" />
         </ToolbarButton>
-        <span className="w-px h-5 bg-line mx-1" />
+        <span className="w-px h-5 bg-border mx-1" />
         <ToolbarButton
           label={uploading ? "Uploading image…" : "Insert image (or drag one in)"}
           disabled={uploading}
@@ -203,14 +203,14 @@ export default function RichTextEditor({ value, onChange, minHeight = "560px" }:
       <EditorContent editor={editor} />
 
       {dragOver && !uploading && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-sand/70">
-          <span className="text-xs uppercase tracking-[0.14em] text-ink">Drop image to insert</span>
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-muted/70">
+          <span className="text-xs uppercase tracking-[0.14em] text-foreground">Drop image to insert</span>
         </div>
       )}
 
       {uploading && (
-        <div className="border-t border-line bg-sand/60 px-4 py-3 space-y-2">
-          <p className="flex items-center gap-2 text-xs text-stone">
+        <div className="border-t border-border bg-muted/60 px-4 py-3 space-y-2">
+          <p className="flex items-center gap-2 text-xs text-muted-foreground">
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
             Optimising and uploading image… {Math.round(progress)}%
           </p>

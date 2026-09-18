@@ -105,7 +105,7 @@ function AdminTeamFormInner() {
     );
   };
 
-  if (id && isLoading) return <div className="text-stone py-16 text-center">Loading…</div>;
+  if (id && isLoading) return <div className="text-muted-foreground py-16 text-center">Loading…</div>;
 
   // Previews the unsaved member exactly as the About-page studio card renders it.
   const preview = () =>
@@ -120,18 +120,18 @@ function AdminTeamFormInner() {
 
   return (
     <form onSubmit={submit} className="w-full space-y-6">
-      <Link to="/admin/team" className="inline-flex items-center text-sm text-stone">
+      <Link to="/admin/team" className="inline-flex items-center text-sm text-muted-foreground">
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to team
       </Link>
 
-      <h1 className="text-2xl font-semibold text-ink">
+      <h1 className="text-2xl font-semibold text-foreground">
         {id ? "Edit team member" : "Add team member"}
       </h1>
 
-      <div className="bg-card border border-line rounded-lg p-6 space-y-5">
+      <div className="bg-card border border-border rounded-lg p-6 space-y-5">
         <div className="flex items-start gap-6">
-          <div className="w-28 h-28 rounded-sm bg-sand flex items-center justify-center overflow-hidden shrink-0">
+          <div className="w-28 h-28 rounded-sm bg-muted flex items-center justify-center overflow-hidden shrink-0">
             {photoPath ? (
               <img
                 src={getTeamPhotoUrl(photoPath)}
@@ -139,7 +139,7 @@ function AdminTeamFormInner() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <User className="w-7 h-7 text-stone/60" />
+              <User className="w-7 h-7 text-muted-foreground/60" />
             )}
           </div>
           <div className="flex-1 space-y-2">
@@ -151,7 +151,7 @@ function AdminTeamFormInner() {
               disabled={uploading}
               onChange={(e) => handleFile(e.target.files?.[0])}
             />
-            <p className="text-xs text-stone">
+            <p className="text-xs text-muted-foreground">
               Any image. It is resized and converted to WebP automatically.
             </p>
             {uploading && <Progress value={progress} className="h-1.5" />}

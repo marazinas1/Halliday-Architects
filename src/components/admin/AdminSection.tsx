@@ -24,11 +24,11 @@ export default function AdminSection({
   if (!canAccess(auth.role, access)) {
     return (
       <div className="max-w-md mx-auto text-center py-20">
-        <ShieldAlert className="h-8 w-8 mx-auto text-stone" />
-        <h1 className="mt-6 text-2xl font-extrabold tracking-tight text-ink">
+        <ShieldAlert className="h-8 w-8 mx-auto text-muted-foreground" />
+        <h1 className="mt-6 text-2xl font-extrabold tracking-tight text-foreground">
           You don't have access to this section
         </h1>
-        <p className="mt-3 text-sm text-stone">
+        <p className="mt-3 text-sm text-muted-foreground">
           Only owners can open this page. Ask an owner if you need access.
         </p>
         <Button asChild className="mt-8">

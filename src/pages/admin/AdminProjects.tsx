@@ -165,11 +165,11 @@ function AdminProjectsInner() {
       <SectionTabs tabs={PROJECT_TABS} />
       <header className="flex flex-col gap-3 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-4">
         <div className="min-w-0">
-          <h1 className="truncate text-2xl font-semibold text-ink">Projects</h1>
-          <p className="text-sm text-stone">
+          <h1 className="truncate text-2xl font-semibold text-foreground">Projects</h1>
+          <p className="text-sm text-muted-foreground">
             {rows.length} {rows.length === 1 ? "project" : "projects"} total
             {" · "}
-            <span className="text-stone">
+            <span className="text-muted-foreground">
               The first four published projects appear on the homepage — reorder to change which.
             </span>
           </p>
@@ -182,9 +182,9 @@ function AdminProjectsInner() {
         </Button>
       </header>
 
-      <div className="flex flex-col gap-3 rounded-lg border border-line bg-card p-3 sm:flex-row sm:flex-wrap sm:items-center">
+      <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-3 sm:flex-row sm:flex-wrap sm:items-center">
         <div className="relative min-w-0 flex-1 sm:min-w-[220px]">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -243,7 +243,7 @@ function AdminProjectsInner() {
       </div>
 
       {isLoading ? (
-        <div className="py-16 text-center text-stone">Loading…</div>
+        <div className="py-16 text-center text-muted-foreground">Loading…</div>
       ) : rows.length === 0 ? (
         <EmptyState />
       ) : filtered.length === 0 ? (
@@ -297,7 +297,7 @@ function StatusBadge({ published }: { published: boolean }) {
       variant="secondary"
       className={cn(
         "border-transparent",
-        published ? "bg-emerald-500/15 text-emerald-700" : "bg-muted text-stone",
+        published ? "bg-emerald-500/15 text-emerald-700" : "bg-muted text-muted-foreground",
       )}
     >
       {published ? "Published" : "Draft"}
@@ -310,7 +310,7 @@ function HomepageBadge() {
   return (
     <Badge
       variant="secondary"
-      className="border-transparent bg-ink/10 text-ink"
+      className="border-transparent bg-primary/10 text-foreground"
     >
       On homepage
     </Badge>
@@ -320,7 +320,7 @@ function HomepageBadge() {
 function Thumb({ src, alt, className }: { src?: string | null; alt: string; className?: string }) {
   if (!src) {
     return (
-      <div className={cn("grid place-items-center bg-sand text-stone", className)}>
+      <div className={cn("grid place-items-center bg-muted text-muted-foreground", className)}>
         <ImageOff className="h-5 w-5" />
       </div>
     );
@@ -394,10 +394,10 @@ function GridView({
           </div>
           <CardContent className="space-y-3 pt-4">
             <div className="min-w-0">
-              <h3 className="truncate font-semibold text-ink">{p.title}</h3>
-              <p className="truncate text-xs text-stone">/{p.slug}</p>
+              <h3 className="truncate font-semibold text-foreground">{p.title}</h3>
+              <p className="truncate text-xs text-muted-foreground">/{p.slug}</p>
             </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-stone">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-1">{typeLabel(p.project_type)}</span>
               {p.location_city ? (
                 <span className="inline-flex items-center gap-1">
@@ -412,7 +412,7 @@ function GridView({
                 </span>
               ) : null}
             </div>
-            <div className="flex items-center gap-2 text-sm text-stone">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Switch
                 checked={p.published}
                 onCheckedChange={(c) => onTogglePublished(p.id, c)}
@@ -421,7 +421,7 @@ function GridView({
               <span>{p.published ? "Visible on site" : "Hidden"}</span>
             </div>
           </CardContent>
-          <CardFooter className="flex items-center justify-between gap-2 border-t border-line pt-4">
+          <CardFooter className="flex items-center justify-between gap-2 border-t border-border pt-4">
             <Button asChild variant="secondary" size="sm" className="flex-1">
               <Link to={`/admin/projects/${p.id}/edit`}>
                 <Pencil className="h-4 w-4" />
@@ -445,7 +445,7 @@ function TableView({
 }: { items: ProjectListItem[] } & RowHandlers) {
   const navigate = useNavigate();
   return (
-    <div className="overflow-x-auto rounded-lg border border-line bg-card">
+    <div className="overflow-x-auto rounded-lg border border-border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -470,15 +470,15 @@ function TableView({
                     className="h-10 w-10 shrink-0 rounded-md"
                   />
                   <div className="min-w-0">
-                    <div className="truncate font-medium text-ink">{p.title}</div>
-                    <div className="truncate text-xs text-stone">/{p.slug}</div>
+                    <div className="truncate font-medium text-foreground">{p.title}</div>
+                    <div className="truncate text-xs text-muted-foreground">/{p.slug}</div>
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-stone">{typeLabel(p.project_type)}</TableCell>
-              <TableCell className="text-stone">{p.location_city || "—"}</TableCell>
-              <TableCell className="text-stone">{p.year_completed ?? "—"}</TableCell>
-              <TableCell className="text-stone">{p.sort_order}</TableCell>
+              <TableCell className="text-muted-foreground">{typeLabel(p.project_type)}</TableCell>
+              <TableCell className="text-muted-foreground">{p.location_city || "—"}</TableCell>
+              <TableCell className="text-muted-foreground">{p.year_completed ?? "—"}</TableCell>
+              <TableCell className="text-muted-foreground">{p.sort_order}</TableCell>
               <TableCell>
                 <Switch
                   checked={p.published}
@@ -486,7 +486,7 @@ function TableView({
                   aria-label="Published"
                 />
               </TableCell>
-              <TableCell>{homepageIds.has(p.id) ? <HomepageBadge /> : <span className="text-stone">—</span>}</TableCell>
+              <TableCell>{homepageIds.has(p.id) ? <HomepageBadge /> : <span className="text-muted-foreground">—</span>}</TableCell>
               <TableCell>
                 <div className="flex items-center justify-end gap-1">
                   <Button
@@ -519,9 +519,9 @@ function TableView({
 
 function EmptyState() {
   return (
-    <div className="rounded-lg border border-dashed border-line bg-card p-10 text-center">
-      <h3 className="text-lg font-semibold text-ink">No projects yet</h3>
-      <p className="mt-1 text-sm text-stone">Add your first project to get started.</p>
+    <div className="rounded-lg border border-dashed border-border bg-card p-10 text-center">
+      <h3 className="text-lg font-semibold text-foreground">No projects yet</h3>
+      <p className="mt-1 text-sm text-muted-foreground">Add your first project to get started.</p>
       <Button asChild className="mt-4">
         <Link to="/admin/projects/new">
           <Plus className="h-4 w-4" />
@@ -534,9 +534,9 @@ function EmptyState() {
 
 function NoResults({ onClear }: { onClear: () => void }) {
   return (
-    <div className="rounded-lg border border-dashed border-line bg-card p-10 text-center">
-      <h3 className="text-lg font-semibold text-ink">No projects match your filters</h3>
-      <p className="mt-1 text-sm text-stone">Try adjusting the search or filters.</p>
+    <div className="rounded-lg border border-dashed border-border bg-card p-10 text-center">
+      <h3 className="text-lg font-semibold text-foreground">No projects match your filters</h3>
+      <p className="mt-1 text-sm text-muted-foreground">Try adjusting the search or filters.</p>
       <Button variant="outline" className="mt-4" onClick={onClear}>
         Clear filters
       </Button>

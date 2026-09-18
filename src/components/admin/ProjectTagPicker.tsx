@@ -37,13 +37,13 @@ export default function ProjectTagPicker({ projectId }: { projectId: string }) {
   };
 
   if (!tags.length) {
-    return <p className="text-sm text-stone">No tags yet — add some under Tags.</p>;
+    return <p className="text-sm text-muted-foreground">No tags yet — add some under Tags.</p>;
   }
 
   return (
     <div className="flex flex-wrap gap-x-6 gap-y-3">
       {tags.map((t) => (
-        <label key={t.id} className="flex items-center gap-2 text-sm text-ink">
+        <label key={t.id} className="flex items-center gap-2 text-sm text-foreground">
           <Checkbox
             checked={assigned.includes(t.id)}
             onCheckedChange={(v) => void toggle(t.id, v === true)}

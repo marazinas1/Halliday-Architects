@@ -78,14 +78,14 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
   return (
     <div className="w-full space-y-8">
       <div>
-        <h2 className={embedded ? "text-lg font-medium text-ink" : "text-2xl text-ink"}>Testimonials</h2>
-        <p className="mt-2 text-sm text-stone">
+        <h2 className={embedded ? "text-lg font-medium text-foreground" : "text-2xl text-foreground"}>Testimonials</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
           Words from clients. Nothing shows on the website until you switch a quote to published.
         </p>
       </div>
 
-      <form onSubmit={handleAdd} className="space-y-4 rounded-sm border border-line bg-card p-5">
-        <p className="text-sm font-medium text-ink">Add a testimonial</p>
+      <form onSubmit={handleAdd} className="space-y-4 rounded-sm border border-border bg-card p-5">
+        <p className="text-sm font-medium text-foreground">Add a testimonial</p>
         <div>
           <Label htmlFor="quote" className="text-sm">
             Quote
@@ -132,11 +132,11 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
       </form>
 
       {isLoading ? (
-        <p className="flex items-center gap-2 text-sm text-stone">
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" /> Loading…
         </p>
       ) : items.length === 0 ? (
-        <p className="border border-line px-6 py-12 text-center text-sm text-stone">
+        <p className="border border-border px-6 py-12 text-center text-sm text-muted-foreground">
           No testimonials yet. The section stays hidden on the website until you add one.
         </p>
       ) : (
@@ -152,7 +152,7 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
               detailValue !== (item.author_detail ?? "");
 
             return (
-              <li key={item.id} className="rounded-sm border border-line bg-card p-5">
+              <li key={item.id} className="rounded-sm border border-border bg-card p-5">
                 <Textarea
                   rows={3}
                   value={quoteValue}
@@ -193,7 +193,7 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
                         )
                       }
                     />
-                    <span className="text-sm text-stone">
+                    <span className="text-sm text-muted-foreground">
                       {item.published ? "Published" : "Hidden"}
                     </span>
                   </div>

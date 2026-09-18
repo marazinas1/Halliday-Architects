@@ -91,7 +91,7 @@ const AdminLogin = () => {
           <div className="space-y-2">
             <label
               htmlFor="email"
-              className="block text-xs tracking-[0.2em] uppercase text-stone"
+              className="block text-xs tracking-[0.2em] uppercase text-muted-foreground"
             >
               Email
             </label>
@@ -102,14 +102,14 @@ const AdminLogin = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-input rounded-sm text-ink focus:outline-hidden focus:ring-1 focus:ring-ink transition"
+              className="w-full px-4 py-3 bg-background border border-input rounded-sm text-foreground focus:outline-hidden focus:ring-1 focus:ring-ring transition"
             />
           </div>
 
           <div className="space-y-2">
             <label
               htmlFor="password"
-              className="block text-xs tracking-[0.2em] uppercase text-stone"
+              className="block text-xs tracking-[0.2em] uppercase text-muted-foreground"
             >
               Password
             </label>
@@ -120,7 +120,7 @@ const AdminLogin = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-input rounded-sm text-ink focus:outline-hidden focus:ring-1 focus:ring-ink transition"
+              className="w-full px-4 py-3 bg-background border border-input rounded-sm text-foreground focus:outline-hidden focus:ring-1 focus:ring-ring transition"
             />
           </div>
 
@@ -130,12 +130,12 @@ const AdminLogin = () => {
             </p>
           )}
 
-          {notice && <p className="text-sm text-stone">{notice}</p>}
+          {notice && <p className="text-sm text-muted-foreground">{notice}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded-sm hover:bg-ink/90 transition disabled:opacity-60"
+            className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-primary text-primary-foreground rounded-sm hover:bg-primary/90 transition disabled:opacity-60"
           >
             {loading ? "Signing In…" : "Sign In"}
           </button>
@@ -144,13 +144,13 @@ const AdminLogin = () => {
         <button
           type="button"
           onClick={handleForgotPassword}
-          className="mt-4 w-full text-center text-sm text-stone underline underline-offset-4 hover:text-ink transition"
+          className="mt-4 w-full text-center text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition"
         >
           Forgot password?
         </button>
 
       </AuthCard>
-      <p className="mt-8 text-xs tracking-[0.15em] uppercase text-stone">
+      <p className="mt-8 text-xs tracking-[0.15em] uppercase text-muted-foreground">
           Authorized Personnel Only
         </p>
     </AuthSplit>

@@ -124,14 +124,14 @@ function AdminUsersInner() {
   return (
     <div className="w-full space-y-10">
       <header>
-        <h1 className="text-3xl font-extrabold tracking-tight text-ink">Users</h1>
-        <p className="mt-2 text-sm text-stone">
+        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Users</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Owners manage everything. Editors can only work on projects and the blog.
         </p>
       </header>
 
-      <section className="rounded-lg border border-line bg-card p-6">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-stone">Invite someone</h2>
+      <section className="rounded-lg border border-border bg-card p-6">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Invite someone</h2>
         <form onSubmit={submitInvite} className="mt-4 flex flex-col gap-3 sm:flex-row">
           <Input
             type="email"
@@ -161,8 +161,8 @@ function AdminUsersInner() {
         </form>
 
         {result && (
-          <div className="mt-6 rounded-md border border-line bg-sand p-4 text-sm">
-            <p className="font-medium text-ink">
+          <div className="mt-6 rounded-md border border-border bg-muted p-4 text-sm">
+            <p className="font-medium text-foreground">
               {result.reinvited
                 ? `${result.email} already has an account, so a password reset link has been generated. Copy it and send it to them directly. Their existing role was left unchanged.`
                 : result.emailSent
@@ -199,21 +199,21 @@ function AdminUsersInner() {
                 </Button>
               </div>
             )}
-            <p className="mt-3 text-xs text-stone">
+            <p className="mt-3 text-xs text-muted-foreground">
               This is shown once. Ask them to set their own password after signing in.
             </p>
           </div>
         )}
       </section>
 
-      <section className="rounded-lg border border-line bg-card">
-        <div className="border-b border-line px-6 py-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-stone">Accounts</h2>
+      <section className="rounded-lg border border-border bg-card">
+        <div className="border-b border-border px-6 py-4">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Accounts</h2>
         </div>
 
         {isLoading && (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-5 w-5 animate-spin text-stone" />
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
         )}
 
@@ -222,7 +222,7 @@ function AdminUsersInner() {
         )}
 
         {!isLoading && !error && (
-          <ul className="divide-y divide-line">
+          <ul className="divide-y divide-border">
             {users.map((user) => {
               const isSelf = Boolean(currentUserId) && user.id === currentUserId;
               const selfTitle = "You cannot change your own access.";
@@ -230,7 +230,7 @@ function AdminUsersInner() {
               <li key={user.id} className="flex flex-col gap-3 px-4 py-4 sm:px-6 md:flex-row md:flex-wrap md:items-center">
                 <div className="min-w-0 w-full md:flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="truncate font-medium text-ink">{user.email}</span>
+                    <span className="truncate font-medium text-foreground">{user.email}</span>
                     {isSelf && (
                       <Badge variant="outline" className="gap-1">
                         <ShieldCheck className="h-3 w-3" /> You
@@ -253,7 +253,7 @@ function AdminUsersInner() {
                     )}
                     {!user.confirmed && <Badge variant="outline">Invited</Badge>}
                   </div>
-                  <div className="mt-1 text-xs text-stone">
+                  <div className="mt-1 text-xs text-muted-foreground">
                     {user.role ? ROLE_LABEL[user.role] ?? user.role : "No access"} ·{" "}
                     {user.lastSignInAt
                       ? `Last signed in ${new Date(user.lastSignInAt).toLocaleDateString()}`
@@ -263,7 +263,7 @@ function AdminUsersInner() {
 
                 <div className="flex flex-wrap items-center gap-2 md:gap-3">
                 {user.isPlatformOwner ? (
-                  <span className="text-xs uppercase tracking-[0.12em] text-stone">Developer</span>
+                  <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">Developer</span>
                 ) : (
                 <Select
                   {...(user.role === "owner" || user.role === "editor" ? { value: user.role } : {})}
@@ -357,7 +357,7 @@ function AdminUsersInner() {
               );
             })}
             {users.length === 0 && (
-              <li className="px-6 py-10 text-center text-sm text-stone">No accounts yet.</li>
+              <li className="px-6 py-10 text-center text-sm text-muted-foreground">No accounts yet.</li>
             )}
           </ul>
         )}

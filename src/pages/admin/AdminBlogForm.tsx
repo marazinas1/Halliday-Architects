@@ -43,10 +43,10 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="bg-card border border-line rounded-lg p-6 sm:p-8">
+    <section className="bg-card border border-border rounded-lg p-6 sm:p-8">
       <header className="mb-6">
-        <h2 className="font-serif text-lg font-light text-ink leading-tight">{title}</h2>
-        {description && <p className="text-xs text-stone mt-1">{description}</p>}
+        <h2 className="font-serif text-lg font-light text-foreground leading-tight">{title}</h2>
+        {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
       </header>
       {children}
     </section>
@@ -192,25 +192,25 @@ function AdminBlogFormInner() {
     );
   };
 
-  if (id && isLoading) return <div className="text-stone py-16 text-center">Loading…</div>;
+  if (id && isLoading) return <div className="text-muted-foreground py-16 text-center">Loading…</div>;
 
   const categoryName = categories?.find((c) => c.id === categoryId)?.name ?? null;
   const coverUrl = coverPath ? getBlogImageUrl(coverPath) : null;
 
   return (
     <form onSubmit={submit} className="w-full space-y-8 pb-12">
-      <div className="sticky top-0 z-20 -mx-4 px-4 py-3 bg-paper/90 backdrop-blur border-b border-line flex items-center justify-between gap-3 flex-wrap">
+      <div className="sticky top-0 z-20 -mx-4 px-4 py-3 bg-background/90 backdrop-blur border-b border-border flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <Button type="button" variant="ghost" size="sm" onClick={goBack}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Blog
           </Button>
-          <h1 className="font-serif text-xl sm:text-2xl font-light text-ink leading-tight">
+          <h1 className="font-serif text-xl sm:text-2xl font-light text-foreground leading-tight">
             {id ? "Edit post" : "New post"}
           </h1>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-stone min-w-[6rem] text-right" aria-live="polite">
+          <span className="text-xs text-muted-foreground min-w-[6rem] text-right" aria-live="polite">
             {save.isPending
               ? "Saving…"
               : dirty
@@ -258,16 +258,16 @@ function AdminBlogFormInner() {
       </div>
 
       {preview ? (
-        <article className="bg-card border border-line rounded-lg overflow-hidden">
+        <article className="bg-card border border-border rounded-lg overflow-hidden">
           {coverPath && (
             <img src={getBlogImageUrl(coverPath)} alt="" className="w-full max-h-[420px] object-cover" />
           )}
           <div className="px-8 py-10 max-w-2xl mx-auto">
-            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.12em] text-stone mb-4">
+            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.12em] text-muted-foreground mb-4">
               {categoryName && <span>{categoryName}</span>}
               <span>{formatPostDate(existing?.published_at ?? new Date().toISOString())}</span>
             </div>
-            <h2 className="heading-section text-ink mb-8">{title || "Untitled"}</h2>
+            <h2 className="heading-section text-foreground mb-8">{title || "Untitled"}</h2>
             <PostBody html={body} />
           </div>
         </article>
@@ -288,7 +288,7 @@ function AdminBlogFormInner() {
                 onChange={(e) => { setSlugTouched(true); setSlug(slugify(e.target.value)); markDirty(); }}
                 className="mt-1.5"
               />
-              <p className="text-xs mt-1.5 text-stone">
+              <p className="text-xs mt-1.5 text-muted-foreground">
                 /blog/{slug || "…"}
                 {slug && !isValidSlug(slug) && <span className="text-brand"> — not a valid slug</span>}
                 {slug && isValidSlug(slug) && slugFree === false && (
@@ -329,7 +329,7 @@ function AdminBlogFormInner() {
                 <button
                   type="button"
                   onClick={() => (dirty ? setLeaveOpen(true) : navigate("/admin/blog/categories"))}
-                  className="text-xs text-stone hover:text-ink mt-1.5 inline-block"
+                  className="text-xs text-muted-foreground hover:text-foreground mt-1.5 inline-block"
                 >
                   Manage categories
                 </button>

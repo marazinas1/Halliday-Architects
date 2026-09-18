@@ -67,12 +67,12 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
 
         <TabsContent value="projects" className="mt-0 min-h-0 overflow-hidden pt-4 data-[state=active]:flex data-[state=active]:flex-col">
           {isLoading ? (
-            <div className="flex items-center gap-2 py-8 text-sm text-stone">
+            <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
               Loading photography…
             </div>
           ) : (library ?? []).length === 0 ? (
-            <p className="py-6 text-sm text-stone">No published project photography yet.</p>
+            <p className="py-6 text-sm text-muted-foreground">No published project photography yet.</p>
           ) : (
             <div className="grid h-full min-h-0 flex-1 grid-cols-1 gap-5 md:grid-cols-[18rem_minmax(0,1fr)]">
               {/* Project list: a column on desktop, a select on narrow screens. */}
@@ -83,9 +83,9 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                   placeholder="Search projects"
                   className="shrink-0"
                 />
-                <div className="min-h-0 flex-1 overflow-y-auto rounded-sm border border-line">
+                <div className="min-h-0 flex-1 overflow-y-auto rounded-sm border border-border">
                   {projects.length === 0 ? (
-                    <p className="p-3 text-xs text-stone">No project matches that.</p>
+                    <p className="p-3 text-xs text-muted-foreground">No project matches that.</p>
                   ) : (
                     <div className="grid min-h-full auto-rows-[minmax(2.5rem,1fr)]">
                       {projects.map((project) => {
@@ -96,12 +96,12 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                             type="button"
                             onClick={() => setActive(project.id)}
                             className={cn(
-                              "flex w-full items-center justify-between gap-2 border-b border-line px-3 py-2.5 text-left text-xs transition-colors last:border-b-0",
-                              isActive ? "bg-sand font-medium text-ink" : "text-stone hover:bg-sand/60 hover:text-ink",
+                              "flex w-full items-center justify-between gap-2 border-b border-border px-3 py-2.5 text-left text-xs transition-colors last:border-b-0",
+                              isActive ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
                             )}
                           >
                             <span className="truncate">{project.title}</span>
-                            <span className="shrink-0 text-[10px] text-stone">
+                            <span className="shrink-0 text-[10px] text-muted-foreground">
                               {project.images.length}
                             </span>
                           </button>
@@ -134,10 +134,10 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
 
                   {activeProject && (
                     <div className="flex items-baseline justify-between gap-3">
-                      <p className="hidden text-sm font-medium text-ink md:block">
+                      <p className="hidden text-sm font-medium text-foreground md:block">
                         {activeProject.title}
                       </p>
-                      <p className="text-xs text-stone">
+                      <p className="text-xs text-muted-foreground">
                         {activeProject.images.length} photograph
                         {activeProject.images.length === 1 ? "" : "s"}
                         <span className="hidden md:inline"> — click one to use it</span>
@@ -164,7 +164,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                           }
                           className={cn(
                             "group relative min-h-0 overflow-hidden rounded-sm border text-left transition-all",
-                            selected ? "border-ink ring-2 ring-ink" : "border-line hover:border-ink/40",
+                            selected ? "border-primary ring-2 ring-ring" : "border-border hover:border-primary/40",
                           )}
                         >
                           <img
@@ -173,14 +173,14 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                             loading="lazy"
                             className="h-full w-full object-cover"
                           />
-                          <span className="absolute left-1.5 top-1.5 rounded-full bg-paper/90 px-2 py-0.5 text-[10px] font-medium text-stone">
+                          <span className="absolute left-1.5 top-1.5 rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                             {CATEGORY_LABEL[img.category] ?? img.category}
                           </span>
-                          <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-2 text-[11px] text-paper opacity-0 transition-opacity group-hover:opacity-100">
+                          <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/70 to-transparent p-2 text-[11px] text-primary-foreground opacity-0 transition-opacity group-hover:opacity-100">
                             <span className="line-clamp-2">{selected ? "Currently used" : img.alt}</span>
                           </span>
                           {selected && (
-                            <span className="absolute right-1.5 top-1.5 rounded-full bg-ink p-1 text-paper">
+                            <span className="absolute right-1.5 top-1.5 rounded-full bg-primary p-1 text-primary-foreground">
                               <Check className="h-3 w-3" />
                             </span>
                           )}
@@ -196,12 +196,12 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
 
         <TabsContent value="uploaded" className="mt-0 min-h-0 gap-3 overflow-hidden pt-4 data-[state=active]:flex data-[state=active]:flex-col">
           {uploadsLoading ? (
-            <div className="flex items-center gap-2 py-8 text-sm text-stone">
+            <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
               Loading photographs…
             </div>
           ) : uploaded.length === 0 ? (
-            <p className="py-6 text-sm text-stone">
+            <p className="py-6 text-sm text-muted-foreground">
               Nothing uploaded yet. Anything you upload here can be reused from this tab.
             </p>
           ) : (
@@ -218,7 +218,7 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                       onClick={() => onPick({ bucket: SITE_IMAGES_BUCKET, path: img.path, alt: null })}
                       className={cn(
                         "group relative aspect-[4/3] overflow-hidden rounded-sm border text-left transition-all",
-                        selected ? "border-ink ring-2 ring-ink" : "border-line hover:border-ink/40",
+                        selected ? "border-primary ring-2 ring-ring" : "border-border hover:border-primary/40",
                       )}
                     >
                       <img
@@ -228,12 +228,12 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
                         className="h-full w-full object-cover"
                       />
                       {img.usedBy.length > 0 && (
-                        <span className="absolute left-1.5 top-1.5 rounded-full bg-paper/90 px-2 py-0.5 text-[10px] font-medium text-stone">
+                        <span className="absolute left-1.5 top-1.5 rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                           In use
                         </span>
                       )}
                       {selected && (
-                        <span className="absolute right-1.5 top-1.5 rounded-full bg-ink p-1 text-paper">
+                        <span className="absolute right-1.5 top-1.5 rounded-full bg-primary p-1 text-primary-foreground">
                           <Check className="h-3 w-3" />
                         </span>
                       )}
@@ -260,12 +260,12 @@ export default function ImagePicker({ current, busy = false, progress = 0, onPic
             }}
             className={cn(
               "rounded-sm border border-dashed p-10 text-center transition-colors",
-              dragging ? "border-ink bg-sand" : "border-line",
+              dragging ? "border-primary bg-muted" : "border-border",
             )}
           >
-            <Upload className="mx-auto mb-3 h-5 w-5 text-stone" />
-            <p className="mb-1 text-sm text-ink">Drag a photograph here, or choose a file</p>
-            <p className="mb-4 text-xs text-stone">
+            <Upload className="mx-auto mb-3 h-5 w-5 text-muted-foreground" />
+            <p className="mb-1 text-sm text-foreground">Drag a photograph here, or choose a file</p>
+            <p className="mb-4 text-xs text-muted-foreground">
               Resized and converted automatically, and kept in your photograph library so you can
               reuse it elsewhere.
             </p>
