@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "@/lib/router-compat";
-import { ArrowLeft, Check, ExternalLink, Eye, Loader2, Pencil } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Eye, Loader2, MoreVertical, Pencil } from "lucide-react";
 import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,12 @@ import { NotAnImageError } from "@/lib/images/optimizeImage";
 import { isValidSlug, slugify } from "@/lib/admin/slug";
 import { formatPostDate } from "@/hooks/usePublicBlog";
 import { openPreview } from "@/lib/admin/preview";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NO_CATEGORY = "__none__";
 
@@ -199,18 +205,17 @@ function AdminBlogFormInner() {
 
   return (
     <form onSubmit={submit} className="w-full space-y-8 pb-12">
-      <div className="sticky top-0 z-20 -mx-4 px-4 py-3 bg-background/90 backdrop-blur border-b border-border flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-3">
-          <Button type="button" variant="ghost" size="sm" onClick={goBack}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Blog
+      <div className="sticky top-14 z-20 -mx-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border bg-background/90 px-4 py-3 backdrop-blur md:top-0">
+        <div className="flex min-w-0 items-center gap-2">
+          <Button type="button" variant="ghost" size="icon" onClick={goBack} aria-label="Back to articles">
+            <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          <h1 className="truncate text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
             {id ? "Edit post" : "New post"}
           </h1>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-muted-foreground min-w-[6rem] text-right" aria-live="polite">
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="hidden min-w-[6rem] text-right text-xs text-muted-foreground sm:block" aria-live="polite">
             {save.isPending
               ? "Saving…"
               : dirty
@@ -219,13 +224,14 @@ function AdminBlogFormInner() {
                   ? "All changes saved"
                   : ""}
           </span>
-          <Button type="button" variant="outline" onClick={() => setPreview((p) => !p)}>
+          <Button type="button" variant="outline" className="hidden sm:inline-flex" onClick={() => setPreview((p) => !p)}>
             {preview ? <Pencil className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
             {preview ? "Edit" : "Preview"}
           </Button>
           <Button
             type="button"
             variant="outline"
+            className="hidden md:inline-flex"
             onClick={() =>
               openPreview("blog", {
                 id: id ?? "preview",
@@ -245,6 +251,27 @@ function AdminBlogFormInner() {
             <ExternalLink className="w-4 h-4 mr-2" />
             Preview page
           </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="outline" size="icon" className="sm:hidden" aria-label="More post actions">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setPreview((p) => !p)}>
+                {preview ? <Pencil className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {preview ? "Edit" : "Preview"}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => openPreview("blog", {
+                id: id ?? "preview", title: title.trim() || "Untitled post", slug: slug.trim() || "preview",
+                excerpt: excerpt.trim() || null, body, cover_url: coverUrl,
+                category: categoryName ? { id: categoryId, name: categoryName, slug: categoryId } : null,
+                published_at: null, created_at: new Date().toISOString(),
+              })}>
+                <ExternalLink className="h-4 w-4" /> Preview page
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button type="submit" disabled={save.isPending || uploading}>
             {save.isPending ? (
               <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving…</>
@@ -326,13 +353,14 @@ function AdminBlogFormInner() {
                     ))}
                   </SelectContent>
                 </Select>
-                <button
+                 <Button
                   type="button"
+                   variant="link"
                   onClick={() => (dirty ? setLeaveOpen(true) : navigate("/admin/blog/categories"))}
-                  className="text-xs text-muted-foreground hover:text-foreground mt-1.5 inline-block"
+                   className="mt-1.5 h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
                 >
                   Manage categories
-                </button>
+                 </Button>
               </div>
 
               <div className="flex items-center gap-3 sm:pt-7">

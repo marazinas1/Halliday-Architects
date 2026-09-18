@@ -236,7 +236,7 @@ function InquiriesBody() {
                 onClick={() => setOpenId(inquiry.id)}
                 className={`w-full text-left px-4 py-4 hover:bg-muted transition-colors ${unread ? "bg-muted/60" : ""}`}
               >
-                <div className="flex items-start gap-3">
+                 <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
                   <span
                     aria-hidden
                     className={`mt-2 h-2 w-2 rounded-full shrink-0 ${unread ? "bg-primary" : "bg-transparent"}`}
@@ -262,7 +262,7 @@ function InquiriesBody() {
                         .join(" · ") || "—"}
                     </p>
                   </div>
-                  <span className="text-xs text-muted-foreground shrink-0 whitespace-nowrap">
+                   <span className="col-start-2 text-xs text-muted-foreground sm:col-start-3 sm:row-start-1 sm:shrink-0 sm:whitespace-nowrap">
                     {formatDate(inquiry.created_at)}
                   </span>
                 </div>

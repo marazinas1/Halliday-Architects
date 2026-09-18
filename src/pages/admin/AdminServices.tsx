@@ -185,7 +185,7 @@ function ServicesBody() {
             Use the arrows to change the order they appear in.
           </p>
         </div>
-        <div className="flex gap-2">
+         <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto">
           <Button asChild variant="outline">
             <Link to="/services" target="_blank" rel="noreferrer">
               <ExternalLink className="mr-2 h-4 w-4" />
@@ -245,7 +245,7 @@ function ServicesBody() {
                   )}
                 </div>
               </div>
-              <div className="flex shrink-0 items-center justify-end gap-1 border-t border-border pt-2 sm:border-t-0 sm:pt-0">
+               <div className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-1 border-t border-border pt-2 sm:flex sm:shrink-0 sm:justify-end sm:border-t-0 sm:pt-0">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -264,7 +264,7 @@ function ServicesBody() {
                 >
                   <ArrowDown className="h-4 w-4" />
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => setEditing(toDraft(service))}>
+                 <Button className="w-full" size="sm" variant="outline" onClick={() => setEditing(toDraft(service))}>
                   Edit
                 </Button>
                 <Button size="icon" variant="ghost" aria-label="Delete" onClick={() => remove(service)}>
@@ -320,7 +320,7 @@ function ServicesBody() {
 
               <div>
                 <Label>Photograph</Label>
-                <div className="mt-2 flex items-center gap-3">
+                 <div className="mt-2 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 sm:flex">
                   <div className="h-20 w-28 overflow-hidden rounded-sm bg-muted">
                     {editingUrl ? (
                       <img src={editingUrl} alt="" className="h-full w-full object-cover" />
@@ -330,13 +330,14 @@ function ServicesBody() {
                       </div>
                     )}
                   </div>
-                  <Button type="button" variant="outline" size="sm" onClick={() => setPickerOpen(true)}>
+                   <Button type="button" variant="outline" size="sm" className="w-full sm:w-auto" onClick={() => setPickerOpen(true)}>
                     {editing.image_path ? "Change" : "Choose"}
                   </Button>
                   {editing.image_path && (
-                    <Button
+                     <Button
                       type="button"
-                      variant="ghost"
+                       variant="ghost"
+                       className="col-start-2 w-full sm:w-auto"
                       size="sm"
                       onClick={() =>
                         setEditing({ ...editing, image_bucket: null, image_path: null, imageUrl: null })

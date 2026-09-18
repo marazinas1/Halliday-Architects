@@ -129,8 +129,8 @@ function AdminTeamFormInner() {
         {id ? "Edit team member" : "Add team member"}
       </h1>
 
-      <div className="bg-card border border-border rounded-lg p-6 space-y-5">
-        <div className="flex items-start gap-6">
+      <div className="space-y-5 rounded-lg border border-border bg-card p-4 sm:p-6">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-6">
           <div className="w-28 h-28 rounded-sm bg-muted flex items-center justify-center overflow-hidden shrink-0">
             {photoPath ? (
               <img
@@ -142,7 +142,7 @@ function AdminTeamFormInner() {
               <User className="w-7 h-7 text-muted-foreground/60" />
             )}
           </div>
-          <div className="flex-1 space-y-2">
+           <div className="w-full min-w-0 flex-1 space-y-2">
             <Label htmlFor="photo">Photo</Label>
             <Input
               id="photo"
@@ -200,8 +200,8 @@ function AdminTeamFormInner() {
         </div>
       </div>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={save.isPending || uploading}>
+       <div className="grid grid-cols-2 gap-3 sm:flex">
+         <Button className="col-span-2 sm:col-span-1" type="submit" disabled={save.isPending || uploading}>
           {save.isPending ? "Saving…" : "Save"}
         </Button>
         <Button type="button" variant="outline" onClick={preview} disabled={uploading}>

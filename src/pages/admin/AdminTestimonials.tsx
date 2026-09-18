@@ -184,7 +184,7 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
 
             return (
               <li key={item.id} className="rounded-lg border border-border bg-card">
-                <div className="flex items-center gap-3 p-4">
+                 <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4 sm:flex">
                   <button
                     type="button"
                     onClick={() => toggle(item.id)}
@@ -204,12 +204,13 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
                     </span>
                   </button>
 
-                  <Badge variant={item.published ? "success" : "muted"}>
-                    {item.published ? "Published" : "Hidden"}
-                  </Badge>
-                  {dirty && <Badge variant="warning">Unsaved</Badge>}
+                   <div className="col-span-2 flex flex-wrap items-center gap-2 border-t border-border pt-3 sm:contents">
+                    <Badge variant={item.published ? "success" : "muted"}>
+                      {item.published ? "Published" : "Hidden"}
+                    </Badge>
+                    {dirty && <Badge variant="warning">Unsaved</Badge>}
 
-                  <div className="flex shrink-0 items-center gap-1">
+                    <div className="ml-auto flex shrink-0 items-center gap-1">
                     <Button
                       type="button"
                       variant="ghost"
@@ -230,7 +231,8 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
                     >
                       <ArrowDown className="h-4 w-4" />
                     </Button>
-                  </div>
+                    </div>
+                   </div>
                 </div>
 
                 {open && (
@@ -295,7 +297,7 @@ export function TestimonialsManager({ embedded = false }: { embedded?: boolean }
                         </Label>
                       </div>
 
-                      <div className="ml-auto flex items-center gap-2">
+                       <div className="flex w-full items-center justify-end gap-2 sm:ml-auto sm:w-auto">
                         <Button
                           type="button"
                           size="sm"

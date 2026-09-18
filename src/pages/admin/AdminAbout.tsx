@@ -96,7 +96,7 @@ function AboutBody() {
             The practice page, the studio roster and the client quotes shown alongside it.
           </p>
         </div>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="w-full sm:w-auto">
           <Link to="/about" target="_blank" rel="noreferrer">
             <ExternalLink className="mr-2 h-4 w-4" />
             View page
@@ -161,7 +161,7 @@ function AboutBody() {
               onChange={(e) => setValues((v) => ({ ...v, process_heading: e.target.value }))}
             />
 
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-5 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
               <Button onClick={save} disabled={saveText.isPending}>
                 Save wording
               </Button>

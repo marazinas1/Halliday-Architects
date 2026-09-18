@@ -275,14 +275,14 @@ function SettingsBody() {
         <Label htmlFor="site-name" className="text-sm font-medium text-foreground">
           Site name
         </Label>
-        <div className="flex gap-3 mt-3">
+        <div className="flex flex-col gap-3 mt-3 sm:flex-row">
           <Input
             id="site-name"
             value={siteName}
             onChange={(e) => setSiteName(e.target.value)}
             placeholder="Halliday Architects"
           />
-          <Button onClick={handleSaveName} disabled={save.isPending || !siteName.trim()}>
+          <Button className="sm:shrink-0" onClick={handleSaveName} disabled={save.isPending || !siteName.trim()}>
             Save
           </Button>
         </div>
@@ -295,14 +295,14 @@ function SettingsBody() {
         <p className="text-xs text-muted-foreground mt-1">
           Where contact form submissions are emailed. Separate several addresses with commas.
         </p>
-        <div className="flex gap-3 mt-3">
+        <div className="flex flex-col gap-3 mt-3 sm:flex-row">
           <Input
             id="notify-emails"
             value={notifyEmails}
             onChange={(e) => setNotifyEmails(e.target.value)}
             placeholder="chris@hallidayarchitects.com, shannon@hallidayarchitects.com"
           />
-          <Button onClick={handleSaveNotifyEmails} disabled={save.isPending}>
+          <Button className="sm:shrink-0" onClick={handleSaveNotifyEmails} disabled={save.isPending}>
             Save
           </Button>
         </div>
@@ -355,14 +355,15 @@ function SettingsBody() {
           <Label htmlFor="maintenance-message" className="text-xs text-muted-foreground">
             Message shown to visitors
           </Label>
-          <div className="flex gap-3 mt-1">
+           <div className="flex flex-col gap-3 mt-1 sm:flex-row">
             <Input
               id="maintenance-message"
               value={maintenance.message}
               placeholder={MAINTENANCE_FALLBACK_MESSAGE}
               onChange={(e) => setMaintenance((prev) => ({ ...prev, message: e.target.value }))}
             />
-            <Button
+             <Button
+               className="sm:shrink-0"
               variant="outline"
               onClick={() => handleSaveMaintenance(maintenance)}
               disabled={save.isPending}

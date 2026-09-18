@@ -21,7 +21,7 @@ export default function AdminPageHeader({
           <p className="mt-1 max-w-3xl text-sm text-muted-foreground">{description}</p>
         )}
       </div>
-      {action && <div className="flex shrink-0 items-center gap-2">{action}</div>}
+      {action && <div className="grid w-full gap-2 [&>*]:w-full sm:flex sm:w-auto sm:shrink-0 sm:items-center sm:[&>*]:w-auto">{action}</div>}
     </header>
   );
 }

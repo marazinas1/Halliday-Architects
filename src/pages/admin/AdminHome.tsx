@@ -74,7 +74,7 @@ function HomeBody() {
             are used until you choose your own.
           </p>
         </div>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="w-full sm:w-auto">
           <Link to="/" target="_blank" rel="noreferrer">
             <ExternalLink className="mr-2 h-4 w-4" />
             View page
@@ -140,7 +140,7 @@ function HomeBody() {
           ))}
         </div>
 
-        <div className="mt-5 flex items-center gap-3">
+        <div className="mt-5 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
           <Button onClick={save} disabled={saveText.isPending}>
             Save wording
           </Button>

@@ -209,7 +209,7 @@ export default function PageImageSlot({
             </p>
           )}
         </div>
-        <div className="flex shrink-0 gap-2">
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] gap-2 sm:flex sm:w-auto sm:shrink-0">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button type="button" size="sm" variant="outline" disabled={busy} className="h-10 flex-1 sm:h-9 sm:flex-none">
@@ -239,8 +239,8 @@ export default function PageImageSlot({
 
 
       {(
-        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-border pt-3">
-          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+        <div className="mt-3 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-t border-border pt-3 sm:flex sm:flex-wrap">
+          <span className="col-span-2 flex items-center gap-1 text-[11px] text-muted-foreground sm:col-span-1">
             <Lock className="h-3 w-3" />
             Developer
           </span>
@@ -281,7 +281,7 @@ export default function PageImageSlot({
               Clear default
             </Button>
           )}
-          <span className="text-[11px] text-muted-foreground">
+          <span className="col-span-2 text-[11px] text-muted-foreground sm:col-span-1">
             {pinned
               ? "Kept if the project is deleted."
               : "Pin a photograph the site falls back to."}

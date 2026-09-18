@@ -158,15 +158,15 @@ function AnalyticsInner() {
       : `${avgDuration}s`;
 
   return (
-    <div>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+    <div className="w-full">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Analytics</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             First-party traffic data. No cookies, no third-party tracking.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto">
           {RANGES.map((r) => (
             <Button
               key={r.value}
@@ -223,7 +223,7 @@ function AnalyticsInner() {
 
           <div className="mt-6 border border-border bg-card p-5">
             <h2 className="mb-4 text-sm font-medium text-foreground">Traffic</h2>
-            <div className="h-72 w-full">
+             <div className="h-80 w-full sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData} margin={{ left: -20, right: 8, top: 8 }}>
                   <defs>

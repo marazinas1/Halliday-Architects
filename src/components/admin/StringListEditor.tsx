@@ -29,7 +29,7 @@ export default function StringListEditor({
   return (
     <div className="space-y-2">
       {value.map((item, i) => (
-        <div key={i} className="flex gap-2">
+        <div key={i} className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] gap-1.5 sm:gap-2">
           <Input
             value={item}
             onChange={(e) => update(i, e.target.value)}

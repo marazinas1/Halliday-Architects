@@ -1,5 +1,12 @@
-import { Link, useLocation } from "@/lib/router-compat";
+import { Link, useLocation, useNavigate } from "@/lib/router-compat";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export type SectionTab = {
   label: string;
@@ -24,7 +31,23 @@ type Props = {
  */
 export default function SectionTabs({ tabs, value, onChange }: Props) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const controlled = value !== undefined && Boolean(onChange);
+
+  const activeTab = tabs.find((tab) =>
+    controlled
+      ? tab.value === value
+      : tab.match
+        ? tab.match(pathname)
+        : pathname === tab.to,
+  ) ?? tabs[0];
+
+  const mobileValue = controlled ? activeTab?.value : activeTab?.to;
+
+  const changeMobileTab = (next: string) => {
+    if (controlled) onChange?.(next);
+    else navigate(next);
+  };
 
   const base =
     "-mb-px shrink-0 whitespace-nowrap border-b-2 px-3 py-2 text-sm transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring";
@@ -34,30 +57,50 @@ export default function SectionTabs({ tabs, value, onChange }: Props) {
       : "border-transparent text-muted-foreground hover:text-foreground";
 
   return (
-    <div className="mb-8 flex w-full gap-1 overflow-x-auto border-b border-border" role="tablist">
-      {tabs.map((tab) => {
-        if (controlled) {
-          const active = tab.value === value;
+    <>
+      <div className="mb-6 sm:hidden">
+        <Select {...(mobileValue ? { value: mobileValue } : {})} onValueChange={changeMobileTab}>
+          <SelectTrigger className="h-11 w-full text-base" aria-label="Choose admin section">
+            <SelectValue placeholder="Choose section" />
+          </SelectTrigger>
+          <SelectContent>
+            {tabs.map((tab) => {
+              const optionValue = controlled ? tab.value : tab.to;
+              if (!optionValue) return null;
+              return (
+                <SelectItem key={optionValue} value={optionValue}>
+                  {tab.label}
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="mb-8 hidden w-full gap-1 border-b border-border sm:flex" role="tablist">
+        {tabs.map((tab) => {
+          if (controlled) {
+            const active = tab.value === value;
+            return (
+              <button
+                key={tab.value ?? tab.label}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => onChange?.(tab.value ?? "")}
+                className={cn(base, state(active))}
+              >
+                {tab.label}
+              </button>
+            );
+          }
+          const active = tab.match ? tab.match(pathname) : pathname === tab.to;
           return (
-            <button
-              key={tab.value ?? tab.label}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              onClick={() => onChange?.(tab.value ?? "")}
-              className={cn(base, state(active))}
-            >
+            <Link key={tab.to} to={tab.to ?? "#"} className={cn(base, state(active))}>
               {tab.label}
-            </button>
+            </Link>
           );
-        }
-        const active = tab.match ? tab.match(pathname) : pathname === tab.to;
-        return (
-          <Link key={tab.to} to={tab.to ?? "#"} className={cn(base, state(active))}>
-            {tab.label}
-          </Link>
-        );
-      })}
-    </div>
+        })}
+      </div>
+    </>
   );
 }
