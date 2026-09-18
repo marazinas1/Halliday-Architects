@@ -228,25 +228,25 @@ function AnalyticsInner() {
                 <AreaChart data={chartData} margin={{ left: -20, right: 8, top: 8 }}>
                   <defs>
                     <linearGradient id="views" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="hsl(var(--ink))" stopOpacity={0.25} />
-                      <stop offset="100%" stopColor="hsl(var(--ink))" stopOpacity={0} />
+                      <stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity={0.25} />
+                      <stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="visitors" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="hsl(var(--stone))" stopOpacity={0.25} />
-                      <stop offset="100%" stopColor="hsl(var(--stone))" stopOpacity={0} />
+                      <stop offset="0%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0.25} />
+                      <stop offset="100%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--line))" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                   <XAxis
                     dataKey="label"
-                    tick={{ fontSize: 11, fill: "hsl(var(--stone))" }}
+                    tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
                     tickLine={false}
                     axisLine={false}
                     minTickGap={24}
                   />
                   <YAxis
                     allowDecimals={false}
-                    tick={{ fontSize: 11, fill: "hsl(var(--stone))" }}
+                    tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
                     tickLine={false}
                     axisLine={false}
                   />
@@ -255,7 +255,7 @@ function AnalyticsInner() {
                     type="monotone"
                     dataKey="views"
                     name="Views"
-                    stroke="hsl(var(--ink))"
+                    stroke="hsl(var(--foreground))"
                     fill="url(#views)"
                     strokeWidth={2}
                   />
@@ -263,7 +263,7 @@ function AnalyticsInner() {
                     type="monotone"
                     dataKey="visitors"
                     name="Visitors"
-                    stroke="hsl(var(--stone))"
+                    stroke="hsl(var(--muted-foreground))"
                     fill="url(#visitors)"
                     strokeWidth={2}
                   />

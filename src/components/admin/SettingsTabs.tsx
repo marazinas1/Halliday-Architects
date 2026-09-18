@@ -13,11 +13,11 @@ const OWNER_TAB: SectionTab = {
 };
 
 const PAGE_TABS: SectionTab[] = [
-  { label: "Home texts", to: "/admin/home", match: (p) => p.startsWith("/admin/home") },
-  { label: "About texts", to: "/admin/about", match: (p) => p.startsWith("/admin/about") || p.startsWith("/admin/team") },
-  { label: "Services texts", to: "/admin/services", match: (p) => p.startsWith("/admin/services") },
-  { label: "Contact texts", to: "/admin/contact", match: (p) => p.startsWith("/admin/contact") },
+  { label: "Home", to: "/admin/home", match: (p) => p.startsWith("/admin/home") },
+  { label: "About", to: "/admin/about", match: (p) => p.startsWith("/admin/about") || p.startsWith("/admin/team") },
+  { label: "Services", to: "/admin/services", match: (p) => p.startsWith("/admin/services") },
   { label: "Photographs", to: "/admin/photographs", match: (p) => p.startsWith("/admin/photographs") },
+  { label: "Contact", to: "/admin/contact", match: (p) => p.startsWith("/admin/contact") },
 ];
 
 export default function SettingsTabs() {
