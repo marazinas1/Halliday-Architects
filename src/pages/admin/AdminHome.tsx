@@ -67,7 +67,7 @@ function HomeBody() {
       <SettingsTabs />
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h1 className="mb-1 text-2xl text-foreground">Home</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Home</h1>
           <p className="text-sm text-muted-foreground">
             The six-photo gallery wall, the practice statement and the three tiles at the foot of the page.
             Every panel below shows the photograph on the live page - those marked "Default"

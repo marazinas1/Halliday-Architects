@@ -37,7 +37,7 @@ export default function AdminPhotographs() {
     <div className="w-full space-y-6">
       <SettingsTabs />
       <div>
-        <h1 className="text-2xl font-semibold text-foreground">Photographs</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Photographs</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Photographs you have uploaded to the site. Project photography lives with its project and
           is not listed here.

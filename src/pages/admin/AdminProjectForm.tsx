@@ -237,7 +237,7 @@ function AdminProjectFormInner() {
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-foreground">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           {isEdit ? "Edit Project" : "New Project"}
         </h1>
         <div className="flex gap-2">

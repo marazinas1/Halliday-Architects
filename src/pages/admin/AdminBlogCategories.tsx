@@ -79,7 +79,7 @@ function AdminBlogCategoriesInner() {
             Blog
           </Button>
         </Link>
-        <h1 className="text-2xl font-semibold text-foreground">Categories</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Categories</h1>
       </div>
 
       <div className="bg-card rounded-lg border border-border p-4 flex items-end gap-3">

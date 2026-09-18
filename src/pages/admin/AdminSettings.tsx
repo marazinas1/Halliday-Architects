@@ -266,7 +266,7 @@ function SettingsBody() {
   return (
     <div className="w-full">
       <SettingsTabs />
-      <h1 className="text-2xl text-foreground mb-1">Settings</h1>
+      <h1 className="text-2xl font-semibold tracking-tight text-foreground">Settings</h1>
       <p className="text-sm text-muted-foreground mb-8">
         Branding used across the public site, the admin and the sign-in screen.
       </p>

@@ -165,7 +165,7 @@ function AdminProjectsInner() {
       <SectionTabs tabs={PROJECT_TABS} />
       <header className="flex flex-col gap-3 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-4">
         <div className="min-w-0">
-          <h1 className="truncate text-2xl font-semibold text-foreground">Projects</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground truncate">Projects</h1>
           <p className="text-sm text-muted-foreground">
             {rows.length} {rows.length === 1 ? "project" : "projects"} total
             {" · "}

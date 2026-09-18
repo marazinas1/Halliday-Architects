@@ -205,7 +205,7 @@ function AdminBlogFormInner() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Blog
           </Button>
-          <h1 className="font-serif text-xl sm:text-2xl font-light text-foreground leading-tight">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             {id ? "Edit post" : "New post"}
           </h1>
         </div>

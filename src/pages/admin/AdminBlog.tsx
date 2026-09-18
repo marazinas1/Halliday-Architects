@@ -41,7 +41,7 @@ function AdminBlogInner() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-2xl font-semibold text-foreground">Blog</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Blog</h1>
         <div className="flex items-center gap-2">
           <Link to="/admin/blog/categories">
             <Button variant="outline">

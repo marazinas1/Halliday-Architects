@@ -91,7 +91,7 @@ function AboutBody() {
       <SettingsTabs />
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h1 className="mb-1 text-2xl text-foreground">About</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">About</h1>
           <p className="text-sm text-muted-foreground">
             The practice page, the studio roster and the client quotes shown alongside it.
           </p>

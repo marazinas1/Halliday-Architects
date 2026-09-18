@@ -190,7 +190,7 @@ function InquiriesBody() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl text-foreground mb-1">Inquiries</h1>
+      <h1 className="text-2xl font-semibold tracking-tight text-foreground">Inquiries</h1>
       <p className="text-sm text-muted-foreground mb-6">
         Everything submitted through the contact form. Archiving hides an enquiry — it is never deleted.
       </p>

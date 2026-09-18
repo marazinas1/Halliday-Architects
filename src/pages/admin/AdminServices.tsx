@@ -178,7 +178,7 @@ function ServicesBody() {
       <SettingsTabs />
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h1 className="mb-1 text-2xl text-foreground">Services</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Services</h1>
           <p className="text-sm text-muted-foreground">
             Each service is a full-width band on the services page, alternating photograph and text.
             Use the arrows to change the order they appear in.

@@ -125,7 +125,7 @@ function AdminTeamFormInner() {
         Back to team
       </Link>
 
-      <h1 className="text-2xl font-semibold text-foreground">
+      <h1 className="text-2xl font-semibold tracking-tight text-foreground">
         {id ? "Edit team member" : "Add team member"}
       </h1>
 

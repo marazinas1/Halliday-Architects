@@ -48,7 +48,7 @@ function AdminTagsInner() {
     <div className="w-full space-y-8">
       <SectionTabs tabs={PROJECT_TABS} />
       <div>
-        <h1 className="font-serif text-2xl font-light text-foreground">Tags</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Tags</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Used to find specific design solutions quickly. Deleting a tag only removes the
           label — no images or projects are affected.

@@ -124,7 +124,7 @@ function AdminUsersInner() {
   return (
     <div className="w-full space-y-10">
       <header>
-        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Users</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Users</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Owners manage everything. Editors can only work on projects and the blog.
         </p>
