@@ -240,7 +240,7 @@ function AdminProjectFormInner() {
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           {isEdit ? "Edit Project" : "New Project"}
         </h1>
-        <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto">
+        <div className={`grid w-full gap-2 sm:flex sm:w-auto ${isEdit ? "grid-cols-3" : "grid-cols-2"}`}>
           {isEdit && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
