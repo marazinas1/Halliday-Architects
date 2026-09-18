@@ -46,8 +46,8 @@ function ContactBody() {
       <SettingsTabs />
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h1 className="mb-1 text-2xl text-ink">Contact</h1>
-          <p className="text-sm text-stone">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Contact</h1>
+          <p className="text-sm text-muted-foreground">
             The wording above the enquiry form and the photograph beneath it. Enquiries themselves
             arrive in the inbox.
           </p>
@@ -60,10 +60,10 @@ function ContactBody() {
         </Button>
       </div>
 
-      <section className="mb-8 rounded-sm border border-line bg-card p-5">
-        <p className="mb-4 text-sm font-medium text-ink">Wording</p>
+      <section className="mb-8 rounded-sm border border-border bg-card p-5">
+        <p className="mb-4 text-sm font-medium text-foreground">Wording</p>
 
-        <Label htmlFor="heading" className="text-sm font-medium text-ink">
+        <Label htmlFor="heading" className="text-sm font-medium text-foreground">
           Page heading
         </Label>
         <Input
@@ -75,7 +75,7 @@ function ContactBody() {
           onChange={(e) => setValues((v) => ({ ...v, heading: e.target.value }))}
         />
 
-        <Label htmlFor="intro" className="mt-5 block text-sm font-medium text-ink">
+        <Label htmlFor="intro" className="mt-5 block text-sm font-medium text-foreground">
           Introduction
         </Label>
         <Textarea
@@ -92,13 +92,13 @@ function ContactBody() {
           <Button onClick={save} disabled={saveText.isPending}>
             Save wording
           </Button>
-          <span className="text-xs text-stone">Empty fields keep the wording shown in grey.</span>
+          <span className="text-xs text-muted-foreground">Empty fields keep the wording shown in grey.</span>
         </div>
       </section>
 
       <section>
-        <p className="mb-1 text-sm font-medium text-ink">Photograph</p>
-        <p className="mb-4 text-xs text-stone">
+        <p className="mb-1 text-sm font-medium text-foreground">Photograph</p>
+        <p className="mb-4 text-xs text-muted-foreground">
           Sits between the introduction and the form. Falls back to project photography.
         </p>
         <div className="max-w-md">

@@ -6,6 +6,7 @@ import AdminSection from "@/components/admin/AdminSection";
 import ImagePicker, { type PickedImage } from "@/components/admin/ImagePicker";
 import StringListEditor from "@/components/admin/StringListEditor";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -178,8 +179,8 @@ function ServicesBody() {
       <SettingsTabs />
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h1 className="mb-1 text-2xl text-ink">Services</h1>
-          <p className="text-sm text-stone">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Services</h1>
+          <p className="text-sm text-muted-foreground">
             Each service is a full-width band on the services page, alternating photograph and text.
             Use the arrows to change the order they appear in.
           </p>
@@ -199,20 +200,20 @@ function ServicesBody() {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center gap-2 py-10 text-sm text-stone">
+        <div className="flex items-center gap-2 py-10 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" /> Loading…
         </div>
       ) : order.length === 0 ? (
-        <p className="py-10 text-sm text-stone">No services yet.</p>
+        <p className="py-10 text-sm text-muted-foreground">No services yet.</p>
       ) : (
         <ul className="space-y-2">
           {order.map((service, index) => (
             <li
               key={service.id}
-              className="flex flex-col gap-3 rounded-sm border border-line bg-card p-3 sm:flex-row sm:items-center"
+              className="flex flex-col gap-3 rounded-sm border border-border bg-card p-3 sm:flex-row sm:items-center"
             >
               <div className="flex min-w-0 flex-1 items-center gap-3">
-                <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm bg-sand">
+                <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm bg-muted">
                   {(service.imageUrl ?? serviceFallback(index).url) ? (
                     <img
                       src={service.imageUrl ?? serviceFallback(index).url ?? ""}
@@ -220,25 +221,31 @@ function ServicesBody() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-stone">
+                    <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                       <ImageIcon className="h-4 w-4" />
                     </div>
                   )}
                   {!service.imageUrl && serviceFallback(index).url && (
-                    <span className="absolute inset-x-0 bottom-0 bg-ink/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-paper">
+                    <span className="absolute inset-x-0 bottom-0 bg-primary/70 py-0.5 text-center text-[9px] uppercase tracking-wide text-primary-foreground">
                       Default
                     </span>
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-ink sm:truncate">{service.title}</p>
-                  <p className="truncate text-xs text-stone">
-                    {service.published ? "Published" : "Hidden"}
-                    {service.includes.length ? ` · ${service.includes.join(" · ")}` : ""}
-                  </p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-sm font-medium text-foreground sm:truncate">{service.title}</p>
+                    <Badge variant={service.published ? "success" : "muted"}>
+                      {service.published ? "Published" : "Hidden"}
+                    </Badge>
+                  </div>
+                  {service.includes.length > 0 && (
+                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                      {service.includes.join(" · ")}
+                    </p>
+                  )}
                 </div>
               </div>
-              <div className="flex shrink-0 items-center justify-end gap-1 border-t border-line pt-2 sm:border-t-0 sm:pt-0">
+              <div className="flex shrink-0 items-center justify-end gap-1 border-t border-border pt-2 sm:border-t-0 sm:pt-0">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -301,7 +308,7 @@ function ServicesBody() {
 
               <div>
                 <Label>What it covers</Label>
-                <p className="mb-2 mt-1 text-xs text-stone">
+                <p className="mb-2 mt-1 text-xs text-muted-foreground">
                   Shown as a single line beneath the description.
                 </p>
                 <StringListEditor
@@ -314,11 +321,11 @@ function ServicesBody() {
               <div>
                 <Label>Photograph</Label>
                 <div className="mt-2 flex items-center gap-3">
-                  <div className="h-20 w-28 overflow-hidden rounded-sm bg-sand">
+                  <div className="h-20 w-28 overflow-hidden rounded-sm bg-muted">
                     {editingUrl ? (
                       <img src={editingUrl} alt="" className="h-full w-full object-cover" />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-stone">
+                      <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                         <ImageIcon className="h-4 w-4" />
                       </div>
                     )}
@@ -339,7 +346,7 @@ function ServicesBody() {
                     </Button>
                   )}
                 </div>
-                <p className="mt-2 text-xs text-stone">
+                <p className="mt-2 text-xs text-muted-foreground">
                   Left empty, project photography is used for this band.
                 </p>
               </div>

@@ -67,8 +67,8 @@ function HomeBody() {
       <SettingsTabs />
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h1 className="mb-1 text-2xl text-ink">Home</h1>
-          <p className="text-sm text-stone">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Home</h1>
+          <p className="text-sm text-muted-foreground">
             The six-photo gallery wall, the practice statement and the three tiles at the foot of the page.
             Every panel below shows the photograph on the live page - those marked "Default"
             are used until you choose your own.
@@ -83,8 +83,8 @@ function HomeBody() {
       </div>
 
       <section className="mb-8">
-        <p className="mb-1 text-sm font-medium text-ink">Photo wall</p>
-        <p className="mb-4 text-xs text-stone">Six photographs in a 1 → 3 → 2 sequence, in the order they appear.</p>
+        <p className="mb-1 text-sm font-medium text-foreground">Photo wall</p>
+        <p className="mb-4 text-xs text-muted-foreground">Six photographs in a 1 → 3 → 2 sequence, in the order they appear.</p>
         <div className="grid gap-4 sm:grid-cols-2">
           {WALL_SLOTS.map((s) => {
             const shown = resolve("home", s.slot);
@@ -105,11 +105,11 @@ function HomeBody() {
         </div>
       </section>
 
-      <section className="mb-8 rounded-sm border border-line bg-card p-5">
-        <Label htmlFor="statement" className="text-sm font-medium text-ink">
+      <section className="mb-8 rounded-sm border border-border bg-card p-5">
+        <Label htmlFor="statement" className="text-sm font-medium text-foreground">
           Practice statement
         </Label>
-        <p className="mb-2 mt-1 text-xs text-stone">
+        <p className="mb-2 mt-1 text-xs text-muted-foreground">
           The centred sentence between the photo wall and the tiles.
         </p>
         <Textarea
@@ -121,11 +121,11 @@ function HomeBody() {
           onChange={(e) => setStatement(e.target.value)}
         />
 
-        <p className="mb-2 mt-5 text-sm font-medium text-ink">Tile wording</p>
+        <p className="mb-2 mt-5 text-sm font-medium text-foreground">Tile wording</p>
         <div className="grid gap-3 sm:grid-cols-3">
           {TILE_SLOTS.map((t) => (
             <div key={t.textSlot}>
-              <Label htmlFor={t.textSlot} className="text-xs text-stone">
+              <Label htmlFor={t.textSlot} className="text-xs text-muted-foreground">
                 {t.label}
               </Label>
               <Input
@@ -144,13 +144,13 @@ function HomeBody() {
           <Button onClick={save} disabled={saveText.isPending}>
             Save wording
           </Button>
-          <span className="text-xs text-stone">Left empty, the wording shown in grey is used.</span>
+          <span className="text-xs text-muted-foreground">Left empty, the wording shown in grey is used.</span>
         </div>
       </section>
 
       <section>
-        <p className="mb-1 text-sm font-medium text-ink">Tiles</p>
-        <p className="mb-4 text-xs text-stone">
+        <p className="mb-1 text-sm font-medium text-foreground">Tiles</p>
+        <p className="mb-4 text-xs text-muted-foreground">
           The three linked panels at the foot of the homepage.
         </p>
         <div className="grid gap-4 sm:grid-cols-3">

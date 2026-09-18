@@ -91,8 +91,8 @@ function AboutBody() {
       <SettingsTabs />
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h1 className="mb-1 text-2xl text-ink">About</h1>
-          <p className="text-sm text-stone">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">About</h1>
+          <p className="text-sm text-muted-foreground">
             The practice page, the studio roster and the client quotes shown alongside it.
           </p>
         </div>
@@ -111,13 +111,13 @@ function AboutBody() {
 
       {tab === "page" && (
         <>
-          <section className="mb-8 rounded-sm border border-line bg-card p-5">
-            <p className="mb-4 text-sm font-medium text-ink">Wording</p>
+          <section className="mb-8 rounded-sm border border-border bg-card p-5">
+            <p className="mb-4 text-sm font-medium text-foreground">Wording</p>
 
-            <Label htmlFor="heading" className="text-sm font-medium text-ink">
+            <Label htmlFor="heading" className="text-sm font-medium text-foreground">
               Page heading
             </Label>
-            <p className="mb-2 mt-1 text-xs text-stone">
+            <p className="mb-2 mt-1 text-xs text-muted-foreground">
               Use a line break to split it across two lines.
             </p>
             <Textarea
@@ -129,11 +129,11 @@ function AboutBody() {
               onChange={(e) => setValues((v) => ({ ...v, heading: e.target.value }))}
             />
 
-            <p className="mb-2 mt-5 text-sm font-medium text-ink">Practice text</p>
+            <p className="mb-2 mt-5 text-sm font-medium text-foreground">Practice text</p>
             <div className="space-y-4">
               {PROSE_FIELDS.map((field) => (
                 <div key={field.slot}>
-                  <Label htmlFor={field.slot} className="text-xs text-stone">
+                  <Label htmlFor={field.slot} className="text-xs text-muted-foreground">
                     {field.label}
                   </Label>
                   <Textarea
@@ -149,7 +149,7 @@ function AboutBody() {
               ))}
             </div>
 
-            <Label htmlFor="process" className="mt-5 block text-sm font-medium text-ink">
+            <Label htmlFor="process" className="mt-5 block text-sm font-medium text-foreground">
               "How we work" heading
             </Label>
             <Input
@@ -165,13 +165,13 @@ function AboutBody() {
               <Button onClick={save} disabled={saveText.isPending}>
                 Save wording
               </Button>
-              <span className="text-xs text-stone">Empty fields keep the wording shown in grey.</span>
+              <span className="text-xs text-muted-foreground">Empty fields keep the wording shown in grey.</span>
             </div>
           </section>
 
           <section>
-            <p className="mb-1 text-sm font-medium text-ink">Photographs</p>
-            <p className="mb-4 text-xs text-stone">
+            <p className="mb-1 text-sm font-medium text-foreground">Photographs</p>
+            <p className="mb-4 text-xs text-muted-foreground">
               The pair of photographs between the practice text and "How we work".
             </p>
             <div className="grid gap-4 sm:grid-cols-2">

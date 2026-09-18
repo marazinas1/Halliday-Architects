@@ -27,12 +27,14 @@ export default function SectionTabs({ tabs, value, onChange }: Props) {
   const controlled = value !== undefined && Boolean(onChange);
 
   const base =
-    "shrink-0 whitespace-nowrap border-b-2 px-3 py-2 text-sm transition-colors";
+    "-mb-px shrink-0 whitespace-nowrap border-b-2 px-3 py-2 text-sm transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring";
   const state = (active: boolean) =>
-    active ? "border-ink font-medium text-ink" : "border-transparent text-stone hover:text-ink";
+    active
+      ? "border-primary font-medium text-foreground"
+      : "border-transparent text-muted-foreground hover:text-foreground";
 
   return (
-    <div className="-mx-1 mb-8 flex gap-1 overflow-x-auto border-b border-line" role="tablist">
+    <div className="mb-8 flex w-full gap-1 overflow-x-auto border-b border-border" role="tablist">
       {tabs.map((tab) => {
         if (controlled) {
           const active = tab.value === value;

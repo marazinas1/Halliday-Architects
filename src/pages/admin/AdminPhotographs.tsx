@@ -37,27 +37,27 @@ export default function AdminPhotographs() {
     <div className="w-full space-y-6">
       <SettingsTabs />
       <div>
-        <h1 className="text-2xl font-semibold text-ink">Photographs</h1>
-        <p className="mt-1 text-sm text-stone">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Photographs</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Photographs you have uploaded to the site. Project photography lives with its project and
           is not listed here.
         </p>
       </div>
 
       {isLoading ? (
-        <div className="flex items-center gap-2 text-sm text-stone">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" /> Loading…
         </div>
       ) : images.length === 0 ? (
-        <p className="rounded-sm border border-line bg-card p-6 text-sm text-stone">
+        <p className="rounded-sm border border-border bg-card p-6 text-sm text-muted-foreground">
           Nothing uploaded yet. Anything you upload from a page's "Choose your own" panel appears
           here.
         </p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {images.map((image) => (
-            <div key={image.path} className="overflow-hidden rounded-sm border border-line bg-card">
-              <div className="aspect-[4/3] bg-sand">
+            <div key={image.path} className="overflow-hidden rounded-sm border border-border bg-card">
+              <div className="aspect-[4/3] bg-muted">
                 <img
                   src={image.url}
                   alt="Uploaded photograph"
@@ -66,17 +66,17 @@ export default function AdminPhotographs() {
                 />
               </div>
               <div className="space-y-2 p-3">
-                <p className="text-xs text-stone">
+                <p className="text-xs text-muted-foreground">
                   Uploaded {formatDate(image.createdAt)} {formatSize(image.sizeBytes)}
                 </p>
                 {image.usedBy.length ? (
-                  <ul className="space-y-0.5 text-xs text-ink">
+                  <ul className="space-y-0.5 text-xs text-foreground">
                     {image.usedBy.map((use) => (
                       <li key={use}>{use}</li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-xs text-stone">Not used anywhere</p>
+                  <p className="text-xs text-muted-foreground">Not used anywhere</p>
                 )}
                 <Button
                   type="button"

@@ -74,10 +74,10 @@ export default function ImageDropzone({
         }}
         className={cn(
           "relative overflow-hidden border border-dashed transition-colors duration-300 outline-hidden",
-          "focus-visible:ring-1 focus-visible:ring-ink/30",
-          previewUrl ? "border-line" : "border-line/80 bg-sand/40",
-          !uploading && "cursor-pointer hover:border-stone/60 hover:bg-sand/60",
-          dragOver && "border-ink/60 bg-sand",
+          "focus-visible:ring-1 focus-visible:ring-ring/30",
+          previewUrl ? "border-border" : "border-border/80 bg-muted/40",
+          !uploading && "cursor-pointer hover:border-border/60 hover:bg-muted/60",
+          dragOver && "border-primary/60 bg-muted",
         )}
       >
         <input
@@ -92,15 +92,15 @@ export default function ImageDropzone({
         />
 
         {previewUrl ? (
-          <div className="relative aspect-[16/9] w-full bg-sand">
+          <div className="relative aspect-[16/9] w-full bg-muted">
             <img src={previewUrl} alt="" className="h-full w-full object-cover" />
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center bg-ink/45 opacity-0 transition-opacity duration-300",
+                "absolute inset-0 flex items-center justify-center bg-primary/45 opacity-0 transition-opacity duration-300",
                 (dragOver || uploading) && "opacity-100",
               )}
             >
-              <span className="text-xs uppercase tracking-[0.14em] text-paper">
+              <span className="text-xs uppercase tracking-[0.14em] text-primary-foreground">
                 {uploading ? "Uploading…" : "Drop to replace"}
               </span>
             </div>
@@ -108,14 +108,14 @@ export default function ImageDropzone({
         ) : (
           <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center sm:py-16">
             {uploading ? (
-              <Loader2 className="h-5 w-5 animate-spin text-stone" />
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             ) : dragOver ? (
-              <Upload className="h-5 w-5 text-ink" />
+              <Upload className="h-5 w-5 text-foreground" />
             ) : (
-              <ImagePlus className="h-5 w-5 text-stone/70" />
+              <ImagePlus className="h-5 w-5 text-muted-foreground/70" />
             )}
-            <p className="text-sm text-ink">{uploading ? "Uploading…" : label}</p>
-            <p className="text-xs text-stone">JPG, PNG or WebP</p>
+            <p className="text-sm text-foreground">{uploading ? "Uploading…" : label}</p>
+            <p className="text-xs text-muted-foreground">JPG, PNG or WebP</p>
           </div>
         )}
       </div>
@@ -139,7 +139,7 @@ export default function ImageDropzone({
             size="sm"
             disabled={uploading}
             onClick={onRemove}
-            className="text-stone hover:text-brand"
+            className="text-muted-foreground hover:text-brand"
           >
             <X className="mr-1.5 h-3.5 w-3.5" />
             Remove
@@ -147,7 +147,7 @@ export default function ImageDropzone({
         )}
       </div>
 
-      <p className="text-xs text-stone">{hint}</p>
+      <p className="text-xs text-muted-foreground">{hint}</p>
     </div>
   );
 }

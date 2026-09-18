@@ -187,7 +187,7 @@ function AdminProjectFormInner() {
   };
 
   if (isEdit && isLoading) {
-    return <div className="py-24 text-center text-stone">Loading…</div>;
+    return <div className="py-24 text-center text-muted-foreground">Loading…</div>;
   }
 
   /**
@@ -237,7 +237,7 @@ function AdminProjectFormInner() {
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           {isEdit ? "Edit Project" : "New Project"}
         </h1>
         <div className="flex gap-2">
@@ -357,7 +357,7 @@ function AdminProjectFormInner() {
               <Label>Published</Label>
             </div>
             <div className="space-y-1 md:col-span-2">
-              <p className="text-xs text-stone">
+              <p className="text-xs text-muted-foreground">
                 The first four published projects by sort order appear on the homepage —
                 change the order to change which.
               </p>
@@ -470,7 +470,7 @@ function AdminProjectFormInner() {
           {isEdit ? (
             <ProjectTagPicker projectId={id!} />
           ) : (
-            <p className="text-sm text-stone">Save the project first to assign tags.</p>
+            <p className="text-sm text-muted-foreground">Save the project first to assign tags.</p>
           )}
         </CardContent>
       </Card>
@@ -483,7 +483,7 @@ function AdminProjectFormInner() {
           {isEdit ? (
             <ProjectImageManager projectId={id!} slug={form.slug} />
           ) : (
-            <p className="text-sm text-stone">
+            <p className="text-sm text-muted-foreground">
               Save the project first — images are attached to a saved project.
             </p>
           )}

@@ -91,12 +91,12 @@ function Thumb({
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        "border bg-paper transition-colors",
-        selected ? "border-ink" : "border-line",
+        "border bg-background transition-colors",
+        selected ? "border-primary" : "border-border",
         isDragging && "opacity-60",
       )}
     >
-      <div className="relative aspect-[4/3] bg-sand">
+      <div className="relative aspect-[4/3] bg-muted">
         <img
           src={getPublicUrl(row.storage_path)}
           alt=""
@@ -104,7 +104,7 @@ function Thumb({
           className="h-full w-full object-cover"
         />
         <div className="absolute left-2 top-2 flex items-center gap-2">
-          <span className="bg-paper/90 p-1">
+          <span className="bg-background/90 p-1">
             <Checkbox
               checked={selected}
               onCheckedChange={(v) => onSelect(v === true)}
@@ -117,12 +117,12 @@ function Thumb({
           {...attributes}
           {...listeners}
           aria-label="Drag to reorder"
-          className="absolute right-2 top-2 cursor-grab bg-paper/90 p-1.5 text-stone hover:text-ink"
+          className="absolute right-2 top-2 cursor-grab bg-background/90 p-1.5 text-muted-foreground hover:text-foreground"
         >
           <GripVertical className="h-3.5 w-3.5" />
         </button>
         {row.is_cover && (
-          <span className="absolute bottom-2 left-2 bg-ink px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] text-paper">
+          <span className="absolute bottom-2 left-2 bg-primary px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] text-primary-foreground">
             Cover
           </span>
         )}
@@ -139,7 +139,7 @@ function Thumb({
         <div className="flex items-center gap-1">
           <select
             aria-label="Category"
-            className="h-8 flex-1 border border-line bg-paper px-2 text-xs"
+            className="h-8 flex-1 border border-border bg-background px-2 text-xs"
             value={row.category}
             onChange={(e) => onCategory(e.target.value as ImageCategory)}
           >
@@ -153,7 +153,7 @@ function Thumb({
             type="button"
             variant="ghost"
             size="icon"
-            className={cn("h-8 w-8", row.is_cover ? "text-brand" : "text-stone")}
+            className={cn("h-8 w-8", row.is_cover ? "text-brand" : "text-muted-foreground")}
             title={row.is_cover ? "This is the cover" : "Make cover"}
             onClick={onCover}
           >
@@ -163,7 +163,7 @@ function Thumb({
             type="button"
             variant="ghost"
             size="icon"
-            className="h-8 w-8 text-stone hover:text-brand"
+            className="h-8 w-8 text-muted-foreground hover:text-brand"
             title="Delete image"
             onClick={onDelete}
           >
@@ -387,7 +387,7 @@ export default function ProjectImageManager({
         }}
         className={cn(
           "flex cursor-pointer flex-col items-center justify-center gap-3 border border-dashed px-6 py-12 text-center outline-hidden transition-colors",
-          dragOver ? "border-ink/60 bg-sand" : "border-line/80 bg-sand/40 hover:border-stone/60",
+          dragOver ? "border-primary/60 bg-muted" : "border-border/80 bg-muted/40 hover:border-border/60",
         )}
       >
         <input
@@ -401,9 +401,9 @@ export default function ProjectImageManager({
             e.target.value = "";
           }}
         />
-        <ImagePlus className="h-5 w-5 text-stone/70" />
-        <p className="text-sm text-ink">Drag images here, or click to choose files</p>
-        <p className="text-xs text-stone">
+        <ImagePlus className="h-5 w-5 text-muted-foreground/70" />
+        <p className="text-sm text-foreground">Drag images here, or click to choose files</p>
+        <p className="text-xs text-muted-foreground">
           Large photographs are resized and converted to WebP automatically, then delivered at the
           right size for each screen.
         </p>
@@ -414,7 +414,7 @@ export default function ProjectImageManager({
         <div className="space-y-2">
           {pending.map((p) => (
             <div key={p.key} className="space-y-1">
-              <div className="flex items-center justify-between text-xs text-stone">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <span className="truncate">{p.name}</span>
                 <span>{p.error ? "Failed" : `${Math.round(p.progress)}%`}</span>
               </div>
@@ -425,8 +425,8 @@ export default function ProjectImageManager({
       )}
 
       {selected.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border border-line bg-sand/60 px-3 py-2">
-          <span className="text-xs uppercase tracking-[0.14em] text-stone">
+        <div className="flex flex-wrap items-center gap-2 border border-border bg-muted/60 px-3 py-2">
+          <span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
             {selected.length} selected
           </span>
           <Popover>
@@ -438,7 +438,7 @@ export default function ProjectImageManager({
             </PopoverTrigger>
             <PopoverContent align="start" className="w-64 space-y-3">
               <div className="max-h-64 space-y-2 overflow-y-auto">
-                {tags.length === 0 && <p className="text-xs text-stone">No tags yet.</p>}
+                {tags.length === 0 && <p className="text-xs text-muted-foreground">No tags yet.</p>}
                 {tags.map((t) => (
                   <label key={t.id} className="flex items-center gap-2 text-sm">
                     <Checkbox
@@ -449,7 +449,7 @@ export default function ProjectImageManager({
                   </label>
                 ))}
               </div>
-              <div className="flex gap-2 border-t border-line pt-3">
+              <div className="flex gap-2 border-t border-border pt-3">
                 <Input
                   value={newTag}
                   placeholder="New tag"
@@ -477,7 +477,7 @@ export default function ProjectImageManager({
           </Popover>
           <select
             aria-label="Set category for selected"
-            className="h-8 border border-line bg-paper px-2 text-xs"
+            className="h-8 border border-border bg-background px-2 text-xs"
             defaultValue=""
             onChange={async (e) => {
               const c = e.target.value as ImageCategory;
@@ -505,14 +505,14 @@ export default function ProjectImageManager({
       )}
 
       {isLoading ? (
-        <p className="flex items-center gap-2 text-sm text-stone">
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" /> Loading images…
         </p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-stone">No images yet.</p>
+        <p className="text-sm text-muted-foreground">No images yet.</p>
       ) : (
         <>
-        <p className="text-xs text-stone">
+        <p className="text-xs text-muted-foreground">
           The star marks the cover — the photograph used on the projects grid and the homepage; only
           one per project. Hero is the wide photograph at the top of the project page, Card is the
           shot used on its grid card, and Gallery is everything else. Setting a new Hero or Card
@@ -544,7 +544,7 @@ export default function ProjectImageManager({
 
 
       {rows.length > 0 && (
-        <p className="text-xs text-stone">
+        <p className="text-xs text-muted-foreground">
           Image descriptions help people using screen readers and help Google understand your
           photographs. Leave one blank and we will generate a basic description from the project
           name and location.

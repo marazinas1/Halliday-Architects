@@ -39,9 +39,9 @@ function NotificationStatus({ inquiry }: { inquiry: Inquiry }) {
     );
   }
   if (inquiry.notified_at) {
-    return <p className="text-xs text-stone">Notification sent {formatDate(inquiry.notified_at)}</p>;
+    return <p className="text-xs text-muted-foreground">Notification sent {formatDate(inquiry.notified_at)}</p>;
   }
-  return <p className="text-xs text-stone">Notification not sent</p>;
+  return <p className="text-xs text-muted-foreground">Notification not sent</p>;
 }
 
 function InquiryDetail({
@@ -62,14 +62,14 @@ function InquiryDetail({
           <>
             <SheetHeader className="text-left">
               <SheetTitle className="text-xl">{inquiry.name}</SheetTitle>
-              <p className="text-xs text-stone">{formatDate(inquiry.created_at)}</p>
+              <p className="text-xs text-muted-foreground">{formatDate(inquiry.created_at)}</p>
             </SheetHeader>
 
             <div className="mt-6 space-y-4">
               <div className="flex flex-col gap-2">
                 <a
                   href={`mailto:${inquiry.email}?subject=${encodeURIComponent("Re: Your inquiry to Halliday Architects")}`}
-                  className="inline-flex items-center gap-2 text-sm text-ink underline underline-offset-4"
+                  className="inline-flex items-center gap-2 text-sm text-foreground underline underline-offset-4"
                 >
                   <Mail className="h-4 w-4" />
                   {inquiry.email}
@@ -77,7 +77,7 @@ function InquiryDetail({
                 {inquiry.phone && (
                   <a
                     href={`tel:${inquiry.phone.replace(/[^0-9+]/g, "")}`}
-                    className="inline-flex items-center gap-2 text-sm text-ink underline underline-offset-4"
+                    className="inline-flex items-center gap-2 text-sm text-foreground underline underline-offset-4"
                   >
                     <Phone className="h-4 w-4" />
                     {inquiry.phone}
@@ -88,27 +88,27 @@ function InquiryDetail({
               <dl className="grid grid-cols-[110px_1fr] gap-y-2 text-sm">
                 {(inquiry.project_type || inquiry.interest) && (
                   <>
-                    <dt className="text-stone">Project type</dt>
-                    <dd className="text-ink">{inquiry.project_type ?? inquiry.interest}</dd>
+                    <dt className="text-muted-foreground">Project type</dt>
+                    <dd className="text-foreground">{inquiry.project_type ?? inquiry.interest}</dd>
                   </>
                 )}
                 {inquiry.timeline && (
                   <>
-                    <dt className="text-stone">Timeline</dt>
-                    <dd className="text-ink">{inquiry.timeline}</dd>
+                    <dt className="text-muted-foreground">Timeline</dt>
+                    <dd className="text-foreground">{inquiry.timeline}</dd>
                   </>
                 )}
                 {inquiry.source && (
                   <>
-                    <dt className="text-stone">Source</dt>
-                    <dd className="text-ink">{inquiry.source}</dd>
+                    <dt className="text-muted-foreground">Source</dt>
+                    <dd className="text-foreground">{inquiry.source}</dd>
                   </>
                 )}
               </dl>
 
               {inquiry.message && (
-                <div className="rounded-sm border border-line bg-sand p-4">
-                  <p className="text-sm text-ink whitespace-pre-wrap leading-relaxed">
+                <div className="rounded-sm border border-border bg-muted p-4">
+                  <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
                     {inquiry.message}
                   </p>
                 </div>
@@ -190,14 +190,14 @@ function InquiriesBody() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl text-ink mb-1">Inquiries</h1>
-      <p className="text-sm text-stone mb-6">
+      <h1 className="text-2xl font-semibold tracking-tight text-foreground">Inquiries</h1>
+      <p className="text-sm text-muted-foreground mb-6">
         Everything submitted through the contact form. Archiving hides an enquiry — it is never deleted.
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3 mb-5">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -218,15 +218,15 @@ function InquiriesBody() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-stone">Loading…</p>
+        <p className="text-sm text-muted-foreground">Loading…</p>
       ) : !inquiries || inquiries.length === 0 ? (
-        <div className="border border-line rounded-sm bg-card p-10 text-center">
-          <p className="text-sm text-stone">
+        <div className="border border-border rounded-sm bg-card p-10 text-center">
+          <p className="text-sm text-muted-foreground">
             {filter === "archived" ? "Nothing archived." : "No inquiries yet."}
           </p>
         </div>
       ) : (
-        <div className="border border-line rounded-sm bg-card divide-y divide-line overflow-hidden">
+        <div className="border border-border rounded-sm bg-card divide-y divide-border overflow-hidden">
           {inquiries.map((inquiry) => {
             const unread = !inquiry.read_at;
             return (
@@ -234,16 +234,16 @@ function InquiriesBody() {
                 key={inquiry.id}
                 type="button"
                 onClick={() => setOpenId(inquiry.id)}
-                className={`w-full text-left px-4 py-4 hover:bg-sand transition-colors ${unread ? "bg-sand/60" : ""}`}
+                className={`w-full text-left px-4 py-4 hover:bg-muted transition-colors ${unread ? "bg-muted/60" : ""}`}
               >
                 <div className="flex items-start gap-3">
                   <span
                     aria-hidden
-                    className={`mt-2 h-2 w-2 rounded-full shrink-0 ${unread ? "bg-ink" : "bg-transparent"}`}
+                    className={`mt-2 h-2 w-2 rounded-full shrink-0 ${unread ? "bg-primary" : "bg-transparent"}`}
                   />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className={`truncate ${unread ? "font-semibold text-ink" : "text-ink"}`}>
+                      <span className={`truncate ${unread ? "font-semibold text-foreground" : "text-foreground"}`}>
                         {inquiry.name}
                       </span>
                       {unread && <Badge variant="secondary">New</Badge>}
@@ -252,17 +252,17 @@ function InquiriesBody() {
                         <Badge variant="destructive">Notification failed</Badge>
                       )}
                     </div>
-                    <p className="text-sm text-stone truncate">
+                    <p className="text-sm text-muted-foreground truncate">
                       {inquiry.email}
                       {inquiry.phone ? ` · ${inquiry.phone}` : ""}
                     </p>
-                    <p className="text-xs text-stone mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {[inquiry.project_type ?? inquiry.interest, inquiry.timeline]
                         .filter(Boolean)
                         .join(" · ") || "—"}
                     </p>
                   </div>
-                  <span className="text-xs text-stone shrink-0 whitespace-nowrap">
+                  <span className="text-xs text-muted-foreground shrink-0 whitespace-nowrap">
                     {formatDate(inquiry.created_at)}
                   </span>
                 </div>

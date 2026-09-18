@@ -16,7 +16,7 @@ const TeamMemberPreview = () => {
       <GlobalNav />
       <header className="px-6 pb-12 pt-20 text-center md:pb-14 md:pt-24">
         <p className="label-uppercase">The studio</p>
-        <h1 className="mt-4 text-4xl font-bold text-ink md:text-5xl">Led by the principals</h1>
+        <h1 className="mt-4 text-4xl font-bold text-foreground md:text-5xl">Led by the principals</h1>
       </header>
       <section className={`${sectionPadding.base} section-sand`}>
         <div className={container.people}>
@@ -25,7 +25,7 @@ const TeamMemberPreview = () => {
               <TeamCard m={member} />
             </div>
           ) : (
-            <p className="text-center text-stone">
+            <p className="text-center text-muted-foreground">
               No preview data. Open this from the team form's Preview button.
             </p>
           )}

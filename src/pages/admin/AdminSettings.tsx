@@ -76,11 +76,11 @@ function AssetSlot({
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="border border-line rounded-sm bg-card p-5">
+    <div className="border border-border rounded-sm bg-card p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4 mb-4">
         <div>
-          <p className="text-sm font-medium text-ink">{label}</p>
-          <p className="text-xs text-stone mt-1">{help}</p>
+          <p className="text-sm font-medium text-foreground">{label}</p>
+          <p className="text-xs text-muted-foreground mt-1">{help}</p>
         </div>
         <div className="flex gap-2 shrink-0">
           <Button type="button" variant="outline" size="sm" disabled={busy} onClick={() => inputRef.current?.click()}>
@@ -95,12 +95,12 @@ function AssetSlot({
       </div>
 
       <div
-        className={`h-24 rounded-sm flex items-center justify-center px-6 ${dark ? "bg-ink" : "bg-sand"}`}
+        className={`h-24 rounded-sm flex items-center justify-center px-6 ${dark ? "bg-primary" : "bg-muted"}`}
       >
         {url ? (
           <img src={url} alt={label} className="max-h-14 w-auto" />
         ) : (
-          <span className={`text-xs ${dark ? "text-paper/50" : "text-stone"}`}>Nothing uploaded</span>
+          <span className={`text-xs ${dark ? "text-primary-foreground/50" : "text-muted-foreground"}`}>Nothing uploaded</span>
         )}
       </div>
 
@@ -266,13 +266,13 @@ function SettingsBody() {
   return (
     <div className="w-full">
       <SettingsTabs />
-      <h1 className="text-2xl text-ink mb-1">Settings</h1>
-      <p className="text-sm text-stone mb-8">
+      <h1 className="text-2xl font-semibold tracking-tight text-foreground">Settings</h1>
+      <p className="text-sm text-muted-foreground mb-8">
         Branding used across the public site, the admin and the sign-in screen.
       </p>
 
-      <div className="border border-line rounded-sm bg-card p-5 mb-6">
-        <Label htmlFor="site-name" className="text-sm font-medium text-ink">
+      <div className="border border-border rounded-sm bg-card p-5 mb-6">
+        <Label htmlFor="site-name" className="text-sm font-medium text-foreground">
           Site name
         </Label>
         <div className="flex gap-3 mt-3">
@@ -288,11 +288,11 @@ function SettingsBody() {
         </div>
       </div>
 
-      <div className="border border-line rounded-sm bg-card p-5 mb-6">
-        <Label htmlFor="notify-emails" className="text-sm font-medium text-ink">
+      <div className="border border-border rounded-sm bg-card p-5 mb-6">
+        <Label htmlFor="notify-emails" className="text-sm font-medium text-foreground">
           Inquiry notifications
         </Label>
-        <p className="text-xs text-stone mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           Where contact form submissions are emailed. Separate several addresses with commas.
         </p>
         <div className="flex gap-3 mt-3">
@@ -308,15 +308,15 @@ function SettingsBody() {
         </div>
       </div>
 
-      <div className="border border-line rounded-sm bg-card p-5 mb-6">
-        <p className="text-sm font-medium text-ink">Business details</p>
-        <p className="text-xs text-stone mt-1">
+      <div className="border border-border rounded-sm bg-card p-5 mb-6">
+        <p className="text-sm font-medium text-foreground">Business details</p>
+        <p className="text-xs text-muted-foreground mt-1">
           Shown in the footer, the menu panel and on the contact page.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {CONTACT_FIELDS.map((field) => (
             <div key={field.key}>
-              <Label htmlFor={field.key} className="text-xs text-stone">
+              <Label htmlFor={field.key} className="text-xs text-muted-foreground">
                 {field.label}
               </Label>
               <Input
@@ -334,11 +334,11 @@ function SettingsBody() {
         </Button>
       </div>
 
-      <div className="border border-line rounded-sm bg-card p-5 mb-6">
+      <div className="border border-border rounded-sm bg-card p-5 mb-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-ink">Maintenance mode</p>
-            <p className="text-xs text-stone mt-1">
+            <p className="text-sm font-medium text-foreground">Maintenance mode</p>
+            <p className="text-xs text-muted-foreground mt-1">
               Visitors see a short holding page instead of the site. You and your team keep full
               access while signed in.
             </p>
@@ -352,7 +352,7 @@ function SettingsBody() {
           />
         </div>
         <div className="mt-4">
-          <Label htmlFor="maintenance-message" className="text-xs text-stone">
+          <Label htmlFor="maintenance-message" className="text-xs text-muted-foreground">
             Message shown to visitors
           </Label>
           <div className="flex gap-3 mt-1">
@@ -391,12 +391,12 @@ function SettingsBody() {
       </div>
 
       <div className="mt-10">
-        <p className="text-sm font-medium text-ink mb-3">Preview</p>
+        <p className="text-sm font-medium text-foreground mb-3">Preview</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded-sm border border-line bg-paper h-32 flex items-center justify-center">
+          <div className="rounded-sm border border-border bg-background h-32 flex items-center justify-center">
             <img src={urlFor("logo_path") ?? FALLBACK_LOGO} alt="Logo on light" className="max-h-12 w-auto" />
           </div>
-          <div className="rounded-sm border border-line bg-ink h-32 flex items-center justify-center">
+          <div className="rounded-sm border border-border bg-primary h-32 flex items-center justify-center">
             <img
               src={urlFor("logo_dark_path") ?? urlFor("logo_path") ?? FALLBACK_LOGO}
               alt="Logo on dark"

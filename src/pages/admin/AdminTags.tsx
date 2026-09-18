@@ -48,8 +48,8 @@ function AdminTagsInner() {
     <div className="w-full space-y-8">
       <SectionTabs tabs={PROJECT_TABS} />
       <div>
-        <h1 className="font-serif text-2xl font-light text-ink">Tags</h1>
-        <p className="mt-2 text-sm text-stone">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Tags</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Used to find specific design solutions quickly. Deleting a tag only removes the
           label — no images or projects are affected.
         </p>
@@ -73,15 +73,15 @@ function AdminTagsInner() {
       </form>
 
       {isLoading ? (
-        <p className="flex items-center gap-2 text-sm text-stone">
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" /> Loading…
         </p>
       ) : tags.length === 0 ? (
-        <p className="border border-line px-6 py-12 text-center text-sm text-stone">
+        <p className="border border-border px-6 py-12 text-center text-sm text-muted-foreground">
           No tags yet.
         </p>
       ) : (
-        <ul className="divide-y divide-line border border-line">
+        <ul className="divide-y divide-border border border-border">
           {tags.map((tag, i) => (
             <li key={tag.id} className="flex items-center gap-2 px-3 py-2">
               <Input
@@ -102,7 +102,7 @@ function AdminTagsInner() {
               </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button type="button" variant="ghost" size="icon" className="text-stone hover:text-brand">
+                  <Button type="button" variant="ghost" size="icon" className="text-muted-foreground hover:text-brand">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </AlertDialogTrigger>

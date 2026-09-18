@@ -175,12 +175,12 @@ export default function PageImageSlot({
     source === "chosen" ? "Chosen" : source === "default" || source === "automatic" ? "Default" : null;
 
   return (
-    <div className="rounded-sm border border-line bg-card p-3">
-      <div className={`relative overflow-hidden rounded-sm bg-sand ${aspect}`}>
+    <div className="rounded-sm border border-border bg-card p-3">
+      <div className={`relative overflow-hidden rounded-sm bg-muted ${aspect}`}>
         {url ? (
           <img src={url} alt={label} className="h-full w-full object-cover" loading="lazy" />
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-stone">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-muted-foreground">
             <ImageIcon className="h-5 w-5" />
             <span className="px-3 text-center text-[11px]">No photography available yet</span>
           </div>
@@ -188,7 +188,7 @@ export default function PageImageSlot({
         {badge && (
           <span
             className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-medium ${
-              source === "chosen" ? "bg-ink/90 text-paper" : "bg-paper/90 text-stone"
+              source === "chosen" ? "bg-primary/90 text-primary-foreground" : "bg-background/90 text-muted-foreground"
             }`}
           >
             {badge}
@@ -198,13 +198,13 @@ export default function PageImageSlot({
 
       <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <p className="truncate text-sm font-medium text-ink">{label}</p>
-          {help && <p className="mt-0.5 text-xs text-stone">{help}</p>}
+          <p className="truncate text-sm font-medium text-foreground">{label}</p>
+          {help && <p className="mt-0.5 text-xs text-muted-foreground">{help}</p>}
           {source === "default" && (
-            <p className="mt-0.5 text-xs text-stone">Default photograph - shown on the site now</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">Default photograph - shown on the site now</p>
           )}
           {source === "automatic" && (
-            <p className="mt-0.5 text-xs text-stone">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               {fallbackFrom ? `From ${fallbackFrom} - shown on the site now` : "Project photography is used"}
             </p>
           )}
@@ -239,8 +239,8 @@ export default function PageImageSlot({
 
 
       {(
-        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
-          <span className="flex items-center gap-1 text-[11px] text-stone">
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-border pt-3">
+          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
             <Lock className="h-3 w-3" />
             Developer
           </span>
@@ -274,14 +274,14 @@ export default function PageImageSlot({
               type="button"
               size="sm"
               variant="ghost"
-              className="h-7 text-xs text-stone"
+              className="h-7 text-xs text-muted-foreground"
               disabled={busy || !isDeveloper}
               onClick={removeDefault}
             >
               Clear default
             </Button>
           )}
-          <span className="text-[11px] text-stone">
+          <span className="text-[11px] text-muted-foreground">
             {pinned
               ? "Kept if the project is deleted."
               : "Pin a photograph the site falls back to."}

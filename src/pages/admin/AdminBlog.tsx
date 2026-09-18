@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2, FileText, Tags } from "lucide-react";
 import AdminSection from "@/components/admin/AdminSection";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -40,9 +41,14 @@ function AdminBlogInner() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-2xl font-semibold text-ink">Blog</h1>
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Articles</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Journal entries. A post only appears on the website once it is published.
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
           <Link to="/admin/blog/categories">
             <Button variant="outline">
               <Tags className="w-4 h-4 mr-2" />
@@ -59,10 +65,10 @@ function AdminBlogInner() {
       </div>
 
       {isLoading ? (
-        <div className="text-stone py-16 text-center">Loading…</div>
+        <div className="text-muted-foreground py-16 text-center">Loading…</div>
       ) : rows.length === 0 ? (
-        <div className="text-center py-24 bg-card rounded-lg border border-line">
-          <p className="text-stone mb-6">No posts yet.</p>
+        <div className="text-center py-24 bg-card rounded-lg border border-border">
+          <p className="text-muted-foreground mb-6">No posts yet.</p>
           <Link to="/admin/blog/new">
             <Button>
               <Plus className="w-4 h-4 mr-2" />
@@ -71,9 +77,9 @@ function AdminBlogInner() {
           </Link>
         </div>
       ) : (
-        <div className="bg-card rounded-lg border border-line overflow-x-auto">
+        <div className="bg-card rounded-lg border border-border overflow-x-auto">
           <table className="w-full min-w-[780px] text-sm">
-            <thead className="bg-sand text-stone text-xs uppercase tracking-wider">
+            <thead className="bg-muted text-muted-foreground text-xs uppercase tracking-wider">
               <tr>
                 <th className="text-left px-4 py-3 w-24">Cover</th>
                 <th className="text-left px-4 py-3">Title</th>
@@ -83,24 +89,24 @@ function AdminBlogInner() {
                 <th className="text-right px-4 py-3">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-line">
+            <tbody className="divide-y divide-border">
               {rows.map((row) => (
-                <tr key={row.id} className="hover:bg-sand">
+                <tr key={row.id} className="hover:bg-muted">
                   <td className="px-4 py-3">
-                    <div className="w-16 h-12 rounded-sm bg-sand flex items-center justify-center overflow-hidden">
+                    <div className="w-16 h-12 rounded-sm bg-muted flex items-center justify-center overflow-hidden">
                       {row.cover_path ? (
                         <img src={getBlogImageUrl(row.cover_path)} alt="" className="w-full h-full object-cover" loading="lazy" />
                       ) : (
-                        <FileText className="w-4 h-4 text-stone/60" />
+                        <FileText className="w-4 h-4 text-muted-foreground/60" />
                       )}
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="font-medium text-ink">{row.title}</div>
-                    <div className="text-xs text-stone">/blog/{row.slug}</div>
+                    <div className="font-medium text-foreground">{row.title}</div>
+                    <div className="text-xs text-muted-foreground">/blog/{row.slug}</div>
                   </td>
-                  <td className="px-4 py-3 text-ink/80">{categoryName(row.category_id)}</td>
-                  <td className="px-4 py-3 text-stone">
+                  <td className="px-4 py-3 text-foreground/80">{categoryName(row.category_id)}</td>
+                  <td className="px-4 py-3 text-muted-foreground">
                     {formatPostDate(row.published_at ?? row.created_at)}
                   </td>
                   <td className="px-4 py-3">
@@ -110,9 +116,9 @@ function AdminBlogInner() {
                         onCheckedChange={(checked) => setPublished.mutate({ post: row, published: checked })}
                         aria-label={`Publish ${row.title}`}
                       />
-                      <span className={`text-xs ${row.published ? "text-ink" : "text-stone"}`}>
-                        {row.published ? "Live" : "Draft"}
-                      </span>
+                      <Badge variant={row.published ? "success" : "muted"}>
+                        {row.published ? "Published" : "Draft"}
+                      </Badge>
                     </div>
                   </td>
                   <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">

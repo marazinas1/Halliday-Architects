@@ -6,8 +6,8 @@ import AuthCard from "@/components/brand/AuthCard";
 import BrandLogo from "@/components/BrandLogo";
 
 const inputClass =
-  "w-full px-4 py-3 bg-background border border-input rounded-sm text-ink focus:outline-hidden focus:ring-1 focus:ring-ink transition";
-const labelClass = "block text-xs tracking-[0.2em] uppercase text-stone";
+  "w-full px-4 py-3 bg-background border border-input rounded-sm text-foreground focus:outline-hidden focus:ring-1 focus:ring-ring transition";
+const labelClass = "block text-xs tracking-[0.2em] uppercase text-muted-foreground";
 
 type ReadyState = "waiting" | "ready" | "expired";
 
@@ -137,18 +137,18 @@ const AdminSetPassword = () => {
       </div>
       <AuthCard eyebrow="Administrator" title={title}>
         {state === "waiting" ? (
-          <p className="text-sm text-stone">
+          <p className="text-sm text-muted-foreground">
             Opening your secure link…
           </p>
         ) : state === "expired" ? (
           <div className="space-y-6">
-            <p className="text-sm text-stone">
+            <p className="text-sm text-muted-foreground">
               This link has expired or has already been used. Ask for a new
               invitation, or use Forgot password on the sign-in page.
             </p>
             <Link
               to="/admin/login"
-              className="inline-flex items-center justify-center w-full px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded-sm hover:bg-ink/90 transition"
+              className="inline-flex items-center justify-center w-full px-8 py-3 text-sm font-medium tracking-wider uppercase bg-primary text-primary-foreground rounded-sm hover:bg-primary/90 transition"
             >
               Go to sign in
             </Link>
@@ -196,14 +196,14 @@ const AdminSetPassword = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-ink text-paper rounded-sm hover:bg-ink/90 transition disabled:opacity-60"
+              className="w-full inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-wider uppercase bg-primary text-primary-foreground rounded-sm hover:bg-primary/90 transition disabled:opacity-60"
             >
               {loading ? "Saving…" : "Save Password"}
             </button>
           </form>
         )}
       </AuthCard>
-      <p className="mt-8 text-xs tracking-[0.15em] uppercase text-stone">
+      <p className="mt-8 text-xs tracking-[0.15em] uppercase text-muted-foreground">
         Authorized Personnel Only
       </p>
     </AuthSplit>

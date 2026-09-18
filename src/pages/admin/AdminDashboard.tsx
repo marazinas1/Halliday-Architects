@@ -36,11 +36,11 @@ const KIND_ICON: Record<ActivityKind, typeof FolderOpen> = {
 function Stat({ value, label, note, to }: { value: number; label: string; note?: string; to: string }) {
   return (
     <Link to={to} className="group block">
-      <span className="block text-4xl font-light tabular-nums text-ink transition-opacity group-hover:opacity-60">
+      <span className="block text-4xl font-light tabular-nums text-foreground transition-opacity group-hover:opacity-60">
         {value}
       </span>
-      <span className="mt-2 block text-[11px] uppercase tracking-[0.14em] text-stone">{label}</span>
-      {note && <span className="mt-1 block text-xs text-stone/80">{note}</span>}
+      <span className="mt-2 block text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</span>
+      {note && <span className="mt-1 block text-xs text-muted-foreground/80">{note}</span>}
     </Link>
   );
 }
@@ -49,10 +49,10 @@ function AttentionRow({ to, children }: { to: string; children: React.ReactNode 
   return (
     <Link
       to={to}
-      className="group flex items-center justify-between gap-4 border-b border-line py-4 last:border-b-0"
+      className="group flex items-center justify-between gap-4 border-b border-border py-4 last:border-b-0"
     >
-      <span className="text-sm text-ink">{children}</span>
-      <ArrowRight className="h-4 w-4 shrink-0 text-stone transition-transform group-hover:translate-x-1" />
+      <span className="text-sm text-foreground">{children}</span>
+      <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" />
     </Link>
   );
 }
@@ -74,21 +74,17 @@ function AdminDashboardInner() {
   return (
     <div className="w-full space-y-14">
       <header>
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">Dashboard</h1>
-        <p className="mt-1 text-sm text-stone">
-          Projects now live under{" "}
-          <Link to="/admin/projects" className="text-ink underline underline-offset-4">
-            Projects
-          </Link>{" "}
-          in the sidebar.
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          What needs your attention today, and how the website is doing.
         </p>
       </header>
 
       <section>
-        <h2 className="text-[11px] uppercase tracking-[0.14em] text-stone">Needs attention</h2>
+        <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Needs attention</h2>
         <div className="mt-4">
           {waiting ? (
-            <div className="rounded-lg border border-line bg-card px-6">
+            <div className="rounded-lg border border-border bg-card px-6">
               {owner && unread > 0 && (
                 <AttentionRow to="/admin/inquiries">
                   {unread} unread {unread === 1 ? "inquiry" : "inquiries"}
@@ -106,7 +102,7 @@ function AdminDashboardInner() {
               )}
             </div>
           ) : (
-            <p className="text-sm text-stone">
+            <p className="text-sm text-muted-foreground">
               Nothing waiting. Everything is published{owner ? " and read" : ""}.
             </p>
           )}
@@ -114,42 +110,10 @@ function AdminDashboardInner() {
       </section>
 
       <section>
-        <h2 className="text-[11px] uppercase tracking-[0.14em] text-stone">Content</h2>
-        <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
-          <Stat
-            value={counts?.publishedProjects ?? 0}
-            label="Published projects"
-            to="/admin/projects"
-          />
-          <Stat value={counts?.draftProjects ?? 0} label="Draft projects" to="/admin/projects?status=draft" />
-          <Stat value={counts?.publishedPosts ?? 0} label="Published posts" to="/admin/blog" />
-          {owner && <Stat value={teamCount ?? 0} label="Team members" to="/admin/team" />}
-        </div>
-      </section>
-
-      {owner && (
-        <section>
-          <h2 className="text-[11px] uppercase tracking-[0.14em] text-stone">Traffic</h2>
-          <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
-            <Stat
-              value={Number(traffic?.totals?.views ?? 0)}
-              label="Views this week"
-              to="/admin/analytics"
-            />
-            <Stat
-              value={Number(traffic?.totals?.visitors ?? 0)}
-              label="Visitors this week"
-              to="/admin/analytics"
-            />
-          </div>
-        </section>
-      )}
-
-      <section>
-        <h2 className="text-[11px] uppercase tracking-[0.14em] text-stone">Recent activity</h2>
-        <div className="mt-4 rounded-lg border border-line bg-card px-6">
+        <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Recent activity</h2>
+        <div className="mt-4 rounded-lg border border-border bg-card px-6">
           {activity.length === 0 ? (
-            <p className="py-6 text-sm text-stone">Nothing edited yet.</p>
+            <p className="py-6 text-sm text-muted-foreground">Nothing edited yet.</p>
           ) : (
             activity.map((item) => {
               const Icon = KIND_ICON[item.kind];
@@ -157,14 +121,14 @@ function AdminDashboardInner() {
                 <Link
                   key={`${item.kind}-${item.id}`}
                   to={item.href}
-                  className="group flex items-center gap-4 border-b border-line py-4 last:border-b-0"
+                  className="group flex items-center gap-4 border-b border-border py-4 last:border-b-0"
                 >
-                  <Icon className="h-4 w-4 shrink-0 text-stone" />
-                  <span className="min-w-0 flex-1 truncate text-sm text-ink group-hover:underline underline-offset-4">
+                  <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span className="min-w-0 flex-1 truncate text-sm text-foreground group-hover:underline underline-offset-4">
                     {item.title}
                   </span>
-                  <span className="hidden text-xs text-stone sm:block">{KIND_LABEL[item.kind]}</span>
-                  <span className="w-28 shrink-0 text-right text-xs text-stone">
+                  <span className="hidden text-xs text-muted-foreground sm:block">{KIND_LABEL[item.kind]}</span>
+                  <span className="w-28 shrink-0 text-right text-xs text-muted-foreground">
                     {item.created ? "Created" : "Edited"} {relativeTime(item.at)}
                   </span>
                 </Link>
@@ -175,7 +139,37 @@ function AdminDashboardInner() {
       </section>
 
       <section>
-        <h2 className="text-[11px] uppercase tracking-[0.14em] text-stone">Quick actions</h2>
+        <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Numbers</h2>
+        <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
+          <Stat
+            value={counts?.publishedProjects ?? 0}
+            label="Published projects"
+            to="/admin/projects"
+          />
+          <Stat value={counts?.draftProjects ?? 0} label="Draft projects" to="/admin/projects?status=draft" />
+          <Stat value={counts?.publishedPosts ?? 0} label="Published posts" to="/admin/blog" />
+          {owner && <Stat value={teamCount ?? 0} label="Team members" to="/admin/team" />}
+          {owner && (
+            <Stat
+              value={Number(traffic?.totals?.views ?? 0)}
+              label="Views"
+              note="Last 7 days"
+              to="/admin/analytics"
+            />
+          )}
+          {owner && (
+            <Stat
+              value={Number(traffic?.totals?.visitors ?? 0)}
+              label="Visitors"
+              note="Last 7 days"
+              to="/admin/analytics"
+            />
+          )}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Quick actions</h2>
         <div className="mt-4 flex flex-wrap gap-3">
           <Button asChild>
             <Link to="/admin/projects/new">
