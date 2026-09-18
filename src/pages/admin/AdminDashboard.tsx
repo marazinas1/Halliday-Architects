@@ -76,11 +76,7 @@ function AdminDashboardInner() {
       <header>
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Projects now live under{" "}
-          <Link to="/admin/projects" className="text-foreground underline underline-offset-4">
-            Projects
-          </Link>{" "}
-          in the sidebar.
+          What needs your attention today, and how the website is doing.
         </p>
       </header>
 
@@ -114,38 +110,6 @@ function AdminDashboardInner() {
       </section>
 
       <section>
-        <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Content</h2>
-        <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
-          <Stat
-            value={counts?.publishedProjects ?? 0}
-            label="Published projects"
-            to="/admin/projects"
-          />
-          <Stat value={counts?.draftProjects ?? 0} label="Draft projects" to="/admin/projects?status=draft" />
-          <Stat value={counts?.publishedPosts ?? 0} label="Published posts" to="/admin/blog" />
-          {owner && <Stat value={teamCount ?? 0} label="Team members" to="/admin/team" />}
-        </div>
-      </section>
-
-      {owner && (
-        <section>
-          <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Traffic</h2>
-          <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
-            <Stat
-              value={Number(traffic?.totals?.views ?? 0)}
-              label="Views this week"
-              to="/admin/analytics"
-            />
-            <Stat
-              value={Number(traffic?.totals?.visitors ?? 0)}
-              label="Visitors this week"
-              to="/admin/analytics"
-            />
-          </div>
-        </section>
-      )}
-
-      <section>
         <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Recent activity</h2>
         <div className="mt-4 rounded-lg border border-border bg-card px-6">
           {activity.length === 0 ? (
@@ -170,6 +134,36 @@ function AdminDashboardInner() {
                 </Link>
               );
             })
+          )}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Numbers</h2>
+        <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
+          <Stat
+            value={counts?.publishedProjects ?? 0}
+            label="Published projects"
+            to="/admin/projects"
+          />
+          <Stat value={counts?.draftProjects ?? 0} label="Draft projects" to="/admin/projects?status=draft" />
+          <Stat value={counts?.publishedPosts ?? 0} label="Published posts" to="/admin/blog" />
+          {owner && <Stat value={teamCount ?? 0} label="Team members" to="/admin/team" />}
+          {owner && (
+            <Stat
+              value={Number(traffic?.totals?.views ?? 0)}
+              label="Views"
+              note="Last 7 days"
+              to="/admin/analytics"
+            />
+          )}
+          {owner && (
+            <Stat
+              value={Number(traffic?.totals?.visitors ?? 0)}
+              label="Visitors"
+              note="Last 7 days"
+              to="/admin/analytics"
+            />
           )}
         </div>
       </section>
