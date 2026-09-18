@@ -293,28 +293,13 @@ function AdminProjectsInner() {
 
 function StatusBadge({ published }: { published: boolean }) {
   return (
-    <Badge
-      variant="secondary"
-      className={cn(
-        "border-transparent",
-        published ? "bg-emerald-500/15 text-emerald-700" : "bg-muted text-muted-foreground",
-      )}
-    >
-      {published ? "Published" : "Draft"}
-    </Badge>
+    <Badge variant={published ? "success" : "muted"}>{published ? "Published" : "Draft"}</Badge>
   );
 }
 
 /** Non-interactive indicator: this project is currently one of the homepage four. */
 function HomepageBadge() {
-  return (
-    <Badge
-      variant="secondary"
-      className="border-transparent bg-primary/10 text-foreground"
-    >
-      On homepage
-    </Badge>
-  );
+  return <Badge variant="info">On homepage</Badge>;
 }
 
 function Thumb({ src, alt, className }: { src?: string | null; alt: string; className?: string }) {
