@@ -236,17 +236,17 @@ function AdminProjectFormInner() {
 
   return (
     <div className="w-full space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           {isEdit ? "Edit Project" : "New Project"}
         </h1>
-        <div className="flex gap-2">
+        <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto">
           {isEdit && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive">
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
+                <Button variant="destructive" className="w-full">
+                  <Trash2 className="h-4 w-4" />
+                  <span className="hidden sm:inline">Delete</span>
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -275,18 +275,18 @@ function AdminProjectFormInner() {
               </AlertDialogContent>
             </AlertDialog>
           )}
-          <Button onClick={save} disabled={saving}>
+          <Button className="w-full" onClick={save} disabled={saving}>
             {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Save
           </Button>
-          <Button variant="outline" onClick={preview} disabled={saving}>
-            <Eye className="w-4 h-4 mr-2" />
-            Preview
+          <Button className="w-full" variant="outline" onClick={preview} disabled={saving}>
+            <Eye className="h-4 w-4" />
+            <span className="hidden sm:inline">Preview</span>
           </Button>
         </div>
       </div>
 
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle className="text-base">Basics</CardTitle>
         </CardHeader>
@@ -366,7 +366,7 @@ function AdminProjectFormInner() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle className="text-base">Location &amp; classification</CardTitle>
         </CardHeader>
@@ -416,7 +416,7 @@ function AdminProjectFormInner() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle className="text-base">Narrative</CardTitle>
         </CardHeader>
@@ -442,7 +442,7 @@ function AdminProjectFormInner() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle className="text-base">Project details</CardTitle>
         </CardHeader>
@@ -462,7 +462,7 @@ function AdminProjectFormInner() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle className="text-base">Tags</CardTitle>
         </CardHeader>

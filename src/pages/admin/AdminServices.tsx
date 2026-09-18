@@ -245,7 +245,7 @@ function ServicesBody() {
                   )}
                 </div>
               </div>
-              <div className="flex shrink-0 items-center justify-end gap-1 border-t border-border pt-2 sm:border-t-0 sm:pt-0">
+               <div className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-1 border-t border-border pt-2 sm:flex sm:shrink-0 sm:justify-end sm:border-t-0 sm:pt-0">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -264,7 +264,7 @@ function ServicesBody() {
                 >
                   <ArrowDown className="h-4 w-4" />
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => setEditing(toDraft(service))}>
+                 <Button className="w-full" size="sm" variant="outline" onClick={() => setEditing(toDraft(service))}>
                   Edit
                 </Button>
                 <Button size="icon" variant="ghost" aria-label="Delete" onClick={() => remove(service)}>
